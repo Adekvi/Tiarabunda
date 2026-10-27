@@ -1,0 +1,81 @@
+/* Tambahkan ke akhir style.css — untuk halaman menu (pagehero & richtext) */
+.phero {
+    background: linear-gradient(180deg, var(--sky), var(--bg));
+    padding: 56px 0 36px;
+}
+.phero h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--blue-d);
+    margin: 6px 0 10px;
+}
+.crumb {
+    font-size: 0.85rem;
+    color: var(--mut);
+    margin-bottom: 16px;
+}
+.crumb a {
+    color: var(--blue);
+    font-weight: 600;
+}
+.doc {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    align-items: start;
+}
+.toc {
+    position: sticky;
+    top: 100px;
+    display: grid;
+    gap: 4px;
+}
+.toc a {
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--mut);
+    transition: 0.25s;
+}
+.toc a:hover {
+    background: var(--sky);
+    color: var(--blue);
+}
+.prose article {
+    padding-bottom: 34px;
+    margin-bottom: 34px;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 100px;
+}
+.prose h2 {
+    font-size: 1.6rem;
+    color: var(--blue-d);
+    margin-bottom: 14px;
+}
+.prose p {
+    color: var(--mut);
+    margin-bottom: 14px;
+    max-width: 68ch;
+}
+.prose ul {
+    padding-left: 20px;
+    color: var(--mut);
+}
+.prose li {
+    margin-bottom: 6px;
+}
+.menu a.active,
+.dd.active > button {
+    color: var(--blue);
+    background: var(--sky);
+}
+@media (max-width: 960px) {
+    .doc {
+        grid-template-columns: 1fr;
+    }
+    .toc {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
