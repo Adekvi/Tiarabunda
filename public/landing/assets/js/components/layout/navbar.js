@@ -5,8 +5,7 @@ export default {
         site
     }) => `<header class="nav" id="nav"><div class="wrap nav-in">
       <a class="brand" href="/">
-      <img src="{{ asset('landing/assets/img/logo.webp') }}" alt="" width="48" height="48"
-                    loading="lazy" />
+      <img src="{{ asset('landing/assets/img/logo.webp') }}" alt="" width="48" height="48" />
                     <span><b>${site.nama}</b><small>${site.kota}</small></span></a>
       <nav class="menu" id="menu" aria-label="Menu utama">${site.menu
           .map((m) =>

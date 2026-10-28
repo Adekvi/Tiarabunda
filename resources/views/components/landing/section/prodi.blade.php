@@ -10,8 +10,8 @@
         </div>
         <div class="grid" id="grid">
             @foreach ($prodi as $i => $p)
-                <a class="pr" data-f="{{ $p[2] }}" style="--i:{{ $i }}" href="/fakultas"><span
-                        class="lv">{{ $p[1] }}</span>
+                <a class="pr" data-f="{{ $p[2] }}" style="--i:{{ $i }}"
+                    href="/pendidikan#prodi"><span class="lv">{{ $p[1] }}</span>
                     <h3>{{ $p[0] }}</h3>
                     <p>{{ $fakultas[$p[2]] }}</p><span class="more">Pelajari <x-landing.ui.arrow /></span>
                 </a>

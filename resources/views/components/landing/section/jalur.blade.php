@@ -6,7 +6,8 @@
             @foreach ($items as $j)
                 <article class="card">
                     <h3>{{ $j[0] }}</h3>
-                    <p>{{ $j[1] }}</p><a class="more" href="/pmb">Lihat detail <x-landing.ui.arrow /></a>
+                    <p>{{ $j[1] }}</p><a class="more" href="/pendidikan#pmb">Lihat detail
+                        <x-landing.ui.arrow /></a>
                 </article>
             @endforeach
         </div>

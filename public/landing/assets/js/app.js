@@ -28,7 +28,7 @@
         hero: () => `<section class="hero" id="top"><div class="wrap hero-in">
       <div class="hero-t">
         <p class="tick" aria-live="off"><span class="dot"></span><span id="tick">${S.ticker[0]}</span></p>
-        <h1>Kuliah vokasi yang langsung membawamu ke dunia kerja</h1>
+        <h1>Kuliah yang langsung membawamu ke dunia kerja</h1>
         <p class="lead">Politeknik Tiara Bunda menyiapkan lulusan terampil lewat praktik, magang, dan pendampingan karier di jantung Kota Depok.</p>
         <div class="row"><a class="btn" href="#pmb">Daftar sekarang</a><a class="btn ghost" href="#prodi">Lihat program studi ${arrow}</a></div>
       </div>

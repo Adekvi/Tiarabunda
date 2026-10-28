@@ -1,5 +1,5 @@
 @props(['items' => config('landing.home.fasilitas')])
-<section class="sec alt">
+<section class="sec alt" id="fasilitas">
     <div class="wrap"><x-landing.ui.head kick="Fasilitas" title="Ruang belajar yang mendukung praktik" /></div>
     <div class="gal rv" aria-label="Galeri fasilitas">
         <div class="gal-track">

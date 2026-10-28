@@ -12,7 +12,7 @@ class app extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(string $title = "Website - Universitas Ti")
+    public function __construct(string $title = "Website - Universitas Tiara Bunda")
     {
         $this->title = $title;
     }

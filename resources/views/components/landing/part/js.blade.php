@@ -1,1 +1,2 @@
-<script type="module" src="{{ asset('landing/assets/js/main.js') }}"></script>
+<script src="{{ asset('landing/assets/js/site.js') }}?v={{ filemtime(public_path('landing/assets/js/site.js')) }}"
+    defer></script>

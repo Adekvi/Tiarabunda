@@ -14,75 +14,96 @@ return [
             ['Portal', '#'],
         ],
         'menu' => [
-            [
-                't' => 'Profil',
-                'sub' => [
-                    ['Sejarah', '/profil#sejarah'],
-                    ['Visi & Misi', '/profil#visi'],
-                    ['Pimipinan Universitas', '/profil#pimpinan'],
-                    ['Struktur Organisasi', '/profil#struktur'],
-                ],
-            ],
-            [
-                't' => 'Pendidikan',
-                'sub' => [
-                    ['Program Pendidikan', '/pendidikan#prodi'],
-                    ['Penerimaan Mahasiswa Baru', '/pendidikan#prodi'],
-                    ['Beasiswa', '/pendidikan#beasiswa'],
-                ],
-            ],
-            [
-                't' => 'Layanan',
-                'sub' => [
-                    ['Perpustakaan', '/layanan#pustaka'],
-                    ['Kemahasiswaan', '/layanan#mhs'],
-                    ['Pusat Karier', '/layanan#karier'],
-                    ['Dokumen', '/layanan#dokumen'],
-                    ['Fasilitas', '/layanan#fasilitas'],
-                ],
-            ],
-            [
-                't' => 'Informasi',
-                'sub' => [
-                    ['Berita Terbaru', '/informasi#kalender'],
-                    ['Kegiatan Kampus', '/informasi#kegiatan'],
-                    ['FAQ', '/informasi#faq'],
-                ],
-            ],
-            // [
-            //     't' => 'PMB',
-            //     'href' => '/pmb',
-            // ],
-            // [
-            //     't' => 'Akreditasi',
-            //     'href' => '/akreditasi',
-            // ],
+            ['t' => 'Profil', 'sub' => [
+                ['Sejarah', '/profil#sejarah'],
+                ['Visi & Misi', '/profil#visi'],
+                ['Pimpinan Universitas', '/profil#pimpinan'],
+                ['Struktur Organisasi', '/profil#struktur'],
+            ]],
+            ['t' => 'Pendidikan', 'sub' => [
+                ['Program Pendidikan', '/pendidikan#prodi'],
+                ['Penerimaan Mahasiswa Baru', '/pendidikan#pmb'],
+                ['Beasiswa', '/pendidikan#beasiswa'],
+            ]],
+            ['t' => 'Layanan', 'sub' => [
+                ['Perpustakaan', '/layanan#pustaka'],
+                ['Kemahasiswaan', '/layanan#mhs'],
+                ['Pusat Karier', '/layanan#karier'],
+                ['Dokumen', '/layanan#dokumen'],
+                ['Fasilitas', '/layanan#fasilitas'],
+            ]],
+            ['t' => 'Informasi', 'sub' => [
+                ['Berita Terbaru', '/informasi#berita'],
+                ['Kegiatan Kampus', '/informasi#kegiatan'],
+                ['FAQ', '/informasi#faq'],
+            ]],
         ],
+        'footer' => [
+            ['Akademik', [
+                ['Program Studi', '/pendidikan#prodi'],
+                ['Kalender Akademik', '/layanan#dokumen'],
+                ['Perpustakaan', '/layanan#pustaka'],
+            ]],
+            ['Informasi', [
+                ['PMB', '/pendidikan#pmb'],
+                ['Akreditasi', '/pendidikan#akreditasi'],
+                ['Berita', '/informasi#berita'],
+            ]],
+        ],
+        'pmb' => '/pendidikan#pmb',
         'kontak' => [
             'alamat' => 'Jl. Contoh Raya No. 1, Kota Depok, Jawa Barat',
             'telp' => '(021) 000-0000',
             'email' => 'info@tiarabunda.example',
             'wa' => 'https://wa.me/620000000000',
         ],
-        'footer' => [
-            [
-                'Akademik',
-                [
-                    ['Fakultas & Prodi', '/fakultas#prodi'],
-                    ['Kalender Akademik', '/dokumen'],
-                    ['Perpustakaan', '/layanan'],
-                ],
-            ],
-            [
-                'Informasi',
-                [
-                    ['PMB', '/pmb'],
-                    ['Akreditasi', '/akreditasi'],
-                    ['Berita', '/#berita'],
-                ],
+    ],
+    'pages' => [
+        'profil' => [
+            'hero' => ['kick' => 'Profil', 'judul' => 'Sejarah, Visi & Misi', 'sub' => 'Mengenal Universitas Tiara Bunda lebih dekat.'],
+            'sections' => [
+                ['type' => 'text', 'blok' => [
+                    ['id' => 'sejarah', 't' => 'Sejarah', 'isi' => ['Tulis sejarah berdirinya kampus di sini.']],
+                    ['id' => 'visi', 't' => 'Visi & Misi', 'isi' => ['Visi: tulis visi kampus.'], 'daftar' => ['Misi pertama', 'Misi kedua', 'Misi ketiga']],
+                    ['id' => 'pimpinan', 't' => 'Pimpinan Universitas', 'isi' => ['Tambahkan daftar pimpinan universitas.']],
+                    ['id' => 'struktur', 't' => 'Struktur Organisasi', 'isi' => ['Tambahkan bagan struktur organisasi.']],
+                ]],
             ],
         ],
-        'pmb' => '/pmb',
+        'pendidikan' => [
+            'hero' => ['kick' => 'Pendidikan', 'judul' => 'Program Pendidikan', 'sub' => 'Program studi, penerimaan mahasiswa baru, dan beasiswa.'],
+            'sections' => [
+                ['type' => 'prodi'],
+                ['type' => 'text', 'blok' => [
+                    ['id' => 'pmb', 't' => 'Penerimaan Mahasiswa Baru', 'isi' => ['Alur pendaftaran:'], 'daftar' => ['Buat akun PMB', 'Lengkapi data diri', 'Unggah dokumen', 'Ikuti seleksi', 'Daftar ulang']],
+                    ['id' => 'beasiswa', 't' => 'Beasiswa', 'isi' => ['KIP Kuliah, beasiswa prestasi, dan keringanan untuk keluarga alumni.']],
+                    ['id' => 'akreditasi', 't' => 'Akreditasi', 'isi' => ['Isi status dan nomor SK akreditasi institusi dan program studi.']],
+                ]],
+                ['type' => 'jalur'],
+            ],
+        ],
+        'layanan' => [
+            'hero' => ['kick' => 'Layanan', 'judul' => 'Layanan Kampus', 'sub' => 'Dukungan untuk mahasiswa selama belajar.'],
+            'sections' => [
+                ['type' => 'text', 'blok' => [
+                    ['id' => 'pustaka', 't' => 'Perpustakaan', 'isi' => ['Jam layanan dan koleksi perpustakaan.']],
+                    ['id' => 'mhs', 't' => 'Kemahasiswaan', 'isi' => ['Organisasi, kegiatan, dan beasiswa.']],
+                    ['id' => 'karier', 't' => 'Pusat Karier', 'isi' => ['Bursa kerja, pelatihan CV, dan penyaluran lulusan.']],
+                    ['id' => 'dokumen', 't' => 'Dokumen', 'isi' => ['Tautan unduhan kalender akademik dan panduan akademik.']],
+                ]],
+                ['type' => 'fasilitas'],
+            ],
+        ],
+        'informasi' => [
+            'hero' => ['kick' => 'Informasi', 'judul' => 'Informasi Kampus', 'sub' => 'Berita, kegiatan, dan pertanyaan umum.'],
+            'sections' => [
+                ['type' => 'berita'],
+                ['type' => 'text', 'blok' => [
+                    ['id' => 'kegiatan', 't' => 'Kegiatan Kampus', 'isi' => ['Daftar kegiatan dan agenda kampus.']],
+                ]],
+                ['type' => 'faq'],
+            ],
+        ],
     ],
     'home' => [
         'ticker' => ['Pendaftaran gelombang 1 dibuka', 'Kelas praktik berbasis industri', 'Beasiswa prestasi & KIP Kuliah', 'Kampus nyaman di Kota Depok'],
