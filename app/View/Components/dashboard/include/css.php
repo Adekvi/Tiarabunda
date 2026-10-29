@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\dashboard\part;
+namespace App\View\Components\dashboard\include;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class js extends Component
+class css extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class js extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.dashboard.part.js');
+        return view('components.dashboard.include.css');
     }
 }
