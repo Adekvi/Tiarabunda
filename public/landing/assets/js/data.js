@@ -1,8 +1,9 @@
 /* Semua konten ada di sini (contoh/placeholder) — ganti dengan data asli,
    atau nanti isi dari API/admin: window.SITE = await fetch('/api/site').then(r => r.json()) */
 window.SITE = {
-    nama: 'Politeknik Tiara Bunda',
+    nama: 'Universitas Tiara Bunda',
     kota: 'Kota Depok',
+    hotline: '(021) 000-0000',
     alamat: 'Kota Depok, Jawa Barat',
     portal: [
         ['Mahasiswa', '#'],
@@ -66,9 +67,9 @@ window.SITE = {
     ],
     rektor: {
         nama: 'Dr. Bdn. Lusy Pratiwi, S.Tr.Keb., M.K.M.',
-        jabatan: 'Direktur Politeknik Tiara Bunda',
+        jabatan: 'Direktur Universitas Tiara Bunda',
         kutipan:
-            'Sebagai Direktur, saya bangga memimpin kampus Politeknik Tiara Bunda yang berkomitmen untuk memberikan pendidikan berkualitas dan berorientasi pada kebutuhan industri dan masyarakat. Politeknik Tiara Bunda sebagai Perguruan Tinggi Vokasi mencetak lulusan siap kerja dan akan menghantarkan hingga pintu gerbang kesuksesan. Kami berharap dapat menjalin kerja sama yang baik dengan seluruh stakeholder di Politeknik Tiara Bunda dan masyarakat luas untuk meraih prestasi yang lebih tinggi.'
+            'Sebagai Direktur, saya bangga memimpin kampus Universitas Tiara Bunda yang berkomitmen untuk memberikan pendidikan berkualitas dan berorientasi pada kebutuhan industri dan masyarakat. Universitas Tiara Bunda sebagai Perguruan Tinggi Vokasi mencetak lulusan siap kerja dan akan menghantarkan hingga pintu gerbang kesuksesan. Kami berharap dapat menjalin kerja sama yang baik dengan seluruh stakeholder di Universitas Tiara Bunda dan masyarakat luas untuk meraih prestasi yang lebih tinggi.'
     },
     alasan: [
         {

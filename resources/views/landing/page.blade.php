@@ -1,13 +1,12 @@
-@php($title = $data['hero']['judul'] . ' — ' . config('landing.site.nama'))
-<x-landing.layout.app :title="$title">
+<x-landing.layout.app :title="$page['t'] . ' — ' . config('landing.site.nama')" :description="$page['sub']">
     <x-landing.layout.topbar />
     <x-landing.layout.navbar />
     <main id="main">
-        <x-landing.section.pagehero :hero="$data['hero']" />
-        @foreach ($data['sections'] as $s)
-            @switch($s['type'])
+        <x-landing.section.pagehero :menu="$menu" :page="$page" />
+        @foreach ($page['blocks'] as $b)
+            @switch($b['type'])
                 @case('text')
-                    <x-landing.section.richtext :blok="$s['blok']" />
+                    <x-landing.section.richtext :block="$b" />
                 @break
 
                 @case('prodi')
@@ -28,6 +27,10 @@
 
                 @case('fasilitas')
                     <x-landing.section.fasilitas />
+                @break
+
+                @case('sambutan')
+                    <x-landing.section.sambutan />
                 @break
             @endswitch
         @endforeach

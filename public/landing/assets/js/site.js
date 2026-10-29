@@ -24,6 +24,56 @@
         l.addEventListener('click', () => body.classList.remove('menu-open'))
     )
 
+    /* pencarian */
+    ;(() => {
+        const navEl = document.getElementById('nav')
+        const sf = document.getElementById('srch')
+        const sb = document.getElementById('srch-b')
+        const sq = document.getElementById('q')
+        if (!sf || !sb || !sq) return
+
+        const set = (o) => {
+            sf.classList.toggle('open', o)
+            navEl?.classList.toggle('searching', o)
+            sb.setAttribute('aria-expanded', o)
+            sb.setAttribute(
+                'aria-label',
+                o ? 'Tutup pencarian' : 'Buka pencarian'
+            )
+            if (o) {
+                sq.focus({ preventScroll: true })
+            } else {
+                sq.value = ''
+                sq.blur()
+            }
+        }
+
+        // keadaan awal (halaman hasil pencarian sudah terbuka dari server)
+        if (sf.classList.contains('open')) {
+            navEl?.classList.add('searching')
+            sb.setAttribute('aria-expanded', 'true')
+            sb.setAttribute('aria-label', 'Tutup pencarian')
+        }
+
+        sb.addEventListener('click', () => set(!sf.classList.contains('open')))
+
+        addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sf.classList.contains('open')) {
+                set(false)
+                sb.focus()
+            }
+        })
+
+        document.addEventListener('click', (e) => {
+            if (
+                !sf.contains(e.target) &&
+                sf.classList.contains('open') &&
+                !sq.value.trim()
+            )
+                set(false)
+        })
+    })()
+
     /* alasan (tab) */
     const why = $('.why-l')
     why?.addEventListener('click', (e) => {

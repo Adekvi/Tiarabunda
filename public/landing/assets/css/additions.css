@@ -17,7 +17,7 @@
     color: var(--blue);
     font-weight: 600;
 }
-.doc {
+/* .doc {
     display: grid;
     grid-template-columns: 240px 1fr;
     gap: 48px;
@@ -40,7 +40,7 @@
 .toc a:hover {
     background: var(--sky);
     color: var(--blue);
-}
+} */
 .prose article {
     padding-bottom: 34px;
     margin-bottom: 34px;

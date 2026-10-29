@@ -1,27 +1,20 @@
-@props(['blok'])
+@props(['block'])
 <section class="sec">
-    <div class="wrap doc">
-        <aside class="toc" aria-label="Daftar isi">
-            @foreach ($blok as $b)
-                <a href="#{{ $b['id'] }}">{{ $b['t'] }}</a>
+    <div class="wrap single prose">
+        <article class="rv">
+            @if (!empty($block['t']))
+                <h2>{{ $block['t'] }}</h2>
+            @endif
+            @foreach ($block['isi'] ?? [] as $p)
+                <p>{{ $p }}</p>
             @endforeach
-        </aside>
-        <div class="prose">
-            @foreach ($blok as $b)
-                <article id="{{ $b['id'] }}" class="rv">
-                    <h2>{{ $b['t'] }}</h2>
-                    @foreach ($b['isi'] ?? [] as $p)
-                        <p>{{ $p }}</p>
+            @if (!empty($block['daftar']))
+                <ul>
+                    @foreach ($block['daftar'] as $x)
+                        <li>{{ $x }}</li>
                     @endforeach
-                    @if (!empty($b['daftar']))
-                        <ul>
-                            @foreach ($b['daftar'] as $x)
-                                <li>{{ $x }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </article>
-            @endforeach
-        </div>
+                </ul>
+            @endif
+        </article>
     </div>
 </section>
