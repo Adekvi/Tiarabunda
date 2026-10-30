@@ -19,14 +19,14 @@ class HeaderSecurity
         $response = $next($request);
 
         // Dashboard masih memakai CDN; hapus dua host ini setelah di-self-host
-        $script = $request->is('superadmin*')
-            ? "'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net"
-            : "'self'";
+        // $script = $request->is('superadmin*')
+        //     ? "'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net"
+        //     : "'self'";
 
         $response->headers->add([
             'Content-Security-Policy' => implode('; ', [
                 "default-src 'self'",
-                "script-src $script",
+                "script-src 'self'",   // hanya script dari domain kamu
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
                 "font-src 'self' https://fonts.gstatic.com",
                 "img-src 'self' data:",

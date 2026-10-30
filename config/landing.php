@@ -63,12 +63,12 @@ return [
                     ],
                 ]
             ],
-            'pimpinan' => ['t' => 'Pimpinan Universitas', 'sub' => 'Pimpinan yang memandu kampus.', 'blocks' => [
-                ['type' => 'sambutan'],
-            ]],
-            'struktur' => ['t' => 'Struktur Organisasi', 'sub' => 'Bagan organisasi kampus.', 'blocks' => [
-                ['type' => 'text', 'isi' => ['Tambahkan bagan struktur organisasi.']],
-            ]],
+            // 'pimpinan' => ['t' => 'Pimpinan Universitas', 'sub' => 'Pimpinan yang memandu kampus.', 'blocks' => [
+            //     ['type' => 'sambutan'],
+            // ]],
+            // 'struktur' => ['t' => 'Struktur Organisasi', 'sub' => 'Bagan organisasi kampus.', 'blocks' => [
+            //     ['type' => 'text', 'isi' => ['Tambahkan bagan struktur organisasi.']],
+            // ]],
         ]],
         'pendidikan' => ['t' => 'Pendidikan', 'subs' => [
             'program-pendidikan' => ['t' => 'Program Pendidikan', 'sub' => 'Fakultas dan program studi.', 'blocks' => [
@@ -97,10 +97,10 @@ return [
             'pusat-karier' => ['t' => 'Pusat Karier', 'sub' => 'Pendampingan sampai bekerja.', 'blocks' => [
                 ['type' => 'text', 'isi' => ['Bursa kerja, pelatihan CV, dan penyaluran lulusan.']],
             ]],
-            'dokumen' => ['t' => 'Dokumen', 'sub' => 'Unduh panduan dan kalender akademik.', 'blocks' => [
-                ['type' => 'text', 't' => 'Kalender Akademik', 'isi' => ['Tautan unduhan kalender akademik.']],
-                ['type' => 'text', 't' => 'Panduan Akademik', 'isi' => ['Tautan unduhan panduan akademik.']],
-            ]],
+            // 'dokumen' => ['t' => 'Dokumen', 'sub' => 'Unduh panduan dan kalender akademik.', 'blocks' => [
+            //     ['type' => 'text', 't' => 'Kalender Akademik', 'isi' => ['Tautan unduhan kalender akademik.']],
+            //     ['type' => 'text', 't' => 'Panduan Akademik', 'isi' => ['Tautan unduhan panduan akademik.']],
+            // ]],
             'fasilitas' => ['t' => 'Fasilitas', 'sub' => 'Ruang belajar yang mendukung praktik.', 'blocks' => [
                 ['type' => 'fasilitas'],
             ]],
@@ -120,7 +120,7 @@ return [
     'home' => [
         'ticker' => ['Pendaftaran gelombang 1 dibuka', 'Kelas praktik berbasis industri', 'Beasiswa prestasi & KIP Kuliah', 'Kampus nyaman di Kota Depok'],
         'info' => [
-            ['k' => 'PMB', 't' => 'Brosur PMB Gelombang 1 2026/2027', 'd' => 'Jadwal, biaya, dan jalur pendaftaran mahasiswa baru.', 'img' => 'assets/img/info/brosur-pmb-1.webp', 'tgl' => '20 Sep 2026'],
+            ['k' => 'PMB', 't' => 'Brosur PMB Gelombang 1 2026/2027', 'd' => 'Jadwal, biaya, dan jalur pendaftaran mahasiswa baru.', 'img' => 'assets/img/brosur.webp', 'tgl' => '20 Sep 2026'],
             ['k' => 'PMB', 't' => 'Brosur Beasiswa & KIP Kuliah',     'd' => 'Syarat dan alur pengajuan beasiswa.',               'img' => 'assets/img/info/brosur-beasiswa.webp', 'tgl' => '20 Sep 2026'],
             ['k' => 'SK',  't' => 'SK Pendirian Universitas',         'd' => 'Dokumen legalitas Universitas Tiara Bunda.',        'img' => 'assets/img/info/sk-universitas.webp', 'tgl' => '10 Agu 2026'],
             ['k' => 'SK',  't' => 'SK Fakultas Kesehatan',            'd' => 'Penetapan Fakultas Kesehatan.',                     'img' => 'assets/img/info/sk-fakultas-kes.webp', 'tgl' => '10 Agu 2026'],
@@ -155,17 +155,92 @@ return [
             [3, '', 'Fakultas'],
             [1500, '+', 'Alumni'],
         ],
-        'fakultas' => ['Teknologi & Informatika', 'Bisnis & Manajemen', 'Kesehatan'],
+        'fakultas' => ['Ilmu Kesehatan', 'Keguruan dan Ilmu Pendidikan', 'Ilmu Komputer', 'Ekonomi Bisnis'],
         'prodi' => [
-            ['Teknik Informatika', 'D3', 0],
-            ['Sistem Informasi', 'D3', 0],
-            ['Rekayasa Perangkat Lunak', 'D4', 0],
-            ['Akuntansi', 'D3', 1],
-            ['Manajemen Bisnis', 'D3', 1],
-            ['Administrasi Perkantoran', 'D3', 1],
-            ['Keperawatan', 'D3', 2],
-            ['Kebidanan', 'D3', 2],
-            ['Rekam Medis', 'D3', 2],
+            [
+                'nama' => 'Farmasi',
+                'jenjang' => 'D3',
+                'gelar' => 'A.Md.Farm',
+                'fakultas' => 0
+            ],
+            [
+                'nama' => 'Kebidanan',
+                'jenjang' => 'D3',
+                'gelar' => 'A.Md.Keb',
+                'fakultas' => 0
+            ],
+            [
+                'nama' => 'Keperawatan Bidan Anestesiologi',
+                'jenjang' => 'D4',
+                'gelar' => 'S.Tr.Kes',
+                'fakultas' => 0
+            ],
+            [
+                'nama' => 'Kebidanan',
+                'jenjang' => 'D4',
+                'gelar' => 'S.Tr.Keb',
+                'fakultas' => 0
+            ],
+            [
+                'nama' => 'Pendidikan Profesi Bidan',
+                'jenjang' => '',
+                'gelar' => 'Bdn',
+                'fakultas' => 0
+            ],
+            [
+                'nama' => 'Pendidikan Guru PAUD',
+                'jenjang' => 'D3',
+                'gelar' => 'S.Pd',
+                'fakultas' => 1
+            ],
+            [
+                'nama' => 'Pendidikan Guru Sekolah Dasar (PGSD)',
+                'jenjang' => 'D3',
+                'gelar' => 'S.Pd',
+                'fakultas' => 1
+            ],
+            [
+                'nama' => 'Teknologi Perangkat Lunak',
+                'jenjang' => 'D4',
+                'gelar' => 'S.Tr.Kom',
+                'fakultas' => 2
+            ],
+            [
+                'nama' => 'Sistem Informasi',
+                'jenjang' => 'S1',
+                'gelar' => 'S.Kom',
+                'fakultas' => 2
+            ],
+            [
+                'nama' => 'Kecerdasan Buatan',
+                'jenjang' => 'S1',
+                'gelar' => 'S.Kom',
+                'fakultas' => 2
+            ],
+            [
+                'nama' => 'Ilmu Komputer',
+                'jenjang' => 'S1',
+                'gelar' => 'S.Kom',
+                'fakultas' => 2
+            ],
+            [
+                'nama' => 'Logistik Bisnis',
+                'jenjang' => 'D4',
+                'gelar' => 'S.Tr.Log',
+                'fakultas' => 3
+            ],
+            [
+                'nama' => 'Bisnis Digital',
+                'jenjang' => 'D4',
+                'gelar' => 'S.Tr.Bns',
+                'fakultas' => 3
+            ],
+            [
+                'nama' => 'Manajemen',
+                'jenjang' => 'S1',
+                'gelar' => 'S.M',
+                'fakultas' => 3
+            ],
         ],
         'fasilitas' => [
             ['Laboratorium Komputer', 'assets/img/fasilitas/lab-komputer.jpg'],
