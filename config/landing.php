@@ -39,10 +39,30 @@ return [
             'sejarah' => ['t' => 'Sejarah', 'sub' => 'Perjalanan Universitas Tiara Bunda.', 'blocks' => [
                 ['type' => 'text', 'isi' => ['Tulis sejarah berdirinya kampus di sini.']],
             ]],
-            'visi-misi' => ['t' => 'Visi & Misi', 'sub' => 'Arah dan tujuan kampus.', 'blocks' => [
-                ['type' => 'text', 't' => 'Visi', 'isi' => ['Tulis visi kampus.']],
-                ['type' => 'text', 't' => 'Misi', 'daftar' => ['Misi pertama', 'Misi kedua', 'Misi ketiga']],
-            ]],
+            'visi-misi' => [
+                't'   => 'Visi & Misi',
+                'sub' => 'Arah dan tujuan kampus.',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        't'    => 'Visi',
+                        'isi'  => [
+                            'Menjadi Perguruan Tinggi Vokasi Unggul yang Menghasilkan Lulusan Kompeten dan Inovatif dalam Pemecahan Masalah Kesehatan di Jawa Barat Tahun 2032'
+                        ]
+                    ],
+                    [
+                        'type' => 'text',
+                        't'    => 'Misi',
+                        'daftar' => [
+                            'Menyelenggarakan pendidikan serta pengajaran unggul yang menghasilkan lulusan kompeten dan inovatif dalam pemecahan masalah kesehatan.',
+                            'Menyelenggarakan penelitian untuk pengembangan serta pemanfaatan ilmu pengetahuan dan teknologi kesehatan dalam pemecahan masalah kesehatan.',
+                            'Menyelenggarakan pengabdian kepada masyarakat melalui pemanfaatan hasil penelitian untuk meningkatkan kualitas kesehatan masyarakat sesuai dengan evidence based.',
+                            'Menyelenggarakan tata kelola yang sehat, transparan, berkualitas, dan akuntabel sebagai wujud penyelenggaraan institusi yang sehat.',
+                            'Menyelenggarakan kerjasama dengan pemerintah, perguruan tinggi dan industri baik dalam maupun luar negeri untuk mendukung pelaksanaan tri dharma perguruan tinggi.',
+                        ]
+                    ],
+                ]
+            ],
             'pimpinan' => ['t' => 'Pimpinan Universitas', 'sub' => 'Pimpinan yang memandu kampus.', 'blocks' => [
                 ['type' => 'sambutan'],
             ]],
@@ -99,6 +119,13 @@ return [
     ],
     'home' => [
         'ticker' => ['Pendaftaran gelombang 1 dibuka', 'Kelas praktik berbasis industri', 'Beasiswa prestasi & KIP Kuliah', 'Kampus nyaman di Kota Depok'],
+        'info' => [
+            ['k' => 'PMB', 't' => 'Brosur PMB Gelombang 1 2026/2027', 'd' => 'Jadwal, biaya, dan jalur pendaftaran mahasiswa baru.', 'img' => 'assets/img/info/brosur-pmb-1.webp', 'tgl' => '20 Sep 2026'],
+            ['k' => 'PMB', 't' => 'Brosur Beasiswa & KIP Kuliah',     'd' => 'Syarat dan alur pengajuan beasiswa.',               'img' => 'assets/img/info/brosur-beasiswa.webp', 'tgl' => '20 Sep 2026'],
+            ['k' => 'SK',  't' => 'SK Pendirian Universitas',         'd' => 'Dokumen legalitas Universitas Tiara Bunda.',        'img' => 'assets/img/info/sk-universitas.webp', 'tgl' => '10 Agu 2026'],
+            ['k' => 'SK',  't' => 'SK Fakultas Kesehatan',            'd' => 'Penetapan Fakultas Kesehatan.',                     'img' => 'assets/img/info/sk-fakultas-kes.webp', 'tgl' => '10 Agu 2026'],
+            ['k' => 'SK',  't' => 'SK Program Studi Kebidanan',       'd' => 'Izin penyelenggaraan program studi.',               'img' => 'assets/img/info/sk-prodi-kebidanan.webp', 'tgl' => '10 Agu 2026'],
+        ],
         'mitra' => ['Mitra Industri A', 'Rumah Sakit B', 'Perusahaan Teknologi C', 'Bank D', 'Lembaga Sertifikasi E', 'Komunitas F'],
         'rektor' => [
             'nama' => 'Dr. Bdn. Lusy Pratiwi, S.Tr.Keb., M.K.M.',

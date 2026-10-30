@@ -20,7 +20,8 @@
         </div>
         <form class="pmb" id="pmb" novalidate>
             <h2>Mulai pendaftaran</h2>
-            <p>Masukkan email aktif untuk membuat akun PMB.</p>
+            <p>Masukkan email aktif untuk membuat a
+                kun PMB.</p>
             <label for="em" class="sr">Email</label><input id="em" type="email"
                 placeholder="nama@email.com" autocomplete="email" required>
             <button class="btn" type="submit">Buat akun PMB</button>

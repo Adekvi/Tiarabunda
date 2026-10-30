@@ -145,6 +145,126 @@
             }, 3800)
     }
 
+    /* info terkini: slider */
+    ;(() => {
+        const root = $('#info')
+        if (!root) return
+        const slides = $$('.info-slide', root)
+        const dots = $$('.info-dots button', root)
+        const n = slides.length
+        if (n < 2) return
+
+        const cur = $('#info-cur'),
+            tog = $('#info-toggle')
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+        let i = 0,
+            busy = false,
+            playing = !reduce,
+            hold = false,
+            visible = true
+
+        const sync = () =>
+            root.classList.toggle(
+                'paused',
+                !playing || hold || !visible || document.hidden
+            )
+
+        const go = (to, dir) => {
+            to = (to + n) % n
+            if (to === i || busy) return
+            dir = dir ?? (to > i ? 1 : -1)
+            busy = true
+
+            // atur arah dulu, paksa reflow, baru ganti kelas → transisi mulai dari posisi benar
+            root.style.setProperty('--dx', dir * 70 + 'px')
+            void root.offsetWidth
+
+            const old = slides[i],
+                nw = slides[to]
+            old.classList.replace('is-active', 'is-leaving')
+            old.setAttribute('aria-hidden', 'true')
+            old.inert = true
+            nw.classList.add('is-active')
+            nw.removeAttribute('aria-hidden')
+            nw.inert = false
+
+            dots[i].classList.remove('on')
+            dots[i].removeAttribute('aria-current')
+            dots[to].classList.add('on')
+            dots[to].setAttribute('aria-current', 'true')
+
+            i = to
+            cur.textContent = String(i + 1).padStart(2, '0')
+            setTimeout(() => {
+                old.classList.remove('is-leaving')
+                busy = false
+            }, 950)
+        }
+
+        // autoplay: pindah saat progress bar selesai (otomatis ikut pause saat hover/jeda)
+        $('.info-dots', root).addEventListener('animationend', (e) => {
+            if (e.animationName === 'info-fill' && playing) go(i + 1, 1)
+        })
+
+        $('#info-next').addEventListener('click', () => go(i + 1, 1))
+        $('#info-prev').addEventListener('click', () => go(i - 1, -1))
+        dots.forEach((d, k) => d.addEventListener('click', () => go(k)))
+
+        tog.addEventListener('click', () => {
+            playing = !playing
+            tog.classList.toggle('is-paused', !playing)
+            tog.setAttribute(
+                'aria-label',
+                playing ? 'Jeda slide otomatis' : 'Putar slide otomatis'
+            )
+            sync()
+        })
+
+        // jeda saat hover / fokus, saat keluar viewport, dan saat tab tidak aktif
+        root.addEventListener('pointerenter', () => ((hold = true), sync()))
+        root.addEventListener('pointerleave', () => ((hold = false), sync()))
+        root.addEventListener('focusin', () => ((hold = true), sync()))
+        root.addEventListener('focusout', () => ((hold = false), sync()))
+        document.addEventListener('visibilitychange', sync)
+        if ('IntersectionObserver' in window)
+            new IntersectionObserver(
+                ([e]) => ((visible = e.isIntersecting), sync()),
+                { threshold: 0.35 }
+            ).observe(root)
+
+        // keyboard
+        root.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') go(i + 1, 1)
+            else if (e.key === 'ArrowLeft') go(i - 1, -1)
+        })
+
+        // swipe (sentuh & mouse)
+        let x0 = null,
+            moved = false
+        root.addEventListener('pointerdown', (e) => {
+            if (!e.target.closest('button')) x0 = e.clientX
+        })
+        root.addEventListener('pointerup', (e) => {
+            if (x0 === null) return
+            const d = e.clientX - x0
+            x0 = null
+            if (Math.abs(d) > 50) {
+                moved = true
+                go(i + (d < 0 ? 1 : -1), d < 0 ? 1 : -1)
+            }
+        })
+        root.addEventListener('pointercancel', () => (x0 = null))
+        root.addEventListener(
+            'click',
+            (e) => {
+                if (moved) (e.preventDefault(), (moved = false))
+            },
+            true
+        )
+
+        sync()
+    })()
+
     /* reveal + counter */
     const count = (el) => {
         const to = +el.dataset.to,

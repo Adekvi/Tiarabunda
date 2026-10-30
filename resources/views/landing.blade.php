@@ -5,6 +5,7 @@
     <x-landing.layout.navbar />
     <main id="main">
         <x-landing.section.hero />
+        <x-landing.section.info />
         <x-landing.section.mitra />
         <x-landing.section.sambutan />
         <x-landing.section.alasan />

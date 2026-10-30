@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use MenuService;
 
 class LandingController extends Controller
 {
@@ -19,14 +20,29 @@ class LandingController extends Controller
         return redirect()->route('landing.page', [$menu, array_key_first($subs)]);
     }
 
+    // public function page(string $menu, string $sub)
+    // {
+    //     $page = config("landing.menus.$menu.subs.$sub");
+    //     abort_unless($page, 404);
+
+    //     return view('landing.page', [
+    //         'menu' => config("landing.menus.$menu.t"),
+    //         'page' => $page,
+    //     ]);
+    // }
+
     public function page(string $menu, string $sub)
     {
-        $page = config("landing.menus.$menu.subs.$sub");
+        $page = app(MenuService::class)->findPage($menu, $sub);
         abort_unless($page, 404);
 
         return view('landing.page', [
-            'menu' => config("landing.menus.$menu.t"),
-            'page' => $page,
+            'menu' => $page->menu->title,
+            'page' => [
+                't'      => $page->title,
+                'sub'    => $page->subtitle,
+                'blocks' => $page->blocks ?? [],
+            ],
         ]);
     }
 

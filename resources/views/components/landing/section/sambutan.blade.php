@@ -2,8 +2,8 @@
 <section class="sec sam">
     <div class="wrap sam-in rv">
         <div class="ava">
-            @if (!empty($r['foto']))
-                <img src="{{ asset('landing/assets/img/' . $r['foto']) }}" width="128" height="128"
+            @if (!empty($r['direktur']))
+                <img src="{{ asset('landing/assets/img/' . $r['direktur']) }}" width="128" height="128"
                     alt="{{ $r['nama'] }}" loading="lazy" />
             @else
                 {{ mb_substr($r['nama'], 0, 1) }}

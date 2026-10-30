@@ -20,3 +20,11 @@ Route::redirect('/fakultas', '/pendidikan/program-pendidikan', 301);
 Route::redirect('/pmb', '/pendidikan/penerimaan-mahasiswa-baru', 301);
 Route::redirect('/akreditasi', '/pendidikan/akreditasi', 301);
 Route::redirect('/dokumen', '/layanan/dokumen', 301);
+
+Route::get('/{menu}', [LandingController::class, 'menu'])
+    ->where('menu', '[a-z0-9-]+')
+    ->name('landing.menu');
+
+Route::get('/{menu}/{sub}', [LandingController::class, 'page'])
+    ->where(['menu' => '[a-z0-9-]+', 'sub' => '[a-z0-9-]+'])
+    ->name('landing.page');
