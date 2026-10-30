@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,8 +24,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('login', function (Request $request) {
-            // Batas kasar per IP — pelengkap throttle di controller (email|IP)
             return Limit::perMinute(10)->by($request->ip());
         });
+
+        Gate::define('access-superadmin', fn($user) => $user->isSuperAdmin());
+        Gate::define('access-admin', fn($user) => $user->isAdmin());
     }
 }

@@ -14,7 +14,6 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function () {
-            // Halaman publik: tanpa session/cookie, di-cache browser & CDN
             $age = app()->isProduction() ? 300 : 0;
 
             Route::middleware(['landing', "cache.headers:public;max_age=$age;etag"])
@@ -22,8 +21,12 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->group('landing', [SubstituteBindings::class]);
-        $middleware->group('landing', [SubstituteBindings::class, HeaderSecurity::class]);
+        // Satu definisi saja — yang kedua menimpa yang pertama
+        $middleware->group('landing', [
+            SubstituteBindings::class,
+            HeaderSecurity::class,
+        ]);
+
         $middleware->appendToGroup('web', HeaderSecurity::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

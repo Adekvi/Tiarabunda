@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])->prefix('superadmin')->name('superadmin.')->group(function () {
-    Route::get('/', fn() => view('superadmin.index'))
-        ->name('dashboard')
-        ->middleware('can:access-superadmin'); // atau custom middleware role
-});
+Route::middleware(['auth', 'can:access-superadmin'])
+    ->prefix('superadmin')
+    ->name('superadmin.')
+    ->group(function () {
+        Route::get('/', fn() => view('superadmin.index'))
+            ->name('dashboard');
 
-Route::view('/superadmin', 'superadmin.index')->name('superadmin');
+        // nanti:
+        // Route::get('/pengguna', ...)->name('users');
+    });

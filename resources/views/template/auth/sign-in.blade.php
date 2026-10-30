@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Masuk — {{ config('app.name', 'Universitas Tiara Bunda') }}</title>
     <link rel="stylesheet" href="{{ asset('admin/css/admin.css') }}">
+    <link rel="icon" href="{{ asset('landing/assets/img/logo.webp') }}">
 </head>
 
 <body class="auth-body">
