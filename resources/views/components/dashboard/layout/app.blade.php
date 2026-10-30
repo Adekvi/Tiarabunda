@@ -9,6 +9,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Panel superadmin pengelola konten {{ config('app.name') }}.">
     <meta name="theme-color" content="#1f5fbf">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }} — {{ config('app.name') }}</title>
 
     <x-dashboard.include.css />
@@ -25,8 +26,6 @@
         <p class="boot">Dashboard membutuhkan JavaScript.</p>
     </noscript>
 
-    {{-- Ganti dengan salinan lokal di public/dashboard/vendor/ bila ingin mandiri --}}
-    
     <x-dashboard.include.js />
     @stack('js')
 
