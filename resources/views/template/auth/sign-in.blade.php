@@ -30,7 +30,7 @@
             <small class="auth-copyright">© {{ date('Y') }} Universitas Tiara Bunda</small>
         </section>
         <section class="auth-form-panel">
-            <form class="auth-form" method="POST" action="{{ route('login.store') }}">
+            <form class="auth-form" method="POST" action="{{ route('login.store') }}" autocomplete="on">
                 @csrf
                 <div class="auth-mobile-brand">UNIVERSITAS TIARA BUNDA</div>
                 <span class="eyebrow">SELAMAT DATANG KEMBALI</span>
@@ -44,18 +44,19 @@
                 <label class="field">
                     <span>Email</span>
                     <input type="email" name="email" value="{{ old('email') }}" autocomplete="username" required
-                        placeholder="nama@tiarabunda.ac.id">
+                        maxlength="255" placeholder="nama@tiarabunda.ac.id">
                 </label>
                 <label class="field">
-                    <span>Kata sandi</span>
-                    <input type="password" name="password" autocomplete="current-password" required
-                        placeholder="Masukkan kata sandi">
+                    <span>Password</span>
+                    <input type="password" name="password" autocomplete="current-password" required minlength="8"
+                        maxlength="72" placeholder="Masukkan Password">
                 </label>
                 <div class="auth-inline">
                     <label class="check-label">
-                        <input type="checkbox" name="remember"> Ingat
-                        saya</label>
-                    <a href="#">Lupa kata sandi?</a>
+                        <input type="checkbox" name="remember" value="1">
+                        Ingat saya
+                    </label>
+                    <a href="#">Lupa Password?</a>
                 </div>
                 <button class="btn btn-primary btn-block" type="submit">Masuk ke Dashboard →</button>
             </form>
