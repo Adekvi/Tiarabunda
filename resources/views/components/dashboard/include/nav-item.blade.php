@@ -1,7 +1,10 @@
 @props(['item'])
 
 @if (($item['type'] ?? '') === 'sep')
-    <p class="sep">{{ $item['label'] }}</p>
+    <div class="sep" role="presentation">
+        <span class="sep-label">{{ $item['label'] }}</span>
+        <span class="sep-line" aria-hidden="true"></span>
+    </div>
 @elseif (($item['type'] ?? '') === 'link')
     @php
         $url = route($item['route'], $item['params'] ?? []);
@@ -18,13 +21,23 @@
         <button type="button" class="ni{{ $childOn ? ' on' : '' }}" data-nav-toggle
             aria-expanded="{{ $childOn ? 'true' : 'false' }}">
             <span>{{ $item['label'] }}</span>
+            <svg class="ch" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" />
+            </svg>
         </button>
         <div class="sub">
             <div>
                 @foreach ($item['children'] ?? [] as $child)
-                    @php $url = route($child['route'], $child['params'] ?? []); @endphp
-                    <a class="ni{{ request()->routeIs($child['route']) && request()->route('slug') === ($child['params']['slug'] ?? null) ? ' on' : '' }}"
-                        href="{{ $url }}">{{ $child['label'] }}</a>
+                    @php
+                        $url = route($child['route'], $child['params'] ?? []);
+                        $isOn =
+                            request()->routeIs($child['route']) &&
+                            (!isset($child['params']['slug']) || request()->route('slug') === $child['params']['slug']);
+                    @endphp
+                    <a class="ni{{ $isOn ? ' on' : '' }}" href="{{ $url }}">
+                        {{ $child['label'] }}
+                    </a>
                 @endforeach
             </div>
         </div>

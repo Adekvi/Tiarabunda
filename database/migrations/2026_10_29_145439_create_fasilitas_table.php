@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('fasilitas', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('slug')->unique()->nullable();
+            $table->text('description')->nullable();
+            $table->string('image_path')->nullable();
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

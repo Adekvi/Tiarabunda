@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('prodis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('fakultas_id')->constrained('fakultas')->cascadeOnDelete();
+            $table->string('name')->nullable();
+            $table->string('slug')->unique()->nullable();
+            $table->string('jenjang', 10)->nullable();
+            $table->text('description')->nullable();
+            $table->string('akreditasi', 20)->nullable();
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

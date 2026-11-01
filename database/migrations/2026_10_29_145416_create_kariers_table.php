@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('kariers', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
+            $table->text('body')->nullable();
+            $table->json('meta')->nullable();       // jam layanan, kontak, dsb
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

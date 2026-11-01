@@ -139,14 +139,49 @@ small {
     overflow: auto;
     padding: 8px 12px 16px;
 }
+/* ===== Section separator (label + garis) ===== */
 .sep {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 8px 8px;
+    padding: 0 4px;
+    user-select: none;
+}
+
+/* Separator pertama tidak perlu margin atas besar */
+.nav > .sep:first-child {
+    margin-top: 10px;
+}
+
+.sep-label {
+    flex: none;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--mut);
-    margin: 18px 12px 6px;
+    white-space: nowrap;
 }
+
+.sep-line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+    min-width: 24px;
+}
+
+/* Dark mode otomatis ikut token --line */
+[data-theme='dark'] .sep-line {
+    background: var(--line);
+}
+
+/* Sedikit rapikan spacing item di bawah separator */
+.sep + .ni,
+.sep + .grp {
+    margin-top: 2px;
+}
+
 .ni {
     display: flex;
     align-items: center;
@@ -177,6 +212,26 @@ small {
 .ni .ch {
     transition: transform 0.25s;
 }
+
+/* Active indicator kiri (opsional, lebih tegas) */
+.ni.on {
+    background: var(--pri-t);
+    color: var(--pri);
+    box-shadow: inset 3px 0 0 var(--pri);
+}
+
+.sub .ni.on {
+    box-shadow: inset 2px 0 0 var(--pri);
+}
+
+/* Hover lebih halus */
+.ni {
+    transition:
+        background 0.18s var(--ease),
+        color 0.18s var(--ease),
+        box-shadow 0.18s var(--ease);
+}
+
 .grp.open > .ni .ch {
     transform: rotate(180deg);
 }
@@ -939,6 +994,12 @@ tbody tr:last-child td {
 .au-r a {
     color: var(--pri);
     font-weight: 700;
+}
+
+@media (min-width: 900px) {
+    .account-meta {
+        display: block !important;
+    }
 }
 
 /* ============ Responsif ============ */

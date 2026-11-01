@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('strukturs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('parent_id')->nullable()->constrained('strukturs')->nullOnDelete();
+            $table->string('title')->nullable();                // "Rektor", "Wakil Rektor I"
+            $table->string('name')->nullable();
+            $table->string('parent_key')->nullable(); // untuk tree sederhana, atau parent_id
+            $table->string('photo_path')->nullable();
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
