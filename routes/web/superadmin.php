@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Superadmin\Informasi\FaqController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'can:access-superadmin'])
@@ -19,9 +20,9 @@ Route::middleware(['auth', 'can:access-superadmin'])
         //     ->name('berita.toggle');
 
         // // Faq
-        // Route::resource('faq', FaqController::class)->except(['show']);
-        // Route::patch('faq/{faq}/toggle', [FaqController::class, 'toggle'])
-        //     ->name('faq.toggle');
+        Route::resource('faq', FaqController::class)->except(['show']);
+        Route::patch('faq/{faq}/toggle', [FaqController::class, 'toggle'])
+            ->name('faq.toggle');
 
         Route::view('/pengguna', 'superadmin.users')->name('users');
         Route::view('/galeri', 'superadmin.gallery')->name('gallery');

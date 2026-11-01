@@ -158,7 +158,7 @@
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <a href="{{ route('superadmin.konten', ['slug' => 'sejarah']) }}" class="btn"
                     style="justify-content: flex-start;">Ubah konten Profil</a>
-                <a href="{{ route('superadmin.faq') }}" class="btn"
+                <a href="{{ route('superadmin.faq.index') }}" class="btn"
                     style="justify-content: flex-start; background: transparent; border: 1px solid var(--line); color: var(--ink);">Kelola
                     FAQ</a>
                 <a href="{{ route('superadmin.users') }}" class="btn"

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Landing\MenuService;
 use Illuminate\Http\Request;
-use MenuService;
 
 class LandingController extends Controller
 {

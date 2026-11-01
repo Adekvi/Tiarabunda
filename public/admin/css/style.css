@@ -623,6 +623,62 @@ tbody tr:last-child td {
     border-bottom: 0;
 }
 
+/* ===== Row actions (ikon) ===== */
+.row-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.row-actions form {
+    display: inline;
+    margin: 0;
+}
+
+.ia {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--mut);
+    transition:
+        background 0.18s var(--ease),
+        color 0.18s var(--ease),
+        border-color 0.18s var(--ease),
+        box-shadow 0.18s var(--ease);
+}
+
+.ia:hover {
+    color: var(--pri);
+    border-color: color-mix(in srgb, var(--pri) 35%, var(--line));
+    background: var(--pri-t);
+}
+
+.ia-ok:hover {
+    color: var(--ok);
+    border-color: color-mix(in srgb, var(--ok) 35%, var(--line));
+    background: var(--ok-t);
+}
+
+.ia-mute:hover {
+    color: var(--mut);
+    background: var(--hov);
+}
+
+.ia-danger:hover {
+    color: var(--err);
+    border-color: color-mix(in srgb, var(--err) 40%, var(--line));
+    background: var(--err-t);
+}
+
+.ia:focus-visible {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
 .tabs {
     display: flex;
     gap: 6px;

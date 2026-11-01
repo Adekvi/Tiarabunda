@@ -20,6 +20,6 @@ return [
         ['type' => 'link', 'label' => 'Pengguna', 'icon' => 'users', 'route' => 'superadmin.users'],
         ['type' => 'link', 'label' => 'Galeri', 'icon' => 'img', 'route' => 'superadmin.gallery'],
         ['type' => 'link', 'label' => 'Kalender', 'icon' => 'cal', 'route' => 'superadmin.calendar'],
-        ['type' => 'link', 'label' => 'FAQ', 'icon' => 'help', 'route' => 'superadmin.faq'],
+        ['type' => 'link', 'label' => 'FAQ', 'icon' => 'help', 'route' => 'superadmin.faq.index'],
     ],
 ];

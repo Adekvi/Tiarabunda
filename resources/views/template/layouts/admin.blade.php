@@ -49,8 +49,8 @@
                     href="{{ route('superadmin.calendar') }}"><span class="nav-icon">▦</span>Kalender Akademik</a>
                 <a class="nav-link {{ request()->routeIs('superadmin.gallery') ? 'active' : '' }}"
                     href="{{ route('superadmin.gallery') }}"><span class="nav-icon">▧</span>Galeri</a>
-                <a class="nav-link {{ request()->routeIs('superadmin.faq') ? 'active' : '' }}"
-                    href="{{ route('superadmin.faq') }}"><span class="nav-icon">?</span>FAQ & Bantuan</a>
+                <a class="nav-link {{ request()->routeIs('superadmin.faq.index') ? 'active' : '' }}"
+                    href="{{ route('superadmin.faq.index') }}"><span class="nav-icon">?</span>FAQ & Bantuan</a>
                 <div class="sidebar-label">PENGELOLAAN</div>
                 <a class="nav-link {{ request()->routeIs('superadmin.users') ? 'active' : '' }}"
                     href="{{ route('superadmin.users') }}"><span class="nav-icon">♧</span>Pengguna & Role</a>
