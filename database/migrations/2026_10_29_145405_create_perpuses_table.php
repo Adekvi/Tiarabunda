@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('perpuses', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->text('body')->nullable();
-            $table->json('meta')->nullable();       // jam layanan, kontak, dsb
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('judhul')->nullable();
+            $table->text('isi')->nullable();
+            $table->json('data_tambahan')->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

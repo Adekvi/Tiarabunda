@@ -2,24 +2,38 @@
 
 namespace App\Models\Pendidikan\Program;
 
+use App\Models\Concerns\HasTandha;
+use App\Models\Concerns\HasUripState;
+use App\Models\Concerns\HasUrutan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Prodi extends Model
 {
+    use HasUripState, HasUrutan, HasTandha, SoftDeletes;
+
     protected $fillable = [
-        'id',
         'fakultas_id',
-        'name',
-        'slug',
-        'jenjang',
-        'description',
-        'akreditasi',
-        'sort_order',
-        'is_active',
+        'jeneng',
+        'tandha',
+        'undhak',
+        'katrangan',
+        'akred',
+        'urutan',
+        'urip',
     ];
 
-    public function fakultas()
+    protected function casts(): array
     {
-        return $this->belongsTo(Fakultas::class, 'fakultas_id');
+        return [
+            'urip' => 'boolean',
+            'urutan' => 'integer',
+        ];
+    }
+
+    public function fakultas(): BelongsTo
+    {
+        return $this->belongsTo(Fakultas::class);
     }
 }

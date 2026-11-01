@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('sejarahs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('title')->nullable();
-            $table->longText('body')->nullable();
-            $table->json('timeline')->nullable();
-            $table->string('cover_path')->nullable();
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('dianyari_dening')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('judhul')->nullable();
+            $table->longText('isi')->nullable();
+            $table->json('kronologi')->nullable();
+            $table->string('path_sampul')->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

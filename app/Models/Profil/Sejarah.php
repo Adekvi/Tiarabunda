@@ -2,24 +2,38 @@
 
 namespace App\Models\Profil;
 
+use App\Models\Concerns\HasUripState;
+use App\Models\Concerns\HasUrutan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sejarah extends Model
 {
+    use HasUripState, HasUrutan, SoftDeletes;
+
     protected $fillable = [
-        'id',
-        'title',
-        'body',
-        'timeline',
-        'cover_path',
-        'sort_order',
-        'is_active',
-        'updated_by',
+        'dianyari_dening',
+        'judhul',
+        'isi',
+        'kronologi',
+        'path_sampul',
+        'urutan',
+        'urip',
     ];
 
-    public function updateBy()
+    protected function casts(): array
     {
-        return $this->belongsTo(User::class, 'updated_by');
+        return [
+            'urip' => 'boolean',
+            'urutan' => 'integer',
+            'kronologi' => 'array',
+        ];
+    }
+
+    public function penganyar(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'dianyari_dening');
     }
 }

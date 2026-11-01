@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('beasiswas', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('slug')->unique()->nullable();
-            $table->text('description')->nullable();
-            $table->text('requirements')->nullable();
-            $table->string('coverage')->nullable();
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('jeneng')->nullable();
+            $table->string('tandha')->unique()->nullable();
+            $table->text('katrangan')->nullable();
+            $table->text('syarat')->nullable();
+            $table->string('jangkepan')->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

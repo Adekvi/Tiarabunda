@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('visimisis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('section')->nullable();
-            $table->string('title')->nullable();
-            $table->text('body')->nullable();
-            $table->json('items')->nullable();
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('dianyari_dening')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('bagean')->nullable();      // visi | misi
+            $table->string('judhul')->nullable();
+            $table->text('isi')->nullable();
+            $table->json('dhaptar')->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
             $table->timestamps();
         });
     }

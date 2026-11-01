@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('prodis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('fakultas_id')->constrained('fakultas')->cascadeOnDelete();
-            $table->string('name')->nullable();
-            $table->string('slug')->unique()->nullable();
-            $table->string('jenjang', 10)->nullable();
-            $table->text('description')->nullable();
-            $table->string('akreditasi', 20)->nullable();
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('jeneng')->nullable();
+            $table->string('tandha')->unique()->nullable();
+            $table->string('undhak', 10)->nullable();             // D3, D4, S1
+            $table->text('katrangan')->nullable();
+            $table->string('akred', 20)->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

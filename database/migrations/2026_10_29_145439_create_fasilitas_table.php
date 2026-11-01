@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('fasilitas', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('slug')->unique()->nullable();
-            $table->text('description')->nullable();
-            $table->string('image_path')->nullable();
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('jeneng')->nullable();
+            $table->string('tandha')->unique()->nullable();
+            $table->text('katrangan')->nullable();
+            $table->string('path_gambar')->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

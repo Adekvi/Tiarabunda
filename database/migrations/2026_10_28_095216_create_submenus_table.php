@@ -14,18 +14,16 @@ return new class extends Migration
         Schema::create('submenus', function (Blueprint $table) {
             $table->id();
             $table->foreignId('menu_id')->constrained()->cascadeOnDelete();
-            $table->string('title');
-            $table->string('slug');
-            $table->string('subtitle')->nullable();
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
-
-            $table->json('blocks')->nullable();
-
+            $table->string('judhul');
+            $table->string('tandha');
+            $table->string('sub_judhul')->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
+            $table->json('blok_isi')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['menu_id', 'slug']);
+            $table->unique(['menu_id', 'tandha']);
         });
     }
 

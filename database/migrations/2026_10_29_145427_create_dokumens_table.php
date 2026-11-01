@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('dokumens', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->string('category', 50)->nullable(); // Kalender, Panduan
-            $table->string('file_path')->nullable();
-            $table->string('file_type', 20)->nullable(); // pdf
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('judhul')->nullable();
+            $table->string('golongan', 50)->nullable();
+            $table->string('path_berkas')->nullable();
+            $table->string('jinis_berkas', 20)->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('kegiatans', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->string('slug')->unique()->nullable();
-            $table->text('description')->nullable();
-            $table->string('location')->nullable();
-            $table->timestamp('starts_at')->nullable();
-            $table->timestamp('ends_at')->nullable();
-            $table->string('cover_path')->nullable();
-            $table->unsignedInteger('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('judhul')->nullable();
+            $table->string('tandha')->unique()->nullable();
+            $table->text('katrangan')->nullable();
+            $table->string('papan')->nullable();
+            $table->timestamp('wektu_mulai')->nullable();
+            $table->timestamp('wektu_rampung')->nullable();
+            $table->string('path_sampul')->nullable();
+            $table->unsignedInteger('urutan')->default(0);
+            $table->boolean('urip')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

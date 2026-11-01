@@ -2,28 +2,42 @@
 
 namespace App\Models\Landing;
 
+use App\Models\Concerns\HasUripState;
+use App\Models\Concerns\HasUrutan;
+use App\Models\Concerns\HasTandha;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends Model
 {
-    use SoftDeletes;
+    use HasUripState, HasUrutan, HasTandha, SoftDeletes;
 
-    protected $fillable = ['title', 'slug', 'sort_order', 'is_active'];
-    protected $casts = ['is_active' => 'boolean'];
+    protected $fillable = [
+        'judhul',
+        'tandha',
+        'urutan',
+        'urip',
+    ];
 
-    public function submenus()
+    protected function casts(): array
     {
-        return $this->hasMany(Submenu::class)->orderBy('sort_order');
+        return [
+            'urip' => 'boolean',
+            'urutan' => 'integer',
+        ];
     }
 
-    public function activeSubmenus()
+    public function submenus(): HasMany
     {
-        return $this->submenus()->where('is_active', true);
+        return $this->hasMany(Submenu::class)->ordered();
     }
 
-    public function scopeActive($q)
+    /** Dipakai eager load: with(['activeSubmenus']) — hindari N+1 di navbar */
+    public function activeSubmenus(): HasMany
     {
-        return $q->where('is_active', true);
+        return $this->hasMany(Submenu::class)
+            ->where($this->submenus()->getRelated()->getTable() . '.urip', true)
+            ->ordered();
     }
 }

@@ -2,34 +2,38 @@
 
 namespace App\Models\Landing;
 
+use App\Models\Concerns\HasTandha;
+use App\Models\Concerns\HasUripState;
+use App\Models\Concerns\HasUrutan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Submenu extends Model
 {
-    use SoftDeletes;
+    use HasUripState, HasUrutan, HasTandha, SoftDeletes;
 
     protected $fillable = [
         'menu_id',
-        'title',
-        'slug',
-        'subtitle',
-        'sort_order',
-        'is_active',
-        'blocks',
-    ];
-    protected $casts = [
-        'is_active' => 'boolean',
-        'blocks'    => 'array',
+        'judhul',
+        'tandha',
+        'sub_judhul',
+        'urutan',
+        'urip',
+        'blok_isi',
     ];
 
-    public function menu()
+    protected function casts(): array
     {
-        return $this->belongsTo(Menu::class);
+        return [
+            'urip' => 'boolean',
+            'urutan' => 'integer',
+            'blok_isi' => 'array',
+        ];
     }
 
-    public function scopeActive($q)
+    public function menu(): BelongsTo
     {
-        return $q->where('is_active', true);
+        return $this->belongsTo(Menu::class);
     }
 }
