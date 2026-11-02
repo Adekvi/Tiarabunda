@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('dhaptar')->nullable();
             $table->unsignedInteger('urutan')->default(0);
             $table->boolean('urip')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

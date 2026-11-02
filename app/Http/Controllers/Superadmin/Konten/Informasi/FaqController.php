@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin\Informasi;
+namespace App\Http\Controllers\Superadmin\Konten\Informasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Informasi\Faq;

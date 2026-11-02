@@ -1,5 +1,32 @@
 @props(['item'])
 
+@php
+    /**
+     * Cek apakah route saat ini cocok dengan item nav.
+     * - "active" => pola wildcard, mis. superadmin.sejarah.*
+     * - fallback ke nama route + params (slug, dll.)
+     */
+    $isRouteOn = function (array $entry): bool {
+        $pattern = $entry['active'] ?? ($entry['route'] ?? null);
+        if (!$pattern) {
+            return false;
+        }
+
+        if (!request()->routeIs($pattern)) {
+            return false;
+        }
+
+        // Jika masih pakai params (mis. konten lama), cocokkan parameter
+        foreach ($entry['params'] ?? [] as $key => $value) {
+            if ((string) request()->route($key) !== (string) $value) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+@endphp
+
 @if (($item['type'] ?? '') === 'sep')
     <div class="sep" role="presentation">
         <span class="sep-label">{{ $item['label'] }}</span>
@@ -8,14 +35,15 @@
 @elseif (($item['type'] ?? '') === 'link')
     @php
         $url = route($item['route'], $item['params'] ?? []);
-        $on = request()->routeIs($item['route']);
+        $on = $isRouteOn($item);
     @endphp
     <a class="ni{{ $on ? ' on' : '' }}" href="{{ $url }}">
         <span>{{ $item['label'] }}</span>
     </a>
 @elseif (($item['type'] ?? '') === 'group')
     @php
-        $childOn = collect($item['children'] ?? [])->contains(fn($c) => request()->routeIs($c['route']));
+        $children = $item['children'] ?? [];
+        $childOn = collect($children)->contains(fn(array $c) => $isRouteOn($c));
     @endphp
     <div class="grp{{ $childOn ? ' open' : '' }}" data-nav-group>
         <button type="button" class="ni{{ $childOn ? ' on' : '' }}" data-nav-toggle
@@ -28,12 +56,10 @@
         </button>
         <div class="sub">
             <div>
-                @foreach ($item['children'] ?? [] as $child)
+                @foreach ($children as $child)
                     @php
                         $url = route($child['route'], $child['params'] ?? []);
-                        $isOn =
-                            request()->routeIs($child['route']) &&
-                            (!isset($child['params']['slug']) || request()->route('slug') === $child['params']['slug']);
+                        $isOn = $isRouteOn($child);
                     @endphp
                     <a class="ni{{ $isOn ? ' on' : '' }}" href="{{ $url }}">
                         {{ $child['label'] }}

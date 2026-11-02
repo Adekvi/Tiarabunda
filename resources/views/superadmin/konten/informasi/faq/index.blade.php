@@ -3,7 +3,14 @@
 
         {{-- Flash --}}
         @if (session('success'))
-            <div class="al" role="status">{{ session('success') }}</div>
+            <div class="al" role="status" style="display: flex; align-items: center; gap: 10px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <path d="M22 4L12 14.01l-3-3" />
+                </svg>
+                <span>{{ session('success') }}</span>
+            </div>
         @endif
 
         {{-- Header --}}
@@ -15,18 +22,31 @@
                         Pertanyaan yang tampil di halaman landing. Nonaktifkan tanpa menghapus data.
                     </p>
                 </div>
-                <a href="{{ route('superadmin.faq.create') }}" class="btn">+ Tambah FAQ</a>
+                <a href="{{ route('superadmin.faq.create') }}" class="btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                        <path d="M12 5v14" />
+                        <path d="M5 12h14" />
+                    </svg>
+                    Tambah FAQ
+                </a>
             </div>
 
             {{-- Filter --}}
-            <form method="GET" action="{{ route('superadmin.faq.index') }}" class="g"
-                style="grid-template-columns: 1fr auto auto; gap: 12px; align-items: end; margin-top: 8px;">
+            <form method="GET" action="{{ route('superadmin.faq.index') }}" class="faq-filter">
                 <div class="f" style="margin-bottom: 0;">
                     <label for="q">Cari</label>
-                    <input id="q" type="search" name="q" value="{{ request('q') }}"
-                        placeholder="Cari pertanyaan atau jawaban…" autocomplete="off">
-                    
+                    <div class="field-icon">
+                        <svg class="field-icon__svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="M20 20l-3.5-3.5" />
+                        </svg>
+                        <input id="q" type="search" name="q" value="{{ request('q') }}"
+                            placeholder="Cari pertanyaan atau jawaban…" autocomplete="off">
+                    </div>
                 </div>
+
                 <div class="f" style="margin-bottom: 0; min-width: 160px;">
                     <label for="status">Status</label>
                     <select id="status" name="status">
@@ -35,10 +55,24 @@
                         <option value="inactive" @selected(request('status') === 'inactive')>Nonaktif</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <button type="submit" class="btn">Terapkan</button>
+
+                <div class="faq-filter__actions">
+                    <button type="submit" class="btn" title="Terapkan filter">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+                        </svg>
+                        <span>Terapkan</span>
+                    </button>
                     @if (request()->hasAny(['q', 'status']))
-                        <a href="{{ route('superadmin.faq.index') }}" class="btn gh">Reset</a>
+                        <a href="{{ route('superadmin.faq.index') }}" class="btn gh" title="Reset filter">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M3 12a9 9 0 1 0 3-6.7" />
+                                <path d="M3 4v5h5" />
+                            </svg>
+                            <span>Reset</span>
+                        </a>
                     @endif
                 </div>
             </form>
@@ -48,18 +82,42 @@
         <div class="card">
             <div class="ch2">
                 <h2 style="margin: 0;">Daftar FAQ</h2>
-                <span style="font-size: 0.8rem; color: var(--mut);">
+                <span class="faq-count">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <path d="M8 6h13" />
+                        <path d="M8 12h13" />
+                        <path d="M8 18h13" />
+                        <path d="M3 6h.01" />
+                        <path d="M3 12h.01" />
+                        <path d="M3 18h.01" />
+                    </svg>
                     {{ $items->total() }} data
                 </span>
             </div>
 
             @if ($items->isEmpty())
-                <div style="padding: 36px 12px; text-align: center; color: var(--mut);">
-                    <p style="margin: 0 0 12px; font-weight: 600; color: var(--ink);">Belum ada FAQ</p>
-                    <p style="margin: 0 0 18px; font-size: 0.9rem;">
+                <div class="faq-empty">
+                    <div class="faq-empty__icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3" />
+                            <path d="M12 17h.01" />
+                        </svg>
+                    </div>
+                    <p class="faq-empty__title">Belum ada FAQ</p>
+                    <p class="faq-empty__desc">
                         Tambahkan pertanyaan yang sering diajukan calon mahasiswa.
                     </p>
-                    <a href="{{ route('superadmin.faq.create') }}" class="btn">+ Tambah FAQ pertama</a>
+                    <a href="{{ route('superadmin.faq.create') }}" class="btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                            <path d="M12 5v14" />
+                            <path d="M5 12h14" />
+                        </svg>
+                        Tambah FAQ pertama
+                    </a>
                 </div>
             @else
                 <div class="tw">
@@ -71,7 +129,7 @@
                                 <th>Jawaban</th>
                                 <th style="width: 88px;">Urutan</th>
                                 <th style="width: 110px;">Status</th>
-                                <th style="width: 200px;">Aksi</th>
+                                <th style="width: 128px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,19 +152,19 @@
                                     </td>
                                     <td>
                                         <div class="row-actions" role="group" aria-label="Aksi FAQ">
-                                            {{-- Edit --}}
                                             <a href="{{ route('superadmin.faq.edit', $item) }}" class="ia"
                                                 title="Edit" aria-label="Edit FAQ">
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" aria-hidden="true">
+                                                <svg width="16" height="16" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                    aria-hidden="true">
                                                     <path d="M12 20h9" />
-                                                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                                                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
                                                 </svg>
                                             </a>
 
-                                            {{-- Toggle aktif / nonaktif --}}
-                                            <form method="POST" action="{{ route('superadmin.faq.toggle', $item) }}">
+                                            <form method="POST"
+                                                action="{{ route('superadmin.faq.toggle', $item) }}">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit"
@@ -114,20 +172,18 @@
                                                     title="{{ $item->urip ? 'Nonaktifkan' : 'Aktifkan' }}"
                                                     aria-label="{{ $item->urip ? 'Nonaktifkan FAQ' : 'Aktifkan FAQ' }}">
                                                     @if ($item->urip)
-                                                        {{-- Eye off --}}
                                                         <svg width="16" height="16" viewBox="0 0 24 24"
                                                             fill="none" stroke="currentColor" stroke-width="2"
                                                             stroke-linecap="round" stroke-linejoin="round"
                                                             aria-hidden="true">
                                                             <path
-                                                                d="M17.94 17.94A10.9 10.9 0 0 1 12 20c-5 0-9.27-3.11-11-8 1.02-2.89 2.94-5.2 5.36-6.53" />
+                                                                d="M17.94 17.94A10.9 10.9 0 0 1 12 20c-5 0-9.27-3.11-11-8 1-2.9 2.9-5.2 5.4-6.5" />
                                                             <path d="M1 1l22 22" />
                                                             <path
-                                                                d="M9.9 4.24A10.9 10.9 0 0 1 12 4c5 0 9.27 3.11 11 8a11.7 11.7 0 0 1-2.16 3.19" />
+                                                                d="M9.9 4.24A10.9 10.9 0 0 1 12 4c5 0 9.27 3.11 11 8a11.7 11.7 0 0 1-2.2 3.2" />
                                                             <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
                                                         </svg>
                                                     @else
-                                                        {{-- Eye --}}
                                                         <svg width="16" height="16" viewBox="0 0 24 24"
                                                             fill="none" stroke="currentColor" stroke-width="2"
                                                             stroke-linecap="round" stroke-linejoin="round"
@@ -139,8 +195,8 @@
                                                 </button>
                                             </form>
 
-                                            {{-- Hapus --}}
-                                            <form method="POST" action="{{ route('superadmin.faq.destroy', $item) }}"
+                                            <form method="POST"
+                                                action="{{ route('superadmin.faq.destroy', $item) }}"
                                                 onsubmit="return confirm('Hapus FAQ ini?');">
                                                 @csrf
                                                 @method('DELETE')
@@ -167,15 +223,12 @@
                 </div>
 
                 @if ($items->hasPages())
-                    <div
-                        style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-                        <p style="margin: 0; font-size: 0.82rem; color: var(--mut);">
+                    <div class="faq-pager">
+                        <p>
                             Menampilkan {{ $items->firstItem() }}–{{ $items->lastItem() }}
                             dari {{ $items->total() }}
                         </p>
-                        <div>
-                            {{ $items->links() }}
-                        </div>
+                        <div>{{ $items->links() }}</div>
                     </div>
                 @endif
             @endif

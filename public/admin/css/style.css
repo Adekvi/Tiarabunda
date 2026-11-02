@@ -896,40 +896,168 @@ tbody tr:last-child td {
 }
 
 /* FAQ */
-.qa {
-    border-bottom: 1px solid var(--line);
+/* ===== FAQ index helpers ===== */
+.faq-filter {
+    display: grid;
+    grid-template-columns: 1fr minmax(140px, 180px) auto;
+    gap: 12px;
+    align-items: end;
+    margin-top: 12px;
 }
-.qa:last-child {
-    border: 0;
+
+.faq-filter__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
-.qa > button {
+
+.field-icon {
+    position: relative;
+}
+
+.field-icon__svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--mut);
+    pointer-events: none;
+    transition: color 0.2s var(--ease);
+}
+
+.field-icon input {
+    padding-left: 38px;
+}
+
+.field-icon:focus-within .field-icon__svg {
+    color: var(--pri);
+}
+
+.faq-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--mut);
+}
+
+.faq-empty {
+    padding: 48px 16px;
+    text-align: center;
+}
+
+.faq-empty__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    background: var(--pri-t);
+    color: var(--pri);
+}
+
+.faq-empty__title {
+    margin: 0 0 8px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.faq-empty__desc {
+    margin: 0 0 18px;
+    font-size: 0.9rem;
+    color: var(--mut);
+}
+
+.faq-pager {
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    width: 100%;
-    text-align: left;
-    padding: 15px 0;
-    font-weight: 700;
+    flex-wrap: wrap;
+    gap: 12px;
 }
-.qa > button svg {
-    transition: transform 0.25s;
+
+.faq-pager p {
+    margin: 0;
+    font-size: 0.82rem;
     color: var(--mut);
 }
-.qa.open > button svg {
-    transform: rotate(180deg);
+
+/* Row icon actions + transisi */
+.row-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
-.qb {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.3s var(--ease);
+
+.row-actions form {
+    display: inline;
+    margin: 0;
+}
+
+.ia {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: var(--card);
     color: var(--mut);
+    transition:
+        background 0.2s var(--ease),
+        color 0.2s var(--ease),
+        border-color 0.2s var(--ease),
+        transform 0.2s var(--ease),
+        box-shadow 0.2s var(--ease);
 }
-.qb p {
-    overflow: hidden;
+
+.ia:hover {
+    color: var(--pri);
+    border-color: color-mix(in srgb, var(--pri) 35%, var(--line));
+    background: var(--pri-t);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(31, 95, 191, 0.12);
 }
-.qa.open .qb p {
-    padding-bottom: 16px;
+
+.ia-ok:hover {
+    color: var(--ok);
+    border-color: color-mix(in srgb, var(--ok) 35%, var(--line));
+    background: var(--ok-t);
+    box-shadow: 0 4px 12px rgba(18, 128, 92, 0.12);
+}
+
+.ia-mute:hover {
+    color: var(--ink);
+    background: var(--hov);
+    box-shadow: none;
+}
+
+.ia-danger:hover {
+    color: var(--err);
+    border-color: color-mix(in srgb, var(--err) 40%, var(--line));
+    background: var(--err-t);
+    box-shadow: 0 4px 12px rgba(200, 55, 45, 0.12);
+}
+
+.ia:active {
+    transform: translateY(0);
+}
+
+.ia:focus-visible {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+tbody tr {
+    transition: background 0.15s var(--ease);
+}
+
+@media (max-width: 720px) {
+    .faq-filter {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* halaman error (dulu .err, bentrok dengan badge) */
