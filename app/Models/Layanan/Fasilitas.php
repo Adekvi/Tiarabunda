@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Fasilitas extends Model
 {
-   use HasUripState, HasUrutan, SoftDeletes;
+    use HasUripState, HasUrutan, SoftDeletes;
 
     protected $fillable = [
         'jeneng',
-        'tandha',
         'katrangan',
         'path_gambar',
+        'path_thumb',
         'urutan',
         'urip',
     ];
@@ -26,5 +26,21 @@ class Fasilitas extends Model
             'urip' => 'boolean',
             'urutan' => 'integer',
         ];
+    }
+
+    public function getGambarUrlAttribute(): ?string
+    {
+        return $this->path_gambar
+            ? asset('storage/' . $this->path_gambar)
+            : null;
+    }
+
+    public function getThumbUrlAttribute(): ?string
+    {
+        if ($this->path_thumb) {
+            return asset('storage/' . $this->path_thumb);
+        }
+
+        return $this->gambar_url;
     }
 }

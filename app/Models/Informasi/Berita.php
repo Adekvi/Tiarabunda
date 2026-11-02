@@ -2,27 +2,23 @@
 
 namespace App\Models\Informasi;
 
-use App\Models\Concerns\HasTandha;
 use App\Models\Concerns\HasUripState;
 use App\Models\Concerns\HasUrutan;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Berita extends Model
 {
-    use HasUripState, HasUrutan, HasTandha, SoftDeletes;
+    use HasUripState, HasUrutan, SoftDeletes;
 
     protected $fillable = [
-        'digawe_dening',
         'judhul',
         'tandha',
-        'golongan',
         'ringkesan',
         'isi',
         'path_sampul',
+        'path_thumb',
         'wektu_terbit',
         'urutan',
         'urip',
@@ -37,17 +33,26 @@ class Berita extends Model
         ];
     }
 
-    public function penulis(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'digawe_dening');
-    }
-
-    /** Landing: hanya yang aktif + sudah dijadwalkan terbit */
     public function scopeTerbit(Builder $query): Builder
     {
-        return $query
-            ->active()
+        return $query->active()
             ->whereNotNull('wektu_terbit')
             ->where('wektu_terbit', '<=', now());
+    }
+
+    public function getSampulUrlAttribute(): ?string
+    {
+        return $this->path_sampul
+            ? asset('storage/' . $this->path_sampul)
+            : null;
+    }
+
+    public function getThumbUrlAttribute(): ?string
+    {
+        if ($this->path_thumb) {
+            return asset('storage/' . $this->path_thumb);
+        }
+
+        return $this->sampul_url;
     }
 }

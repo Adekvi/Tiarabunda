@@ -4,9 +4,16 @@ return [
     'brand_subtitle' => 'Panel Superadmin',
 
     'nav' => [
-        ['type' => 'link', 'label' => 'Dashboard', 'icon' => 'home', 'route' => 'superadmin.dashboard'],
+        [
+            'type' => 'link',
+            'label' => 'Dashboard',
+            'icon' => 'home',
+            'route' => 'superadmin.dashboard',
+            'active' => 'superadmin.dashboard',
+        ],
 
         ['type' => 'sep', 'label' => 'Konten Landing'],
+
         [
             'type' => 'group',
             'label' => 'Profil',
@@ -24,43 +31,40 @@ return [
                 ],
             ],
         ],
+
         [
             'type' => 'group',
             'label' => 'Pendidikan',
             'icon' => 'book',
             'children' => [
                 [
-                    'label' => 'Program Pendidikan',
-                    'route' => 'superadmin.fakultas',
-                    'params' => ['slug' => 'program-pendidikan'],
+                    'label' => 'Fakultas',
+                    'route' => 'superadmin.fakultas.index',
                     'active' => 'superadmin.fakultas.*',
                 ],
                 [
-                    'label' => 'Program Pendidikan',
-                    'route' => 'superadmin.prodi',
-                    'params' => ['slug' => 'program-pendidikan'],
+                    'label' => 'Program Studi',
+                    'route' => 'superadmin.prodi.index',
                     'active' => 'superadmin.prodi.*',
                 ],
                 [
                     'label' => 'PMB',
-                    'route' => 'superadmin.pmb',
-                    'params' => ['slug' => 'pmb'],
+                    'route' => 'superadmin.pmb.index',
                     'active' => 'superadmin.pmb.*',
                 ],
                 [
                     'label' => 'Beasiswa',
-                    'route' => 'superadmin.beasiswa',
-                    'params' => ['slug' => 'beasiswa'],
+                    'route' => 'superadmin.beasiswa.index',
                     'active' => 'superadmin.beasiswa.*',
                 ],
                 [
                     'label' => 'Akreditasi',
-                    'route' => 'superadmin.akreditasi',
-                    'params' => ['slug' => 'akreditasi'],
+                    'route' => 'superadmin.akreditasi.index',
                     'active' => 'superadmin.akreditasi.*',
                 ],
             ],
         ],
+
         [
             'type' => 'group',
             'label' => 'Layanan',
@@ -68,58 +72,72 @@ return [
             'children' => [
                 [
                     'label' => 'Perpustakaan',
-                    'route' => 'superadmin.perpus',
-                    'params' => ['slug' => 'perpustakaan'],
+                    'route' => 'superadmin.perpus.index',
                     'active' => 'superadmin.perpus.*',
                 ],
                 [
                     'label' => 'Kemahasiswaan',
-                    'route' => 'superadmin.kemaha',
-                    'params' => ['slug' => 'kemahasiswaan'],
+                    'route' => 'superadmin.kemaha.index',
                     'active' => 'superadmin.kemaha.*',
                 ],
                 [
-                    'label' => 'Pusat Karir',
-                    'route' => 'superadmin.karir',
-                    'params' => ['slug' => 'pusat-karir'],
+                    'label' => 'Pusat Karier',
+                    'route' => 'superadmin.karir.index',
                     'active' => 'superadmin.karir.*',
                 ],
                 [
                     'label' => 'Fasilitas',
-                    'route' => 'superadmin.fasilitas',
-                    'params' => ['slug' => 'fasilitas'],
+                    'route' => 'superadmin.fasilitas.index',
                     'active' => 'superadmin.fasilitas.*',
                 ],
             ],
         ],
+
         [
             'type' => 'group',
             'label' => 'Informasi',
             'icon' => 'info',
             'children' => [
                 [
-                    'label' => 'Berita Terbaru',
-                    'route' => 'superadmin.berita',
-                    'params' => ['slug' => 'berita-terbaru'],
+                    'label' => 'Berita',
+                    'route' => 'superadmin.berita.index',
                     'active' => 'superadmin.berita.*',
                 ],
                 [
-                    'label' => 'Kegiatan Kampus',
-                    'route' => 'superadmin.kegiatan',
-                    'params' => ['slug' => 'kegiatan-kampus'],
+                    'label' => 'Kegiatan',
+                    'route' => 'superadmin.kegiatan.index',
                     'active' => 'superadmin.kegiatan.*',
                 ],
                 [
                     'label' => 'FAQ',
-                    'route' => 'superadmin.faq.index'
+                    'route' => 'superadmin.faq.index',
+                    'active' => 'superadmin.faq.*',
                 ],
             ],
         ],
 
         ['type' => 'sep', 'label' => 'Sistem'],
-        ['type' => 'link', 'label' => 'Pengguna', 'icon' => 'users', 'route' => 'superadmin.users'],
-        ['type' => 'link', 'label' => 'Galeri', 'icon' => 'img', 'route' => 'superadmin.gallery'],
-        ['type' => 'link', 'label' => 'Kalender', 'icon' => 'cal', 'route' => 'superadmin.calendar'],
-        // Menu FAQ single link di bagian Sistem sebelumnya bisa Anda hapus karena sudah masuk ke grup Informasi
+
+        [
+            'type' => 'link',
+            'label' => 'Pengguna',
+            'icon' => 'users',
+            'route' => 'superadmin.users',
+            'active' => 'superadmin.users',
+        ],
+        [
+            'type' => 'link',
+            'label' => 'Galeri',
+            'icon' => 'img',
+            'route' => 'superadmin.gallery',
+            'active' => 'superadmin.gallery',
+        ],
+        [
+            'type' => 'link',
+            'label' => 'Kalender',
+            'icon' => 'cal',
+            'route' => 'superadmin.calendar',
+            'active' => 'superadmin.calendar',
+        ],
     ],
 ];

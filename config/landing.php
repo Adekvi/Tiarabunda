@@ -14,18 +14,53 @@ return [
             ['Alumni', '#'],
             ['Portal', '#'],
         ],
+
+        // Kolom menu footer — selaras menus/landing
         'footer' => [
-            ['Akademik', [
-                ['Program Studi', '/pendidikan/program-pendidikan'],
-                ['Kalender Akademik', '/layanan/dokumen'],
-                ['Perpustakaan', '/layanan/perpustakaan'],
-            ]],
-            ['Informasi', [
-                ['PMB', '/pendidikan/penerimaan-mahasiswa-baru'],
-                ['Akreditasi', '/pendidikan/akreditasi'],
-                ['Berita', '/informasi/berita-terbaru'],
-            ]],
+            [
+                'Profil',
+                [
+                    ['Sejarah', '/profil/sejarah'],
+                    ['Visi & Misi', '/profil/visi-misi'],
+                ],
+            ],
+            [
+                'Pendidikan',
+                [
+                    ['Program Pendidikan', '/pendidikan/program-pendidikan'],
+                    ['Penerimaan Mahasiswa Baru', '/pendidikan/penerimaan-mahasiswa-baru'],
+                    ['Beasiswa', '/pendidikan/beasiswa'],
+                    ['Akreditasi', '/pendidikan/akreditasi'],
+                ],
+            ],
+            [
+                'Layanan',
+                [
+                    ['Perpustakaan', '/layanan/perpustakaan'],
+                    ['Kemahasiswaan', '/layanan/kemahasiswaan'],
+                    ['Pusat Karier', '/layanan/pusat-karier'],
+                    ['Fasilitas', '/layanan/fasilitas'],
+                ],
+            ],
+            [
+                'Informasi',
+                [
+                    ['Berita Terbaru', '/informasi/berita-terbaru'],
+                    ['Kegiatan Kampus', '/informasi/kegiatan-kampus'],
+                    ['FAQ', '/informasi/faq'],
+                ],
+            ],
         ],
+
+        // Media sosial — kosongkan string jika belum ada URL
+        'sosial' => [
+            'youtube'  => 'https://www.youtube.com/@tiarabunda3025',
+            'facebook' => 'https://www.facebook.com/PoliteknikTiaraBunda/',
+            'tiktok'   => '-',
+            'linktree' => 'https://linktr.ee/politekniktiarabunda',
+            'instagram' => 'https://www.instagram.com/politekniktiarabunda/'
+        ],
+
         'pmb' => '/pendidikan/penerimaan-mahasiswa-baru',
         'kontak' => [
             'alamat' => 'Jl. Contoh Raya No. 1, Kota Depok, Jawa Barat',

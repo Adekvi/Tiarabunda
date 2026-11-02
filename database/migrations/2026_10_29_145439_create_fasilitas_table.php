@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('tandha')->unique()->nullable();
             $table->text('katrangan')->nullable();
             $table->string('path_gambar')->nullable();
+            $table->string('path_thumb')->nullable();
             $table->unsignedInteger('urutan')->default(0);
             $table->boolean('urip')->default(true);
             $table->softDeletes();
