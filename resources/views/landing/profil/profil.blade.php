@@ -1,1 +1,1 @@
-<x-landing.layout.app page="profil" title="Profil — Politeknik Tiara Bunda" />
+<x-landing.layout.app page="profil" title="Profil — Universitas Tiara Bunda" />

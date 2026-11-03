@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') — Tiara Bunda Admin</title>
-    <meta name="description" content="Panel administrasi Politeknik Tiara Bunda.">
+    <meta name="description" content="Panel administrasi Universitas Tiara Bunda.">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <script>
         try {
@@ -90,7 +90,7 @@
             <div class="page-content @yield('content-class')">
                 @yield('content')
             </div>
-            <footer class="footer"><span>© {{ date('Y') }} Politeknik Tiara Bunda</span><span>Superadmin Panel
+            <footer class="footer"><span>© {{ date('Y') }} Universitas Tiara Bunda</span><span>Superadmin Panel
                     <b>•</b> v1.0</span></footer>
         </main>
     </div>

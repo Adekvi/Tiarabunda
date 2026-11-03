@@ -75,6 +75,8 @@ class BeritaController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        // dd($request->all());
+
         $data = $this->validated($request);
         $data['tandha'] = $data['tandha'] ?: Str::slug($data['judhul']);
 

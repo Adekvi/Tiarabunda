@@ -14,7 +14,10 @@
         <x-landing.section.fasilitas />
         <x-landing.section.berita />
         <x-landing.section.jalur />
-        <x-landing.section.faq />
+
+        {{-- Faq --}}
+        <x-landing.section.faq :items="$home['faq'] ?? []" />
+
         <x-landing.section.cta />
     </main>
     <x-landing.layout.footer />

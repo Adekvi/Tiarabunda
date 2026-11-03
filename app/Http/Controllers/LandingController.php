@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Landing\LandingHomeService;
 use App\Services\Landing\MenuService;
 use Illuminate\Http\Request;
 
 class LandingController extends Controller
 {
-    public function index()
+    public function index(LandingHomeService $home)
     {
-        return view('landing');
+        return view('landing', [
+            'home' => $home->forHome(),
+        ]);
     }
 
     public function menu(string $menu)
@@ -34,7 +37,8 @@ class LandingController extends Controller
     public function page(string $menu, string $sub)
     {
         $page = app(MenuService::class)->findPage($menu, $sub);
-        abort_unless($page, 404);
+
+        abort_unless($page !== null, 404);
 
         return view('landing.page', [
             'menu' => $page->menu->title,

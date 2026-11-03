@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('ringkesan', 300)->nullable();
             $table->longText('isi')->nullable();
             $table->string('path_sampul')->nullable();
+            $table->string('path_thumb')->nullable();
             $table->timestamp('wektu_terbit')->nullable();
             $table->unsignedInteger('urutan')->default(0);
             $table->boolean('urip')->default(true);

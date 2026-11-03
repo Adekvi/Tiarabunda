@@ -26,7 +26,7 @@ class VisimisiController extends Controller
                 });
             })
             ->ordered()
-            ->paginate(15)
+            ->paginate(10)
             ->withQueryString();
 
         return view('superadmin.konten.profil.visimisi.visimisi', compact('items'));

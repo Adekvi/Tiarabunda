@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Informasi\Faq;
+use App\Observers\Landing\Informasi\Faq\FaqObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -32,5 +34,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('access-admin', fn($user) => $user->isAdmin());
 
         Paginator::useBootstrapFive();
+
+        // Landing page Menu Informasi - Faq
+        Faq::observe(FaqObserver::class);
     }
 }
