@@ -19,11 +19,19 @@ class BeritaController extends Controller
 
     public function index(Request $request): View
     {
+
+        $perPage = (int) $request->input('per_page', 10);
+        if (! in_array($perPage, [10, 25, 50, 100], true)) {
+            $perPage = 10;
+        }
+
         $items = Berita::query()
             ->select([
                 'id',
+                'digawe_dening',
                 'judhul',
                 'tandha',
+                'golongan',
                 'ringkesan',
                 'path_sampul',
                 'path_thumb',
@@ -32,6 +40,7 @@ class BeritaController extends Controller
                 'urip',
                 'updated_at',
             ])
+            ->with(['penulis:id,name'])
             ->when($request->status === 'active', fn($q) => $q->active())
             ->when($request->status === 'inactive', fn($q) => $q->inactive())
             ->when($request->filled('q'), function ($q) use ($request) {
@@ -43,7 +52,7 @@ class BeritaController extends Controller
             })
             ->orderByDesc('wektu_terbit')
             ->orderBy('urutan')
-            ->paginate(12)
+            ->paginate($perPage)
             ->withQueryString();
 
         $stats = [
@@ -59,7 +68,8 @@ class BeritaController extends Controller
                 ->count(),
         ];
 
-        return view('superadmin.konten.informasi.berita.index', compact('items', 'stats'));
+        // stats tetap
+        return view('superadmin.konten.informasi.berita.index', compact('items', 'stats', 'perPage'));
     }
 
     public function create(): View
@@ -75,10 +85,9 @@ class BeritaController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        // dd($request->all());
-
         $data = $this->validated($request);
         $data['tandha'] = $data['tandha'] ?: Str::slug($data['judhul']);
+        $data['digawe_dening'] = $request->user()->id; // tracking pembuat
 
         if ($request->hasFile('path_sampul')) {
             $stored = $this->images->store($request->file('path_sampul'), 'berita');
@@ -95,7 +104,6 @@ class BeritaController extends Controller
 
     public function edit(Berita $beritum): View
     {
-        // resource "berita" → parameter default {beritum}
         return view('superadmin.konten.informasi.berita.form', [
             'item' => $beritum,
         ]);
@@ -105,6 +113,8 @@ class BeritaController extends Controller
     {
         $data = $this->validated($request, $beritum->id);
         $data['tandha'] = $data['tandha'] ?: Str::slug($data['judhul']);
+        // digawe_dening tidak diubah saat edit (tetap penulis asli)
+        // Jika ingin catat editor terakhir, buat kolom terpisah — jangan timpa pembuat.
 
         if ($request->hasFile('path_sampul')) {
             $this->images->delete($beritum->path_sampul, $beritum->path_thumb);
@@ -139,22 +149,27 @@ class BeritaController extends Controller
 
     private function validated(Request $request, ?int $id = null): array
     {
+        $golonganKeys = array_keys(Berita::GOLONGAN);
+
         $data = $request->validate([
-            'judhul' => ['required', 'string', 'max:200'],
+            'judhul' => ['required', 'string', 'max:255'],
             'tandha' => [
                 'nullable',
                 'string',
-                'max:200',
+                'max:255',
                 'alpha_dash',
                 Rule::unique('beritas', 'tandha')->ignore($id),
             ],
-            'ringkesan' => ['nullable', 'string', 'max:500'],
+            'golongan' => ['nullable', 'string', 'max:50', Rule::in($golonganKeys)],
+            'ringkesan' => ['nullable', 'string', 'max:300'], // = DB
             'isi' => ['nullable', 'string'],
             'wektu_terbit' => ['nullable', 'date'],
             'path_sampul' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:2048'],
             'urutan' => ['nullable', 'integer', 'min:0', 'max:9999'],
         ], [
             'judhul.required' => 'Judul berita wajib diisi.',
+            'ringkesan.max' => 'Ringkasan maksimal 300 karakter.',
+            'golongan.in' => 'Kategori tidak valid.',
             'path_sampul.max' => 'Ukuran gambar maksimal 2 MB.',
         ]);
 

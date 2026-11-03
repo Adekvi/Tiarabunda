@@ -1,222 +1,286 @@
+@php
+    $total = (int) ($stats['total'] ?? 0);
+    $aktif = (int) ($stats['aktif'] ?? 0);
+    $terbit = (int) ($stats['terbit'] ?? 0);
+    $draf = (int) ($stats['draf'] ?? 0);
+    $nonaktif = max($total - $aktif, 0);
+    $pct = fn($n) => $total > 0 ? (int) round(($n / $total) * 100) : 0;
+    $filtered = request()->hasAny(['q', 'status']);
+@endphp
+
 <x-dashboard.layout.app title="Berita" page-title="Berita">
     <div class="g">
         @if (session('success'))
-            <div class="al" role="status">{{ session('success') }}</div>
+            <div class="al nw-flash" role="status">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <path d="M22 4L12 14.01l-3-3" />
+                </svg>
+                <span>{{ session('success') }}</span>
+            </div>
         @endif
 
-        <div class="g g2" style="align-items:start;">
-            <div class="g" style="min-width:0;">
-                <div class="card">
-                    <div class="ch2">
-                        <div>
-                            <h2 style="margin-bottom:4px;">Kelola Berita</h2>
-                            <p style="margin:0;font-size:0.85rem;color:var(--mut);">
-                                Berita kampus yang tampil di menu Informasi → Berita.
-                            </p>
-                        </div>
-                        <a href="{{ route('superadmin.berita.create') }}" class="btn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-                                <path d="M12 5v14" />
-                                <path d="M5 12h14" />
-                            </svg>
-                            Tambah
-                        </a>
-                    </div>
-
-                    <form method="GET" action="{{ route('superadmin.berita.index') }}" class="faq-filter">
-                        <div class="f" style="margin-bottom:0;">
-                            <label for="q">Cari</label>
-                            <div class="field-icon">
-                                <svg class="field-icon__svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    aria-hidden="true">
-                                    <circle cx="11" cy="11" r="7" />
-                                    <path d="M20 20l-3.5-3.5" />
-                                </svg>
-                                <input id="q" type="search" name="q" value="{{ request('q') }}"
-                                    placeholder="Cari judul atau ringkasan…" autocomplete="off">
+        <div class="nw-page">
+            <div class="nw-main">
+                {{-- Header + filter --}}
+                <div class="div nw-main">
+                    <div class="card nw-head">
+                        <div class="ch2">
+                            <div>
+                                <p class="nw-crumb">Informasi <span>/</span> Berita</p>
+                                <h2 style="margin:0 0 4px;">Kelola Berita</h2>
+                                <p class="nw-sub">Berita kampus yang tampil di menu Informasi → Berita pada situs
+                                    publik.
+                                </p>
                             </div>
+                            <a href="{{ route('superadmin.berita.create') }}" class="btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                                    <path d="M12 5v14" />
+                                    <path d="M5 12h14" />
+                                </svg>
+                                Tambah berita
+                            </a>
                         </div>
-                        <div class="f" style="margin-bottom:0;min-width:150px;">
-                            <label for="status">Status</label>
-                            <select id="status" name="status">
-                                <option value="">Semua</option>
-                                <option value="active" @selected(request('status') === 'active')>Aktif</option>
-                                <option value="inactive" @selected(request('status') === 'inactive')>Nonaktif</option>
-                            </select>
-                        </div>
-                        <div class="faq-filter__actions">
-                            <button type="submit" class="btn">Terapkan</button>
-                            @if (request()->hasAny(['q', 'status']))
-                                <a href="{{ route('superadmin.berita.index') }}" class="btn gh">Reset</a>
-                            @endif
-                        </div>
-                    </form>
-                </div>
 
-                <div class="card">
-                    <div class="ch2">
-                        <h2 style="margin:0;">Daftar berita</h2>
-                        <span class="faq-count">{{ $items->total() }} data</span>
-                    </div>
+                        <form method="GET" action="{{ route('superadmin.berita.index') }}" class="faq-filter">
+                            <div class="f" style="margin-bottom:0;">
+                                <label for="q">Cari</label>
+                                <div class="field-icon">
+                                    <svg class="field-icon__svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        aria-hidden="true">
+                                        <circle cx="11" cy="11" r="7" />
+                                        <path d="M20 20l-3.5-3.5" />
+                                    </svg>
+                                    <input id="q" type="search" name="q" value="{{ request('q') }}"
+                                        placeholder="Cari judul atau ringkasan…" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="f" style="margin-bottom:0;min-width:150px;">
+                                <label for="status">Status</label>
+                                <select id="status" name="status">
+                                    <option value="">Semua</option>
+                                    <option value="active" @selected(request('status') === 'active')>Aktif</option>
+                                    <option value="inactive" @selected(request('status') === 'inactive')>Nonaktif</option>
+                                </select>
+                            </div>
+                            <div class="faq-filter__actions">
+                                <button type="submit" class="btn">Terapkan</button>
+                                @if ($filtered)
+                                    <a href="{{ route('superadmin.berita.index') }}" class="btn gh">Reset</a>
+                                @endif
+                            </div>
+                        </form>
 
-                    @if ($items->isEmpty())
-                        <div class="faq-empty">
-                            <p class="faq-empty__title">Belum ada berita</p>
-                            <a href="{{ route('superadmin.berita.create') }}" class="btn">Tambah berita</a>
-                        </div>
-                    @else
-                        <div class="tw">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th style="width:64px;">Foto</th>
-                                        <th>Judul</th>
-                                        <th style="width:120px;">Terbit</th>
-                                        <th style="width:100px;">Status</th>
-                                        <th style="width:128px;">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($items as $item)
-                                        <tr>
-                                            <td>
-                                                @if ($item->thumb_url)
-                                                    <img src="{{ $item->thumb_url }}" alt="" width="48"
-                                                        height="48" loading="lazy" decoding="async"
-                                                        style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid var(--line);">
-                                                @else
-                                                    <span
-                                                        style="display:inline-grid;place-items:center;width:48px;height:48px;border-radius:8px;background:var(--bg);color:var(--mut);font-size:0.7rem;">—</span>
-                                                @endif
-                                            </td>
-                                            <td style="white-space:normal;max-width:320px;">
-                                                <strong>{{ $item->judhul }}</strong>
-                                                @if ($item->ringkesan)
-                                                    <div style="color:var(--mut);font-size:0.82rem;margin-top:2px;">
-                                                        {{ \Illuminate\Support\Str::limit($item->ringkesan, 80) }}
-                                                    </div>
-                                                @endif
-                                            </td>
-                                            <td style="font-size:0.85rem;color:var(--mut);">
-                                                {{ $item->wektu_terbit?->format('d M Y') ?? '—' }}
-                                            </td>
-                                            <td>
-                                                <span class="badge {{ $item->urip ? 'ok' : 'err' }}">
-                                                    {{ $item->urip ? 'Aktif' : 'Nonaktif' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="row-actions" role="group">
-                                                    <a href="{{ route('superadmin.berita.edit', $item) }}"
-                                                        class="ia" title="Edit">
-                                                        <svg width="16" height="16" viewBox="0 0 24 24"
-                                                            fill="none" stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                            aria-hidden="true">
-                                                            <path d="M12 20h9" />
-                                                            <path
-                                                                d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-                                                        </svg>
-                                                    </a>
-                                                    <form method="POST"
-                                                        action="{{ route('superadmin.berita.toggle', $item) }}">
-                                                        @csrf @method('PATCH')
-                                                        <button type="submit"
-                                                            class="ia {{ $item->urip ? 'ia-mute' : 'ia-ok' }}"
-                                                            title="{{ $item->urip ? 'Nonaktifkan' : 'Aktifkan' }}">
-                                                            @if ($item->urip)
-                                                                <svg width="16" height="16"
-                                                                    viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    aria-hidden="true">
-                                                                    <path
-                                                                        d="M17.94 17.94A10.9 10.9 0 0 1 12 20c-5 0-9.27-3.11-11-8 1-2.9 2.9-5.2 5.4-6.5" />
-                                                                    <path d="M1 1l22 22" />
-                                                                    <path
-                                                                        d="M9.9 4.24A10.9 10.9 0 0 1 12 4c5 0 9.27 3.11 11 8a11.7 11.7 0 0 1-2.2 3.2" />
-                                                                    <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
-                                                                </svg>
-                                                            @else
-                                                                <svg width="16" height="16"
-                                                                    viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    aria-hidden="true">
-                                                                    <path
-                                                                        d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
-                                                                    <circle cx="12" cy="12" r="3" />
-                                                                </svg>
-                                                            @endif
-                                                        </button>
-                                                    </form>
-                                                    <form method="POST"
-                                                        action="{{ route('superadmin.berita.destroy', $item) }}"
-                                                        onsubmit="return confirm('Hapus berita ini?');">
-                                                        @csrf @method('DELETE')
-                                                        <button type="submit" class="ia ia-danger" title="Hapus">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24"
-                                                                fill="none" stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                aria-hidden="true">
-                                                                <path d="M3 6h18" />
-                                                                <path d="M8 6V4h8v2" />
-                                                                <path d="M19 6l-1 14H6L5 6" />
-                                                                <path d="M10 11v6" />
-                                                                <path d="M14 11v6" />
-                                                            </svg>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        @if ($items->hasPages())
-                            <div class="faq-pager">
-                                <p>Menampilkan {{ $items->firstItem() }}–{{ $items->lastItem() }} dari
-                                    {{ $items->total() }}</p>
-                                <div>{{ $items->links() }}</div>
+                        @if ($filtered)
+                            <div class="nw-chips" aria-label="Filter aktif">
+                                <span class="nw-chips__lbl">Filter aktif:</span>
+                                @if (request('q'))
+                                    <span class="nw-chip">Kata kunci: “{{ request('q') }}”</span>
+                                @endif
+                                @if (request('status'))
+                                    <span class="nw-chip">
+                                        Status: {{ request('status') === 'active' ? 'Aktif' : 'Nonaktif' }}
+                                    </span>
+                                @endif
                             </div>
                         @endif
-                    @endif
+                    </div>
+                </div>
+
+                {{-- Daftar --}}
+                <div class="card nw-list">
+                    <div class="ch2"
+                        style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px;">
+
+                        <!-- Bagian Kiri: Judul dan Deskripsi -->
+                        <div>
+                            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 600;">Daftar berita</h2>
+                            <p class="nw-sub" style="margin: 4px 0 0 0; color: #64748b; font-size: 0.875rem;">
+                                @if ($items->total())
+                                    Geser tabel ke kanan untuk melihat semua kolom.
+                                @else
+                                    Tidak ada data.
+                                @endif
+                            </p>
+                        </div>
+
+                        <!-- Bagian Kanan: Total Data & Filter Tampilan -->
+                        <div style="display: flex; align-items: center; gap: 12px;">
+
+                            <!-- Badge Total Data -->
+                            <span class="faq-count"
+                                style="font-size: 0.875rem; font-weight: 500; padding: 4px 12px; border-radius: 9999px;">
+                                {{ $items->total() }} data
+                            </span>
+
+                            <!-- Dropdown Per Page -->
+                            <div class="f" style="margin-bottom: 0; min-width: 80px;">
+                                <select id="per_page" name="per_page"
+                                    style="width: 100%; padding: 6px 12px; border-radius: 6px; outline: none; cursor: pointer;">
+                                    @foreach ([10, 25, 50, 100] as $n)
+                                        <option value="{{ $n }}" @selected((int) request('per_page', 10) === $n)>
+                                            {{ $n }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @include('superadmin.konten.informasi.berita.partials.table', [
+                        'items' => $items,
+                        'filtered' => $filtered,
+                    ])
+
+                    @include('superadmin.konten.informasi.berita.partials.paginate', [
+                        'items' => $items,
+                    ])
                 </div>
             </div>
 
-            <div class="g" style="gap:16px;">
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Tentang Berita</h3>
-                    <p style="margin:0;font-size:0.88rem;color:var(--mut);line-height:1.65;">
-                        Hanya berita <strong>aktif</strong> dengan tanggal terbit ≤ hari ini yang ideal ditampilkan di
-                        landing.
-                    </p>
-                </div>
-                <div class="card">
-                    <h3 style="margin-bottom:14px;">Statistik</h3>
-                    <div class="pmb-stats">
-                        <div class="pmb-stat">
-                            <span class="pmb-stat__val">{{ $stats['total'] }}</span>
-                            <span class="pmb-stat__lbl">Total</span>
+            <aside class="nw-aside" aria-label="Ringkasan berita">
+
+                {{-- Ringkasan --}}
+                <div class="card nw-sum">
+                    <div class="nw-sum__top">
+                        <div>
+                            <h3>Ringkasan berita</h3>
+                            <p>Dihitung dari seluruh data</p>
                         </div>
-                        <div class="pmb-stat">
-                            <span class="pmb-stat__val" style="color:var(--ok);">{{ $stats['aktif'] }}</span>
-                            <span class="pmb-stat__lbl">Aktif</span>
-                        </div>
-                        <div class="pmb-stat">
-                            <span class="pmb-stat__val" style="color:var(--pri);">{{ $stats['terbit'] }}</span>
-                            <span class="pmb-stat__lbl">Sudah terbit</span>
-                        </div>
-                        <div class="pmb-stat">
-                            <span class="pmb-stat__val">{{ $stats['draf'] }}</span>
-                            <span class="pmb-stat__lbl">Belum / terjadwal</span>
-                        </div>
+                        @if ($total > 0)
+                            <span class="nw-pill">{{ $pct($terbit) }}% terbit</span>
+                        @endif
                     </div>
+
+                    <div class="nw-big">
+                        <span class="nw-big__val">{{ $total }}</span>
+                        <span class="nw-big__lbl">Total berita</span>
+                    </div>
+
+                    <div class="nw-seg" role="img"
+                        aria-label="{{ $terbit }} terbit, {{ $draf }} belum terbit atau terjadwal, dari {{ $total }} berita">
+                        <span class="nw-seg__a" style="width:{{ $pct($terbit) }}%"></span>
+                        <span class="nw-seg__b" style="width:{{ $pct($draf) }}%"></span>
+                    </div>
+
+                    <ul class="nw-rows">
+                        <li class="is-ok">
+                            <span class="nw-ico" aria-hidden="true">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14M22 4L12 14.01l-3-3" />
+                                </svg>
+                            </span>
+                            <span class="nw-meta"><b>Sudah terbit</b><small>Tampil di situs publik</small></span>
+                            <span class="nw-num">{{ $terbit }}</span>
+                        </li>
+                        <li class="is-soon">
+                            <span class="nw-ico" aria-hidden="true">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2" />
+                                </svg>
+                            </span>
+                            <span class="nw-meta"><b>Belum / terjadwal</b><small>Menunggu waktu terbit</small></span>
+                            <span class="nw-num">{{ $draf }}</span>
+                        </li>
+                        <li class="is-pri">
+                            <span class="nw-ico" aria-hidden="true">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            </span>
+                            <span class="nw-meta"><b>Status aktif</b><small>Diaktifkan oleh admin</small></span>
+                            <span class="nw-num">{{ $aktif }}</span>
+                        </li>
+                        <li class="is-off">
+                            <span class="nw-ico" aria-hidden="true">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 3a9 9 0 100 18 9 9 0 000-18zM5.6 5.6l12.8 12.8" />
+                                </svg>
+                            </span>
+                            <span class="nw-meta"><b>Nonaktif</b><small>Disembunyikan dari publik</small></span>
+                            <span class="nw-num">{{ $nonaktif }}</span>
+                        </li>
+                    </ul>
+
+                    @if ($draf > 0)
+                        <div class="nw-note" role="status">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 16v-4M12 8h.01" />
+                            </svg>
+                            <span><strong>{{ $draf }} berita</strong> belum tampil karena tanggal terbitnya
+                                belum tiba atau belum diisi.</span>
+                        </div>
+                    @endif
                 </div>
-            </div>
+
+                {{-- Aturan tampil --}}
+                <div class="card nw-card">
+                    <div class="nw-card__head">
+                        <span class="nw-card__ico" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 16v-4M12 8h.01" />
+                            </svg>
+                        </span>
+                        <h3>Kapan berita tampil?</h3>
+                    </div>
+                    <ol class="nw-steps">
+                        <li>Status berita <strong>Aktif</strong>.</li>
+                        <li>Tanggal terbit sudah <strong>tiba</strong> (≤ hari ini).</li>
+                        <li>Urutan kecil tampil lebih dulu.</li>
+                    </ol>
+                </div>
+
+                {{-- Panduan --}}
+                <div class="nw-card card">
+                    <div class="nw-card__head">
+                        <span class="nw-card__ico nw-card__ico--acc" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                            </svg>
+                        </span>
+                        <h3>Tips penulisan</h3>
+                    </div>
+                    <ul class="nw-tips">
+                        <li>Judul singkat, informatif, maksimal ±10 kata.</li>
+                        <li>Ringkasan dipakai pada kartu daftar berita.</li>
+                        <li>Gunakan gambar sampul landscape agar rapi.</li>
+                        <li>Atur tanggal terbit untuk publikasi terjadwal.</li>
+                    </ul>
+                    <a href="{{ route('superadmin.berita.create') }}" class="btn nw-cta">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                            <path d="M12 5v14" />
+                            <path d="M5 12h14" />
+                        </svg>
+                        Tulis berita baru
+                    </a>
+                </div>
+            </aside>
         </div>
     </div>
+
+    @push('css')
+        <link rel="stylesheet" href="{{ asset('admin/landing/informasi/berita/index.css') }}">
+    @endpush
 </x-dashboard.layout.app>

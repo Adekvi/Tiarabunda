@@ -47,29 +47,51 @@
 
                     <div class="f">
                         <label for="judhul">Judul <span style="color:var(--err)">*</span></label>
-                        <input id="judhul" name="judhul" type="text" required maxlength="200"
+                        <input id="judhul" name="judhul" type="text" required maxlength="255"
                             value="{{ old('judhul', $item->judhul) }}" placeholder="Judul berita">
                         @error('judhul')
                             <small style="color:var(--err);">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <div class="f">
-                        <label for="tandha">Slug URL (opsional)</label>
-                        <input id="tandha" name="tandha" type="text" maxlength="200"
-                            value="{{ old('tandha', $item->tandha) }}"
-                            placeholder="Otomatis dari judul jika dikosongkan">
-                        @error('tandha')
-                            <small style="color:var(--err);">{{ $message }}</small>
-                        @enderror
+                    <div class="g g2"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start;">
+                        <div class="f" style="margin-bottom:0;">
+                            <label for="tandha">Slug URL</label>
+                            <input id="tandha" name="tandha" type="text" maxlength="200"
+                                value="{{ old('tandha', $item->tandha) }}" readonly tabindex="-1" autocomplete="off"
+                                class="is-readonly" placeholder="Otomatis dari judul">
+                            <small style="color:var(--mut);">Diisi otomatis dari judul. Tidak dapat diubah
+                                manual.</small>
+                            @error('tandha')
+                                <small style="color:var(--err);">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="f">
+                            <label for="golongan">Kategori</label>
+                            <select id="golongan" name="golongan" style="width: 100%;">
+                                <option value="">— Pilih (opsional) —</option>
+                                @foreach (\App\Models\Informasi\Berita::GOLONGAN as $val => $label)
+                                    <option value="{{ $val }}" @selected(old('golongan', $item->golongan) === $val)>
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('golongan')
+                                <small style="color:var(--err); display:block; margin-top:4px;">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="f">
                         <label for="ringkesan">Ringkasan</label>
-                        <textarea id="ringkesan" name="ringkesan" rows="3" data-max-words="500"
-                            placeholder="Cuplikan singkat untuk kartu berita…">{{ old('ringkesan', $item->ringkesan) }}</textarea>
-                        <small class="cnt" data-ring-cnt aria-live="polite">0 / 500 kata</small>
-                        <small class="cnt-warn" data-ring-warn role="alert" hidden></small>
+                        <textarea id="ringkesan" name="ringkesan" rows="3" maxlength="300" data-max-chars="300"
+                            placeholder="Cuplikan singkat untuk kartu berita (maks. 300 karakter)…">{{ old('ringkesan', $item->ringkesan) }}</textarea>
+                        <small class="cnt" data-ring-cnt aria-live="polite">0 / 300 karakter</small>
+                        @error('ringkesan')
+                            <small style="color:var(--err);">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="f">
@@ -172,11 +194,19 @@
                         @enderror
                     </div>
 
-                    <div class="f">
-                        <label for="wektu_terbit">Tanggal &amp; waktu terbit</label>
-                        <input id="wektu_terbit" type="datetime-local" name="wektu_terbit"
-                            value="{{ $terbit }}">
-                        <small style="color:var(--mut);">Kosongkan atau set masa depan untuk jadwal terbit.</small>
+                    <div class="g g2" style="gap:16px;align-items:start;">
+                        <div class="f" style="margin-bottom:0;">
+                            <label for="wektu_terbit">Tanggal &amp; waktu terbit</label>
+                            <input id="wektu_terbit" type="datetime-local" name="wektu_terbit"
+                                value="{{ $terbit }}">
+                            <small style="color:var(--mut);">Kosongkan / set masa depan = terjadwal.</small>
+                        </div>
+                        <div class="f" style="margin-bottom:0;">
+                            <label for="urutan">Urutan tampil</label>
+                            <input id="urutan" type="number" name="urutan" min="0" max="9999"
+                                value="{{ old('urutan', $item->urutan ?? 0) }}">
+                            <small style="color:var(--mut);">Angka lebih kecil tampil lebih dulu.</small>
+                        </div>
                     </div>
 
                     <div class="f">
@@ -209,12 +239,6 @@
                         @error('path_sampul')
                             <small style="color:var(--err);">{{ $message }}</small>
                         @enderror
-                    </div>
-
-                    <div class="f" style="max-width:240px;">
-                        <label for="urutan">Urutan tampil</label>
-                        <input id="urutan" type="number" name="urutan" min="0" max="9999"
-                            value="{{ old('urutan', $item->urutan ?? 0) }}">
                     </div>
 
                     <div class="f">

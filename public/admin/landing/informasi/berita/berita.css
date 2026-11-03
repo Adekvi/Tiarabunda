@@ -143,6 +143,25 @@
     color: var(--err);
 }
 
+.cnt {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.78rem;
+    color: var(--mut);
+}
+
+.cnt.is-over {
+    color: var(--err);
+    font-weight: 600;
+}
+
+input.is-readonly,
+input[readonly] {
+    background: var(--bg);
+    color: var(--mut);
+    cursor: default;
+}
+
 @media (max-width: 560px) {
     .f .dz {
         flex-wrap: wrap;

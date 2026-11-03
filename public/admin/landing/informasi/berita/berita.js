@@ -14,6 +14,7 @@
         const t = s.trim()
         return t ? t.split(/\s+/).length : 0
     }
+
     // Potong teks tepat pada kata ke-`max` (spasi/baris baru di tengah tetap utuh)
     const limitWords = (s, max) => {
         const re = /\S+/g
@@ -476,70 +477,34 @@
     }
 
     /* =========================================================
-     * 2b. Batas kata pada kolom ringkasan
+     * 2b. Batas karakter pada kolom ringkasan (max = DB 300)
      * ======================================================= */
-    const initWordLimit = () => {
-        $$('textarea[data-max-words]').forEach((ta) => {
-            const max = parseInt(ta.dataset.maxWords, 10) || 500
-            const out = ta.parentElement.querySelector('[data-ring-cnt]')
+    const initRingkesanCounter = () => {
+        const el = document.getElementById('ringkesan')
+        if (!el) return
 
-            const warn = ta.parentElement.querySelector('[data-ring-warn]')
-            let hideTimer
+        const max = Number(
+            el.dataset.maxChars || el.getAttribute('maxlength') || 300
+        )
+        const cnt = document.querySelector('[data-ring-cnt]')
+        const side = document.querySelector('[data-ct-ring]')
 
-            const flash = (msg) => {
-                ta.classList.add('is-over')
-                if (warn) {
-                    warn.textContent = '⚠ ' + msg
-                    warn.hidden = false
-                }
-                clearTimeout(hideTimer)
-                hideTimer = setTimeout(() => {
-                    if (wordCount(ta.value) < max)
-                        ta.classList.remove('is-over')
-                    if (warn) warn.hidden = true
-                }, 5000)
+        const tick = () => {
+            // Normalisasi: jangan biarkan lewat max (maxlength sudah menahan, ini jaga JS)
+            if (el.value.length > max) {
+                el.value = el.value.slice(0, max)
             }
-
-            const apply = () => {
-                const before = wordCount(ta.value)
-                if (before > max) {
-                    ta.value = limitWords(ta.value, max)
-                    ta.setSelectionRange(ta.value.length, ta.value.length)
-                    flash(
-                        'Ringkasan melebihi batas ' +
-                            max +
-                            ' kata. Kelebihan ' +
-                            (before - max) +
-                            ' kata dihapus otomatis.'
-                    )
-                }
-                const n = wordCount(ta.value)
-                if (n < max && !warn?.hidden && !hideTimer)
-                    ta.classList.remove('is-over')
-                ta.classList.toggle(
-                    'is-over',
-                    n >= max ||
-                        (ta.classList.contains('is-over') && !warn?.hidden)
-                )
-                if (out) {
-                    out.textContent =
-                        n +
-                        ' / ' +
-                        max +
-                        ' kata' +
-                        (n >= max ? ' · batas tercapai' : '')
-                    out.style.color =
-                        n >= max
-                            ? 'var(--err)'
-                            : n >= max * 0.9
-                              ? 'var(--acc)'
-                              : ''
-                    out.style.fontWeight = n >= max ? '700' : ''
-                }
+            const n = el.value.length
+            if (cnt) {
+                cnt.textContent = `${n} / ${max} karakter`
+                cnt.classList.toggle('is-over', n >= max)
             }
-            ta.addEventListener('input', apply)
-            apply()
-        })
+            if (side) side.textContent = String(n)
+        }
+
+        el.addEventListener('input', tick)
+        el.addEventListener('change', tick)
+        tick()
     }
 
     /* =========================================================
@@ -563,6 +528,8 @@
         const ctKata = $('[data-ct-kata]')
         const ctBaca = $('[data-ct-baca]')
 
+        if (!judul) return
+
         const dzEl = $('[data-dz]')
         let hasCover = !!(dzEl && dzEl.dataset.initialSrc)
         const fmt = new Intl.DateTimeFormat('id-ID', {
@@ -574,7 +541,7 @@
             s
                 .toLowerCase()
                 .normalize('NFD')
-                .replace(/[̀-ͯ]/g, '')
+                .replace(/[\u0300-\u036f]/g, '')
                 .replace(/[^a-z0-9]+/g, '-')
                 .replace(/^-+|-+$/g, '')
                 .slice(0, 200)
@@ -587,61 +554,108 @@
         const update = () => {
             const t = editorText().trim()
             const words = t ? t.split(/\s+/).length : 0
+            const ringLen = ring ? ring.value.length : 0
 
-            ctJudul.textContent = judul.value.length
-            ctRing.textContent = wordCount(ring.value)
-            ctKata.textContent = words
-            ctBaca.textContent = words ? Math.max(1, Math.ceil(words / 200)) : 0
+            if (ctJudul) ctJudul.textContent = judul.value.length
+            if (ctRing) ctRing.textContent = ringLen
+            if (ctKata) ctKata.textContent = words
+            if (ctBaca)
+                ctBaca.textContent = words
+                    ? Math.max(1, Math.ceil(words / 200))
+                    : 0
+
             ctJudul
-                .closest('div')
-                .classList.toggle('over', judul.value.length >= 200)
-            ctRing
-                .closest('div')
-                .classList.toggle('over', wordCount(ring.value) >= 500)
+                ?.closest('div')
+                ?.classList.toggle('over', judul.value.length >= 200)
+            ctRing?.closest('div')?.classList.toggle('over', ringLen >= 300)
 
-            const when = tgl.value ? new Date(tgl.value) : null
+            const when = tgl?.value ? new Date(tgl.value) : null
             const valid = when && !isNaN(when)
             const future = valid && when.getTime() > Date.now()
-            if (!urip.checked) {
-                stPub.className = 'badge err'
-                stPub.textContent = 'Disembunyikan'
-            } else if (future) {
-                stPub.className = 'badge warn'
-                stPub.textContent = 'Terjadwal'
-            } else {
-                stPub.className = 'badge ok'
-                stPub.textContent = 'Tampil'
+
+            if (stPub) {
+                if (!urip?.checked) {
+                    stPub.className = 'badge err'
+                    stPub.textContent = 'Disembunyikan'
+                } else if (future) {
+                    stPub.className = 'badge warn'
+                    stPub.textContent = 'Terjadwal'
+                } else {
+                    stPub.className = 'badge ok'
+                    stPub.textContent = 'Tampil'
+                }
             }
-            stDate.textContent = valid
-                ? fmt.format(when)
-                : 'Segera setelah disimpan'
+            if (stDate) {
+                stDate.textContent = valid
+                    ? fmt.format(when)
+                    : 'Segera setelah disimpan'
+            }
 
-            const s = slug.value.trim()
-                ? slugify(slug.value)
-                : slugify(judul.value)
-            slugPrev.hidden = !s
-            slugPrev.textContent = s ? '/berita/' + s : ''
+            // Slug preview SELALU dari judul (bukan dari input slug manual)
+            const s = slugify(judul.value || '')
+            if (slugPrev) {
+                slugPrev.hidden = !s
+                slugPrev.textContent = s ? '/berita/' + s : ''
+            }
 
-            setCk('judul', judul.value.trim())
-            setCk('ringkasan', ring.value.trim())
+            setCk('judul', !!judul.value.trim())
+            setCk('ringkasan', ringLen > 0)
             setCk('isi', words >= 20)
             setCk('sampul', hasCover)
+
             const done = $$('.ck li.done').length
-            ckBar.style.width = (done / 4) * 100 + '%'
-            ckText.textContent = done + ' dari 4 terpenuhi'
+            if (ckBar) ckBar.style.width = (done / 4) * 100 + '%'
+            if (ckText) ckText.textContent = done + ' dari 4 terpenuhi'
         }
 
         coverState = (v, label) => {
             hasCover = v
-            stCover.textContent = v ? label || 'Siap' : 'Belum ada'
+            if (stCover) stCover.textContent = v ? label || 'Siap' : 'Belum ada'
             update()
         }
         onEditorChange = update
-        ;[judul, ring, slug, tgl, urip].forEach((el) => {
+        ;[judul, ring, tgl, urip].forEach((el) => {
+            if (!el) return
             el.addEventListener('input', update)
             el.addEventListener('change', update)
         })
+
         update()
+    }
+
+    const initSlug = () => {
+        const judul = $('#judhul')
+        const slug = $('#tandha')
+        const slugPrev = $('[data-slug-prev]')
+        if (!judul || !slug) return
+
+        const slugify = (s) =>
+            s
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+                .slice(0, 200)
+
+        const apply = () => {
+            const s = slugify(judul.value || '')
+            slug.value = s
+            if (slugPrev) {
+                slugPrev.hidden = !s
+                slugPrev.textContent = s ? '/berita/' + s : ''
+            }
+        }
+
+        // Kunci interaksi manual
+        slug.setAttribute('readonly', 'readonly')
+        slug.addEventListener('keydown', (e) => e.preventDefault())
+        slug.addEventListener('paste', (e) => e.preventDefault())
+
+        judul.addEventListener('input', apply)
+        judul.addEventListener('change', apply)
+
+        apply()
     }
 
     /* =========================================================
@@ -649,14 +663,19 @@
      * tidak mematikan modul lain.
      * ======================================================= */
     const boot = () => {
-        ;[initDropzone, initEditor, initWordLimit, initAside].forEach((fn) => {
+        ;[
+            initDropzone,
+            initEditor,
+            initRingkesanCounter,
+            initAside,
+            initSlug
+        ].forEach((fn) => {
             try {
                 fn()
             } catch (e) {
                 console.error('[berita-form] gagal:', e)
             }
         })
-        // initAside dijalankan terakhir; sinkronkan status sampul awal
         const f = $('#path_sampul')
         if (f && f.files && f.files[0]) f.dispatchEvent(new Event('change'))
         document.documentElement.setAttribute('data-berita-js', 'ok')

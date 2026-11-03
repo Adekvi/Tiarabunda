@@ -4,17 +4,29 @@ namespace App\Models\Informasi;
 
 use App\Models\Concerns\HasUripState;
 use App\Models\Concerns\HasUrutan;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Berita extends Model
 {
     use HasUripState, HasUrutan, SoftDeletes;
 
+    public const GOLONGAN = [
+        'pengumuman' => 'Pengumuman',
+        'akademik' => 'Akademik',
+        'kemahasiswaan' => 'Kemahasiswaan',
+        'prestasi' => 'Prestasi',
+        'umum' => 'Umum',
+    ];
+
     protected $fillable = [
+        'digawe_dening',
         'judhul',
         'tandha',
+        'golongan',
         'ringkesan',
         'isi',
         'path_sampul',
@@ -33,9 +45,15 @@ class Berita extends Model
         ];
     }
 
+    public function penulis(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'digawe_dening');
+    }
+
     public function scopeTerbit(Builder $query): Builder
     {
-        return $query->active()
+        return $query
+            ->active()
             ->whereNotNull('wektu_terbit')
             ->where('wektu_terbit', '<=', now());
     }
