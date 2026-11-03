@@ -19,11 +19,12 @@ class BeritaController extends Controller
 
     public function index(Request $request): View
     {
-
         $perPage = (int) $request->input('per_page', 10);
         if (! in_array($perPage, [10, 25, 50, 100], true)) {
             $perPage = 10;
         }
+
+        $trashed = $request->status === 'trashed';
 
         $items = Berita::query()
             ->select([
@@ -39,8 +40,10 @@ class BeritaController extends Controller
                 'urutan',
                 'urip',
                 'updated_at',
+                'deleted_at',
             ])
             ->with(['penulis:id,name'])
+            ->when($trashed, fn($q) => $q->onlyTrashed())
             ->when($request->status === 'active', fn($q) => $q->active())
             ->when($request->status === 'inactive', fn($q) => $q->inactive())
             ->when($request->filled('q'), function ($q) use ($request) {
@@ -50,8 +53,11 @@ class BeritaController extends Controller
                         ->orWhere('ringkesan', 'like', $t);
                 });
             })
-            ->orderByDesc('wektu_terbit')
-            ->orderBy('urutan')
+            ->when(
+                $trashed,
+                fn($q) => $q->orderByDesc('deleted_at'),
+                fn($q) => $q->orderByDesc('wektu_terbit')->orderBy('urutan')
+            )
             ->paginate($perPage)
             ->withQueryString();
 
@@ -66,10 +72,10 @@ class BeritaController extends Controller
                         ->orWhere('wektu_terbit', '>', now());
                 })
                 ->count(),
+            'trashed' => Berita::onlyTrashed()->count(),
         ];
 
-        // stats tetap
-        return view('superadmin.konten.informasi.berita.index', compact('items', 'stats', 'perPage'));
+        return view('superadmin.konten.informasi.berita.index', compact('items', 'stats', 'perPage', 'trashed'));
     }
 
     public function create(): View
@@ -135,6 +141,27 @@ class BeritaController extends Controller
         $beritum->delete();
 
         return back()->with('success', 'Berita dihapus.');
+    }
+
+    public function restore(int $id): RedirectResponse
+    {
+        $item = Berita::onlyTrashed()->findOrFail($id);
+        $item->restore();
+
+        return redirect()
+            ->route('superadmin.berita.index', ['status' => 'trashed'])
+            ->with('success', 'Berita berhasil dipulihkan.');
+    }
+
+    /** Opsional — hapus permanen + file gambar */
+    public function forceDestroy(int $id): RedirectResponse
+    {
+        $item = Berita::onlyTrashed()->findOrFail($id);
+
+        $this->images->delete($item->path_sampul, $item->path_thumb);
+        $item->forceDelete();
+
+        return back()->with('success', 'Berita dihapus permanen.');
     }
 
     public function toggle(Berita $beritum): RedirectResponse

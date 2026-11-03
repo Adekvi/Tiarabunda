@@ -81,6 +81,10 @@ Route::middleware(['auth', 'can:access-superadmin'])
         Route::resource('berita', BeritaController::class)->except(['show']);
         Route::patch('berita/{berita}/toggle', [BeritaController::class, 'toggle'])
             ->name('berita.toggle');
+        Route::post('berita/{id}/restore', [BeritaController::class, 'restore'])
+            ->name('berita.restore');
+        Route::delete('berita/{id}/force', [BeritaController::class, 'forceDestroy'])
+            ->name('berita.force-destroy');
 
         Route::resource('kegiatan', KegiatanController::class)->except(['show']);
         Route::patch('kegiatan/{kegiatan}/toggle', [KegiatanController::class, 'toggle'])

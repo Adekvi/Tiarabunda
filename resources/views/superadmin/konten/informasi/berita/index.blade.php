@@ -64,6 +64,12 @@
                                     <option value="">Semua</option>
                                     <option value="active" @selected(request('status') === 'active')>Aktif</option>
                                     <option value="inactive" @selected(request('status') === 'inactive')>Nonaktif</option>
+                                    <option value="trashed" @selected(request('status') === 'trashed')>
+                                        Terhapus
+                                        @if (($stats['trashed'] ?? 0) > 0)
+                                            ({{ $stats['trashed'] }})
+                                        @endif
+                                    </option>
                                 </select>
                             </div>
                             <div class="faq-filter__actions">
@@ -74,19 +80,27 @@
                             </div>
                         </form>
 
-                        @if ($filtered)
+
+                        {{-- @if ($filtered)
                             <div class="nw-chips" aria-label="Filter aktif">
                                 <span class="nw-chips__lbl">Filter aktif:</span>
                                 @if (request('q'))
                                     <span class="nw-chip">Kata kunci: “{{ request('q') }}”</span>
                                 @endif
                                 @if (request('status'))
-                                    <span class="nw-chip">
-                                        Status: {{ request('status') === 'active' ? 'Aktif' : 'Nonaktif' }}
-                                    </span>
+                                    <select id="status" name="status">
+                                        <option value="">Semua</option>
+                                        <option value="active" @selected(request('status') === 'active')>Aktif</option>
+                                        <option value="inactive" @selected(request('status') === 'inactive')>Nonaktif</option>
+                                        <option value="trashed" @selected(request('status') === 'trashed')>
+                                            Terhapus @if (($stats['trashed'] ?? 0) > 0)
+                                                ({{ $stats['trashed'] }})
+                                            @endif
+                                        </option>
+                                    </select>
                                 @endif
                             </div>
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
 
@@ -134,6 +148,7 @@
                     @include('superadmin.konten.informasi.berita.partials.table', [
                         'items' => $items,
                         'filtered' => $filtered,
+                        'trashed' => $trashed ?? request('status') === 'trashed',
                     ])
 
                     @include('superadmin.konten.informasi.berita.partials.paginate', [
@@ -284,3 +299,5 @@
         <link rel="stylesheet" href="{{ asset('admin/landing/informasi/berita/index.css') }}">
     @endpush
 </x-dashboard.layout.app>
+
+{{-- oke sementara itu dulu, kita lanjut ke menu lainnya mana yang lebih proper secara fungsi juga seperti yang telah saya jelaskan sebelumnya, bisa cek direpository terlebih dahulu --}}
