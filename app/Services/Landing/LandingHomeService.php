@@ -2,38 +2,27 @@
 
 namespace App\Services\Landing;
 
+use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class LandingHomeService
 {
-    private const TTL = 300; // 5 menit
+    private const TTL = 300;
 
-    /**
-     * Data beranda yang sudah disiapkan untuk view.
-     * Section ditambah bertahap di method ini.
-     *
-     * @return array{faq: Collection<int, array{0: string, 1: string}>}
-     */
     public function forHome(): array
     {
         return [
             'faq' => $this->faqs(),
-            // 'berita' => $this->beritas(), // tahap berikutnya
-            // 'prodi'  => $this->prodis(),
+            'berita' => $this->beritas(),
         ];
     }
 
-    /**
-     * Format sama dengan config lama: [pertanyaan, jawaban]
-     * agar komponen Blade tidak dirombak total.
-     *
-     * @return Collection<int, array{0: string, 1: string}>
-     */
     public function faqs(): Collection
     {
-        return Cache::remember('landing.home.faq', self::TTL, function () {
+        // Simpan ARRAY di cache, bukan Collection
+        $rows = Cache::remember('landing.home.faq', self::TTL, function () {
             return Faq::query()
                 ->select(['id', 'pitakon', 'wangsulan', 'urutan'])
                 ->active()
@@ -44,8 +33,61 @@ class LandingHomeService
                     $f->pitakon,
                     $f->wangsulan,
                 ])
-                ->values();
+                ->values()
+                ->all();
         });
+
+        // Guard: cache lama rusak / incomplete
+        if (! is_array($rows)) {
+            Cache::forget('landing.home.faq');
+            $rows = [];
+        }
+
+        return collect($rows);
+    }
+
+    public function beritas(int $limit = 4): Collection
+    {
+        $rows = Cache::remember('landing.home.berita', self::TTL, function () use ($limit) {
+            return Berita::query()
+                ->select([
+                    'id',
+                    'judhul',
+                    'tandha',
+                    'golongan',
+                    'path_sampul',
+                    'path_thumb',
+                    'wektu_terbit',
+                    'urutan',
+                    'urip',
+                ])
+                ->terbit()
+                ->orderByDesc('wektu_terbit')
+                ->orderBy('urutan')
+                ->limit($limit)
+                ->get()
+                ->map(function ($b) {
+                    // /** @var \App\Models\Informasi\Berita $b */ //
+                    return [
+                        'j' => Berita::GOLONGAN[$b->golongan] ?? 'Berita',
+                        't' => $b->judhul ?? '',
+                        'tgl' => $b->wektu_terbit?->translatedFormat('d M Y') ?? '',
+                        'img' => $b->thumb_url ?? $b->sampul_url,
+                        'url' => $b->tandha
+                            ? url('/informasi/berita-terbaru/' . $b->tandha)
+                            : url('/informasi/berita-terbaru'),
+                    ];
+                })
+                ->values()
+                ->all(); // <-- array murni
+        });
+
+        if (! is_array($rows)) {
+            Cache::forget('landing.home.berita');
+            $rows = [];
+        }
+
+        return collect($rows);
     }
 
     public function forgetFaq(): void
@@ -53,10 +95,14 @@ class LandingHomeService
         Cache::forget('landing.home.faq');
     }
 
-    /** Panggil saat perlu flush semua cache beranda */
+    public function forgetBerita(): void
+    {
+        Cache::forget('landing.home.berita');
+    }
+
     public function forgetHome(): void
     {
-        Cache::forget('landing.home.faq');
-        // Cache::forget('landing.home.berita');
+        $this->forgetFaq();
+        $this->forgetBerita();
     }
 }

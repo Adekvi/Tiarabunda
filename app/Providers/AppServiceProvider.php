@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
+use App\Observers\Landing\Informasi\Berita\BeritaObserver;
 use App\Observers\Landing\Informasi\Faq\FaqObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -37,5 +39,6 @@ class AppServiceProvider extends ServiceProvider
 
         // Landing page Menu Informasi - Faq
         Faq::observe(FaqObserver::class);
+        Berita::observe(BeritaObserver::class);
     }
 }

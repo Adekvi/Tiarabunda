@@ -12,7 +12,10 @@
         <x-landing.section.statistik />
         <x-landing.section.prodi />
         <x-landing.section.fasilitas />
-        <x-landing.section.berita />
+
+        {{-- Berita --}}
+        <x-landing.section.berita :items="$home['berita'] ?? []" />
+
         <x-landing.section.jalur />
 
         {{-- Faq --}}

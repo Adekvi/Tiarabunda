@@ -1586,6 +1586,97 @@ blockquote {
     outline-color: #fff;
 }
 
+.nf {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+}
+.nf-cover {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+}
+.nf-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.nf-body {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    padding: 24px;
+    background: linear-gradient(transparent, rgba(10, 25, 45, 0.72) 55%);
+    color: #fff;
+}
+.nf-body .tag {
+    color: #ffd7a8;
+}
+.nf-body h3,
+.nf-body h3 a {
+    color: #fff;
+    text-decoration: none;
+}
+.nf-body time {
+    color: rgba(255, 255, 255, 0.85);
+}
+.nf:not(:has(.nf-cover)) {
+    padding: 24px;
+}
+.nf:not(:has(.nf-cover)) .nf-body {
+    background: none;
+    color: inherit;
+    padding: 0;
+}
+.nf:not(:has(.nf-cover)) .nf-body .tag {
+    color: var(--blue);
+}
+.nf:not(:has(.nf-cover)) .nf-body h3,
+.nf:not(:has(.nf-cover)) .nf-body h3 a {
+    color: inherit;
+}
+.nf:not(:has(.nf-cover)) .nf-body time {
+    color: var(--mut);
+}
+
+.nl article {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 14px;
+}
+.nl article:not(:has(.nl-thumb)) {
+    grid-template-columns: 1fr;
+    padding: 24px;
+}
+.nl-thumb {
+    display: block;
+    width: 96px;
+    height: 72px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--sky);
+}
+.nl-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.nl-body {
+    min-width: 0;
+}
+.nl h3 a {
+    text-decoration: none;
+    color: inherit;
+}
+.nl h3 a:hover {
+    color: var(--blue);
+}
+
 @media (max-width: 960px) {
     .info-in {
         grid-template-columns: 1fr;
