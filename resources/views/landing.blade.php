@@ -20,7 +20,8 @@
         {{-- Berita --}}
         <x-landing.section.berita :items="$home['berita'] ?? []" />
 
-        <x-landing.section.jalur />
+        {{-- Jalur PMB Dinamis --}}
+        <x-landing.section.jalur :items="$home['jalur'] ?? []" />
 
         {{-- Faq --}}
         <x-landing.section.faq :items="$home['faq'] ?? []" />

@@ -69,9 +69,22 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::patch('/{prodi}/toggle', [ProdiController::class, 'toggle'])->name('toggle');
         });
 
-        Route::resource('pmb', PmbController::class)->except(['show']);
-        Route::patch('pmb/{pmb}/toggle', [PmbController::class, 'toggle'])
-            ->name('pmb.toggle');
+        Route::prefix('pmb')->name('pmb.')->group(function () {
+            Route::get('/', [PmbController::class, 'index'])->name('index');
+            Route::get('/create', [PmbController::class, 'create'])->name('create');
+            Route::post('/', [PmbController::class, 'store'])->name('store');
+
+            Route::get('/trash', [PmbController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [PmbController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [PmbController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [PmbController::class, 'forceDelete'])->name('force-delete');
+            // -------------------------------------------------------------
+
+            Route::get('/{pmb}/edit', [PmbController::class, 'edit'])->name('edit');
+            Route::put('/{pmb}', [PmbController::class, 'update'])->name('update');
+            Route::delete('/{pmb}', [PmbController::class, 'destroy'])->name('destroy');
+            Route::patch('/{pmb}/toggle', [PmbController::class, 'toggle'])->name('toggle');
+        });
 
         Route::resource('beasiswa', BeasiswaController::class)->except(['show']);
         Route::patch('beasiswa/{beasiswa}/toggle', [BeasiswaController::class, 'toggle'])

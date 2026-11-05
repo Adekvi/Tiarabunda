@@ -8,20 +8,24 @@
 @endphp
 
 <x-dashboard.layout.app :title="$pageTitle" :page-title="$pageTitle">
-    <div class="g">
-        <div class="card" style="padding:14px 22px;">
-            <div class="ch2" style="margin-bottom:0;">
-                <div>
-                    <p style="margin:0 0 2px;font-size:0.75rem;color:var(--mut);">
-                        <a href="{{ route('superadmin.pmb.index') }}" style="color:var(--pri);font-weight:600;">PMB</a>
-                        <span style="opacity:.5;"> / </span>{{ $isEdit ? 'Ubah' : 'Tambah' }}
-                    </p>
-                    <h2 style="margin:0;font-size:1.15rem;">{{ $pageTitle }}</h2>
-                </div>
-                <a href="{{ route('superadmin.pmb.index') }}" class="btn gh">← Kembali</a>
+    <div class="pmb-form-page">
+        {{-- ===== Header ===== --}}
+        <div class="card pmb-form-hero">
+            <div class="pmb-form-hero__main">
+                <p class="pmb-form-hero__crumb">
+                    <a href="{{ route('superadmin.pmb.index') }}">PMB</a>
+                    <span aria-hidden="true">/</span>
+                    <span class="is-current">{{ $isEdit ? 'Ubah' : 'Tambah' }}</span>
+                </p>
+                <h2 class="pmb-form-hero__title">{{ $pageTitle }}</h2>
+                <p class="pmb-form-hero__desc">
+                    Lengkapi informasi jalur agar calon mahasiswa memahami cara dan jadwal mendaftar.
+                </p>
             </div>
+            <a href="{{ route('superadmin.pmb.index') }}" class="btn gh">← Kembali</a>
         </div>
 
+        {{-- ===== Error ===== --}}
         @if ($errors->any())
             <div class="al w" role="alert">
                 <strong style="display:block;margin-bottom:6px;">Periksa kembali isian:</strong>
@@ -33,46 +37,65 @@
             </div>
         @endif
 
-        <div class="g g2" style="align-items:start;">
-            <div class="card" style="min-width:0;">
+        <div class="pmb-form-layout">
+            {{-- ===== Kolom Form ===== --}}
+            <div class="card pmb-form-card" style="min-width:0;">
                 <h2 style="margin-bottom:6px;">Detail jalur</h2>
-                <p style="margin:0 0 20px;font-size:0.85rem;color:var(--mut);">
-                    Lengkapi informasi jalur agar calon mahasiswa memahami cara mendaftar.
+                <p style="margin:0 0 22px;font-size:0.85rem;color:var(--mut);">
+                    Kolom bertanda <span style="color:var(--err)">*</span> wajib diisi.
                 </p>
 
-                <form method="POST"
+                <form method="POST" id="pmbForm"
                     action="{{ $isEdit ? route('superadmin.pmb.update', $item) : route('superadmin.pmb.store') }}">
                     @csrf
                     @if ($isEdit)
                         @method('PUT')
                     @endif
 
+                    {{-- Nama --}}
                     <div class="f">
                         <label for="jeneng">Nama jalur <span style="color:var(--err)">*</span></label>
                         <input id="jeneng" name="jeneng" type="text" required maxlength="150"
                             value="{{ old('jeneng', $item->jeneng) }}"
-                            placeholder="Contoh: Jalur Reguler / Prestasi / KIP">
+                            placeholder="Contoh: Jalur Reguler / Prestasi / KIP" autocomplete="off">
                         @error('jeneng')
                             <small style="color:var(--err);">{{ $message }}</small>
                         @enderror
                     </div>
 
+                    {{-- Slug --}}
                     <div class="f">
-                        <label for="tandha">Slug URL (opsional)</label>
+                        <label for="tandha">
+                            Slug URL
+                            @if ($isEdit)
+                                <span style="font-weight:400;color:var(--mut);font-size:.78rem;">
+                                    &middot;
+                                    <button type="button" id="tandhaLock" class="pmb-link-btn">ubah manual</button>
+                                </span>
+                            @endif
+                        </label>
                         <input id="tandha" name="tandha" type="text" maxlength="150"
-                            value="{{ old('tandha', $item->tandha) }}"
-                            placeholder="Otomatis dari nama jika dikosongkan">
+                            value="{{ old('tandha', $item->tandha) }}" placeholder="Otomatis dari nama jalur" readonly
+                            data-edit="{{ $isEdit ? '1' : '0' }}">
+                        <small style="color:var(--mut);font-size:.78rem;display:block;margin-top:6px;">
+                            Dibuat otomatis dari nama jalur. Hanya huruf, angka, dan tanda hubung.
+                        </small>
                         @error('tandha')
                             <small style="color:var(--err);">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <div class="f">
-                        <label for="katrangan">Deskripsi singkat</label>
-                        <textarea id="katrangan" name="katrangan" rows="4" placeholder="Penjelasan jalur untuk calon mahasiswa…">{{ old('katrangan', $item->katrangan) }}</textarea>
-                    </div>
+                    {{-- Deskripsi --}}
+                    @include('superadmin.konten.pendidikan.pmb.partials.form.rte', [
+                        'name' => 'katrangan',
+                        'label' => 'Deskripsi singkat',
+                        'value' => old('katrangan', $item->katrangan),
+                        'rows' => 6,
+                        'placeholder' => 'Penjelasan jalur untuk calon mahasiswa…',
+                    ])
 
-                    <div class="g g2" style="gap:16px;">
+                    {{-- Tanggal --}}
+                    <div class="row-2">
                         <div class="f" style="margin-bottom:0;">
                             <label for="wektu_bukak">Tanggal dibuka</label>
                             <input id="wektu_bukak" type="date" name="wektu_bukak" value="{{ $bukak }}">
@@ -86,26 +109,34 @@
                         </div>
                     </div>
 
-                    <div class="f">
-                        <label for="syarat_text">Persyaratan</label>
-                        <textarea id="syarat_text" name="syarat_text" rows="6"
-                            placeholder="Satu baris satu syarat&#10;Contoh:&#10;Fotokopi ijazah&#10;Pas foto 3x4">{{ $syaratText }}</textarea>
-                        <small style="color:var(--mut);">Satu baris = satu poin syarat.</small>
-                    </div>
+                    {{-- Persyaratan --}}
+                    @include('superadmin.konten.pendidikan.pmb.partials.form.rte', [
+                        'name' => 'syarat_text',
+                        'label' => 'Persyaratan',
+                        'value' => $syaratText,
+                        'rows' => 6,
+                        'placeholder' => 'Tulis satu syarat per baris (bullet list)...',
+                        'hint' => 'Gunakan daftar poin untuk setiap syarat.',
+                    ])
 
-                    <div class="f">
-                        <label for="langkah_text">Alur / langkah pendaftaran</label>
-                        <textarea id="langkah_text" name="langkah_text" rows="6"
-                            placeholder="Satu baris satu langkah&#10;Contoh:&#10;Isi formulir online&#10;Upload berkas&#10;Ikuti seleksi">{{ $langkahText }}</textarea>
-                        <small style="color:var(--mut);">Satu baris = satu langkah.</small>
-                    </div>
+                    {{-- Langkah --}}
+                    @include('superadmin.konten.pendidikan.pmb.partials.form.rte', [
+                        'name' => 'langkah_text',
+                        'label' => 'Alur / langkah pendaftaran',
+                        'value' => $langkahText,
+                        'rows' => 6,
+                        'placeholder' => 'Tulis satu langkah per baris (numbered list)...',
+                        'hint' => 'Gunakan daftar bernomor untuk urutan langkah.',
+                    ])
 
-                    <div class="f" style="max-width:240px;">
+                    {{-- Urutan --}}
+                    <div class="f" style="max-width:260px;">
                         <label for="urutan">Urutan tampil</label>
                         <input id="urutan" type="number" name="urutan" min="0" max="9999"
                             value="{{ old('urutan', $item->urutan ?? 0) }}">
                     </div>
 
+                    {{-- Publikasi --}}
                     <div class="f">
                         <span class="f-label">Publikasi</span>
                         <label class="sw" for="urip">
@@ -122,8 +153,8 @@
                         </label>
                     </div>
 
-                    <div
-                        style="display:flex;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line);flex-wrap:wrap;">
+                    {{-- Aksi --}}
+                    <div class="pmb-form-actions">
                         <button type="submit" class="btn">
                             {{ $isEdit ? 'Simpan perubahan' : 'Simpan jalur' }}
                         </button>
@@ -132,152 +163,90 @@
                 </form>
             </div>
 
-            <div class="g" style="gap:16px;">
+            {{-- ===== Sidebar Kanan ===== --}}
+            <aside class="pmb-form-aside">
+                {{-- Ringkasan mode + progress --}}
+                <div class="card pmb-side-summary">
+                    <div class="pmb-side-summary__head">
+                        <span class="pmb-side-badge {{ $isEdit ? 'is-edit' : 'is-new' }}">
+                            {{ $isEdit ? 'Mode Edit' : 'Jalur Baru' }}
+                        </span>
+                        <h3>{{ $isEdit ? 'Perbarui jalur' : 'Buat jalur' }}</h3>
+                        <p>Lengkapi data inti. Checklist di bawah menunjukkan kelengkapan isian.</p>
+                    </div>
+
+                    <ul class="pmb-checklist" id="pmbChecklist">
+                        <li data-check="jeneng"><span class="dot"></span> Nama jalur</li>
+                        <li data-check="katrangan"><span class="dot"></span> Deskripsi singkat</li>
+                        <li data-check="wektu_bukak"><span class="dot"></span> Tanggal dibuka</li>
+                        <li data-check="wektu_tutup"><span class="dot"></span> Tanggal ditutup</li>
+                        <li data-check="syarat_text"><span class="dot"></span> Persyaratan</li>
+                        <li data-check="langkah_text"><span class="dot"></span> Alur pendaftaran</li>
+                    </ul>
+
+                    <div class="pmb-progress">
+                        <div class="pmb-progress__bar"><span id="pmbProgressBar" style="width:0%"></span></div>
+                        <small><span id="pmbProgressText">0</span>% lengkap</small>
+                    </div>
+                </div>
+
+                {{-- Jadwal & status --}}
+                <div class="card pmb-side-jadwal" id="jadwalCard" hidden>
+                    <h3 style="margin-bottom:12px;">Ringkasan jadwal</h3>
+                    <div class="pmb-kv">
+                        <span>Dibuka</span>
+                        <strong id="jadwalBukak">—</strong>
+                    </div>
+                    <div class="pmb-kv">
+                        <span>Ditutup</span>
+                        <strong id="jadwalTutup">—</strong>
+                    </div>
+                    <div class="pmb-kv">
+                        <span>Durasi</span>
+                        <strong id="jadwalDurasi">—</strong>
+                    </div>
+                    <div class="pmb-jadwal-status" id="jadwalStatus">
+                        <i class="dot"></i><span>Belum dijadwalkan</span>
+                    </div>
+                </div>
+
+                {{-- Publikasi --}}
+                <div class="card pmb-side-pub">
+                    <h3 style="margin-bottom:10px;">Status publikasi</h3>
+                    <div class="pmb-pub-row">
+                        <span class="pmb-pub-dot" id="pubDot"></span>
+                        <strong id="pubLabel">Aktif</strong>
+                    </div>
+                    <p class="pmb-pub-desc" id="pubDesc">
+                        Jalur akan tampil di halaman PMB situs publik.
+                    </p>
+                </div>
+
+                {{-- Panduan --}}
                 <div class="card">
                     <h3 style="margin-bottom:10px;">Panduan</h3>
-                    <ul style="margin:0;padding-left:18px;color:var(--mut);font-size:0.88rem;line-height:1.7;">
+                    <ul class="pmb-tips">
                         <li>Nama jalur harus jelas bagi calon mahasiswa.</li>
                         <li>Tanggal buka–tutup dipakai untuk status “Sedang dibuka”.</li>
                         <li>Syarat &amp; langkah: satu poin per baris.</li>
+                        <li>Slug dibuat otomatis dan bersifat <em>readonly</em>.</li>
                     </ul>
                 </div>
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Status form</h3>
-                    <div style="display:grid;gap:10px;font-size:0.88rem;">
-                        <div style="display:flex;justify-content:space-between;">
-                            <span style="color:var(--mut);">Mode</span>
-                            <strong>{{ $isEdit ? 'Edit' : 'Buat baru' }}</strong>
-                        </div>
-                        @if ($isEdit)
-                            <div style="display:flex;justify-content:space-between;align-items:center;">
-                                <span style="color:var(--mut);">Publikasi</span>
-                                <span class="badge {{ $item->urip ? 'ok' : 'err' }}">
-                                    {{ $item->urip ? 'Aktif' : 'Nonaktif' }}
-                                </span>
-                            </div>
-                        @endif
-                    </div>
+
+                {{-- Preview slug --}}
+                <div class="card pmb-side-slug">
+                    <h3 style="margin-bottom:10px;">Pratinjau URL</h3>
+                    <code id="slugPreview">/pmb/…</code>
                 </div>
-            </div>
+            </aside>
         </div>
     </div>
 
     @push('css')
-        <style>
-            /* ---------- Switch publikasi ---------- */
-            .f .f-label {
-                font-weight: 600;
-                font-size: .85rem;
-            }
+        <link rel="stylesheet" href="{{ asset('admin/landing/pendidikan/pmb/form.css') }}">
+    @endpush
 
-            .f label.sw {
-                position: relative;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                padding: 14px 16px;
-                border: 1px solid var(--line);
-                border-radius: 12px;
-                background: var(--bg);
-                font-weight: 400;
-                font-size: .9rem;
-                cursor: pointer;
-                transition: border-color .2s, background .2s;
-            }
-
-            .f label.sw:hover {
-                border-color: var(--pri);
-            }
-
-            /* sembunyikan checkbox asli (lawan aturan .f input) */
-            .f .sw .sw-in {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                border: 0;
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            .sw-track {
-                position: relative;
-                flex: none;
-                width: 44px;
-                height: 24px;
-                border-radius: 99px;
-                background: var(--line);
-                transition: background .25s;
-            }
-
-            .sw-track::after {
-                content: '';
-                position: absolute;
-                top: 3px;
-                left: 3px;
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: #fff;
-                box-shadow: 0 1px 3px rgba(16, 24, 40, .3);
-                transition: transform .25s var(--ease);
-            }
-
-            .sw-in:checked~.sw-track {
-                background: var(--ok);
-            }
-
-            .sw-in:checked~.sw-track::after {
-                transform: translateX(20px);
-            }
-
-            .sw-in:focus-visible~.sw-track {
-                outline: 2px solid var(--pri);
-                outline-offset: 2px;
-            }
-
-            .sw-text {
-                flex: 1;
-                min-width: 0;
-                line-height: 1.4;
-            }
-
-            .sw-text strong {
-                display: block;
-                color: var(--ink);
-            }
-
-            .sw-text small {
-                color: var(--mut);
-                font-size: .8rem;
-            }
-
-            .sw-state {
-                flex: none;
-                padding: 2px 10px;
-                border-radius: 99px;
-                font-size: .75rem;
-                font-weight: 700;
-            }
-
-            .sw-state-on {
-                background: var(--ok-t);
-                color: var(--ok);
-                display: none;
-            }
-
-            .sw-state-off {
-                background: var(--err-t);
-                color: var(--err);
-            }
-
-            .sw-in:checked~.sw-state-on {
-                display: inline-block;
-            }
-
-            .sw-in:checked~.sw-state-off {
-                display: none;
-            }
-        </style>
+    @push('js')
+        <script src="{{ asset('admin/landing/pendidikan/pmb/form.js') }}" defer></script>
     @endpush
 </x-dashboard.layout.app>

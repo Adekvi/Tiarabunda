@@ -5,6 +5,7 @@ namespace App\Services\Landing;
 use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
 use App\Models\Layanan\Fasilitas;
+use App\Models\Pendidikan\Pmb;
 use App\Models\Pendidikan\Program\Fakultas;
 use App\Models\Pendidikan\Program\Prodi;
 use Illuminate\Support\Collection;
@@ -18,6 +19,7 @@ class LandingHomeService
     {
         return [
             'fakultas_prodi'   => $this->fakultasProdi(),
+            'jalur'          => $this->jalurPmb(),
             'fasilitas' => $this->fasilitas(),
             'berita' => $this->beritas(),
             'faq' => $this->faqs(),
@@ -65,6 +67,48 @@ class LandingHomeService
         return $rows;
     }
 
+    public function jalurPmb(int $limit = 4): array
+    {
+        $rows = Cache::remember('landing.home.jalur_pmb', self::TTL, function () use ($limit) {
+            $today = now()->startOfDay();
+
+            return Pmb::query()
+                ->select([
+                    'id',
+                    'jeneng',
+                    'tandha',
+                    'katrangan',
+                    'wektu_tutup',
+                    'urutan',
+                    'urip'
+                ])
+                // GUNAKAN WHERE EKSPLISIT JIKA TRAIT RAGU
+                ->where('urip', true)
+                ->where(function ($q) use ($today) {
+                    $q->whereNull('wektu_tutup')
+                        ->orWhereDate('wektu_tutup', '>=', $today);
+                })
+                ->ordered()
+                ->limit($limit)
+                ->get()
+                ->map(function ($p) {
+                    return [
+                        'nama'      => $p->jeneng,
+                        'tandha'    => $p->tandha,
+                        'deskripsi' => strip_tags($p->katrangan ?? ''),
+                    ];
+                })
+                ->values()
+                ->all();
+        });
+
+        if (! is_array($rows)) {
+            Cache::forget('landing.home.jalur_pmb');
+            $rows = [];
+        }
+
+        return $rows;
+    }
 
     public function fasilitas(int $limit = 8): Collection
     {
@@ -183,6 +227,11 @@ class LandingHomeService
         Cache::forget('landing.home.fakultas_prodi');
     }
 
+    public function forgetJalurPmb(): void
+    {
+        Cache::forget('landing.home.jalur_pmb');
+    }
+
     public function forgetFasilitas(): void
     {
         Cache::forget('landing.home.fasilitas');
@@ -201,6 +250,7 @@ class LandingHomeService
     public function forgetHome(): void
     {
         $this->forgetFakultasProdi();
+        $this->forgetJalurPmb();
         $this->forgetFaq();
         $this->forgetBerita();
         $this->forgetFasilitas();
