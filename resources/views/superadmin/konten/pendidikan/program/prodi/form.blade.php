@@ -5,6 +5,7 @@
 
 <x-dashboard.layout.app :title="$pageTitle" :page-title="$pageTitle">
     <div class="g">
+        {{-- ===== Header ===== --}}
         <div class="card" style="padding:14px 22px;">
             <div class="ch2" style="margin-bottom:0;">
                 <div>
@@ -29,20 +30,22 @@
             </div>
         @endif
 
-        <div class="g g2" style="align-items:start;">
+        <div class="g g2" style="align-items:start;gap:20px;">
+            {{-- ===== Kolom Form ===== --}}
             <div class="card" style="min-width:0;">
                 <h2 style="margin-bottom:6px;">Detail program studi</h2>
-                <p style="margin:0 0 20px;font-size:0.85rem;color:var(--mut);">
+                <p style="margin:0 0 22px;font-size:0.85rem;color:var(--mut);">
                     Hubungkan prodi ke fakultas dan lengkapi jenjang serta akreditasi.
                 </p>
 
-                <form method="POST"
+                <form method="POST" id="prodiForm"
                     action="{{ $isEdit ? route('superadmin.prodi.update', $item) : route('superadmin.prodi.store') }}">
                     @csrf
                     @if ($isEdit)
                         @method('PUT')
                     @endif
 
+                    {{-- Fakultas --}}
                     <div class="f">
                         <label for="fakultas_id">Fakultas <span style="color:var(--err)">*</span></label>
                         <select id="fakultas_id" name="fakultas_id" required>
@@ -58,19 +61,28 @@
                         @enderror
                     </div>
 
+                    {{-- Nama Prodi --}}
                     <div class="f">
                         <label for="jeneng">Nama program studi <span style="color:var(--err)">*</span></label>
                         <input id="jeneng" name="jeneng" type="text" required maxlength="150"
-                            value="{{ old('jeneng', $item->jeneng) }}" placeholder="Contoh: D3 Keperawatan">
+                            value="{{ old('jeneng', $item->jeneng) }}" placeholder="Contoh: D3 Keperawatan"
+                            autocomplete="off">
+                        @error('jeneng')
+                            <small style="color:var(--err);">{{ $message }}</small>
+                        @enderror
                     </div>
 
-                    <div class="g g2" style="gap:16px;">
+                    {{-- Jenjang & Akreditasi (sejajar) --}}
+                    <div class="row-2">
                         <div class="f" style="margin-bottom:0;">
                             <label for="undhak">Jenjang <span style="color:var(--err)">*</span></label>
                             <select id="undhak" name="undhak" required>
+                                <option value="">— Pilih Jenjang —</option>
                                 @foreach (['D3', 'D4', 'S1'] as $j)
-                                    <option value="{{ $j }}" @selected(old('undhak', $item->undhak) === $j)>
+                                    <option value="{{ $j }}">
                                         {{ $j }}</option>
+                                    {{-- <option value="{{ $j }}" @selected(old('undhak', $item->undhak) === $j)>
+                                        {{ $j }}</option> --}}
                                 @endforeach
                             </select>
                         </div>
@@ -81,23 +93,45 @@
                         </div>
                     </div>
 
-                    <div class="f">
-                        <label for="tandha">Slug URL (opsional)</label>
+                    {{-- Slug (readonly otomatis) --}}
+                    <div class="f" style="margin-top:20px;">
+                        <label for="tandha">
+                            Slug URL
+                            @if ($isEdit)
+                                <span style="font-weight:400;color:var(--mut);font-size:.78rem;">
+                                    &middot;
+                                    <button type="button" id="tandhaLock"
+                                        style="background:none;border:0;padding:0;cursor:pointer;color:var(--pri);font-weight:600;font-size:.78rem;">
+                                        ubah manual
+                                    </button>
+                                </span>
+                            @endif
+                        </label>
                         <input id="tandha" name="tandha" type="text" maxlength="150"
-                            value="{{ old('tandha', $item->tandha) }}" placeholder="Otomatis dari nama jika kosong">
+                            value="{{ old('tandha', $item->tandha) }}" placeholder="Otomatis dari nama prodi" readonly
+                            data-auto="1">
+                        <small style="color:var(--mut);font-size:.78rem;display:block;margin-top:6px;">
+                            Dibuat otomatis dari nama program studi. Hanya huruf, angka, dan tanda hubung.
+                        </small>
+                        @error('tandha')
+                            <small style="color:var(--err);">{{ $message }}</small>
+                        @enderror
                     </div>
 
+                    {{-- Deskripsi --}}
                     <div class="f">
                         <label for="katrangan">Deskripsi singkat</label>
                         <textarea id="katrangan" name="katrangan" rows="5" placeholder="Ringkasan prodi…">{{ old('katrangan', $item->katrangan) }}</textarea>
                     </div>
 
-                    <div class="f" style="max-width:240px;">
+                    {{-- Urutan --}}
+                    <div class="f" style="max-width:260px;">
                         <label for="urutan">Urutan tampil</label>
                         <input id="urutan" type="number" name="urutan" min="0" max="9999"
                             value="{{ old('urutan', $item->urutan ?? 0) }}">
                     </div>
 
+                    {{-- Publikasi --}}
                     <div class="f">
                         <span class="f-label">Publikasi</span>
                         <label class="sw" for="urip">
@@ -114,150 +148,86 @@
                         </label>
                     </div>
 
+                    {{-- Aksi --}}
                     <div
-                        style="display:flex;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line);">
+                        style="display:flex;gap:10px;margin-top:28px;padding-top:22px;border-top:1px solid var(--line);">
                         <button type="submit" class="btn">{{ $isEdit ? 'Simpan perubahan' : 'Simpan' }}</button>
                         <a href="{{ route('superadmin.prodi.index') }}" class="btn gh">Batal</a>
                     </div>
                 </form>
             </div>
 
-            <div class="g" style="gap:16px;">
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Panduan</h3>
-                    <ul style="margin:0;padding-left:18px;color:var(--mut);font-size:0.88rem;line-height:1.7;">
-                        <li>Pilih fakultas yang sudah aktif.</li>
-                        <li>Jenjang wajib: D3, D4, atau S1.</li>
-                        <li>Status akreditasi bisa diisi nanti lewat menu ini atau halaman Akreditasi.</li>
+            {{-- ===== Sidebar Kanan ===== --}}
+            <aside class="g" style="gap:16px;">
+                {{-- Ringkasan Mode --}}
+                <div class="card side-summary">
+                    <div class="side-head">
+                        <span class="side-badge {{ $isEdit ? 'is-edit' : 'is-new' }}">
+                            {{ $isEdit ? 'Mode Edit' : 'Prodi Baru' }}
+                        </span>
+                        <h3 style="margin:0;">{{ $isEdit ? 'Perbarui data' : 'Buat prodi' }}</h3>
+                        <p>Lengkapi data inti di bawah. Kolom bertanda <span style="color:var(--err)">*</span> wajib
+                            diisi.</p>
+                    </div>
+
+                    <ul class="side-checklist" id="checklist">
+                        <li data-check="fakultas_id">
+                            <span class="dot"></span> Fakultas dipilih
+                        </li>
+                        <li data-check="jeneng">
+                            <span class="dot"></span> Nama program studi
+                        </li>
+                        <li data-check="undhak">
+                            <span class="dot"></span> Jenjang ditentukan
+                        </li>
+                        <li data-check="akred">
+                            <span class="dot"></span> Akreditasi (opsional)
+                        </li>
+                        <li data-check="katrangan">
+                            <span class="dot"></span> Deskripsi singkat
+                        </li>
                     </ul>
-                </div>
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Status form</h3>
-                    <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                        <span style="color:var(--mut);">Mode</span>
-                        <strong>{{ $isEdit ? 'Edit' : 'Buat baru' }}</strong>
+
+                    <div class="side-progress">
+                        <div class="side-progress-bar"><span id="progressBar" style="width:0%"></span></div>
+                        <small><span id="progressText">0</span>% lengkap</small>
                     </div>
                 </div>
-            </div>
+
+                {{-- Info Fakultas terpilih --}}
+                <div class="card side-fakultas" id="fakultasCard" hidden>
+                    <h3 style="margin-bottom:10px;">Fakultas terpilih</h3>
+                    <div class="side-kv">
+                        <span>Nama</span>
+                        <strong id="fakNama">—</strong>
+                    </div>
+                </div>
+
+                {{-- Panduan --}}
+                <div class="card">
+                    <h3 style="margin-bottom:10px;">Panduan</h3>
+                    <ul class="side-tips">
+                        <li>Pilih fakultas yang sudah aktif.</li>
+                        <li>Jenjang wajib: D3, D4, atau S1.</li>
+                        <li>Slug dibuat otomatis dari nama prodi dan bersifat <em>readonly</em>.</li>
+                        <li>Status akreditasi bisa dilengkapi nanti.</li>
+                    </ul>
+                </div>
+
+                {{-- Live preview slug --}}
+                <div class="card side-preview">
+                    <h3 style="margin-bottom:10px;">Pratinjau URL</h3>
+                    <code id="slugPreview">/prodi/…</code>
+                </div>
+            </aside>
         </div>
     </div>
 
     @push('css')
-        <style>
-            /* ---------- Switch publikasi ---------- */
-            .f .f-label {
-                font-weight: 600;
-                font-size: .85rem;
-            }
+        <link rel="stylesheet" href="{{ asset('admin/landing/pendidikan/prodi/form.css') }}">
+    @endpush
 
-            .f label.sw {
-                position: relative;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                padding: 14px 16px;
-                border: 1px solid var(--line);
-                border-radius: 12px;
-                background: var(--bg);
-                font-weight: 400;
-                font-size: .9rem;
-                cursor: pointer;
-                transition: border-color .2s, background .2s;
-            }
-
-            .f label.sw:hover {
-                border-color: var(--pri);
-            }
-
-            /* sembunyikan checkbox asli (lawan aturan .f input) */
-            .f .sw .sw-in {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                border: 0;
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            .sw-track {
-                position: relative;
-                flex: none;
-                width: 44px;
-                height: 24px;
-                border-radius: 99px;
-                background: var(--line);
-                transition: background .25s;
-            }
-
-            .sw-track::after {
-                content: '';
-                position: absolute;
-                top: 3px;
-                left: 3px;
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: #fff;
-                box-shadow: 0 1px 3px rgba(16, 24, 40, .3);
-                transition: transform .25s var(--ease);
-            }
-
-            .sw-in:checked~.sw-track {
-                background: var(--ok);
-            }
-
-            .sw-in:checked~.sw-track::after {
-                transform: translateX(20px);
-            }
-
-            .sw-in:focus-visible~.sw-track {
-                outline: 2px solid var(--pri);
-                outline-offset: 2px;
-            }
-
-            .sw-text {
-                flex: 1;
-                min-width: 0;
-                line-height: 1.4;
-            }
-
-            .sw-text strong {
-                display: block;
-                color: var(--ink);
-            }
-
-            .sw-text small {
-                color: var(--mut);
-                font-size: .8rem;
-            }
-
-            .sw-state {
-                flex: none;
-                padding: 2px 10px;
-                border-radius: 99px;
-                font-size: .75rem;
-                font-weight: 700;
-            }
-
-            .sw-state-on {
-                background: var(--ok-t);
-                color: var(--ok);
-                display: none;
-            }
-
-            .sw-state-off {
-                background: var(--err-t);
-                color: var(--err);
-            }
-
-            .sw-in:checked~.sw-state-on {
-                display: inline-block;
-            }
-
-            .sw-in:checked~.sw-state-off {
-                display: none;
-            }
-        </style>
+    @push('js')
+        <script src="{{ asset('admin/landing/pendidikan/prodi/form.js') }}" defer></script>
     @endpush
 </x-dashboard.layout.app>

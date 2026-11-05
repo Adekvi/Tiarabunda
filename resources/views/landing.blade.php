@@ -10,7 +10,9 @@
         <x-landing.section.sambutan />
         <x-landing.section.alasan />
         <x-landing.section.statistik />
-        <x-landing.section.prodi />
+
+        {{-- Pendidikan --}}
+        <x-landing.section.prodi :fakultas="$home['fakultas_prodi']['fakultas'] ?? []" :prodi="$home['fakultas_prodi']['prodi'] ?? []" />
 
         {{-- Fasilitas --}}
         <x-landing.section.fasilitas :items="$home['fasilitas'] ?? []" />

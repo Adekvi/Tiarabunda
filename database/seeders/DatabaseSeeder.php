@@ -3,9 +3,12 @@
 namespace Database\Seeders;
 
 // use App\Models\User;
+
 use Database\Seeders\Auth\UserSeeder;
 use Database\Seeders\Landing\Informasi\FaqSeeder;
 use Database\Seeders\Landing\Layanan\FasilitasSeeder;
+use Database\Seeders\Landing\Pendidikan\FakultasSeeder;
+use Database\Seeders\Landing\Pendidikan\ProdiSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +23,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+
+            // Landing Pendidikan
+            FakultasSeeder::class,
+            ProdiSeeder::class,
 
             // Landing Layanan
             FasilitasSeeder::class,

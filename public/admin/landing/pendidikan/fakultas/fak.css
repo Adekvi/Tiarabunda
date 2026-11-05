@@ -1,0 +1,753 @@
+/* Baris nonaktif */
+table tr.is-muted td:not(:last-child) {
+    opacity: 0.65;
+}
+
+table tr.is-muted td:first-child {
+    border-left: 3px solid var(--err);
+}
+
+/* Statistik sidebar */
+.stat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 0.9rem;
+}
+
+.stat-row:last-child {
+    border-bottom: 0;
+}
+
+.stat-label {
+    color: var(--mut);
+}
+
+.stat-value {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* Pagination rapi */
+.faq-pager {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.faq-pager p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--mut);
+}
+
+.faq-pager nav {
+    display: flex;
+    gap: 4px;
+}
+
+.faq-pager nav a,
+.faq-pager nav span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    transition:
+        background 0.15s,
+        border-color 0.15s;
+}
+
+.faq-pager nav a:hover {
+    background: var(--bg);
+    border-color: var(--pri);
+    color: var(--pri);
+}
+
+.faq-pager nav .active span,
+.faq-pager nav [aria-current='page'] span {
+    background: var(--pri);
+    border-color: var(--pri);
+    color: #fff;
+}
+
+.faq-pager nav .disabled span {
+    opacity: 0.4;
+}
+
+/* =========================================================
+   Sidebar Fakultas — hero statistik, aksi, info, danger
+   ========================================================= */
+
+.fac-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 16px;
+    align-self: start;
+}
+
+/* ---------- 1. Hero statistik ---------- */
+.fac-hero {
+    position: relative;
+    padding: 20px;
+    border-radius: 14px;
+    background:
+        radial-gradient(
+            120% 100% at 0% 0%,
+            rgba(99, 102, 241, 0.12),
+            transparent 60%
+        ),
+        linear-gradient(180deg, var(--bg), transparent);
+    border: 1px solid var(--line);
+    overflow: hidden;
+}
+.fac-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.5),
+        transparent 40%
+    );
+    opacity: 0.4;
+    mix-blend-mode: soft-light;
+}
+.fac-hero__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.fac-hero__label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--mut);
+}
+.fac-hero__badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 99px;
+    background: var(--ok-t, rgba(16, 185, 129, 0.12));
+    color: var(--ok, #10b981);
+}
+.fac-hero__value {
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+}
+
+.fac-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 99px;
+    overflow: hidden;
+    background: var(--line);
+    margin-top: 14px;
+}
+.fac-bar__ok {
+    background: var(--ok, #10b981);
+}
+.fac-bar__err {
+    background: var(--err, #ef4444);
+}
+
+.fac-bar__legend {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--mut);
+}
+.fac-bar__legend .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+.dot-ok {
+    background: var(--ok, #10b981);
+}
+.dot-err {
+    background: var(--err, #ef4444);
+}
+
+.fac-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+}
+.fac-hero__cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.fac-hero__cell-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--mut);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.fac-hero__cell-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--ink);
+}
+.fac-hero__cell-value.is-err {
+    color: var(--err, #ef4444);
+}
+
+/* ---------- 2. Card umum ---------- */
+.fac-card {
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+}
+.fac-card__title {
+    margin: 0 0 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--mut);
+}
+.fac-card__desc {
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    color: var(--mut);
+    line-height: 1.6;
+}
+
+/* ---------- 2b. Aksi cepat ---------- */
+.fac-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.fac-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--ink);
+    transition:
+        background 0.15s,
+        transform 0.15s;
+}
+.fac-action:hover {
+    background: var(--bg);
+    transform: translateX(2px);
+}
+.fac-action__ico {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--c) 14%, transparent);
+    color: var(--c);
+}
+.fac-action__txt {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+.fac-action__txt strong {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+.fac-action__txt small {
+    font-size: 0.75rem;
+    color: var(--mut);
+}
+.fac-action__count {
+    flex: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: var(--err-t, rgba(239, 68, 68, 0.12));
+    color: var(--err, #ef4444);
+}
+
+/* ---------- 3. Info ---------- */
+.fac-card--info {
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--pri) 6%, transparent),
+            transparent 70%
+        ),
+        var(--bg);
+}
+.fac-info {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+.fac-info__ico {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--pri) 14%, transparent);
+    color: var(--pri);
+}
+.fac-info__title {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+}
+.fac-info__desc {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--mut);
+    line-height: 1.55;
+}
+.fac-info__desc b {
+    color: var(--ink);
+    font-weight: 700;
+}
+
+/* ---------- 4. Danger ---------- */
+.fac-card--danger {
+    border-color: color-mix(in srgb, var(--err) 35%, var(--line));
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--err) 6%, transparent),
+            transparent 60%
+        ),
+        var(--bg);
+}
+.fac-card__title--danger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--err);
+}
+.fac-btn-danger {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid color-mix(in srgb, var(--err) 40%, var(--line));
+    background: transparent;
+    color: var(--err);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+.fac-btn-danger:hover {
+    background: var(--err);
+    color: #fff;
+}
+
+/* ===== Recovery / trash banner ===== */
+.rec-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--acc, #f58220) 35%, var(--line));
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--acc, #f58220) 10%, transparent),
+            color-mix(in srgb, var(--pri) 6%, transparent)
+        ),
+        var(--card);
+}
+
+.rec-banner__main {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.rec-banner__ico {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--acc, #f58220) 16%, transparent);
+    color: var(--acc, #f58220);
+}
+
+.rec-banner__body {
+    min-width: 0;
+}
+
+.rec-banner__head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.rec-banner__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.rec-banner__pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: color-mix(in srgb, var(--acc, #f58220) 18%, transparent);
+    color: var(--acc, #f58220);
+}
+
+.rec-banner__desc {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--mut);
+}
+
+.rec-banner__btn {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 9px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    background: var(--pri);
+    border: 1px solid transparent;
+    transition:
+        background 0.15s,
+        transform 0.15s;
+}
+
+.rec-banner__btn:hover {
+    background: var(--pri-d, #154a99);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 720px) {
+    .rec-banner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .rec-banner__btn {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* ===== Empty ===== */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px;
+    border-radius: 14px;
+    border: 1px dashed var(--line);
+    background: var(--card);
+}
+.empty-state__ring {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--mut) 12%, transparent);
+    color: var(--mut);
+}
+.empty-state__title {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+.empty-state__desc {
+    margin: 0 0 18px;
+    max-width: 38ch;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--mut);
+}
+.empty-state .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== Toolbar ===== */
+.trash-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--err) 28%, var(--line));
+    background: color-mix(in srgb, var(--err) 6%, var(--card));
+}
+.trash-toolbar__count {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+.trash-toolbar__hint {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.78rem;
+    color: var(--mut);
+}
+.btn-danger--outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--err);
+    border: 1px solid color-mix(in srgb, var(--err) 45%, var(--line));
+}
+.btn-danger--outline:hover {
+    background: var(--err);
+    color: #fff;
+}
+
+/* ===== Table alignment ===== */
+.fk-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+}
+
+.fk-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* kunci supaya kolom sejajar */
+}
+
+.fk-table th,
+.fk-table td {
+    padding: 12px 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+}
+
+.fk-table thead th {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--mut);
+    background: color-mix(in srgb, var(--bg) 80%, var(--card));
+}
+
+.fk-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.fk-table tbody tr:hover td {
+    background: color-mix(in srgb, var(--pri) 4%, transparent);
+}
+
+/* Kolom angka & aksi */
+.fk-table .is-num {
+    width: 56px;
+    text-align: center;
+    color: var(--mut);
+    font-variant-numeric: tabular-nums;
+}
+
+.fk-table .is-actions {
+    width: 120px;
+    text-align: right;
+}
+
+.fk-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: color-mix(in srgb, var(--mut) 10%, transparent);
+}
+
+.fk-main {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.fk-name {
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+}
+
+.fk-code {
+    display: inline-block;
+    width: fit-content;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: ui-monospace, monospace;
+    background: color-mix(in srgb, var(--pri) 12%, transparent);
+    color: var(--pri);
+}
+
+.fk-time {
+    font-size: 0.82rem;
+    color: var(--mut);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.fk-time.is-muted {
+    opacity: 0.5;
+}
+
+/* Aksi sejajar kanan */
+.fk-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.fk-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s;
+}
+
+.fk-btn--ok {
+    color: var(--ok);
+    background: color-mix(in srgb, var(--ok) 12%, transparent);
+    border-color: color-mix(in srgb, var(--ok) 22%, transparent);
+}
+
+.fk-btn--ok:hover {
+    background: var(--ok);
+    color: #fff;
+}
+
+.fk-btn--danger {
+    color: var(--err);
+    background: color-mix(in srgb, var(--err) 10%, transparent);
+}
+
+.fk-btn--danger:hover {
+    background: var(--err);
+    color: #fff;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+@media (max-width: 720px) {
+    .trash-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .trash-toolbar .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .fk-table {
+        table-layout: auto;
+    }
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 1024px) {
+    .fac-aside {
+        position: static;
+    }
+}

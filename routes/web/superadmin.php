@@ -36,13 +36,38 @@ Route::middleware(['auth', 'can:access-superadmin'])
         /*
         | Pendidikan
         */
-        Route::resource('fakultas', FakultasController::class)->except(['show']);
-        Route::patch('fakultas/{fakultas}/toggle', [FakultasController::class, 'toggle'])
-            ->name('fakultas.toggle');
+        Route::prefix('fakultas')->name('fakultas.')->group(function () {
+            Route::get('/',               [FakultasController::class, 'index'])->name('index');
+            Route::get('/sampah',         [FakultasController::class, 'trashed'])->name('trashed');
+            Route::get('/create',         [FakultasController::class, 'create'])->name('create');
+            Route::post('/',              [FakultasController::class, 'store'])->name('store');
 
-        Route::resource('prodi', ProdiController::class)->except(['show']);
-        Route::patch('prodi/{prodi}/toggle', [ProdiController::class, 'toggle'])
-            ->name('prodi.toggle');
+            // Statis dulu
+            Route::delete('/sampah/kosongkan', [FakultasController::class, 'emptyTrash'])->name('empty-trash');
+            Route::post('/sampah/{id}/restore', [FakultasController::class, 'restore'])->name('restore');
+            Route::delete('/sampah/{id}/force', [FakultasController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{fakultas}/edit', [FakultasController::class, 'edit'])->name('edit');
+            Route::put('/{fakultas}',     [FakultasController::class, 'update'])->name('update');
+            Route::delete('/{fakultas}',  [FakultasController::class, 'destroy'])->name('destroy');
+            Route::patch('/{fakultas}/toggle', [FakultasController::class, 'toggle'])->name('toggle');
+        });
+
+        Route::prefix('prodi')->name('prodi.')->group(function () {
+            Route::get('/', [ProdiController::class, 'index'])->name('index');
+            Route::get('/sampah', [ProdiController::class, 'trashed'])->name('trashed');
+            Route::get('/create', [ProdiController::class, 'create'])->name('create');
+            Route::post('/', [ProdiController::class, 'store'])->name('store');
+
+            Route::delete('/sampah/kosongkan', [ProdiController::class, 'emptyTrash'])->name('empty-trash');
+            Route::post('/sampah/{id}/restore', [ProdiController::class, 'restore'])->name('restore');
+            Route::delete('/sampah/{id}/force', [ProdiController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{prodi}/edit', [ProdiController::class, 'edit'])->name('edit');
+            Route::put('/{prodi}', [ProdiController::class, 'update'])->name('update');
+            Route::delete('/{prodi}', [ProdiController::class, 'destroy'])->name('destroy');
+            Route::patch('/{prodi}/toggle', [ProdiController::class, 'toggle'])->name('toggle');
+        });
 
         Route::resource('pmb', PmbController::class)->except(['show']);
         Route::patch('pmb/{pmb}/toggle', [PmbController::class, 'toggle'])

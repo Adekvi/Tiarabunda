@@ -1,0 +1,280 @@
+/* ---------- Layout & spacing ---------- */
+.row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 640px) {
+    .row-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+#prodiForm .f {
+    margin-bottom: 18px;
+}
+
+/* ---------- Switch publikasi ---------- */
+.f .f-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.f label.sw {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    font-weight: 400;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition:
+        border-color 0.2s,
+        background 0.2s;
+}
+
+.f label.sw:hover {
+    border-color: var(--pri);
+}
+
+.f .sw .sw-in {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sw-track {
+    position: relative;
+    flex: none;
+    width: 44px;
+    height: 24px;
+    border-radius: 99px;
+    background: var(--line);
+    transition: background 0.25s;
+}
+
+.sw-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.3);
+    transition: transform 0.25s var(--ease);
+}
+
+.sw-in:checked ~ .sw-track {
+    background: var(--ok);
+}
+
+.sw-in:checked ~ .sw-track::after {
+    transform: translateX(20px);
+}
+
+.sw-in:focus-visible ~ .sw-track {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+.sw-text {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.4;
+}
+
+.sw-text strong {
+    display: block;
+    color: var(--ink);
+}
+
+.sw-text small {
+    color: var(--mut);
+    font-size: 0.8rem;
+}
+
+.sw-state {
+    flex: none;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.sw-state-on {
+    background: var(--ok-t);
+    color: var(--ok);
+    display: none;
+}
+
+.sw-state-off {
+    background: var(--err-t);
+    color: var(--err);
+}
+
+.sw-in:checked ~ .sw-state-on {
+    display: inline-block;
+}
+
+.sw-in:checked ~ .sw-state-off {
+    display: none;
+}
+
+/* ---------- Sidebar kanan ---------- */
+.side-head h3 {
+    font-size: 1.02rem;
+    margin: 10px 0 6px;
+}
+
+.side-head p {
+    margin: 0 0 14px;
+    font-size: 0.84rem;
+    color: var(--mut);
+    line-height: 1.55;
+}
+
+.side-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.side-badge.is-new {
+    background: var(--pri-t, #eef2ff);
+    color: var(--pri);
+}
+
+.side-badge.is-edit {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.side-checklist {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+}
+
+.side-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.86rem;
+    color: var(--mut);
+    transition: color 0.2s;
+}
+
+.side-checklist .dot {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line);
+    display: inline-grid;
+    place-items: center;
+    transition: all 0.2s;
+}
+
+.side-checklist .dot::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transform: scale(0);
+    transition: transform 0.2s;
+}
+
+.side-checklist li.done {
+    color: var(--ink);
+}
+
+.side-checklist li.done .dot {
+    border-color: var(--ok);
+    background: var(--ok-t);
+}
+
+.side-checklist li.done .dot::after {
+    background: var(--ok);
+    transform: scale(1);
+}
+
+.side-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.side-progress-bar {
+    flex: 1;
+    height: 8px;
+    border-radius: 99px;
+    background: var(--line);
+    overflow: hidden;
+}
+
+.side-progress-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--pri), var(--ok));
+    transition: width 0.35s var(--ease);
+}
+
+.side-progress small {
+    flex: none;
+    font-size: 0.78rem;
+    color: var(--mut);
+    font-weight: 600;
+}
+
+.side-kv {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.86rem;
+}
+
+.side-kv span {
+    color: var(--mut);
+}
+
+.side-kv strong {
+    text-align: right;
+}
+
+.side-tips {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--mut);
+    font-size: 0.86rem;
+    line-height: 1.7;
+}
+
+.side-preview code {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    font-size: 0.82rem;
+    color: var(--pri);
+    word-break: break-all;
+}
