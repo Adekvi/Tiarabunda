@@ -11,7 +11,9 @@
         <x-landing.section.alasan />
         <x-landing.section.statistik />
         <x-landing.section.prodi />
-        <x-landing.section.fasilitas />
+
+        {{-- Fasilitas --}}
+        <x-landing.section.fasilitas :items="$home['fasilitas'] ?? []" />
 
         {{-- Berita --}}
         <x-landing.section.berita :items="$home['berita'] ?? []" />

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use App\Models\User;
 use Database\Seeders\Auth\UserSeeder;
 use Database\Seeders\Landing\Informasi\FaqSeeder;
+use Database\Seeders\Landing\Layanan\FasilitasSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,8 +21,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
 
-            // Landing Informasi - Menu Faq
+            // Landing Layanan
+            FasilitasSeeder::class,
+
+            // Landing Informasi
             FaqSeeder::class,
+
         ]);
 
         // User::factory(10)->create();

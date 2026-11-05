@@ -154,6 +154,7 @@
                     @include('superadmin.konten.informasi.berita.partials.paginate', [
                         'items' => $items,
                     ])
+
                 </div>
             </div>
 
@@ -294,6 +295,8 @@
             </aside>
         </div>
     </div>
+
+    {{-- @include('superadmin.konten.layanan.fasilitas.modal.confir-modal') --}}
 
     @push('css')
         <link rel="stylesheet" href="{{ asset('admin/landing/informasi/berita/index.css') }}">

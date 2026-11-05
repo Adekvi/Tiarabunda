@@ -71,9 +71,21 @@ Route::middleware(['auth', 'can:access-superadmin'])
         Route::patch('karir/{karir}/toggle', [KarirController::class, 'toggle'])
             ->name('karir.toggle');
 
-        Route::resource('fasilitas', FasilitasController::class)->except(['show']);
-        Route::patch('fasilitas/{fasilitas}/toggle', [FasilitasController::class, 'toggle'])
-            ->name('fasilitas.toggle');
+        Route::prefix('fasilitas')->name('fasilitas.')->group(function () {
+            // Trash dulu supaya tidak ketabrak {fasilita}
+            Route::get('trashed',            [FasilitasController::class, 'trashed'])->name('trashed');
+            Route::post('trashed/empty',     [FasilitasController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('trashed/{id}/restore', [FasilitasController::class, 'restore'])->name('restore');
+            Route::delete('trashed/{id}/force',  [FasilitasController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/',           [FasilitasController::class, 'index'])->name('index');
+            Route::get('create',      [FasilitasController::class, 'create'])->name('create');
+            Route::post('/',          [FasilitasController::class, 'store'])->name('store');
+            Route::get('{fasilita}/edit', [FasilitasController::class, 'edit'])->name('edit');
+            Route::put('{fasilita}',  [FasilitasController::class, 'update'])->name('update');
+            Route::delete('{fasilita}', [FasilitasController::class, 'destroy'])->name('destroy');
+            Route::patch('{fasilita}/toggle', [FasilitasController::class, 'toggle'])->name('toggle');
+        });
 
         /*
         | Informasi
@@ -89,6 +101,12 @@ Route::middleware(['auth', 'can:access-superadmin'])
         Route::resource('kegiatan', KegiatanController::class)->except(['show']);
         Route::patch('kegiatan/{kegiatan}/toggle', [KegiatanController::class, 'toggle'])
             ->name('kegiatan.toggle');
+        Route::post('/{id}/restore', [KegiatanController::class, 'restore'])
+            ->whereNumber('id')
+            ->name('restore');
+        Route::delete('/{id}/force-delete', [KegiatanController::class, 'forceDelete'])
+            ->whereNumber('id')
+            ->name('force-delete');
 
         Route::resource('faq', FaqController::class)->except(['show']);
         Route::patch('faq/{faq}/toggle', [FaqController::class, 'toggle'])

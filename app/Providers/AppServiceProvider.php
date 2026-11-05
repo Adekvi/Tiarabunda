@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
+use App\Models\Informasi\Kegiatan;
 use App\Observers\Landing\Informasi\Berita\BeritaObserver;
 use App\Observers\Landing\Informasi\Faq\FaqObserver;
+use App\Observers\Landing\Informasi\Kegiatan\KegiatanObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -37,8 +39,12 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrapFive();
 
-        // Landing page Menu Informasi - Faq
+        Paginator::defaultView('superadmin.konten.layanan.fasilitas.partials.pagination');
+        Paginator::defaultSimpleView('superadmin.konten.layanan.fasilitas.partials.pagination');
+
+        // Landing page Menu Informasi
         Faq::observe(FaqObserver::class);
         Berita::observe(BeritaObserver::class);
+        Kegiatan::observe(KegiatanObserver::class);
     }
 }

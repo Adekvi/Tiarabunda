@@ -5,76 +5,121 @@ namespace App\Services\Media;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class ImageOptimizer
 {
     /**
      * Simpan gambar utama + thumb. Menggunakan GD (bawaan PHP).
      *
-     * @return array{path: string, thumb: string|null}
+     * @return array{path: string, thumb: string}
      */
     public function store(UploadedFile $file, string $folder = 'fasilitas'): array
     {
+        $real = $file->getRealPath();
+        if ($real === false) {
+            throw new RuntimeException('File upload tidak dapat dibaca.');
+        }
+
         $disk = Storage::disk('public');
         $base = $folder . '/' . Str::uuid()->toString();
-        $mainPath = $base . '.jpg';
+        $mainPath  = $base . '.jpg';
         $thumbPath = $base . '_thumb.jpg';
 
-        $binary = $this->readAndResize($file->getRealPath(), 1600, 82);
-        $disk->put($mainPath, $binary);
+        try {
+            $binary = $this->readAndResize($real, 1200, 75);
+            if (! $disk->put($mainPath, $binary)) {
+                throw new RuntimeException('Gagal menyimpan gambar utama.');
+            }
 
-        $thumbBinary = $this->readAndResize($file->getRealPath(), 480, 78);
-        $disk->put($thumbPath, $thumbBinary);
+            $thumbBinary = $this->readAndResize($real, 720, 72);
+            if (! $disk->put($thumbPath, $thumbBinary)) {
+                throw new RuntimeException('Gagal menyimpan thumbnail.');
+            }
+        } catch (\Throwable $e) {
+            // rollback: hapus file yang mungkin sudah terlanjur tersimpan
+            $disk->delete([$mainPath, $thumbPath]);
+            throw $e;
+        }
 
         return [
-            'path' => $mainPath,
+            'path'  => $mainPath,
             'thumb' => $thumbPath,
         ];
     }
 
-    public function delete(?string $path, ?string $thumb = null): void
+    public function delete(?string ...$paths): void
     {
-        $disk = Storage::disk('public');
-        if ($path) {
-            $disk->delete($path);
+        $paths = array_values(array_filter(
+            array_unique($paths ?? []),
+            fn($p) => is_string($p) && $p !== ''
+        ));
+
+        if ($paths === []) {
+            return;
         }
-        if ($thumb) {
-            $disk->delete($thumb);
-        }
+
+        Storage::disk('public')->delete($paths);
     }
 
     private function readAndResize(string $source, int $maxWidth, int $quality): string
     {
-        [$w, $h, $type] = getimagesize($source);
-        $src = match ($type) {
-            IMAGETYPE_JPEG => imagecreatefromjpeg($source),
-            IMAGETYPE_PNG => imagecreatefrompng($source),
-            IMAGETYPE_WEBP => function_exists('imagecreatefromwebp')
-                ? imagecreatefromwebp($source)
-                : imagecreatefromjpeg($source),
-            default => imagecreatefromjpeg($source),
-        };
-
-        if ($w > $maxWidth) {
-            $nw = $maxWidth;
-            $nh = (int) round($h * ($maxWidth / $w));
-        } else {
-            $nw = $w;
-            $nh = $h;
+        $info = @getimagesize($source);
+        if ($info === false) {
+            throw new RuntimeException('File bukan gambar yang valid.');
         }
 
-        $dst = imagecreatetruecolor($nw, $nh);
-        $white = imagecolorallocate($dst, 255, 255, 255);
-        imagefill($dst, 0, 0, $white);
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+        [$w, $h, $type] = $info;
 
-        ob_start();
-        imagejpeg($dst, null, $quality);
-        $out = ob_get_clean();
+        if ($type === IMAGETYPE_WEBP && ! function_exists('imagecreatefromwebp')) {
+            throw new RuntimeException('Server tidak mendukung WebP. Gunakan JPG/PNG.');
+        }
 
-        imagedestroy($src);
-        imagedestroy($dst);
+        $src = match ($type) {
+            IMAGETYPE_JPEG => imagecreatefromjpeg($source),
+            IMAGETYPE_PNG  => imagecreatefrompng($source),
+            IMAGETYPE_WEBP => imagecreatefromwebp($source),
+            default        => false,
+        };
 
-        return $out;
+        if (! $src) {
+            throw new RuntimeException('Format gambar tidak didukung atau file rusak.');
+        }
+
+        try {
+            if ($w > $maxWidth) {
+                $nw = $maxWidth;
+                $nh = (int) round($h * ($maxWidth / $w));
+            } else {
+                $nw = $w;
+                $nh = $h;
+            }
+
+            $dst = imagecreatetruecolor($nw, $nh);
+            if (! $dst) {
+                throw new RuntimeException('Gagal membuat kanvas gambar.');
+            }
+
+            $white = imagecolorallocate($dst, 255, 255, 255);
+            imagefill($dst, 0, 0, $white);
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+
+            ob_start();
+            $ok = imagejpeg($dst, null, $quality);
+            $out = ob_get_clean();
+
+            if (! $ok || ! is_string($out) || $out === '') {
+                throw new RuntimeException('Gagal mengompres gambar.');
+            }
+
+            return $out;
+        } finally {
+            if (isset($dst) && $dst instanceof \GdImage) {
+                imagedestroy($dst);
+            }
+            if ($src instanceof \GdImage) {
+                imagedestroy($src);
+            }
+        }
     }
 }

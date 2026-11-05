@@ -22,8 +22,15 @@
                 <article class="nf">
                     @if (!empty($f['img']))
                         <div class="nf-cover">
-                            <img src="{{ $f['img'] }}" alt="{{ $f['t'] ?? '' }}" loading="lazy"
+                            <img src="{{ $f['img'] }}" alt="{{ $f['t'] ?? '' }}" width="800" height="450"
+                                loading="eager" fetchpriority="high" decoding="sync"
                                 onerror="this.style.display='none'">
+                        </div>
+                    @endif
+                    @if (!empty($n['img']))
+                        <div class="nl-thumb">
+                            <img src="{{ $n['img'] }}" alt="{{ $n['t'] ?? '' }}" width="160" height="120"
+                                loading="lazy" decoding="async" onerror="this.style.display='none'">
                         </div>
                     @endif
                     <div class="nf-body">

@@ -15,9 +15,8 @@ class Kegiatan extends Model
     protected $fillable = [
         'judhul',
         'tandha',
-        'ringkesan',
-        'isi',
-        'lokasi',
+        'katrangan',
+        'papan',
         'wektu_mulai',
         'wektu_rampung',
         'path_sampul',
@@ -33,19 +32,25 @@ class Kegiatan extends Model
             'urutan' => 'integer',
             'wektu_mulai' => 'datetime',
             'wektu_rampung' => 'datetime',
+            'deleted_at' => 'datetime',
         ];
     }
 
-    /** Kegiatan yang sudah / sedang relevan untuk publik */
+    /**
+     * Kegiatan yang masih relevan untuk ditampilkan ke publik.
+     */
     public function scopeTerjadwal(Builder $query): Builder
     {
         return $query->active()
-            ->where(function ($q) {
-                $q->whereNull('wektu_mulai')
+            ->where(function (Builder $query) {
+                $query->whereNull('wektu_mulai')
                     ->orWhere('wektu_mulai', '>=', now()->subDay());
             });
     }
 
+    /**
+     * URL gambar sampul.
+     */
     public function getSampulUrlAttribute(): ?string
     {
         return $this->path_sampul
@@ -53,12 +58,13 @@ class Kegiatan extends Model
             : null;
     }
 
+    /**
+     * URL thumbnail dengan fallback ke gambar sampul.
+     */
     public function getThumbUrlAttribute(): ?string
     {
-        if ($this->path_thumb) {
-            return asset('storage/' . $this->path_thumb);
-        }
-
-        return $this->sampul_url;
+        return $this->path_thumb
+            ? asset('storage/' . $this->path_thumb)
+            : $this->sampul_url;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services\Landing;
 
 use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
+use App\Models\Layanan\Fasilitas;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,6 +17,7 @@ class LandingHomeService
         return [
             'faq' => $this->faqs(),
             'berita' => $this->beritas(),
+            'fasilitas' => $this->fasilitas(),
         ];
     }
 
@@ -90,6 +92,47 @@ class LandingHomeService
         return collect($rows);
     }
 
+    public function fasilitas(int $limit = 8): Collection
+    {
+        $rows = Cache::remember('landing.home.fasilitas', self::TTL, function () use ($limit) {
+            return Fasilitas::query()
+                ->select([
+                    'id',
+                    'jeneng',
+                    'tandha',
+                    'katrangan',
+                    'path_gambar',
+                    'path_thumb',
+                    'urutan',
+                    'urip',
+                ])
+                ->active()        // ← hanya urip = true
+                ->ordered()       // ← urut sesuai master
+                ->limit($limit)
+                ->get()
+                ->map(function ($f) {
+                    /** @var Fasilitas $f */
+
+                    return [
+                        'nama'      => $f->jeneng ?? '',
+                        'tandha'    => $f->tandha,
+                        'katrangan' => $f->katrangan ?? '',
+                        'img'       => $f->thumb_url ?? $f->gambar_url,  // accessor dari model
+                        'urutan'    => $f->urutan,
+                    ];
+                })
+                ->values()
+                ->all(); // ← array murni, konsisten dengan pola faq/berita
+        });
+
+        if (! is_array($rows)) {
+            Cache::forget('landing.home.fasilitas');
+            $rows = [];
+        }
+
+        return collect($rows);
+    }
+
     public function forgetFaq(): void
     {
         Cache::forget('landing.home.faq');
@@ -100,9 +143,15 @@ class LandingHomeService
         Cache::forget('landing.home.berita');
     }
 
+    public function forgetFasilitas(): void
+    {
+        Cache::forget('landing.home.fasilitas');
+    }
+
     public function forgetHome(): void
     {
         $this->forgetFaq();
         $this->forgetBerita();
+        $this->forgetFasilitas();
     }
 }
