@@ -73,23 +73,43 @@
                     </div>
 
                     {{-- Jenjang & Akreditasi (sejajar) --}}
-                    <div class="row-2">
-                        <div class="f" style="margin-bottom:0;">
+                    <div class="row-2" style="align-items: start;">
+                        <div class="f">
                             <label for="undhak">Jenjang <span style="color:var(--err)">*</span></label>
                             <select id="undhak" name="undhak" required>
                                 <option value="">— Pilih Jenjang —</option>
                                 @foreach (['D3', 'D4', 'S1'] as $j)
-                                    <option value="{{ $j }}">
-                                        {{ $j }}</option>
-                                    {{-- <option value="{{ $j }}" @selected(old('undhak', $item->undhak) === $j)>
-                                        {{ $j }}</option> --}}
+                                    <option value="{{ $j }}" @selected(old('undhak', $item->undhak) === $j)>
+                                        {{ $j }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="f" style="margin-bottom:0;">
-                            <label for="akred">Status akreditasi</label>
-                            <input id="akred" name="akred" type="text" maxlength="20"
-                                value="{{ old('akred', $item->akred) }}" placeholder="Contoh: Baik / B / A">
+
+                        <div class="f">
+                            <label for="akreditasi_id">Sertifikat Akreditasi</label>
+                            <select id="akreditasi_id" name="akreditasi_id">
+                                <option value="">— Pilih Sertifikat —</option>
+                                @foreach ($akreditasiList as $akr)
+                                    <option value="{{ $akr->id }}" @selected((string) old('akreditasi_id', $item->akreditasi_id) === (string) $akr->id)>
+                                        {{ $akr->status_akred }} - {{ $akr->jeneng }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="f-hint" style="margin-top:8px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Belum ada datanya?
+                                <a href="{{ route('superadmin.akreditasi.create') }}" target="_blank">Tambah di menu
+                                    Akreditasi</a>.
+                            </div>
+                            @error('akreditasi_id')
+                                <small style="color:var(--err);">{{ $message }}</small>
+                            @enderror
                         </div>
                     </div>
 

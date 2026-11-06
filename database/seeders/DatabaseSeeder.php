@@ -7,10 +7,12 @@ namespace Database\Seeders;
 use Database\Seeders\Auth\UserSeeder;
 use Database\Seeders\Landing\Informasi\FaqSeeder;
 use Database\Seeders\Landing\Layanan\FasilitasSeeder;
+use Database\Seeders\Landing\Pendidikan\AkreditasiSeeder;
 use Database\Seeders\Landing\Pendidikan\BeasiswaSeeder;
 use Database\Seeders\Landing\Pendidikan\FakultasSeeder;
 use Database\Seeders\Landing\Pendidikan\PmbSeeder;
 use Database\Seeders\Landing\Pendidikan\ProdiSeeder;
+use Database\Seeders\Landing\Profil\PimpinanSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -26,7 +28,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
 
+            // Landing Profil
+            PimpinanSeeder::class,
+
             // Landing Pendidikan
+            AkreditasiSeeder::class,
             FakultasSeeder::class,
             ProdiSeeder::class,
             PmbSeeder::class,

@@ -7,8 +7,8 @@
                 <circle cx="11" cy="11" r="7" />
                 <path d="M20 20l-3.5-3.5" />
             </svg>
-            <input id="q" type="search" name="q" value="{{ request('q') }}"
-                placeholder="Cari nama atau tanda jalur…" autocomplete="off">
+            <input id="q" type="search" name="q" value="{{ request('q') }}" placeholder="Cari nama..."
+                autocomplete="off">
         </div>
     </div>
 

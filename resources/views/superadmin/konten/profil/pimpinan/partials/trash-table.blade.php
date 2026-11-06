@@ -12,7 +12,7 @@
         <p class="pim-empty__desc">
             Tidak ada data yang dihapus. Item yang Anda hapus dari daftar akan muncul di sini.
         </p>
-        <a href="{{ route('superadmin.pim.index') }}" class="btn gh">
+        <a href="{{ route('superadmin.pimpinan.index') }}" class="btn gh">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
                 <path d="M19 12H5" />
@@ -49,7 +49,7 @@
             <thead>
                 <tr>
                     <th class="is-num" width="50">#</th>
-                    <th>Data Jalur</th>
+                    <th>Data terhapus</th>
                     <th width="180">Dihapus</th>
                     <th class="is-actions" width="140">Aksi</th>
                 </tr>
@@ -60,11 +60,17 @@
                         <td class="is-num">{{ $items->firstItem() + $loop->index }}</td>
 
                         <td>
-                            <div class="pim-name" style="flex-direction:column;align-items:flex-start;gap:6px;">
-                                <span class="pim-name__main">{{ $item->jeneng }}</span>
-                                @if ($item->tandha)
-                                    <code class="pim-code">{{ $item->tandha }}</code>
-                                @endif
+                            <div class="pim-profile">
+                                <div class="pim-avatar">
+                                    @if ($item->path_foto)
+                                        <img src="{{ asset('storage/' . $item->path_foto) }}" alt="{{ $item->jeneng }}">
+                                    @else
+                                        <span class="pim-avatar__initial">
+                                            {{ strtoupper(substr($item->jeneng, 0, 1)) }}
+                                        </span>
+                                    @endif
+                                </div>
+                                <span class="pim-info__name">{{ $item->jeneng }}</span>
                             </div>
                         </td>
 

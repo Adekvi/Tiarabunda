@@ -3,7 +3,8 @@
         <thead>
             <tr>
                 <th class="is-num">#</th>
-                <th>Nama & Jabatan</th>
+                <th>Nama Lengkap</th>
+                <th>Jabatan</th>
                 <th class="is-ord">Urutan</th>
                 <th class="is-status">Status</th>
                 <th class="is-actions">Aksi</th>
@@ -14,9 +15,9 @@
                 <tr>
                     <td class="is-num">{{ $items->firstItem() + $loop->index }}</td>
 
+                    {{-- Kolom Nama & Foto --}}
                     <td>
                         <div class="pim-profile">
-                            {{-- Avatar --}}
                             <div class="pim-avatar">
                                 @if ($item->path_foto)
                                     <img src="{{ asset('storage/' . $item->path_foto) }}" alt="{{ $item->jeneng }}">
@@ -26,17 +27,19 @@
                                     </span>
                                 @endif
                             </div>
-
-                            {{-- Info --}}
-                            <div class="pim-info">
-                                <span class="pim-info__name">{{ $item->jeneng }}</span>
-                                <span class="pim-info__role">{{ $item->kalungguhan }}</span>
-                            </div>
+                            <span class="pim-info__name">{{ $item->jeneng }}</span>
                         </div>
                     </td>
 
+                    {{-- Kolom Jabatan --}}
+                    <td>
+                        <span class="pim-info__role">{{ $item->kalungguhan }}</span>
+                    </td>
+
+                    {{-- Kolom Urutan --}}
                     <td class="is-ord">{{ $item->urutan }}</td>
 
+                    {{-- Kolom Status --}}
                     <td class="is-status">
                         <span class="pim-badge {{ $item->urip ? 'is-on' : 'is-off' }}">
                             <i aria-hidden="true"></i>
@@ -44,6 +47,7 @@
                         </span>
                     </td>
 
+                    {{-- Kolom Aksi --}}
                     <td class="is-actions">
                         <div class="pim-actions" role="group" aria-label="Aksi untuk {{ $item->jeneng }}">
                             <a href="{{ route('superadmin.pimpinan.edit', $item) }}" class="pim-act" title="Edit">

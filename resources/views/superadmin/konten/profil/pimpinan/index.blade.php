@@ -1,4 +1,4 @@
-<x-dashboard.layout.app title="Pimpinan" page-title="Pimpinan">
+<x-dashboard.layout.app title="Sambutan" page-title="Sambutan">
     <div class="pim-page">
         @include('superadmin.konten.profil.pimpinan.partials.flash')
 
@@ -17,7 +17,7 @@
 
                 <div class="card">
                     <div class="ch2">
-                        <h2 style="margin:0;">Daftar Pimpinan</h2>
+                        <h2 style="margin:0;">Daftar Sambutan</h2>
                         <span class="pim-count">{{ $items->total() }} data</span>
                     </div>
 

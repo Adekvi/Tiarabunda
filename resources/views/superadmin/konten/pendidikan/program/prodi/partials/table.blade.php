@@ -19,7 +19,7 @@
                     <td class="prodi-name">{{ $item->jeneng }}</td>
                     <td>{{ $item->fakultas?->jeneng ?? '—' }}</td>
                     <td><span class="pill">{{ $item->undhak }}</span></td>
-                    <td>{{ $item->akred ?: '—' }}</td>
+                    <td><span class="badge">{{ $item->akreditasi?->status_akred ?? 'Belum Ada' }}</span></td>
                     <td>{{ $item->urutan }}</td>
                     <td>
                         <span class="badge {{ $item->urip ? 'ok' : 'err' }}">

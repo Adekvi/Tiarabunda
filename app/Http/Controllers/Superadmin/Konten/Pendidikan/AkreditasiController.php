@@ -15,10 +15,25 @@ class AkreditasiController extends Controller
 {
     public function index(Request $request): View
     {
+        return $this->renderList($request, trashed: false);
+    }
+
+    public function trashed(Request $request): View
+    {
+        return $this->renderList($request, trashed: true);
+    }
+
+    private function renderList(Request $request, bool $trashed): View
+    {
+        $filters = [
+            'q'       => $request->string('q')->trim()->toString(),
+            'status'  => $request->input('status'),
+            'bagean'  => $request->input('bagean'),
+        ];
+
         $items = Akreditasi::query()
             ->select([
                 'id',
-                'prodi_id',
                 'jeneng',
                 'status_akred',
                 'bagean',
@@ -26,13 +41,15 @@ class AkreditasiController extends Controller
                 'urutan',
                 'urip',
                 'updated_at',
+                'deleted_at'
             ])
-            ->with(['prodi:id,jeneng']) // 1 query ekstra, bukan N+1
-            ->when($request->status === 'active', fn($q) => $q->active())
-            ->when($request->status === 'inactive', fn($q) => $q->inactive())
-            ->when($request->filled('bagean'), fn($q) => $q->where('bagean', $request->bagean))
-            ->when($request->filled('q'), function ($q) use ($request) {
-                $t = '%' . str_replace(['%', '_'], ['\%', '\_'], $request->string('q')->trim()) . '%';
+            ->when($trashed, fn($q) => $q->onlyTrashed())
+            ->when(! $trashed, fn($q) => $q->whereNull('deleted_at'))
+            ->when($filters['status'] === 'active', fn($q) => $q->active())
+            ->when($filters['status'] === 'inactive', fn($q) => $q->inactive())
+            ->when(filled($filters['bagean']), fn($q) => $q->where('bagean', $filters['bagean']))
+            ->when(filled($filters['q']), function ($q) use ($filters) {
+                $t = '%' . str_replace(['%', '_'], ['\%', '\_'], $filters['q']) . '%';
                 $q->where(function ($inner) use ($t) {
                     $inner->where('jeneng', 'like', $t)
                         ->orWhere('status_akred', 'like', $t);
@@ -43,35 +60,45 @@ class AkreditasiController extends Controller
             ->withQueryString();
 
         $stats = [
-            'total' => Akreditasi::query()->count(),
-            'aktif' => Akreditasi::query()->active()->count(),
-            'nonaktif' => Akreditasi::query()->inactive()->count(),
-            'institusi' => Akreditasi::query()->where('bagean', 'institusi')->count(),
-            'prodi' => Akreditasi::query()->where('bagean', 'prodi')->count(),
-            'ada_gambar' => Akreditasi::query()->whereNotNull('path_gambar')->count(),
+            'total'       => Akreditasi::query()->count(),
+            'aktif'       => Akreditasi::query()->active()->count(),
+            'nonaktif'    => Akreditasi::query()->inactive()->count(),
+            'terhapus'    => Akreditasi::onlyTrashed()->count(),
+            'institusi'   => Akreditasi::query()->where('bagean', 'institusi')->count(),
+            'prodi'       => Akreditasi::query()->where('bagean', 'prodi')->count(),
+            'ada_gambar'  => Akreditasi::query()->whereNotNull('path_gambar')->where('path_gambar', '!=', '')->count(),
         ];
 
-        return view('superadmin.konten.pendidikan.akreditasi.index', compact('items', 'stats'));
+        dd($items);
+
+        return view('superadmin.konten.pendidikan.akreditasi.index', [
+            'items'    => $items,
+            'stats'    => $stats,
+            'trashed'  => $trashed,
+            'filtered' => filled($filters['q']) || filled($filters['status']) || filled($filters['bagean']),
+        ]);
     }
 
     public function create(): View
     {
         return view('superadmin.konten.pendidikan.akreditasi.form', [
-            'item' => new Akreditasi([
-                'bagean' => 'institusi',
-                'urutan' => 0,
-                'urip' => true,
-            ]),
-            'prodiList' => $this->prodiOptions(),
+            'item' => new Akreditasi(['bagean' => 'institusi', 'urutan' => 0, 'urip' => true]),
+            'prodiList' => Prodi::query()->active()->ordered()->get(['id', 'jeneng', 'undhak']),
+            'selectedProdis' => [],
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         $data = $this->validated($request);
-        $data['path_gambar'] = $this->storeImage($request);
 
-        Akreditasi::query()->create($data);
+        if ($request->hasFile('path_gambar')) {
+            $data['path_gambar'] = $request->file('path_gambar')->store('akreditasi', 'public');
+        }
+
+        $akreditasi = Akreditasi::query()->create($data);
+
+        $this->syncProdi($akreditasi, $request->input('prodi_ids', []));
 
         return redirect()
             ->route('superadmin.akreditasi.index')
@@ -82,7 +109,8 @@ class AkreditasiController extends Controller
     {
         return view('superadmin.konten.pendidikan.akreditasi.form', [
             'item' => $akreditasi,
-            'prodiList' => $this->prodiOptions(),
+            'prodiList' => Prodi::query()->active()->ordered()->get(['id', 'jeneng', 'undhak']),
+            'selectedProdis' => Prodi::where('akreditasi_id', $akreditasi->id)->pluck('id')->toArray(),
         ]);
     }
 
@@ -90,36 +118,73 @@ class AkreditasiController extends Controller
     {
         $data = $this->validated($request);
 
-        if ($path = $this->storeImage($request)) {
+        if ($request->hasFile('path_gambar')) {
             if ($akreditasi->path_gambar) {
                 Storage::disk('public')->delete($akreditasi->path_gambar);
             }
-            $data['path_gambar'] = $path;
+            $data['path_gambar'] = $request->file('path_gambar')->store('akreditasi', 'public');
         }
 
         $akreditasi->update($data);
+
+        $this->syncProdi($akreditasi, $request->input('prodi_ids', []));
 
         return redirect()
             ->route('superadmin.akreditasi.index')
             ->with('success', 'Data akreditasi diperbarui.');
     }
 
+    private function syncProdi(Akreditasi $akreditasi, array $prodiIds)
+    {
+        Prodi::where('akreditasi_id', $akreditasi->id)
+            ->update(['akreditasi_id' => null]);
+
+        if (!empty($prodiIds)) {
+            Prodi::whereIn('id', $prodiIds)
+                ->update(['akreditasi_id' => $akreditasi->id]);
+        }
+    }
+
     public function destroy(Akreditasi $akreditasi): RedirectResponse
     {
-        // Soft delete: file boleh tetap sampai purge manual / job
         $akreditasi->delete();
+        return back()->with('success', 'Data akreditasi dipindahkan ke sampah.');
+    }
 
-        return back()->with('success', 'Data akreditasi dihapus.');
+    public function restore(int $id): RedirectResponse
+    {
+        $item = Akreditasi::onlyTrashed()->findOrFail($id);
+        $item->restore();
+        return redirect()->route('superadmin.akreditasi.trashed')->with('success', 'Akreditasi dipulihkan.');
+    }
+
+    public function forceDelete(int $id): RedirectResponse
+    {
+        $item = Akreditasi::onlyTrashed()->findOrFail($id);
+        if ($item->path_gambar) {
+            Storage::disk('public')->delete($item->path_gambar);
+        }
+        $item->forceDelete();
+        return redirect()->route('superadmin.akreditasi.trashed')->with('success', 'Akreditasi dihapus permanen.');
+    }
+
+    public function emptyTrash(): RedirectResponse
+    {
+        $count = 0;
+        Akreditasi::onlyTrashed()->get()->each(function ($item) use (&$count) {
+            if ($item->path_gambar) {
+                Storage::disk('public')->delete($item->path_gambar);
+            }
+            $item->forceDelete();
+            $count++;
+        });
+        return redirect()->route('superadmin.akreditasi.trashed')->with('success', "{$count} data dihapus permanen.");
     }
 
     public function toggle(Akreditasi $akreditasi): RedirectResponse
     {
         $akreditasi->toggleUrip();
-
-        return back()->with(
-            'success',
-            $akreditasi->urip ? 'Akreditasi diaktifkan.' : 'Akreditasi dinonaktifkan.'
-        );
+        return back()->with('success', $akreditasi->urip ? 'Akreditasi diaktifkan.' : 'Akreditasi dinonaktifkan.');
     }
 
     private function validated(Request $request): array
@@ -127,49 +192,21 @@ class AkreditasiController extends Controller
         $data = $request->validate([
             'jeneng' => ['required', 'string', 'max:150'],
             'bagean' => ['required', Rule::in(['institusi', 'prodi'])],
-            'prodi_id' => [
-                'nullable',
-                'required_if:bagean,prodi',
-                'exists:prodis,id',
-            ],
+            // 'prodi_id' => [...], <-- HAPUS INI
             'status_akred' => ['nullable', 'string', 'max:50'],
             'katrangan' => ['nullable', 'string'],
             'path_gambar' => ['nullable', 'image', 'mimes:png,jpeg,jpg,webp', 'max:2048'],
             'urutan' => ['nullable', 'integer', 'min:0', 'max:9999'],
         ], [
             'jeneng.required' => 'Judul wajib diisi.',
-            'prodi_id.required_if' => 'Pilih program studi untuk akreditasi prodi.',
             'path_gambar.image' => 'File harus berupa gambar.',
-            'path_gambar.max' => 'Ukuran gambar maksimal 3 MB.',
+            'path_gambar.max' => 'Ukuran gambar maksimal 2 MB.',
         ]);
 
         $data['urip'] = $request->boolean('urip', true);
         $data['urutan'] = $data['urutan'] ?? 0;
 
-        if (($data['bagean'] ?? '') === 'institusi') {
-            $data['prodi_id'] = null;
-        }
-
-        unset($data['path_gambar']); // di-set lewat storeImage
-
+        unset($data['path_gambar']);
         return $data;
-    }
-
-    private function storeImage(Request $request): ?string
-    {
-        if (! $request->hasFile('path_gambar')) {
-            return null;
-        }
-
-        return $request->file('path_gambar')->store('akreditasi', 'public');
-    }
-
-    /** Dropdown prodi — 1 query, kolom minimal */
-    private function prodiOptions()
-    {
-        return Prodi::query()
-            ->active()
-            ->ordered()
-            ->get(['id', 'jeneng', 'undhak']);
     }
 }

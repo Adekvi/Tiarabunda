@@ -7,8 +7,12 @@
         <x-landing.section.hero />
         <x-landing.section.info />
         <x-landing.section.mitra />
-        <x-landing.section.sambutan />
+
+        {{-- Pimpinan --}}
+        <x-landing.section.sambutan :r="$home['pimpinan'] ?? null" />
+
         <x-landing.section.alasan />
+
         <x-landing.section.statistik />
 
         {{-- Pendidikan --}}

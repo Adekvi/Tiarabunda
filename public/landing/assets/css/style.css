@@ -566,6 +566,7 @@ a:hover > .ar,
     opacity: 1;
     transform: none;
 }
+
 .sam-in {
     display: grid;
     grid-template-columns: 200px 1fr;
@@ -573,16 +574,114 @@ a:hover > .ar,
     align-items: center;
     max-width: 920px;
 }
-.ava {
-    aspect-ratio: 3/4;
-    border-radius: 999px 999px 20px 20px;
-    background: linear-gradient(160deg, var(--or), #f7c08c);
+/* ===== Sambutan ===== */
+.sam-in {
     display: grid;
-    place-items: center;
-    color: #fff;
+    grid-template-columns: 240px 1fr; /* Lebar foto diperbesar dari 200px ke 240px */
+    gap: 44px;
+    align-items: center;
+    max-width: 920px;
+}
+
+/* Kotak/Lengkungan untuk Foto */
+.ava {
+    aspect-ratio: 4 / 5; /* Proporsi pas untuk portrait formal */
+    border-radius: 999px 999px 24px 24px; /* Lengkungan atas, sudut bawah */
+    background: linear-gradient(160deg, var(--or), #f7c08c);
+    position: relative;
+    overflow: hidden; /* Kunci: Memotong gambar agar tidak keluar batas lengkung */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 28px -10px rgba(23, 59, 102, 0.3);
+}
+
+/* Gambar di dalam Lengkungan */
+.ava img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Kunci: Memaksa gambar memenuhi kotak tanpa merusak rasio */
+    object-position: center top; /* Fokus pemotongan di area wajah (atas) */
+    transition: transform 0.5s var(--ease);
+}
+
+.ava:hover img {
+    transform: scale(1.05);
+}
+
+/* Huruf Inisial jika tidak ada foto */
+.ava-initial {
     font-size: 4rem;
     font-weight: 800;
+    color: #fff;
+    line-height: 1;
 }
+
+/* Teks Sambutan */
+.sam-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.sam-body .kick {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 8px;
+}
+
+.sam-body blockquote {
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.6;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--blue-d);
+    margin: 0 0 20px;
+    padding-left: 20px;
+    border-left: 4px solid var(--or); /* Garis aksen elegan di kiri teks */
+}
+
+.sam-body .who {
+    font-size: 0.95rem;
+    color: var(--mut);
+    line-height: 1.5;
+}
+
+.sam-body .who b {
+    font-size: 1.05rem;
+    color: var(--ink);
+}
+
+/* Responsif Mobile */
+@media (max-width: 960px) {
+    .sam-in {
+        grid-template-columns: 160px 1fr;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 560px) {
+    .sam-in {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 20px;
+    }
+    .ava {
+        width: 180px;
+        margin-inline: auto;
+    }
+    .sam-body blockquote {
+        padding-left: 0;
+        border-left: 0;
+        border-top: 3px solid var(--or);
+        padding-top: 16px;
+        margin-top: 8px;
+        font-size: 1.1rem;
+    }
+}
+
 blockquote {
     font-size: clamp(1.25rem, 2.2vw, 1.7rem);
     line-height: 1.5;

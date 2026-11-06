@@ -7,10 +7,9 @@
             <path d="M8 3v4M16 3v4" />
         </svg>
     </div>
-    <h3 class="pim-empty__title">Belum ada jalur pim</h3>
+    <h3 class="pim-empty__title">Belum ada data</h3>
     <p class="pim-empty__desc">
-        Tambahkan jalur pendaftaran seperti Reguler, Prestasi, atau Jalur Mandiri
-        agar tampil di halaman pim situs publik.
+        Tambahkan data agar tampil di halaman profil situs publik.
     </p>
     <a href="{{ route('superadmin.pimpinan.create') }}" class="btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
@@ -18,6 +17,6 @@
             <path d="M12 5v14" />
             <path d="M5 12h14" />
         </svg>
-        Tambah jalur pertama
+        Tambah Data
     </a>
 </div>

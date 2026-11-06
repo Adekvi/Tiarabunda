@@ -10,13 +10,9 @@ return new class extends Migration
     {
         Schema::create('akreditasis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('prodi_id')
-                ->nullable()
-                ->constrained('prodis')
-                ->nullOnDelete();
-            $table->string('jeneng');                    // judul tampilan
-            $table->string('status_akred', 50)->nullable(); // Baik / A / B / Unggul
-            $table->string('bagean', 20)->default('institusi'); // institusi | prodi
+            $table->string('jeneng');
+            $table->string('status_akred', 50)->nullable();
+            $table->string('bagean', 20)->default('institusi');
             $table->text('katrangan')->nullable();
             $table->string('path_gambar')->nullable();
             $table->unsignedInteger('urutan')->default(0);

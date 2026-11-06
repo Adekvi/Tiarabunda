@@ -8,6 +8,7 @@ use App\Models\Layanan\Fasilitas;
 use App\Models\Pendidikan\Pmb;
 use App\Models\Pendidikan\Program\Fakultas;
 use App\Models\Pendidikan\Program\Prodi;
+use App\Models\Profil\Pimpinan;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -18,12 +19,42 @@ class LandingHomeService
     public function forHome(): array
     {
         return [
+            'pimpinan'       => $this->pimpinan(),
             'fakultas_prodi'   => $this->fakultasProdi(),
             'jalur'          => $this->jalurPmb(),
             'fasilitas' => $this->fasilitas(),
             'berita' => $this->beritas(),
             'faq' => $this->faqs(),
         ];
+    }
+
+    public function pimpinan(): ?array
+    {
+        $row = Cache::remember('landing.home.pimpinan', self::TTL, function () {
+            $item = Pimpinan::query()
+                ->where('urip', true)
+                ->orderBy('urutan', 'asc')
+                ->first();
+
+            if (!$item) {
+                return null;
+            }
+
+            return [
+                'nama'     => $item->jeneng,
+                'jabatan'  => $item->kalungguhan,
+                'kutipan'  => trim(strip_tags($item->unen)),
+                'foto_url' => $item->path_foto ? asset('storage/' . $item->path_foto) : null,
+            ];
+        });
+
+        // Guard cache
+        if ($row !== null && !is_array($row)) {
+            Cache::forget('landing.home.pimpinan');
+            return null;
+        }
+
+        return $row;
     }
 
     public function fakultasProdi(): array
@@ -222,6 +253,11 @@ class LandingHomeService
         return collect($rows);
     }
 
+    public function forgetPimpinan(): void
+    {
+        Cache::forget('landing.home.pimpinan');
+    }
+
     public function forgetFakultasProdi(): void
     {
         Cache::forget('landing.home.fakultas_prodi');
@@ -249,6 +285,7 @@ class LandingHomeService
 
     public function forgetHome(): void
     {
+        $this->forgetPimpinan();
         $this->forgetFakultasProdi();
         $this->forgetJalurPmb();
         $this->forgetFaq();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Superadmin\Konten\Pendidikan\Program;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pendidikan\Akreditasi;
 use App\Models\Pendidikan\Program\Fakultas;
 use App\Models\Pendidikan\Program\Prodi;
 use Illuminate\Http\RedirectResponse;
@@ -37,16 +38,19 @@ class ProdiController extends Controller
             ->select([
                 'id',
                 'fakultas_id',
+                'akreditasi_id',
                 'jeneng',
                 'tandha',
                 'undhak',
-                'akred',
                 'urutan',
                 'urip',
                 'updated_at',
                 'deleted_at',
             ])
-            ->with(['fakultas:id,jeneng,kodhe'])
+            ->with([
+                'fakultas:id,jeneng,kodhe',
+                'akreditasi:id,jeneng,status_akred'
+            ])
             ->when($trashed, fn($q) => $q->onlyTrashed())
             ->when(! $trashed, fn($q) => $q->whereNull('deleted_at'))
             ->when($filters['status'] === 'active', fn($q) => $q->active())
@@ -92,6 +96,7 @@ class ProdiController extends Controller
         return view('superadmin.konten.pendidikan.program.prodi.form', [
             'item' => new Prodi(['urutan' => 0, 'urip' => true, 'undhak' => 'D3']),
             'fakultasList' => Fakultas::query()->active()->ordered()->get(['id', 'jeneng']),
+            'akreditasiList' => Akreditasi::query()->where('bagean', 'prodi')->where('urip', true)->ordered()->get(),
         ]);
     }
 
@@ -109,9 +114,12 @@ class ProdiController extends Controller
 
     public function edit(Prodi $prodi): View
     {
+        $prodi->load('akreditasis');
+
         return view('superadmin.konten.pendidikan.program.prodi.form', [
             'item' => $prodi,
             'fakultasList' => Fakultas::query()->ordered()->get(['id', 'jeneng']),
+            'akreditasiList' => Akreditasi::query()->where('bagean', 'prodi')->where('urip', true)->ordered()->get(),
         ]);
     }
 
@@ -194,19 +202,13 @@ class ProdiController extends Controller
     private function validated(Request $request, ?int $id = null): array
     {
         $data = $request->validate([
-            'fakultas_id' => ['required', 'exists:fakultas,id'],
-            'jeneng'      => ['required', 'string', 'max:150'],
-            'tandha'      => [
-                'nullable',
-                'string',
-                'max:150',
-                'alpha_dash',
-                Rule::unique('prodis', 'tandha')->ignore($id),
-            ],
-            'undhak'      => ['required', Rule::in(['D3', 'D4', 'S1'])],
-            'katrangan'   => ['nullable', 'string', 'max:5000'],
-            'akred'       => ['nullable', 'string', 'max:20'],
-            'urutan'      => ['nullable', 'integer', 'min:0', 'max:9999'],
+            'fakultas_id'   => ['required', 'exists:fakultas,id'],
+            'jeneng'        => ['required', 'string', 'max:150'],
+            'tandha'        => ['nullable', 'string', 'max:150', 'alpha_dash', Rule::unique('prodis', 'tandha')->ignore($id)],
+            'undhak'        => ['required', Rule::in(['D3', 'D4', 'S1'])],
+            'akreditasi_id' => ['nullable', 'exists:akreditasis,id'],
+            'katrangan'     => ['nullable', 'string', 'max:5000'],
+            'urutan'        => ['nullable', 'integer', 'min:0', 'max:9999'],
         ]);
 
         $data['urip']   = $request->boolean('urip', true);

@@ -30,7 +30,7 @@ return [
                     'active' => 'superadmin.visimisi.*',
                 ],
                 [
-                    'label' => 'Pimpinan',
+                    'label' => 'Sambutan',
                     'route' => 'superadmin.pimpinan.index',
                     'active' => 'superadmin.pimpinan.*',
                 ],

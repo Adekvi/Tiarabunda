@@ -1,18 +1,22 @@
-@props(['r' => config('landing.home.rektor')])
-<section class="sec sam">
-    <div class="wrap sam-in rv">
-        <div class="ava">
-            @if (!empty($r['direktur']))
-                <img src="{{ asset('landing/assets/img/' . $r['direktur']) }}" width="128" height="128"
-                    alt="{{ $r['nama'] }}" loading="lazy" />
-            @else
-                {{ mb_substr($r['nama'], 0, 1) }}
-            @endif
+@props(['r' => null])
+
+@if ($r)
+    <section class="sec sam">
+        <div class="wrap sam-in rv">
+            <div class="ava">
+                @if (!empty($r['foto_url']))
+                    {{-- Bungkus gambar dengan div agar object-fit bekerja sempurna --}}
+                    <img src="{{ $r['foto_url'] }}" alt="{{ $r['nama'] }}" loading="lazy" />
+                @else
+                    {{-- Placeholder jika tidak ada foto --}}
+                    <span class="ava-initial">{{ mb_substr($r['nama'], 0, 1) }}</span>
+                @endif
+            </div>
+            <div class="sam-body">
+                <p class="kick">Sambutan pimpinan</p>
+                <blockquote>“{{ $r['kutipan'] }}”</blockquote>
+                <p class="who"><b>{{ $r['nama'] }}</b><br>{{ $r['jabatan'] }}</p>
+            </div>
         </div>
-        <div>
-            <p class="kick">Sambutan pimpinan</p>
-            <blockquote>“{{ $r['kutipan'] }}”</blockquote>
-            <p class="who"><b>{{ $r['nama'] }}</b><br>{{ $r['jabatan'] }}</p>
-        </div>
-    </div>
-</section>
+    </section>
+@endif

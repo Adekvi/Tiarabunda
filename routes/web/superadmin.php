@@ -42,7 +42,7 @@ Route::middleware(['auth', 'can:access-superadmin'])
 
             // Statis dulu
             Route::delete('/sampah/kosongkan', [PimpinanController::class, 'emptyTrash'])->name('empty-trash');
-            Route::post('/sampah/{id}/restore', [PimpinanController::class, 'restore'])->name('restore');
+            Route::patch('/sampah/{id}/restore', [PimpinanController::class, 'restore'])->name('restore');
             Route::delete('/sampah/{id}/force', [PimpinanController::class, 'forceDelete'])->name('force-delete');
 
             Route::get('/{pimpinan}/edit', [PimpinanController::class, 'edit'])->name('edit');
@@ -50,7 +50,6 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::delete('/{pimpinan}',  [PimpinanController::class, 'destroy'])->name('destroy');
             Route::patch('/{pimpinan}/toggle', [PimpinanController::class, 'toggle'])->name('toggle');
         });
-
 
         /*
         | Pendidikan
