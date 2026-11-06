@@ -1,24 +1,28 @@
 @php
     $isEdit = $item->exists;
     $pageTitle = $isEdit ? 'Edit Beasiswa' : 'Tambah Beasiswa';
+    $syaratText = old('syarat', $item->syarat);
 @endphp
 
 <x-dashboard.layout.app :title="$pageTitle" :page-title="$pageTitle">
-    <div class="g">
-        <div class="card" style="padding:14px 22px;">
-            <div class="ch2" style="margin-bottom:0;">
-                <div>
-                    <p style="margin:0 0 2px;font-size:0.75rem;color:var(--mut);">
-                        <a href="{{ route('superadmin.beasiswa.index') }}"
-                            style="color:var(--pri);font-weight:600;">Beasiswa</a>
-                        <span style="opacity:.5;"> / </span>{{ $isEdit ? 'Ubah' : 'Tambah' }}
-                    </p>
-                    <h2 style="margin:0;font-size:1.15rem;">{{ $pageTitle }}</h2>
-                </div>
-                <a href="{{ route('superadmin.beasiswa.index') }}" class="btn gh">← Kembali</a>
+    <div class="beasiswa-form-page">
+        {{-- ===== Header ===== --}}
+        <div class="card beasiswa-form-hero">
+            <div class="beasiswa-form-hero__main">
+                <p class="beasiswa-form-hero__crumb">
+                    <a href="{{ route('superadmin.beasiswa.index') }}">Beasiswa</a>
+                    <span aria-hidden="true">/</span>
+                    <span class="is-current">{{ $isEdit ? 'Ubah' : 'Tambah' }}</span>
+                </p>
+                <h2 class="beasiswa-form-hero__title">{{ $pageTitle }}</h2>
+                <p class="beasiswa-form-hero__desc">
+                    Lengkapi detail beasiswa agar calon penerima memahami cakupan dan persyaratannya.
+                </p>
             </div>
+            <a href="{{ route('superadmin.beasiswa.index') }}" class="btn gh">← Kembali</a>
         </div>
 
+        {{-- ===== Error ===== --}}
         @if ($errors->any())
             <div class="al w" role="alert">
                 <strong style="display:block;margin-bottom:6px;">Periksa kembali isian:</strong>
@@ -30,40 +34,56 @@
             </div>
         @endif
 
-        <div class="g g2" style="align-items:start;">
-            <div class="card" style="min-width:0;">
+        <div class="beasiswa-form-layout">
+            {{-- ===== Kolom Form ===== --}}
+            <div class="card beasiswa-form-card" style="min-width:0;">
                 <h2 style="margin-bottom:6px;">Detail beasiswa</h2>
-                <p style="margin:0 0 20px;font-size:0.85rem;color:var(--mut);">
-                    Jelaskan nama, cakupan, dan persyaratan agar mudah dipahami calon penerima.
+                <p style="margin:0 0 22px;font-size:0.85rem;color:var(--mut);">
+                    Kolom bertanda <span style="color:var(--err)">*</span> wajib diisi.
                 </p>
 
-                <form method="POST"
+                <form method="POST" id="beasiswaForm"
                     action="{{ $isEdit ? route('superadmin.beasiswa.update', $item) : route('superadmin.beasiswa.store') }}">
                     @csrf
                     @if ($isEdit)
                         @method('PUT')
                     @endif
 
+                    {{-- Nama --}}
                     <div class="f">
                         <label for="jeneng">Nama beasiswa <span style="color:var(--err)">*</span></label>
                         <input id="jeneng" name="jeneng" type="text" required maxlength="150"
                             value="{{ old('jeneng', $item->jeneng) }}"
-                            placeholder="Contoh: KIP Kuliah / Beasiswa Prestasi">
+                            placeholder="Contoh: KIP Kuliah / Beasiswa Prestasi" autocomplete="off">
                         @error('jeneng')
                             <small style="color:var(--err);">{{ $message }}</small>
                         @enderror
                     </div>
 
+                    {{-- Slug --}}
                     <div class="f">
-                        <label for="tandha">Slug URL (opsional)</label>
+                        <label for="tandha">
+                            Slug URL
+                            @if ($isEdit)
+                                <span style="font-weight:400;color:var(--mut);font-size:.78rem;">
+                                    &middot;
+                                    <button type="button" id="tandhaLock" class="beasiswa-link-btn">ubah
+                                        manual</button>
+                                </span>
+                            @endif
+                        </label>
                         <input id="tandha" name="tandha" type="text" maxlength="150"
-                            value="{{ old('tandha', $item->tandha) }}"
-                            placeholder="Otomatis dari nama jika dikosongkan">
+                            value="{{ old('tandha', $item->tandha) }}" placeholder="Otomatis dari nama beasiswa"
+                            readonly data-edit="{{ $isEdit ? '1' : '0' }}">
+                        <small style="color:var(--mut);font-size:.78rem;display:block;margin-top:6px;">
+                            Dibuat otomatis dari nama. Hanya huruf, angka, dan tanda hubung.
+                        </small>
                         @error('tandha')
                             <small style="color:var(--err);">{{ $message }}</small>
                         @enderror
                     </div>
 
+                    {{-- Cakupan --}}
                     <div class="f">
                         <label for="jangkepan">Cakupan bantuan</label>
                         <input id="jangkepan" name="jangkepan" type="text" maxlength="255"
@@ -72,22 +92,33 @@
                         <small style="color:var(--mut);">Ringkas: apa saja yang ditanggung beasiswa ini.</small>
                     </div>
 
-                    <div class="f">
-                        <label for="katrangan">Deskripsi</label>
-                        <textarea id="katrangan" name="katrangan" rows="5" placeholder="Penjelasan umum beasiswa…">{{ old('katrangan', $item->katrangan) }}</textarea>
-                    </div>
+                    {{-- Deskripsi --}}
+                    @include('superadmin.konten.pendidikan.beasiswa.partials.rte', [
+                        'name' => 'katrangan',
+                        'label' => 'Deskripsi',
+                        'value' => old('katrangan', $item->katrangan),
+                        'rows' => 5,
+                        'placeholder' => 'Penjelasan umum beasiswa…',
+                    ])
 
-                    <div class="f">
-                        <label for="syarat">Persyaratan</label>
-                        <textarea id="syarat" name="syarat" rows="8" placeholder="Tuliskan persyaratan lengkap…">{{ old('syarat', $item->syarat) }}</textarea>
-                    </div>
+                    {{-- Persyaratan --}}
+                    @include('superadmin.konten.pendidikan.beasiswa.partials.rte', [
+                        'name' => 'syarat',
+                        'label' => 'Persyaratan',
+                        'value' => old('syarat', $item->syarat),
+                        'rows' => 8,
+                        'placeholder' => 'Tulis satu syarat per baris (bullet list)...',
+                        'hint' => 'Gunakan daftar poin untuk setiap persyaratan.',
+                    ])
 
+                    {{-- Urutan --}}
                     <div class="f" style="max-width:240px;">
                         <label for="urutan">Urutan tampil</label>
                         <input id="urutan" type="number" name="urutan" min="0" max="9999"
                             value="{{ old('urutan', $item->urutan ?? 0) }}">
                     </div>
 
+                    {{-- Publikasi --}}
                     <div class="f">
                         <span class="f-label">Publikasi</span>
                         <label class="sw" for="urip">
@@ -104,8 +135,8 @@
                         </label>
                     </div>
 
-                    <div
-                        style="display:flex;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line);flex-wrap:wrap;">
+                    {{-- Aksi --}}
+                    <div class="beasiswa-form-actions">
                         <button type="submit" class="btn">
                             {{ $isEdit ? 'Simpan perubahan' : 'Simpan beasiswa' }}
                         </button>
@@ -114,152 +145,69 @@
                 </form>
             </div>
 
-            <div class="g" style="gap:16px;">
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Panduan</h3>
-                    <ul style="margin:0;padding-left:18px;color:var(--mut);font-size:0.88rem;line-height:1.7;">
-                        <li>Nama harus dikenali calon penerima.</li>
-                        <li>Cakupan diisi singkat (SPP, UKT, asrama, dll.).</li>
-                        <li>Persyaratan boleh panjang; pisahkan per poin di teks.</li>
+            {{-- ===== Sidebar Kanan ===== --}}
+            <aside class="beasiswa-form-aside">
+                {{-- Ringkasan mode + progress --}}
+                <div class="card beasiswa-side-summary">
+                    <div class="beasiswa-side-summary__head">
+                        <span class="beasiswa-side-badge {{ $isEdit ? 'is-edit' : 'is-new' }}">
+                            {{ $isEdit ? 'Mode Edit' : 'Beasiswa Baru' }}
+                        </span>
+                        <h3>{{ $isEdit ? 'Perbarui data' : 'Buat beasiswa' }}</h3>
+                        <p>Lengkapi data inti. Checklist di bawah menunjukkan kelengkapan isian.</p>
+                    </div>
+
+                    <ul class="beasiswa-checklist" id="beasiswaChecklist">
+                        <li data-check="jeneng"><span class="dot"></span> Nama beasiswa</li>
+                        <li data-check="jangkepan"><span class="dot"></span> Cakupan bantuan</li>
+                        <li data-check="katrangan"><span class="dot"></span> Deskripsi umum</li>
+                        <li data-check="syarat"><span class="dot"></span> Persyaratan</li>
                     </ul>
-                </div>
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Status form</h3>
-                    <div style="display:grid;gap:10px;font-size:0.88rem;">
-                        <div style="display:flex;justify-content:space-between;">
-                            <span style="color:var(--mut);">Mode</span>
-                            <strong>{{ $isEdit ? 'Edit' : 'Buat baru' }}</strong>
+
+                    <div class="beasiswa-progress">
+                        <div class="beasiswa-progress__bar"><span id="beasiswaProgressBar" style="width:0%"></span>
                         </div>
-                        @if ($isEdit)
-                            <div style="display:flex;justify-content:space-between;align-items:center;">
-                                <span style="color:var(--mut);">Publikasi</span>
-                                <span class="badge {{ $item->urip ? 'ok' : 'err' }}">
-                                    {{ $item->urip ? 'Aktif' : 'Nonaktif' }}
-                                </span>
-                            </div>
-                        @endif
+                        <small><span id="beasiswaProgressText">0</span>% lengkap</small>
                     </div>
                 </div>
-            </div>
+
+                {{-- Status publikasi --}}
+                <div class="card beasiswa-side-pub">
+                    <h3 style="margin-bottom:10px;">Status publikasi</h3>
+                    <div class="beasiswa-pub-row">
+                        <span class="beasiswa-pub-dot" id="pubDot"></span>
+                        <strong id="pubLabel">Aktif</strong>
+                    </div>
+                    <p class="beasiswa-pub-desc" id="pubDesc">
+                        Beasiswa akan tampil di halaman publik.
+                    </p>
+                </div>
+
+                {{-- Panduan --}}
+                <div class="card">
+                    <h3 style="margin-bottom:10px;">Panduan</h3>
+                    <ul class="beasiswa-tips">
+                        <li>Nama harus dikenali calon penerima.</li>
+                        <li>Cakupan diisi singkat (SPP, UKT, asrama, dll.).</li>
+                        <li>Persyaratan boleh panjang; pisahkan per baris.</li>
+                        <li>Slug dibuat otomatis dan bersifat <em>readonly</em>.</li>
+                    </ul>
+                </div>
+
+                {{-- Preview slug --}}
+                <div class="card beasiswa-side-slug">
+                    <h3 style="margin-bottom:10px;">Pratinjau URL</h3>
+                    <code id="slugPreview">/beasiswa/…</code>
+                </div>
+            </aside>
         </div>
     </div>
 
     @push('css')
-        <style>
-            /* ---------- Switch publikasi ---------- */
-            .f .f-label {
-                font-weight: 600;
-                font-size: .85rem;
-            }
+        <link rel="stylesheet" href="{{ asset('admin/landing/pendidikan/beasiswa/form.css') }}">
+    @endpush
 
-            .f label.sw {
-                position: relative;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                padding: 14px 16px;
-                border: 1px solid var(--line);
-                border-radius: 12px;
-                background: var(--bg);
-                font-weight: 400;
-                font-size: .9rem;
-                cursor: pointer;
-                transition: border-color .2s, background .2s;
-            }
-
-            .f label.sw:hover {
-                border-color: var(--pri);
-            }
-
-            /* sembunyikan checkbox asli (lawan aturan .f input) */
-            .f .sw .sw-in {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                border: 0;
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            .sw-track {
-                position: relative;
-                flex: none;
-                width: 44px;
-                height: 24px;
-                border-radius: 99px;
-                background: var(--line);
-                transition: background .25s;
-            }
-
-            .sw-track::after {
-                content: '';
-                position: absolute;
-                top: 3px;
-                left: 3px;
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: #fff;
-                box-shadow: 0 1px 3px rgba(16, 24, 40, .3);
-                transition: transform .25s var(--ease);
-            }
-
-            .sw-in:checked~.sw-track {
-                background: var(--ok);
-            }
-
-            .sw-in:checked~.sw-track::after {
-                transform: translateX(20px);
-            }
-
-            .sw-in:focus-visible~.sw-track {
-                outline: 2px solid var(--pri);
-                outline-offset: 2px;
-            }
-
-            .sw-text {
-                flex: 1;
-                min-width: 0;
-                line-height: 1.4;
-            }
-
-            .sw-text strong {
-                display: block;
-                color: var(--ink);
-            }
-
-            .sw-text small {
-                color: var(--mut);
-                font-size: .8rem;
-            }
-
-            .sw-state {
-                flex: none;
-                padding: 2px 10px;
-                border-radius: 99px;
-                font-size: .75rem;
-                font-weight: 700;
-            }
-
-            .sw-state-on {
-                background: var(--ok-t);
-                color: var(--ok);
-                display: none;
-            }
-
-            .sw-state-off {
-                background: var(--err-t);
-                color: var(--err);
-            }
-
-            .sw-in:checked~.sw-state-on {
-                display: inline-block;
-            }
-
-            .sw-in:checked~.sw-state-off {
-                display: none;
-            }
-        </style>
+    @push('js')
+        <script src="{{ asset('admin/landing/pendidikan/beasiswa/form.js') }}" defer></script>
     @endpush
 </x-dashboard.layout.app>

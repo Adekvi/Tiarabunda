@@ -40,10 +40,11 @@ class BeasiswaController extends Controller
             ->withQueryString();
 
         $stats = [
-            'total' => Beasiswa::query()->count(),
-            'aktif' => Beasiswa::query()->active()->count(),
-            'nonaktif' => Beasiswa::query()->inactive()->count(),
-            'dengan_syarat' => Beasiswa::query()
+            'total'          => Beasiswa::query()->count(),
+            'aktif'          => Beasiswa::query()->active()->count(),
+            'nonaktif'       => Beasiswa::query()->inactive()->count(),
+            'terhapus'       => Beasiswa::onlyTrashed()->count(), // <-- Tambahan untuk Banner
+            'dengan_syarat'  => Beasiswa::query()
                 ->whereNotNull('syarat')
                 ->where('syarat', '!=', '')
                 ->count(),
@@ -53,7 +54,33 @@ class BeasiswaController extends Controller
                 ->count(),
         ];
 
-        return view('superadmin.konten.pendidikan.beasiswa.index', compact('items', 'stats'));
+        return view('superadmin.konten.pendidikan.beasiswa.index', [
+            'items'   => $items,
+            'stats'   => $stats,
+            'trashed' => false, // <-- Tambahan
+        ]);
+    }
+
+    // METHOD BARU UNTUK HALAMAN SAMPAH
+    public function trashed(Request $request): View
+    {
+        $items = Beasiswa::onlyTrashed()
+            ->when($request->filled('q'), function ($q) use ($request) {
+                $t = '%' . str_replace(['%', '_'], ['\%', '\_'], $request->string('q')->trim()) . '%';
+                $q->where(function ($inner) use ($t) {
+                    $inner->where('jeneng', 'like', $t)
+                        ->orWhere('jangkepan', 'like', $t);
+                });
+            })
+            ->orderByDesc('deleted_at')
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('superadmin.konten.pendidikan.beasiswa.index', [
+            'items'   => $items,
+            'stats'   => null,
+            'trashed' => true, // <-- Set True agar tampil tabel sampah
+        ]);
     }
 
     public function create(): View
@@ -97,7 +124,7 @@ class BeasiswaController extends Controller
     {
         $beasiswa->delete();
 
-        return back()->with('success', 'Beasiswa dihapus.');
+        return back()->with('success', 'Beasiswa dipindahkan ke sampah.');
     }
 
     public function toggle(Beasiswa $beasiswa): RedirectResponse
@@ -108,6 +135,30 @@ class BeasiswaController extends Controller
             'success',
             $beasiswa->urip ? 'Beasiswa diaktifkan.' : 'Beasiswa dinonaktifkan.'
         );
+    }
+
+    // METHOD UNTUK SAMPAH
+    public function restore(int $id): RedirectResponse
+    {
+        $beasiswa = Beasiswa::onlyTrashed()->findOrFail($id);
+        $beasiswa->restore();
+
+        return back()->with('success', 'Beasiswa berhasil dipulihkan.');
+    }
+
+    public function forceDelete(int $id): RedirectResponse
+    {
+        $beasiswa = Beasiswa::onlyTrashed()->findOrFail($id);
+        $beasiswa->forceDelete();
+
+        return back()->with('success', 'Beasiswa dihapus permanen.');
+    }
+
+    public function emptyTrash(): RedirectResponse
+    {
+        Beasiswa::onlyTrashed()->forceDelete();
+
+        return back()->with('success', 'Semua sampah berhasil dikosongkan.');
     }
 
     private function validated(Request $request, ?int $id = null): array

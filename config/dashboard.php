@@ -29,6 +29,11 @@ return [
                     'route' => 'superadmin.visimisi.index',
                     'active' => 'superadmin.visimisi.*',
                 ],
+                [
+                    'label' => 'Pimpinan',
+                    'route' => 'superadmin.pimpinan.index',
+                    'active' => 'superadmin.pimpinan.*',
+                ],
             ],
         ],
 

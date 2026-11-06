@@ -12,6 +12,7 @@ use App\Http\Controllers\Superadmin\Konten\Pendidikan\BeasiswaController;
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\PmbController;
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\Program\FakultasController;
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\Program\ProdiController;
+use App\Http\Controllers\Superadmin\Konten\Profil\PimpinanController;
 use App\Http\Controllers\Superadmin\Konten\Profil\SejarahController;
 use App\Http\Controllers\Superadmin\Konten\Profil\VisimisiController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,24 @@ Route::middleware(['auth', 'can:access-superadmin'])
         Route::resource('visimisi', VisimisiController::class)->except(['show']);
         Route::patch('visimisi/{visimisi}/toggle', [VisimisiController::class, 'toggle'])
             ->name('visimisi.toggle');
+
+        Route::prefix('pimpinan')->name('pimpinan.')->group(function () {
+            Route::get('/',               [PimpinanController::class, 'index'])->name('index');
+            Route::get('/sampah',         [PimpinanController::class, 'trashed'])->name('trashed');
+            Route::get('/create',         [PimpinanController::class, 'create'])->name('create');
+            Route::post('/',              [PimpinanController::class, 'store'])->name('store');
+
+            // Statis dulu
+            Route::delete('/sampah/kosongkan', [PimpinanController::class, 'emptyTrash'])->name('empty-trash');
+            Route::post('/sampah/{id}/restore', [PimpinanController::class, 'restore'])->name('restore');
+            Route::delete('/sampah/{id}/force', [PimpinanController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{pimpinan}/edit', [PimpinanController::class, 'edit'])->name('edit');
+            Route::put('/{pimpinan}',     [PimpinanController::class, 'update'])->name('update');
+            Route::delete('/{pimpinan}',  [PimpinanController::class, 'destroy'])->name('destroy');
+            Route::patch('/{pimpinan}/toggle', [PimpinanController::class, 'toggle'])->name('toggle');
+        });
+
 
         /*
         | Pendidikan
@@ -86,9 +105,22 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::patch('/{pmb}/toggle', [PmbController::class, 'toggle'])->name('toggle');
         });
 
-        Route::resource('beasiswa', BeasiswaController::class)->except(['show']);
-        Route::patch('beasiswa/{beasiswa}/toggle', [BeasiswaController::class, 'toggle'])
-            ->name('beasiswa.toggle');
+        Route::prefix('beasiswa')->name('beasiswa.')->group(function () {
+            Route::get('/', [BeasiswaController::class, 'index'])->name('index');
+            Route::get('/create', [BeasiswaController::class, 'create'])->name('create');
+            Route::post('/', [BeasiswaController::class, 'store'])->name('store');
+
+            Route::get('/trash', [BeasiswaController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [BeasiswaController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [BeasiswaController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [BeasiswaController::class, 'forceDelete'])->name('force-delete');
+            // -------------------------------------------------------------
+
+            Route::get('/{beasiswa}/edit', [BeasiswaController::class, 'edit'])->name('edit');
+            Route::put('/{beasiswa}', [BeasiswaController::class, 'update'])->name('update');
+            Route::delete('/{beasiswa}', [BeasiswaController::class, 'destroy'])->name('destroy');
+            Route::patch('/{beasiswa}/toggle', [BeasiswaController::class, 'toggle'])->name('toggle');
+        });
 
         Route::resource('akreditasi', AkreditasiController::class)->except(['show']);
         Route::patch('akreditasi/{akreditasi}/toggle', [AkreditasiController::class, 'toggle'])

@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use Database\Seeders\Auth\UserSeeder;
 use Database\Seeders\Landing\Informasi\FaqSeeder;
 use Database\Seeders\Landing\Layanan\FasilitasSeeder;
+use Database\Seeders\Landing\Pendidikan\BeasiswaSeeder;
 use Database\Seeders\Landing\Pendidikan\FakultasSeeder;
 use Database\Seeders\Landing\Pendidikan\PmbSeeder;
 use Database\Seeders\Landing\Pendidikan\ProdiSeeder;
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
             FakultasSeeder::class,
             ProdiSeeder::class,
             PmbSeeder::class,
+            BeasiswaSeeder::class,
 
             // Landing Layanan
             FasilitasSeeder::class,
