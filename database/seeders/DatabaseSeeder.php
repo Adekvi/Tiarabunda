@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use App\Models\User;
 
 use Database\Seeders\Auth\UserSeeder;
+use Database\Seeders\Landing\Informasi\BeritaSeeder;
 use Database\Seeders\Landing\Informasi\FaqSeeder;
 use Database\Seeders\Landing\Layanan\FasilitasSeeder;
 use Database\Seeders\Landing\Layanan\KemahaSeeder;
@@ -46,6 +47,7 @@ class DatabaseSeeder extends Seeder
             KemahaSeeder::class,
 
             // Landing Informasi
+            BeritaSeeder::class,
             FaqSeeder::class,
 
         ]);

@@ -18,34 +18,39 @@
     <section class="sec" id="berita">
         <div class="wrap">
             <x-landing.ui.head kick="Berita & kegiatan" title="Kabar terbaru dari kampus" />
+
+            {{-- Menggunakan grid bawaan CSS Anda --}}
             <div class="news rv">
+
+                {{-- KARTU UTAMA (FEATURED) --}}
                 <article class="nf">
                     @if (!empty($f['img']))
                         <div class="nf-cover">
-                            <img src="{{ $f['img'] }}" alt="{{ $f['t'] ?? '' }}" width="800" height="450"
-                                loading="eager" fetchpriority="high" decoding="sync"
-                                onerror="this.style.display='none'">
+                            {{-- Hapus onerror agar jika error kita bisa tahu dari Inspect Element --}}
+                            <img src="{{ $f['img'] }}" alt="{{ $f['t'] ?? '' }}" loading="eager" fetchpriority="high"
+                                decoding="sync">
+                        </div>
+                    @else
+                        <div class="nf-cover"
+                            style="display: flex; align-items: center; justify-content: center; background: #e5e7eb; color: #6b7280;">
+                            Gambar Utama Tidak Tersedia
                         </div>
                     @endif
-                    @if (!empty($n['img']))
-                        <div class="nl-thumb">
-                            <img src="{{ $n['img'] }}" alt="{{ $n['t'] ?? '' }}" width="160" height="120"
-                                loading="lazy" decoding="async" onerror="this.style.display='none'">
-                        </div>
-                    @endif
+
                     <div class="nf-body">
                         <span class="tag">{{ $f['j'] ?? 'Berita' }}</span>
                         <h3>{{ $f['t'] ?? '' }}</h3>
                         <time>{{ $f['tgl'] ?? '' }}</time>
                     </div>
                 </article>
+
+                {{-- DAFTAR BERITA KANAN --}}
                 <div class="nl">
                     @foreach (array_slice($items, 1) as $n)
                         <article>
                             @if (!empty($n['img']))
                                 <div class="nl-thumb">
-                                    <img src="{{ $n['img'] }}" alt="{{ $n['t'] ?? '' }}" loading="lazy"
-                                        onerror="this.style.display='none'">
+                                    <img src="{{ $n['img'] }}" alt="{{ $n['t'] ?? '' }}" loading="lazy">
                                 </div>
                             @endif
                             <div class="nl-body">
@@ -56,6 +61,7 @@
                         </article>
                     @endforeach
                 </div>
+
             </div>
         </div>
     </section>

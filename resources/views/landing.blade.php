@@ -4,7 +4,10 @@
     <x-landing.layout.topbar />
     <x-landing.layout.navbar />
     <main id="main">
-        <x-landing.section.hero />
+
+        {{-- Hero --}}
+        <x-landing.section.hero :data="$home['hero'] ?? []" />
+
         <x-landing.section.info />
         <x-landing.section.mitra />
 

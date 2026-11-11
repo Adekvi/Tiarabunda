@@ -16,6 +16,19 @@ return [
 
         [
             'type' => 'group',
+            'label' => 'Beranda',
+            'icon' => 'layout',
+            'children' => [
+                [
+                    'label' => 'Hero Section',
+                    'route' => 'superadmin.hero.index',
+                    'active' => 'superadmin.hero.*',
+                ],
+            ],
+        ],
+
+        [
+            'type' => 'group',
             'label' => 'Profil',
             'icon' => 'bldg',
             'children' => [

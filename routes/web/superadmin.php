@@ -3,6 +3,7 @@
 use App\Http\Controllers\Superadmin\Konten\Informasi\BeritaController;
 use App\Http\Controllers\Superadmin\Konten\Informasi\FaqController;
 use App\Http\Controllers\Superadmin\Konten\Informasi\KegiatanController;
+use App\Http\Controllers\Superadmin\Konten\Landing\HeroController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\FasilitasController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KarirController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KemahaController;
@@ -22,6 +23,13 @@ Route::middleware(['auth', 'can:access-superadmin'])
     ->name('superadmin.')
     ->group(function () {
         Route::view('/', 'superadmin.index')->name('dashboard');
+
+        // Hero Section
+        Route::prefix('hero')->name('hero.')->group(function () {
+            Route::get('/', [HeroController::class, 'index'])->name('index');
+            Route::get('/edit', [HeroController::class, 'edit'])->name('edit');
+            Route::put('/', [HeroController::class, 'update'])->name('update');
+        });
 
         /*
         | Profil

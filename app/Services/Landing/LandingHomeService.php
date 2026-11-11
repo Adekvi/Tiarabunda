@@ -4,6 +4,7 @@ namespace App\Services\Landing;
 
 use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
+use App\Models\Landing\Hero;
 use App\Models\Layanan\Fasilitas;
 use App\Models\Layanan\Perpus;
 use App\Models\Pendidikan\Pmb;
@@ -20,6 +21,7 @@ class LandingHomeService
     public function forHome(): array
     {
         return [
+            'hero'           => $this->hero(),
             'pimpinan'       => $this->pimpinan(),
             'fakultas_prodi'   => $this->fakultasProdi(),
             'jalur'          => $this->jalurPmb(),
@@ -27,6 +29,42 @@ class LandingHomeService
             'perpus'         => $this->perpus(),
             'berita' => $this->beritas(),
             'faq' => $this->faqs(),
+        ];
+    }
+
+    // Tambahkan di dalam class LandingHomeService
+
+    public function hero(): array
+    {
+        $row = Cache::remember('landing.home.hero', self::TTL, function () {
+            return Hero::query()->where('urip', true)->first();
+        });
+
+        if (!$row) {
+            // Fallback ke default statis jika superadmin belum mengisi
+            return [
+                'judul' => 'Kuliah yang langsung membawamu ke dunia kerja',
+                'sub_judul' => config('landing.site.nama') . ' menyiapkan lulusan terampil lewat praktik, magang, dan pendampingan karier di jantung ' . config('landing.site.kota') . '.',
+                'btn1_teks' => 'Daftar sekarang',
+                'btn1_link' => '#pmb',
+                'btn2_teks' => 'Lihat program studi',
+                'btn2_link' => '#prodi',
+                'tipe' => 'none', // none, gambar, video
+                'media_url' => null,
+                'poster_url' => null,
+            ];
+        }
+
+        return [
+            'judul' => $row->judul,
+            'sub_judul' => $row->sub_judul,
+            'btn1_teks' => $row->teks_tombol_1,
+            'btn1_link' => $row->link_tombol_1,
+            'btn2_teks' => $row->teks_tombol_2,
+            'btn2_link' => $row->link_tombol_2,
+            'tipe' => $row->tipe_media,
+            'media_url' => $row->path_media ? asset('storage/' . $row->path_media) : null,
+            'poster_url' => $row->path_poster ? asset('storage/' . $row->path_poster) : null,
         ];
     }
 
@@ -297,6 +335,11 @@ class LandingHomeService
         return collect($rows);
     }
 
+    public function forgetHero(): void
+    {
+        Cache::forget('landing.home.hero');
+    }
+
     public function forgetPimpinan(): void
     {
         Cache::forget('landing.home.pimpinan');
@@ -334,6 +377,7 @@ class LandingHomeService
 
     public function forgetHome(): void
     {
+        $this->forgetPimpinan();
         $this->forgetPimpinan();
         $this->forgetFakultasProdi();
         $this->forgetJalurPmb();
