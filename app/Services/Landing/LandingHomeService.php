@@ -36,35 +36,56 @@ class LandingHomeService
 
     public function hero(): array
     {
-        $row = Cache::remember('landing.home.hero', self::TTL, function () {
-            return Hero::query()->where('urip', true)->first();
+        // 1. Simpan sebagai ARRAY di cache, bukan object Model
+        $data = Cache::remember('landing.home.hero', self::TTL, function () {
+            $row = Hero::query()->where('urip', true)->first();
+
+            if (! $row) {
+                return null;
+            }
+
+            // Konversi ke array di dalam cache closure
+            return [
+                'judul'     => $row->judul,
+                'sub_judul' => $row->sub_judul,
+                'btn1_teks' => $row->teks_tombol_1,
+                'btn1_link' => $row->link_tombol_1,
+                'btn2_teks' => $row->teks_tombol_2,
+                'btn2_link' => $row->link_tombol_2,
+                'tipe'      => $row->tipe_media,
+                'media_path' => $row->path_media,
+                'poster_path' => $row->path_poster,
+            ];
         });
 
-        if (!$row) {
-            // Fallback ke default statis jika superadmin belum mengisi
+        // 2. Fallback jika data kosong (sama seperti sebelumnya)
+        if (! $data) {
             return [
-                'judul' => 'Kuliah yang langsung membawamu ke dunia kerja',
-                'sub_judul' => config('landing.site.nama') . ' menyiapkan lulusan terampil lewat praktik, magang, dan pendampingan karier di jantung ' . config('landing.site.kota') . '.',
+                'judul'     => 'Kuliah yang langsung membawamu ke dunia kerja',
+                'sub_judul' => config('landing.site.nama')
+                    . ' menyiapkan lulusan terampil lewat praktik, magang, dan pendampingan karier di jantung '
+                    . config('landing.site.kota') . '.',
                 'btn1_teks' => 'Daftar sekarang',
                 'btn1_link' => '#pmb',
                 'btn2_teks' => 'Lihat program studi',
                 'btn2_link' => '#prodi',
-                'tipe' => 'none', // none, gambar, video
+                'tipe'      => 'none',
                 'media_url' => null,
                 'poster_url' => null,
             ];
         }
 
+        // 3. Bangun URL dari path yang tersimpan di cache
         return [
-            'judul' => $row->judul,
-            'sub_judul' => $row->sub_judul,
-            'btn1_teks' => $row->teks_tombol_1,
-            'btn1_link' => $row->link_tombol_1,
-            'btn2_teks' => $row->teks_tombol_2,
-            'btn2_link' => $row->link_tombol_2,
-            'tipe' => $row->tipe_media,
-            'media_url' => $row->path_media ? asset('storage/' . $row->path_media) : null,
-            'poster_url' => $row->path_poster ? asset('storage/' . $row->path_poster) : null,
+            'judul'     => $data['judul'],
+            'sub_judul' => $data['sub_judul'],
+            'btn1_teks' => $data['btn1_teks'],
+            'btn1_link' => $data['btn1_link'],
+            'btn2_teks' => $data['btn2_teks'],
+            'btn2_link' => $data['btn2_link'],
+            'tipe'      => $data['tipe'],
+            'media_url' => $data['media_path'] ? asset('storage/' . $data['media_path']) : null,
+            'poster_url' => $data['poster_path'] ? asset('storage/' . $data['poster_path']) : null,
         ];
     }
 
@@ -377,7 +398,7 @@ class LandingHomeService
 
     public function forgetHome(): void
     {
-        $this->forgetPimpinan();
+        $this->forgetHero();
         $this->forgetPimpinan();
         $this->forgetFakultasProdi();
         $this->forgetJalurPmb();

@@ -4,6 +4,7 @@ use App\Http\Controllers\Superadmin\Konten\Informasi\BeritaController;
 use App\Http\Controllers\Superadmin\Konten\Informasi\FaqController;
 use App\Http\Controllers\Superadmin\Konten\Informasi\KegiatanController;
 use App\Http\Controllers\Superadmin\Konten\Landing\HeroController;
+use App\Http\Controllers\Superadmin\Konten\Landing\InfoController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\FasilitasController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KarirController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KemahaController;
@@ -30,6 +31,10 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::get('/edit', [HeroController::class, 'edit'])->name('edit');
             Route::put('/', [HeroController::class, 'update'])->name('update');
         });
+
+        // Info
+        Route::resource('info', InfoController::class)->except(['show']);
+        Route::patch('info/{info}/toggle', [InfoController::class, 'toggle'])->name('info.toggle');
 
         /*
         | Profil

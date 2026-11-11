@@ -24,6 +24,11 @@ return [
                     'route' => 'superadmin.hero.index',
                     'active' => 'superadmin.hero.*',
                 ],
+                [
+                    'label' => 'Info Terkini',
+                    'route' => 'superadmin.info.index',
+                    'active' => 'superadmin.info.*',
+                ],
             ],
         ],
 

@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('heroes', function (Blueprint $table) {
             $table->id();
             $table->string('judul')->nullable();
-            $table->string('sub_judul')->nullable();
+            $table->string('sub_judul', 500)->nullable();
             $table->string('teks_tombol_1')->default('Daftar sekarang');
             $table->string('link_tombol_1')->default('#pmb');
             $table->string('teks_tombol_2')->default('Lihat program studi');
             $table->string('link_tombol_2')->default('#prodi');
 
-            // Media (Video atau Gambar)
-            $table->enum('tipe_media', ['gambar', 'video'])->default('gambar');
+            // ← tambahkan 'none'
+            $table->enum('tipe_media', ['none', 'gambar', 'video'])->default('none');
             $table->string('path_media')->nullable();
             $table->string('path_poster')->nullable();
 

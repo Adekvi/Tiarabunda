@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use App\Models\User;
 
 use Database\Seeders\Auth\UserSeeder;
+use Database\Seeders\Landing\HeroSeeder;
 use Database\Seeders\Landing\Informasi\BeritaSeeder;
 use Database\Seeders\Landing\Informasi\FaqSeeder;
 use Database\Seeders\Landing\Layanan\FasilitasSeeder;
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            HeroSeeder::class,
 
             // Landing Profil
             PimpinanSeeder::class,

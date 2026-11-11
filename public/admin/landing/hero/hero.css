@@ -1,24 +1,23 @@
 /* =========================================
-   HERO SECTION - SUPERADMIN STYLES
+   HERO SECTION - SUPERADMIN STYLES (REVISED)
    ========================================= */
 
-.hero-page {
-    --hero-radius: 16px;
-}
-
-/* Layout Grid 2 Kolom */
+/* --- Layout Utama --- */
 .hero-layout {
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: minmax(0, 1fr) 340px;
     gap: 24px;
     align-items: start;
+    width: 100%;
 }
 
+/* Mencegah tabel/preview melebar melebihi layar */
 .hero-main {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
     min-width: 0;
+    overflow: hidden;
 }
 
 .hero-aside {
@@ -26,68 +25,19 @@
     flex-direction: column;
     gap: 20px;
     position: sticky;
-    top: 84px; /* Sesuaikan dengan tinggi topbar Anda */
+    top: 84px; /* Sesuaikan dengan tinggi navbar */
+    min-width: 0;
 }
 
-/* =========================================
-   HEADER (Hero Title & CTA)
-   ========================================= */
-.hero-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-}
-
-.hero-header__crumb {
-    font-size: 0.8rem;
-    color: var(--mut);
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.hero-header__crumb .is-current {
-    color: var(--ink);
-    font-weight: 600;
-}
-
-.hero-header__title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--ink);
-    margin: 0 0 8px;
-    line-height: 1.2;
-}
-
-.hero-header__desc {
-    font-size: 0.9rem;
-    color: var(--mut);
-    margin: 0;
-    max-width: 60ch;
-    line-height: 1.5;
-}
-
-.hero-header__cta {
-    flex: none;
-}
-
-/* =========================================
-   PREVIEW BOX (LANDING PAGE SIMULATION)
-   ========================================= */
+/* --- Preview Box --- */
 .hero-preview {
     position: relative;
-    min-height: 400px;
+    width: 100%;
+    min-height: 380px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--hero-radius);
     overflow: hidden;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
-    border: 1px solid var(--line);
     background: var(--bg);
 }
 
@@ -157,11 +107,151 @@
     flex-wrap: wrap;
 }
 
-/* =========================================
-   ASIDE CARDS (STATISTIK & TIPS)
-   ========================================= */
-.hero-stat {
+/* Tombol Preview (Khusus dalam preview) */
+.btn-preview-primary {
+    padding: 12px 28px;
+    font-size: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    background: var(--pri);
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-preview-secondary {
+    padding: 12px 28px;
+    font-size: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    background: transparent;
+    border: 2px solid;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* --- Tabel Detail --- */
+.hero-table-wrapper {
     padding: 24px;
+    background: var(--card);
+    border-top: 1px solid var(--line);
+}
+
+.hero-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.hero-table-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--ink);
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+}
+
+.hero-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+    min-width: 500px; /* Mencegah tabel terlalu sempit */
+}
+
+.hero-table th {
+    padding: 12px 16px;
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(148, 163, 184, 0.08);
+    border-bottom: 1px solid var(--line);
+}
+
+.hero-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    color: var(--mut);
+    vertical-align: top;
+}
+
+.hero-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hero-table td strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+/* --- Badges --- */
+.badge-outline {
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--ink);
+    background: var(--card);
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+.badge.status-none {
+    background: rgba(148, 163, 184, 0.15);
+    color: var(--mut);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge.status-image {
+    background: rgba(34, 197, 94, 0.15);
+    color: rgb(21, 128, 61);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge.status-video {
+    background: rgba(245, 158, 11, 0.15);
+    color: rgb(180, 83, 9);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.link-media {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--pri);
+    font-weight: 600;
+    text-decoration: none;
+}
+.link-media:hover {
+    text-decoration: underline;
+}
+
+/* --- Sidebar Cards (Asdie) --- */
+.hero-stat {
+    padding: 20px;
+}
+
+.hero-stat__head {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
 }
 
 .hero-stat__head h3 {
@@ -172,111 +262,23 @@
 
 .hero-stat__head p {
     margin: 0;
-    font-size: 0.82rem;
-    color: var(--mut);
-}
-
-.hero-stat__row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--line);
-}
-
-.hero-stat__val {
-    display: block;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--ink);
-}
-
-.hero-stat__lbl {
     font-size: 0.8rem;
     color: var(--mut);
 }
 
-.hero-stat__sep {
-    height: 1px;
-    background: var(--line);
-    margin: 20px 0;
+.hero-stat__footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
 }
 
-.hero-stat__title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--ink);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0 0 12px;
-}
-
-.hero-stat__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.hero-stat__list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.hero-stat__ico {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--pri-t);
-    color: var(--pri);
-    flex: none;
-}
-
-.hero-stat__meta {
-    flex: 1;
-    min-width: 0;
-}
-
-.hero-stat__name {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--ink);
-}
-
-.hero-stat__hint {
-    display: block;
-    font-size: 0.78rem;
-    color: var(--mut);
-    line-height: 1.4;
-}
-
-.hero-stat__link {
-    font-size: 0.78rem;
-    color: var(--pri);
-    font-weight: 600;
-    text-decoration: none;
-    word-break: break-all;
-}
-
-.hero-stat__link:hover {
-    text-decoration: underline;
-}
-
-/* Tips List */
 .hero-tips {
     list-style: none;
     padding: 0;
-    margin: 12px 0 0;
+    margin: 16px 0 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .hero-tips li {
@@ -288,60 +290,112 @@
 }
 
 .hero-tips li::before {
-    content: '•';
+    content: '✓';
     position: absolute;
-    left: 4px;
+    left: 0;
     top: 0;
-    color: var(--acc);
+    color: var(--ok);
     font-weight: bold;
-    font-size: 1.2rem;
-    line-height: 1.2;
+    font-size: 0.9rem;
 }
 
-/* Tambahan untuk Sidebar Kanan */
-.hero-stat__list li {
-    border-bottom: 1px solid transparent; /* reset */
-    padding-bottom: 0;
-    margin-bottom: 0;
+/* --- Tombol Kustom --- */
+.btn-hero-primary {
+    background: var(--pri) !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s !important;
+    text-decoration: none;
+}
+.btn-hero-primary:hover {
+    background: var(--pri-d) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
-.hero-stat__link {
-    display: inline-block;
-    margin-top: 2px;
-    padding: 2px 0;
-    background: transparent;
-    transition: color 0.2s;
+.btn-hero-outline {
+    background: transparent !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--line) !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s !important;
+    text-decoration: none;
+}
+.btn-hero-outline:hover {
+    background: var(--bg) !important;
+    border-color: var(--mut) !important;
 }
 
-.hero-stat__link:hover {
-    color: var(--pri-d);
-    text-decoration: underline;
+/* --- Status Box (Sidebar) --- */
+.status-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
 }
 
-/* Tombol Landing Page di Sidebar */
-.hero-stat .btn {
-    font-size: 0.85rem;
-    padding: 10px 16px;
+.status-box.is-active {
+    border-color: rgba(34, 197, 94, 0.4);
+    background: rgba(34, 197, 94, 0.05);
+}
+.status-box.is-inactive {
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.status-icon {
+    width: 36px;
+    height: 36px;
     border-radius: 8px;
-    background: var(--pri-t);
-    color: var(--pri);
-    font-weight: 600;
-    transition:
-        background 0.2s,
-        color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.hero-stat .btn:hover {
-    background: var(--pri);
-    color: #fff;
+.is-active .status-icon {
+    background: rgba(34, 197, 94, 0.15);
+    color: rgb(21, 128, 61);
+}
+.is-inactive .status-icon {
+    background: rgba(239, 68, 68, 0.15);
+    color: rgb(185, 28, 28);
 }
 
-/* =========================================
-   RESPONSIVE
-   ========================================= */
+.status-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.status-text strong {
+    font-size: 0.9rem;
+    color: var(--ink);
+}
+.status-text span {
+    font-size: 0.78rem;
+    color: var(--mut);
+    line-height: 1.4;
+}
+
+/* --- Responsif --- */
 @media (max-width: 1024px) {
     .hero-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Ubah jadi 1 kolom */
     }
     .hero-aside {
         position: static;
@@ -349,13 +403,6 @@
 }
 
 @media (max-width: 640px) {
-    .hero-header {
-        flex-direction: column;
-    }
-    .hero-header__cta {
-        width: 100%;
-        justify-content: center;
-    }
     .hero-preview__title {
         font-size: 1.6rem;
     }
@@ -364,5 +411,8 @@
     }
     .hero-preview__content {
         padding: 32px 20px;
+    }
+    .hero-table-wrapper {
+        padding: 16px;
     }
 }

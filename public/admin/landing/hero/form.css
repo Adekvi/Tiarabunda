@@ -1,0 +1,104 @@
+@keyframes heroSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background: var(--pri) !important;
+}
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(22px) !important;
+}
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+#dropzone.dragover,
+#poster_dropzone.dragover {
+    border-color: var(--pri) !important;
+    background: rgba(99, 102, 241, 0.06) !important;
+    transform: scale(1.01);
+}
+#dropzone:hover,
+#poster_dropzone:hover {
+    border-color: var(--pri);
+    background: rgba(99, 102, 241, 0.03);
+}
+
+/* Sidebar */
+.hero-sidebar {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+    scrollbar-gutter: stable;
+    padding-bottom: 8px;
+}
+.hero-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+.hero-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.hero-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.4);
+    border-radius: 3px;
+}
+.hero-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.65);
+}
+.hero-sidebar > .card {
+    transition: box-shadow 0.2s ease;
+}
+.hero-sidebar > .card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Preview state (penting) ===== */
+.hidden-preview {
+    display: none !important;
+}
+
+#dropzone_preview:not(.hidden-preview),
+#poster_preview:not(.hidden-preview) {
+    display: block !important;
+}
+
+/* Styling media preview */
+#preview_img,
+#preview_video,
+#poster_img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #0f172a;
+    object-fit: contain;
+}
+
+#preview_img,
+#preview_video {
+    max-height: 200px;
+}
+
+#poster_img {
+    max-height: 140px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .hero-sidebar {
+        position: static;
+        max-height: none;
+        overflow: visible;
+        padding-right: 0;
+    }
+}

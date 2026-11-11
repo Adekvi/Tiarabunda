@@ -20,8 +20,6 @@ class HeroController extends Controller
     public function index(): View
     {
         $item = Hero::query()->first();
-
-        // Kirim data (bisa null) ke view index
         return view('superadmin.konten.landing.hero-section.index', compact('item'));
     }
 
@@ -35,6 +33,8 @@ class HeroController extends Controller
     {
         $item = Hero::query()->first() ?? new Hero();
 
+        $isVideo = $request->tipe_media === 'video';
+
         $data = $request->validate([
             'judul' => ['required', 'string', 'max:255'],
             'sub_judul' => ['nullable', 'string', 'max:500'],
@@ -45,8 +45,8 @@ class HeroController extends Controller
             'tipe_media' => ['required', 'in:none,gambar,video'],
             'path_media' => [
                 'nullable',
-                $request->tipe_media === 'video' ? 'mimes:mp4,webm' : 'image',
-                $request->tipe_media === 'video' ? 'max:15000' : 'max:2048'
+                $isVideo ? 'mimes:mp4,webm' : 'image',
+                $isVideo ? 'max:15000' : 'max:2048',
             ],
             'path_poster' => ['nullable', 'image', 'max:2048'],
             'urip' => ['boolean'],
@@ -54,28 +54,45 @@ class HeroController extends Controller
 
         $data['urip'] = $request->boolean('urip', false);
 
-        // Setelah validasi, sebelum handle file upload:
-        if ($request->tipe_media !== $item->tipe_media && !$request->hasFile('path_media')) {
-            // Tipe media berubah tapi tidak upload file baru → hapus file lama
-            if ($item->path_media) {
-                $this->images->delete($item->path_media);
-            }
-            $data['path_media'] = null;
-        }
-
-        // Jika tipe = none, hapus semua media
+        // ---- Hapus media saat tipe berubah ke 'none' ----
         if ($request->tipe_media === 'none') {
-            if ($item->path_media) {
-                $this->images->delete($item->path_media);
-            }
-            if ($item->path_poster) {
-                $this->images->delete($item->path_poster);
-            }
-            $data['path_media'] = null;
+            if ($item->path_media)   $this->images->delete($item->path_media);
+            if ($item->path_poster)  $this->images->delete($item->path_poster);
+            $data['path_media']  = null;
             $data['path_poster'] = null;
         }
 
-        // Handle Upload Poster (Thumbnail Video)
+        // ---- Hapus media lama saat tipe berubah tapi tidak upload file baru ----
+        if (
+            $request->tipe_media !== 'none'
+            && $request->tipe_media !== $item->tipe_media
+            && ! $request->hasFile('path_media')
+        ) {
+            if ($item->path_media) {
+                $this->images->delete($item->path_media);
+            }
+            $data['path_media'] = null;
+        }
+
+        // ---- Upload media utama (Gambar atau Video) ----
+        if ($request->hasFile('path_media')) {
+            if ($item->path_media) {
+                $this->images->delete($item->path_media);
+            }
+
+            // BEDAKAN PROSES GAMBAR DAN VIDEO
+            if ($isVideo) {
+                // Simpan video langsung tanpa optimasi (agar server tidak berat)
+                $path = $request->file('path_media')->store('hero', 'public');
+                $data['path_media'] = $path;
+            } else {
+                // Gunakan ImageOptimizer khusus untuk gambar
+                $stored = $this->images->store($request->file('path_media'), 'hero');
+                $data['path_media'] = $stored['path'];
+            }
+        }
+
+        // ---- Upload poster video ----
         if ($request->hasFile('path_poster')) {
             if ($item->path_poster) {
                 $this->images->delete($item->path_poster);
@@ -84,11 +101,20 @@ class HeroController extends Controller
             $data['path_poster'] = $stored['path'];
         }
 
+        // Poster hanya relevan untuk video
+        if ($request->tipe_media !== 'video') {
+            if ($item->path_poster && ! $request->hasFile('path_poster')) {
+                $this->images->delete($item->path_poster);
+                $data['path_poster'] = null;
+            }
+        }
+
         $item->fill($data)->save();
 
-        // Bersihkan cache landing agar perubahan langsung terlihat
         $this->landingService->forgetHome();
 
-        return redirect()->route('superadmin.hero.index')->with('success', 'Pengaturan Hero berhasil diperbarui.');
+        return redirect()
+            ->route('superadmin.hero.index')
+            ->with('success', 'Pengaturan Hero berhasil diperbarui.');
     }
 }

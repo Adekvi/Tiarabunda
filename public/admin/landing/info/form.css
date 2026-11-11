@@ -1,0 +1,529 @@
+/* =====================================================
+   FORM INFO TERKINI — Stylesheet
+   ===================================================== */
+
+/* ===== HEADER ===== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--pri-t) 0%, transparent 70%);
+    border-radius: 14px;
+    border: 1px solid var(--line);
+}
+
+.page-header .breadcrumb {
+    margin: 0 0 6px;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--mut);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.page-header .breadcrumb a {
+    color: var(--pri);
+    text-decoration: none;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    letter-spacing: -0.015em;
+}
+
+.page-header .subtitle {
+    margin: 4px 0 0;
+    font-size: 0.82rem;
+    color: var(--mut);
+}
+
+/* ===== FORM CARD ===== */
+.form-card h2 {
+    margin: 0 0 6px;
+    font-size: 1.1rem;
+}
+
+.form-card .hint {
+    margin: 0 0 24px;
+    font-size: 0.84rem;
+    color: var(--mut);
+    line-height: 1.5;
+}
+
+.form-section {
+    margin-bottom: 26px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.form-section-title {
+    margin: 0 0 16px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mut);
+}
+
+/* ===== FORM GROUP ===== */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label.lbl {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.form-group label.lbl .req {
+    color: var(--err);
+}
+
+.form-group input[type='text'],
+.form-group input[type='date'],
+.form-group textarea {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--ink);
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--pri);
+    box-shadow: 0 0 0 3px var(--pri-t);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 88px;
+}
+
+.form-group small.help {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.76rem;
+    color: var(--mut);
+    line-height: 1.4;
+}
+
+/* ===== TANGGAL: MODE TOGGLE ===== */
+.date-mode-switch {
+    display: inline-flex;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 12px;
+    gap: 2px;
+}
+
+.date-mode-switch button {
+    border: none;
+    background: transparent;
+    padding: 6px 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--mut);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+}
+
+.date-mode-switch button.active {
+    background: var(--pri);
+    color: #fff;
+}
+
+.date-inputs .mode-panel {
+    display: none;
+}
+.date-inputs .mode-panel.active {
+    display: block;
+}
+
+/* ===== FILE DROP ===== */
+.file-drop {
+    border: 1.5px dashed var(--line);
+    border-radius: 12px;
+    padding: 22px 20px;
+    background: var(--bg);
+    text-align: center;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+    position: relative;
+}
+
+.file-drop:hover,
+.file-drop.dragover {
+    border-color: var(--pri);
+    background: var(--pri-t);
+}
+
+.file-drop input[type='file'] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.file-drop .fd-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 4px;
+}
+
+.file-drop .fd-desc {
+    font-size: 0.76rem;
+    color: var(--mut);
+    margin: 0;
+}
+
+.file-drop.has-file {
+    border-style: solid;
+    border-color: var(--pri);
+}
+
+.file-drop .fd-filename {
+    display: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--pri);
+    margin-top: 8px;
+    word-break: break-all;
+}
+
+.file-drop.has-file .fd-filename {
+    display: block;
+}
+
+/* =====================================================
+   STATUS PUBLIKASI & BADGE (ISOLATED)
+   ===================================================== */
+
+.publish-block {
+    display: grid;
+    gap: 12px;
+}
+
+.publish-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.publish-toggle:hover {
+    border-color: var(--pri);
+}
+
+/* State ON */
+.publish-toggle.on {
+    border-color: rgba(22, 163, 74, 0.4);
+    background: rgba(22, 163, 74, 0.05);
+}
+
+.publish-toggle .publish-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.publish-toggle .publish-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 4px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+/* Badge style (Murni & Tidak Bentrok) */
+.pub-badge,
+.pub-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: rgba(180, 83, 9, 0.12);
+    color: #b45309;
+    border: 1px solid rgba(180, 83, 9, 0.25);
+    white-space: nowrap;
+}
+
+.pub-badge::before,
+.pub-status-badge::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.pub-badge.is-on,
+.pub-status-badge.is-on {
+    background: rgba(22, 163, 74, 0.12);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.25);
+}
+
+.publish-toggle .publish-desc {
+    margin: 0;
+    font-size: 0.79rem;
+    color: var(--mut);
+    line-height: 1.5;
+}
+
+/* Switch */
+.publish-toggle .switch {
+    position: relative;
+    width: 46px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+.publish-toggle .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.publish-toggle .switch .slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background: var(--line);
+    border-radius: 999px;
+    transition: background 0.25s ease;
+}
+
+.publish-toggle .switch .slider::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.publish-toggle .switch input:checked + .slider {
+    background: #16a34a;
+}
+.publish-toggle .switch input:checked + .slider::before {
+    transform: translateX(20px);
+}
+
+/* Note panel */
+.publish-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--bg);
+    border-left: 3px solid var(--line);
+    font-size: 0.8rem;
+    color: var(--mut);
+    line-height: 1.55;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.publish-note .note-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    color: var(--mut);
+    transition: color 0.2s ease;
+}
+
+.publish-note.on {
+    border-left-color: #16a34a;
+    background: rgba(22, 163, 74, 0.05);
+    color: var(--ink);
+}
+
+.publish-note.on .note-icon {
+    color: #16a34a;
+}
+
+/* ===== FORM ACTIONS ===== */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+}
+
+/* ===== PREVIEW BOX ===== */
+.preview-box {
+    width: 100%;
+    max-width: 240px;
+    margin: 0 auto;
+    aspect-ratio: 5/7;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-box .ph {
+    color: var(--mut);
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 16px;
+    line-height: 1.6;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar-card {
+    padding: 18px;
+}
+
+.sidebar-card h3 {
+    margin: 0 0 14px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mut);
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.86rem;
+    padding: 7px 0;
+}
+
+.meta-row .k {
+    color: var(--mut);
+}
+.meta-row .v {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.guide-list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 0.83rem;
+    color: var(--mut);
+    line-height: 1.7;
+}
+
+.guide-list li::marker {
+    color: var(--pri);
+}
+.guide-list strong {
+    color: var(--ink);
+}
+
+/* ===== SIDEBAR SCROLL ===== */
+.sidebar-scroll {
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 999px;
+}
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+    background: var(--mut);
+}
+
+/* =====================================================
+   DARK MODE OVERRIDES
+   ===================================================== */
+@media (prefers-color-scheme: dark) {
+    .pub-badge,
+    .pub-status-badge {
+        background: rgba(251, 191, 36, 0.15);
+        color: #fcd34d;
+        border-color: rgba(251, 191, 36, 0.3);
+    }
+    .pub-badge.is-on,
+    .pub-status-badge.is-on {
+        background: rgba(74, 222, 128, 0.15);
+        color: #86efac;
+        border-color: rgba(74, 222, 128, 0.3);
+    }
+    .publish-toggle.on {
+        border-color: rgba(74, 222, 128, 0.4);
+        background: rgba(74, 222, 128, 0.08);
+    }
+    .publish-note.on {
+        background: rgba(74, 222, 128, 0.08);
+        border-left-color: #4ade80;
+    }
+    .publish-note.on .note-icon {
+        color: #4ade80;
+    }
+}
