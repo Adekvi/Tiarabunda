@@ -1,0 +1,1202 @@
+/* ============ Page shell ============ */
+.prp-page {
+    width: 100%;
+    max-width: 100%;
+}
+
+.prp-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 20px;
+    align-items: start;
+}
+
+.prp-main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ============ Hero ============ */
+.prp-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    background:
+        radial-gradient(
+            120% 80% at 0% 0%,
+            color-mix(in srgb, var(--pri) 10%, transparent),
+            transparent 55%
+        ),
+        var(--card);
+}
+
+.prp-hero__crumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 6px;
+    font-size: 0.75rem;
+    color: var(--mut);
+}
+
+.prp-hero__crumb .is-current {
+    color: var(--pri);
+    font-weight: 700;
+}
+
+.prp-hero__title {
+    margin: 0 0 6px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.prp-hero__desc {
+    margin: 0;
+    max-width: 62ch;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--mut);
+}
+
+.prp-hero__cta {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (max-width: 720px) {
+    .prp-hero {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .prp-hero__cta {
+        justify-content: center;
+    }
+}
+
+/* ============ Filter ============ */
+.prp-filter {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(140px, 1fr) auto;
+    gap: 12px;
+    align-items: end;
+}
+
+.prp-filter__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 720px) {
+    .prp-filter {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============ Table ============ */
+.prp-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    -webkit-overflow-scrolling: touch;
+}
+
+.prp-table {
+    width: 100%;
+    min-width: 800px; /* Minimal agar tanggal dan aksi tidak berdesakan */
+    border-collapse: collapse;
+    table-layout: auto; /* Ganti ke auto agar kolom bisa melebar fleksibel */
+}
+
+.prp-table th,
+.prp-table td {
+    padding: 14px 16px; /* Spasi yang cukup antar sel */
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    text-align: left;
+}
+
+.prp-table thead th {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--mut);
+    background: color-mix(in srgb, var(--bg) 80%, var(--card));
+    white-space: nowrap; /* Judul tabel tetap 1 baris */
+}
+
+.prp-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.prp-table tbody tr:hover td {
+    background: color-mix(in srgb, var(--pri) 4%, transparent);
+}
+
+/* --- Pengaturan Kolom --- */
+.prp-table .is-num {
+    width: 50px;
+    text-align: center;
+    color: var(--mut);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Kolom nama jalur dibuat fleksibel dan teksnya bisa turun baris */
+.prp-table td:nth-child(2) {
+    min-width: 200px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.prp-table .is-slug {
+    width: 150px;
+    white-space: normal;
+    word-break: break-all; /* Agar slug panjang turun baris */
+}
+
+/* Tanggal, urutan, status, dan aksi tetap 1 baris agar rapi */
+.prp-table .is-date {
+    width: 110px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.prp-table .is-ord {
+    width: 70px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.prp-table .is-status {
+    width: 100px;
+}
+
+.prp-table .is-actions {
+    width: 130px;
+    text-align: right;
+}
+
+/* ============================================================
+   Kolom info tabel: judul + deskripsi
+   ============================================================ */
+
+.prp-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0; /* penting: cegah overflow di kolom tabel */
+    max-width: 320px;
+}
+
+.prp-info__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--ink);
+    word-break: break-word;
+}
+
+.prp-info__desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-weight: 400;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--mut);
+    word-break: break-word;
+}
+
+/* --- Elemen di dalam tabel --- */
+.prp-name {
+    display: flex;
+    flex-direction: column; /* Ubah ke vertikal agar badge tidak mendorong teks */
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.prp-name__main {
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+}
+
+.prp-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.prp-tag--open {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.prp-tag--soon {
+    background: var(--acc-t);
+    color: #c05f0a;
+}
+
+[data-theme='dark'] .prp-tag--soon {
+    color: var(--acc);
+}
+
+.prp-code {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: ui-monospace, monospace;
+    font-size: 0.76rem;
+    background: color-mix(in srgb, var(--pri) 12%, transparent);
+    color: var(--pri);
+    max-width: 100%;
+    /* overflow dihapus agar text-overflow tidak memotong */
+}
+
+.prp-time--soon {
+    color: #c05f0a;
+    font-weight: 700;
+}
+
+[data-theme='dark'] .prp-time--soon {
+    color: var(--acc);
+}
+
+/* Elemen di dalam tabel */
+.prp-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.prp-name__main {
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+}
+
+.prp-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.prp-name {
+    display: flex;
+    align-items: start;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.prp-name__main {
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+}
+
+.prp-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.prp-tag--open {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.prp-tag--soon {
+    background: var(--acc-t);
+    color: #c05f0a;
+}
+
+[data-theme='dark'] .prp-tag--soon {
+    color: var(--acc);
+}
+
+.prp-code {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: ui-monospace, monospace;
+    font-size: 0.76rem;
+    background: color-mix(in srgb, var(--pri) 12%, transparent);
+    color: var(--pri);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.prp-time--soon {
+    color: #c05f0a;
+    font-weight: 700;
+}
+
+[data-theme='dark'] .prp-time--soon {
+    color: var(--acc);
+}
+
+.prp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.prp-badge i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.prp-badge.is-on {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.prp-badge.is-on i {
+    background: var(--ok);
+}
+
+.prp-badge.is-off {
+    background: var(--err-t);
+    color: var(--err);
+}
+
+.prp-badge.is-off i {
+    background: var(--err);
+}
+
+.prp-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.prp-act {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s;
+}
+
+.prp-act:hover {
+    background: color-mix(in srgb, var(--pri) 8%, transparent);
+    border-color: color-mix(in srgb, var(--pri) 24%, var(--line));
+    color: var(--pri);
+}
+
+.prp-act.is-ok {
+    color: var(--ok);
+    background: color-mix(in srgb, var(--ok) 10%, transparent);
+}
+
+.prp-act.is-ok:hover {
+    background: var(--ok);
+    color: #fff;
+}
+
+.prp-act.is-mute {
+    color: var(--mut);
+    background: color-mix(in srgb, var(--mut) 10%, transparent);
+}
+
+.prp-act.is-mute:hover {
+    background: var(--mut);
+    color: #fff;
+}
+
+.prp-act.is-danger {
+    color: var(--err);
+    background: color-mix(in srgb, var(--err) 10%, transparent);
+}
+
+.prp-act.is-danger:hover {
+    background: var(--err);
+    color: #fff;
+}
+
+/* ============ Empty ============ */
+.prp-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px;
+    border-radius: 12px;
+    border: 1px dashed var(--line);
+    background: var(--card);
+}
+
+.prp-empty__ring {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--pri) 12%, transparent);
+    color: var(--pri);
+}
+
+.prp-empty__title {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.prp-empty__desc {
+    margin: 0 0 18px;
+    max-width: 42ch;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--mut);
+}
+
+/* ============ Sidebar ============ */
+.prp-aside {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: sticky;
+    top: 16px;
+}
+
+.prp-tips {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--mut);
+    font-size: 0.86rem;
+    line-height: 1.7;
+}
+
+/* ============ Statistik ============ */
+.prp-stat__head h3 {
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
+.prp-stat__head p {
+    margin: 2px 0 0;
+    font-size: 0.78rem;
+    color: var(--mut);
+}
+
+.prp-stat__total {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 18px 0 14px;
+}
+
+.prp-stat__val {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.prp-stat__lbl {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--mut);
+}
+
+.prp-stat__pill {
+    padding: 3px 11px;
+    border-radius: 99px;
+    background: var(--ok-t);
+    color: var(--ok);
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.prp-stat__bar {
+    display: flex;
+    gap: 2px;
+    height: 10px;
+    border-radius: 99px;
+    overflow: hidden;
+    background: var(--line);
+}
+
+.prp-stat__bar span {
+    display: block;
+    height: 100%;
+    transition: width 0.6s var(--ease);
+}
+
+.prp-stat__bar-ok {
+    background: var(--ok);
+}
+
+.prp-stat__bar-off {
+    background: var(--err);
+    opacity: 0.7;
+}
+
+.prp-stat__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: var(--mut);
+}
+
+.prp-stat__legend i {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 6px;
+    border-radius: 50%;
+}
+
+.prp-stat__legend b {
+    margin-left: 2px;
+    color: var(--ink);
+}
+
+.d-ok {
+    background: var(--ok);
+}
+
+.d-off {
+    background: var(--err);
+}
+
+.prp-stat__sep {
+    height: 1px;
+    margin: 18px 0 14px;
+    background: var(--line);
+}
+
+.prp-stat__title {
+    margin: 0 0 12px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--mut);
+}
+
+.prp-stat__list {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.prp-stat__list li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 6px 12px;
+    align-items: center;
+}
+
+.prp-stat__ico {
+    grid-row: 1 / 3;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--tint);
+    color: var(--tone);
+}
+
+.prp-stat__meta {
+    display: grid;
+    min-width: 0;
+    line-height: 1.3;
+}
+
+.prp-stat__name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.prp-stat__hint {
+    font-size: 0.74rem;
+    color: var(--mut);
+}
+
+.prp-stat__num {
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--tone);
+    font-variant-numeric: tabular-nums;
+}
+
+.prp-stat__mini {
+    grid-column: 2 / 4;
+    height: 4px;
+    border-radius: 99px;
+    background: var(--line);
+    overflow: hidden;
+}
+
+.prp-stat__mini i {
+    display: block;
+    height: 100%;
+    border-radius: 99px;
+    background: var(--tone);
+    transition: width 0.6s var(--ease);
+}
+
+.is-open {
+    --tone: var(--pri);
+    --tint: var(--pri-t, #eef2ff);
+}
+
+.is-soon {
+    --tone: #c05f0a;
+    --tint: var(--acc-t);
+}
+
+.is-wait {
+    --tone: var(--mut);
+    --tint: var(--hov);
+}
+
+[data-theme='dark'] .is-soon {
+    --tone: var(--acc);
+}
+
+.prp-stat__alert {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-top: 18px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    border-left: 4px solid var(--acc);
+    background: var(--acc-t);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--ink);
+}
+
+.prp-stat__alert svg {
+    flex: none;
+    margin-top: 2px;
+    color: var(--acc);
+}
+
+.prp-stat__note {
+    margin: 16px 0 0;
+    font-size: 0.72rem;
+    color: var(--mut);
+}
+
+/* ============================================================
+   PAGINATION — prp-pager (custom Laravel paginator)
+   ============================================================ */
+
+.prp-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.prp-pager__info {
+    font-size: 0.8rem;
+    color: var(--mut);
+    line-height: 1.4;
+}
+
+.prp-pager__info strong {
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+}
+
+.prp-pager__nav {
+    flex: none;
+}
+
+/* List */
+.prp-pager-list {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.prp-pager-item {
+    display: inline-flex;
+}
+
+/* Link dasar (a & span) */
+.prp-pager-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    transition:
+        background 0.15s,
+        border-color 0.15s,
+        color 0.15s,
+        transform 0.1s;
+}
+
+a.prp-pager-link:hover {
+    background: var(--hov);
+    border-color: color-mix(in srgb, var(--pri) 30%, var(--line));
+    color: var(--pri);
+}
+
+a.prp-pager-link:active {
+    transform: scale(0.97);
+}
+
+a.prp-pager-link:focus-visible {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+/* Halaman aktif */
+.prp-pager-item.is-active .prp-pager-link {
+    background: var(--pri);
+    border-color: var(--pri);
+    color: #fff;
+    font-weight: 700;
+    cursor: default;
+}
+
+/* Disabled (prev/next di ujung, ellipsis) */
+.prp-pager-item.is-disabled .prp-pager-link {
+    background: var(--bg);
+    color: var(--mut);
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* Label teks Prev/Next disembunyikan di layar kecil */
+.prp-pager-text {
+    display: inline;
+}
+
+@media (max-width: 720px) {
+    .prp-pager {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .prp-pager__nav {
+        align-self: flex-start;
+    }
+
+    .prp-pager-text {
+        display: none;
+    }
+
+    .prp-pager-link {
+        min-width: 34px;
+        padding: 0 8px;
+    }
+}
+
+/* ============================================================
+   MODAL — Varian (danger / restore)
+   ============================================================ */
+
+.prp-modal__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+}
+
+.prp-modal[data-type='danger'] .prp-modal__icon {
+    background: var(--err-t);
+    color: var(--err);
+}
+
+.prp-modal[data-type='danger'] #prpConfirmOk {
+    background: var(--err);
+    border-color: var(--err);
+    color: #fff;
+}
+
+.prp-modal[data-type='danger'] #prpConfirmOk:hover {
+    background: color-mix(in srgb, var(--err) 85%, black);
+}
+
+.prp-modal[data-type='restore'] .prp-modal__icon {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.prp-modal[data-type='restore'] #prpConfirmOk {
+    background: var(--ok);
+    border-color: var(--ok);
+    color: #fff;
+}
+
+.prp-modal[data-type='restore'] #prpConfirmOk:hover {
+    background: color-mix(in srgb, var(--ok) 85%, black);
+}
+
+/* Modal dasar (jika belum ada) */
+.prp-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.prp-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.prp-modal[hidden] {
+    display: grid !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.prp-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 18, 32, 0.55);
+    backdrop-filter: blur(2px);
+}
+
+.prp-modal__box {
+    position: relative;
+    z-index: 1;
+    width: min(440px, 100%);
+    padding: 24px;
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(10px) scale(0.96);
+    opacity: 0;
+    transition:
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.22s ease;
+}
+
+.prp-modal.is-open .prp-modal__box {
+    transform: none;
+    opacity: 1;
+}
+
+.prp-modal__title {
+    margin: 0 0 6px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+.prp-modal__desc {
+    margin: 0 0 20px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--mut);
+}
+
+.prp-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* ===== Recovery / trash banner ===== */
+.rec-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--acc, #f58220) 35%, var(--line));
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--acc, #f58220) 10%, transparent),
+            color-mix(in srgb, var(--pri) 6%, transparent)
+        ),
+        var(--card);
+}
+
+.rec-banner__main {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.rec-banner__ico {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--acc, #f58220) 16%, transparent);
+    color: var(--acc, #f58220);
+}
+
+.rec-banner__body {
+    min-width: 0;
+}
+
+.rec-banner__head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.rec-banner__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.rec-banner__pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: color-mix(in srgb, var(--acc, #f58220) 18%, transparent);
+    color: var(--acc, #f58220);
+}
+
+.rec-banner__desc {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--mut);
+}
+
+.rec-banner__btn {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 9px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    background: var(--pri);
+    border: 1px solid transparent;
+    transition:
+        background 0.15s,
+        transform 0.15s;
+}
+
+.rec-banner__btn:hover {
+    background: var(--pri-d, #154a99);
+    transform: translateY(-1px);
+}
+
+/* ============ Sampah / Trash Styles ============ */
+.prp-trash-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--err) 6%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--err) 20%, var(--line));
+}
+
+.prp-trash-toolbar__info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.prp-trash-toolbar__title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--err);
+}
+
+.prp-trash-toolbar__desc {
+    font-size: 0.8rem;
+    color: var(--mut);
+}
+
+/* Tombol outline merah untuk "Kosongkan sampah" */
+.btn-danger--outline {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    color: var(--err);
+    border: 1px solid color-mix(in srgb, var(--err) 45%, var(--line));
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-danger--outline:hover {
+    background: var(--err);
+    color: #fff;
+}
+
+/* Penyesuaian tabel sampah */
+.prp-table--trashed tbody tr:hover td {
+    background: color-mix(in srgb, var(--err) 3%, transparent);
+}
+
+.prp-trash-time {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.prp-trash-time time {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.prp-trash-time small {
+    font-size: 0.75rem;
+    color: var(--mut);
+}
+
+/* Responsif */
+@media (max-width: 640px) {
+    .prp-trash-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .prp-trash-toolbar .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 720px) {
+    .rec-banner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .rec-banner__btn {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* ============ Responsif sidebar ============ */
+@media (max-width: 1100px) {
+    .prp-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .prp-aside {
+        max-width: none;
+        position: static;
+    }
+}

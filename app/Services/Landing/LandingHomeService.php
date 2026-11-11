@@ -5,6 +5,7 @@ namespace App\Services\Landing;
 use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
 use App\Models\Layanan\Fasilitas;
+use App\Models\Layanan\Perpus;
 use App\Models\Pendidikan\Pmb;
 use App\Models\Pendidikan\Program\Fakultas;
 use App\Models\Pendidikan\Program\Prodi;
@@ -23,6 +24,7 @@ class LandingHomeService
             'fakultas_prodi'   => $this->fakultasProdi(),
             'jalur'          => $this->jalurPmb(),
             'fasilitas' => $this->fasilitas(),
+            'perpus'         => $this->perpus(),
             'berita' => $this->beritas(),
             'faq' => $this->faqs(),
         ];
@@ -182,6 +184,48 @@ class LandingHomeService
         return collect($rows);
     }
 
+    public function perpus(int $limit = 6): array
+    {
+        $rows = Cache::remember('landing.home.perpus', self::TTL, function () use ($limit) {
+            return Perpus::query()
+                ->select([
+                    'id',
+                    'judhul',
+                    'isi',
+                    'data_tambahan',
+                    'urutan',
+                    'urip',
+                ])
+                ->active()
+                ->ordered()
+                ->limit($limit)
+                ->get()
+                ->map(function ($p) {
+                    /** @var Perpus $f */
+                    $meta = $p->data_tambahan ?? [];
+
+                    return [
+                        'judul'       => $p->judhul ?? '',
+                        'deskripsi'   => trim(strip_tags($p->isi ?? '')),
+                        'url_portal'  => $meta['url_portal'] ?? null,
+                        'jam_layanan' => $meta['jam_layanan'] ?? null,
+                        'kontak'      => $meta['kontak'] ?? null,
+                        'email'       => $meta['email'] ?? null,
+                    ];
+                })
+                ->values()
+                ->all();
+        });
+
+        // Guard cache rusak (mis. format lama)
+        if (! is_array($rows)) {
+            Cache::forget('landing.home.perpus');
+            $rows = [];
+        }
+
+        return $rows;
+    }
+
     public function beritas(int $limit = 4): Collection
     {
         $rows = Cache::remember('landing.home.berita', self::TTL, function () use ($limit) {
@@ -273,6 +317,11 @@ class LandingHomeService
         Cache::forget('landing.home.fasilitas');
     }
 
+    public function forgetPerpus(): void
+    {
+        Cache::forget('landing.home.perpus');
+    }
+
     public function forgetBerita(): void
     {
         Cache::forget('landing.home.berita');
@@ -288,6 +337,7 @@ class LandingHomeService
         $this->forgetPimpinan();
         $this->forgetFakultasProdi();
         $this->forgetJalurPmb();
+        $this->forgetPerpus();
         $this->forgetFaq();
         $this->forgetBerita();
         $this->forgetFasilitas();

@@ -1,0 +1,815 @@
+/* ============================================================
+   KEMAHASISWAAN — Index
+   ============================================================ */
+
+.kmh-page {
+    width: 100%;
+    max-width: 100%;
+}
+
+.kmh-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 20px;
+    align-items: start;
+}
+
+.kmh-main {
+    min-width: 0;
+}
+
+.kmh-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: sticky;
+    top: 16px;
+    align-self: start;
+}
+
+/* Hero */
+.kmh-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.kmh-hero__crumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 6px;
+    font-size: 0.75rem;
+    color: var(--mut);
+}
+
+.kmh-hero__crumb a {
+    color: var(--pri);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.kmh-hero__crumb a:hover {
+    text-decoration: underline;
+}
+
+.kmh-hero__crumb .is-current {
+    color: var(--mut);
+}
+
+.kmh-hero__title {
+    margin: 0 0 4px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+
+.kmh-hero__desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--mut);
+    max-width: 62ch;
+    line-height: 1.55;
+}
+
+.kmh-hero__actions {
+    display: flex;
+    gap: 8px;
+    flex: none;
+}
+
+/* Filter */
+.kmh-filter__form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 160px auto;
+    gap: 12px;
+    align-items: end;
+}
+
+.kmh-filter__actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Count badge */
+.kmh-count {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--mut);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* ===== Recovery / trash banner ===== */
+.rec-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--acc, #f58220) 35%, var(--line));
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(in srgb, var(--acc, #f58220) 10%, transparent),
+            color-mix(in srgb, var(--pri) 6%, transparent)
+        ),
+        var(--card);
+}
+
+.rec-banner__main {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.rec-banner__ico {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--acc, #f58220) 16%, transparent);
+    color: var(--acc, #f58220);
+}
+
+.rec-banner__body {
+    min-width: 0;
+}
+
+.rec-banner__head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.rec-banner__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.rec-banner__pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: color-mix(in srgb, var(--acc, #f58220) 18%, transparent);
+    color: var(--acc, #f58220);
+}
+
+.rec-banner__desc {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--mut);
+}
+
+.rec-banner__btn {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 9px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    background: var(--pri);
+    border: 1px solid transparent;
+    transition:
+        background 0.15s,
+        transform 0.15s;
+}
+
+.rec-banner__btn:hover {
+    background: var(--pri-d, #154a99);
+    transform: translateY(-1px);
+}
+
+/* ============ Empty ============ */
+.kmh-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px;
+    border-radius: 12px;
+    border: 1px dashed var(--line);
+    background: var(--card);
+}
+
+.kmh-empty__ring {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--pri) 12%, transparent);
+    color: var(--pri);
+}
+
+.kmh-empty__title {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.kmh-empty__desc {
+    margin: 0 0 18px;
+    max-width: 42ch;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--mut);
+}
+
+/* ============================================================
+   TRASH TABLE — toolbar, table, actions
+   ============================================================ */
+
+/* Toolbar */
+.kmh-trash-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--acc, #f58220) 6%, var(--card));
+}
+
+.kmh-trash-toolbar__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.kmh-trash-toolbar__title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.kmh-trash-toolbar__desc {
+    font-size: 0.8rem;
+    color: var(--mut);
+    line-height: 1.45;
+}
+
+/* Table wrapper */
+.kmh-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+}
+
+/* Table */
+.kmh-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.kmh-table thead th {
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mut);
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+}
+
+.kmh-table tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    vertical-align: middle;
+}
+
+.kmh-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.kmh-table tbody tr:hover {
+    background: color-mix(in srgb, var(--pri) 4%, transparent);
+}
+
+.kmh-table .is-num {
+    width: 50px;
+    color: var(--mut);
+    font-variant-numeric: tabular-nums;
+}
+
+.kmh-table .is-time {
+    width: 180px;
+}
+
+.kmh-table .is-actions {
+    width: 120px;
+    text-align: right;
+}
+
+/* Info cell (judul + desc) */
+.kmh-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.kmh-info__title {
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+}
+
+.kmh-info__desc {
+    font-size: 0.78rem;
+    color: var(--mut);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Deleted time */
+.kmh-trash-time {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.3;
+}
+
+.kmh-trash-time time {
+    font-size: 0.82rem;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.kmh-trash-time small {
+    font-size: 0.72rem;
+    color: var(--mut);
+}
+
+/* Actions (icon buttons) */
+.kmh-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.kmh-act {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--mut);
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        border-color 0.15s,
+        color 0.15s,
+        transform 0.1s;
+}
+
+.kmh-act:hover {
+    background: var(--hov, #f4f6fa);
+    transform: translateY(-1px);
+}
+
+.kmh-act:focus-visible {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+.kmh-act.is-ok:hover {
+    color: var(--ok, #16a34a);
+    border-color: color-mix(in srgb, var(--ok, #16a34a) 40%, var(--line));
+    background: color-mix(in srgb, var(--ok, #16a34a) 8%, var(--card));
+}
+
+.kmh-act.is-danger:hover {
+    color: var(--err, #dc2626);
+    border-color: color-mix(in srgb, var(--err, #dc2626) 40%, var(--line));
+    background: color-mix(in srgb, var(--err, #dc2626) 8%, var(--card));
+}
+
+/* Tombol outline danger (dipakai di toolbar) */
+.btn-danger--outline {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--err, #dc2626);
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--err, #dc2626) 40%, var(--line));
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        color 0.15s,
+        transform 0.1s;
+}
+
+.btn-danger--outline:hover {
+    background: color-mix(in srgb, var(--err, #dc2626) 8%, var(--card));
+    transform: translateY(-1px);
+}
+
+.kmh-modal__icon.is-restore {
+    background: color-mix(in srgb, var(--ok, #16a34a) 12%, transparent);
+    color: var(--ok, #16a34a);
+}
+
+.kmh-modal__icon.is-danger {
+    background: var(--err-t, color-mix(in srgb, #dc2626 12%, transparent));
+    color: var(--err, #dc2626);
+}
+
+/* Tombol OK hijau untuk restore */
+#kmhConfirmOk.ok {
+    background: var(--ok, #16a34a);
+    border-color: var(--ok, #16a34a);
+    color: #fff;
+}
+#kmhConfirmOk.ok:hover {
+    background: color-mix(in srgb, var(--ok, #16a34a) 85%, #000);
+}
+
+/* Responsif */
+@media (max-width: 720px) {
+    .kmh-trash-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .kmh-table .is-time {
+        display: none;
+    }
+
+    .kmh-table .is-actions {
+        width: 90px;
+    }
+}
+
+/* Pager */
+.kmh-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+
+.kmh-pager p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--mut);
+}
+
+/* Sidebar cards */
+.kmh-side-card {
+    padding: 20px;
+}
+
+.kmh-side-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.kmh-side-title svg {
+    flex: none;
+    color: var(--pri);
+    opacity: 0.85;
+}
+
+.kmh-side-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--mut);
+    line-height: 1.6;
+}
+
+/* Stats grid */
+.kmh-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.kmh-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+}
+
+.kmh-stat__val {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.kmh-stat__lbl {
+    font-size: 0.72rem;
+    color: var(--mut);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* Tips */
+.kmh-tips {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--mut);
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+
+.kmh-tips li + li {
+    margin-top: 4px;
+}
+
+/* Modal */
+.kmh-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+
+.kmh-modal[hidden] {
+    display: none;
+}
+
+.kmh-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(16, 24, 40, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.kmh-modal__box {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: 0 20px 40px rgba(16, 24, 40, 0.2);
+    text-align: center;
+}
+
+.kmh-modal__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--err-t);
+    color: var(--err);
+    margin-bottom: 14px;
+}
+
+.kmh-modal__title {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.kmh-modal__desc {
+    margin: 0 0 20px;
+    font-size: 0.85rem;
+    color: var(--mut);
+    line-height: 1.55;
+}
+
+.kmh-modal__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+/* ============================================================
+   PAGINATION — kmh-pager (custom Laravel paginator)
+   ============================================================ */
+
+.kmh-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.kmh-pager__info {
+    font-size: 0.8rem;
+    color: var(--mut);
+    line-height: 1.4;
+}
+
+.kmh-pager__info strong {
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+}
+
+.kmh-pager__nav {
+    flex: none;
+}
+
+/* List */
+.kmh-pager-list {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.kmh-pager-item {
+    display: inline-flex;
+}
+
+/* Link dasar (a & span) */
+.kmh-pager-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    transition:
+        background 0.15s,
+        border-color 0.15s,
+        color 0.15s,
+        transform 0.1s;
+}
+
+a.kmh-pager-link:hover {
+    background: var(--hov);
+    border-color: color-mix(in srgb, var(--pri) 30%, var(--line));
+    color: var(--pri);
+}
+
+a.kmh-pager-link:active {
+    transform: scale(0.97);
+}
+
+a.kmh-pager-link:focus-visible {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+/* Halaman aktif */
+.kmh-pager-item.is-active .kmh-pager-link {
+    background: var(--pri);
+    border-color: var(--pri);
+    color: #fff;
+    font-weight: 700;
+    cursor: default;
+}
+
+/* Disabled (prev/next di ujung, ellipsis) */
+.kmh-pager-item.is-disabled .kmh-pager-link {
+    background: var(--bg);
+    color: var(--mut);
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* Label teks Prev/Next disembunyikan di layar kecil */
+.kmh-pager-text {
+    display: inline;
+}
+
+@media (max-width: 720px) {
+    .kmh-pager {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .kmh-pager__nav {
+        align-self: flex-start;
+    }
+
+    .kmh-pager-text {
+        display: none;
+    }
+
+    .kmh-pager-link {
+        min-width: 34px;
+        padding: 0 8px;
+    }
+}
+
+/* Responsif */
+@media (max-width: 1100px) {
+    .kmh-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .kmh-aside {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kmh-aside .kmh-side-card:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 720px) {
+    .kmh-hero {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .kmh-hero__actions {
+        align-self: flex-start;
+    }
+
+    .kmh-filter__form {
+        grid-template-columns: 1fr;
+    }
+
+    .kmh-aside {
+        grid-template-columns: 1fr;
+    }
+
+    .kmh-pager {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

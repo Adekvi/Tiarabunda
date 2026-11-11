@@ -32,17 +32,17 @@ class AkreditasiController extends Controller
         ];
 
         $items = Akreditasi::query()
-            ->select([
-                'id',
-                'jeneng',
-                'status_akred',
-                'bagean',
-                'path_gambar',
-                'urutan',
-                'urip',
-                'updated_at',
-                'deleted_at'
-            ])
+            // ->select([
+            //     'id',
+            //     'jeneng',
+            //     'status_akred',
+            //     'bagean',
+            //     'path_gambar',
+            //     'urutan',
+            //     'urip',
+            //     'updated_at',
+            //     'deleted_at'
+            // ])
             ->when($trashed, fn($q) => $q->onlyTrashed())
             ->when(! $trashed, fn($q) => $q->whereNull('deleted_at'))
             ->when($filters['status'] === 'active', fn($q) => $q->active())
@@ -69,7 +69,7 @@ class AkreditasiController extends Controller
             'ada_gambar'  => Akreditasi::query()->whereNotNull('path_gambar')->where('path_gambar', '!=', '')->count(),
         ];
 
-        dd($items);
+        // dd($items);
 
         return view('superadmin.konten.pendidikan.akreditasi.index', [
             'items'    => $items,

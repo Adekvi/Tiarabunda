@@ -5,23 +5,35 @@
 @endphp
 
 <x-dashboard.layout.app :title="$pageTitle" :page-title="$pageTitle">
-    <div class="g">
-        <div class="card" style="padding:14px 22px;">
-            <div class="ch2" style="margin-bottom:0;">
-                <div>
-                    <p style="margin:0 0 2px;font-size:0.75rem;color:var(--mut);">
-                        <a href="{{ route('superadmin.kemaha.index') }}"
-                            style="color:var(--pri);font-weight:600;">Kemahasiswaan</a>
-                        <span style="opacity:.5;"> / </span>{{ $isEdit ? 'Ubah' : 'Tambah' }}
-                    </p>
-                    <h2 style="margin:0;font-size:1.15rem;">{{ $pageTitle }}</h2>
+    <div class="kmh-form-page">
+
+        {{-- HERO --}}
+        <div class="kmh-form-hero">
+            <div>
+                <div class="kmh-form-hero__crumb">
+                    <a href="{{ route('superadmin.kemaha.index') }}">Kemahasiswaan</a>
+                    <span>/</span>
+                    <span class="is-current">{{ $isEdit ? 'Ubah' : 'Tambah' }}</span>
                 </div>
-                <a href="{{ route('superadmin.kemaha.index') }}" class="btn gh">← Kembali</a>
+                <h1 class="kmh-form-hero__title">{{ $pageTitle }}</h1>
+                <p class="kmh-form-hero__desc">
+                    Lengkapi informasi yang akan tampil di landing page. Kontak, lokasi, dan tautan
+                    membantu mahasiswa menemukan layanan ini.
+                </p>
             </div>
+            <a href="{{ route('superadmin.kemaha.index') }}" class="btn gh kmh-form-hero__cta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Kembali
+            </a>
         </div>
 
+        {{-- ERROR --}}
         @if ($errors->any())
-            <div class="al w" role="alert">
+            <div class="al w" role="alert" style="margin-bottom:20px;">
                 <ul style="margin:0;padding-left:18px;">
                     @foreach ($errors->all() as $e)
                         <li>{{ $e }}</li>
@@ -30,225 +42,225 @@
             </div>
         @endif
 
-        <div class="g g2" style="align-items:start;">
-            <div class="card" style="min-width:0;">
-                <h2 style="margin-bottom:6px;">Detail konten</h2>
-                <p style="margin:0 0 20px;font-size:0.85rem;color:var(--mut);">
-                    Tulis informasi yang relevan bagi mahasiswa dan calon mahasiswa.
-                </p>
+        {{-- LAYOUT: form kiri + sidebar kanan --}}
+        <div class="kmh-form-layout">
 
-                <form method="POST"
-                    action="{{ $isEdit ? route('superadmin.kemaha.update', $item) : route('superadmin.kemaha.store') }}">
-                    @csrf
-                    @if ($isEdit)
-                        @method('PUT')
-                    @endif
+            {{-- KOLOM KIRI --}}
+            <div class="kmh-form-main">
+                <div class="card" style="padding:24px;">
+                    <h2 style="margin:0 0 6px;font-size:1.1rem;">Detail Konten</h2>
+                    <p style="margin:0 0 24px;font-size:0.85rem;color:var(--mut);">
+                        Tulis informasi yang relevan bagi mahasiswa dan calon mahasiswa.
+                    </p>
 
-                    <div class="f">
-                        <label for="judhul">Judul <span style="color:var(--err)">*</span></label>
-                        <input id="judhul" name="judhul" type="text" required maxlength="150"
-                            value="{{ old('judhul', $item->judhul) }}" placeholder="Contoh: Unit Kegiatan Mahasiswa">
-                    </div>
+                    <form id="kmhForm" method="POST"
+                        action="{{ $isEdit ? route('superadmin.kemaha.update', $item) : route('superadmin.kemaha.store') }}">
+                        @csrf
+                        @if ($isEdit)
+                            @method('PUT')
+                        @endif
 
-                    <div class="f">
-                        <label for="isi">Deskripsi</label>
-                        <textarea id="isi" name="isi" rows="8" placeholder="Penjelasan layanan atau kegiatan…">{{ old('isi', $item->isi) }}</textarea>
-                    </div>
-
-                    <div class="g g2" style="gap:16px;">
-                        <div class="f" style="margin-bottom:0;">
-                            <label for="kontak">Kontak / telepon</label>
-                            <input id="kontak" name="kontak" type="text" maxlength="100"
-                                value="{{ old('kontak', data_get($meta, 'kontak')) }}" placeholder="(021) 000-0000">
+                        <div class="f">
+                            <label for="judhul">Judul <span style="color:var(--err)">*</span></label>
+                            <input id="judhul" name="judhul" type="text" required maxlength="150"
+                                value="{{ old('judhul', $item->judhul) }}"
+                                placeholder="Contoh: Unit Kegiatan Mahasiswa">
                         </div>
-                        <div class="f" style="margin-bottom:0;">
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" maxlength="150"
-                                value="{{ old('email', data_get($meta, 'email')) }}"
-                                placeholder="kemahasiswaan@kampus.ac.id">
+
+                        <div class="f">
+                            <label for="isi">Deskripsi</label>
+                            <textarea id="isi" name="isi" rows="8" placeholder="Penjelasan layanan atau kegiatan…">{{ old('isi', $item->isi) }}</textarea>
                         </div>
-                    </div>
 
-                    <div class="f">
-                        <label for="lokasi">Lokasi / ruang</label>
-                        <input id="lokasi" name="lokasi" type="text" maxlength="150"
-                            value="{{ old('lokasi', data_get($meta, 'lokasi')) }}" placeholder="Gedung A lantai 2">
-                    </div>
+                        <div class="g g2" style="gap:16px;">
+                            <div class="f" style="margin-bottom:0;">
+                                <label for="kontak">Kontak / Telepon</label>
+                                <input id="kontak" name="kontak" type="text" maxlength="100"
+                                    value="{{ old('kontak', data_get($meta, 'kontak')) }}" placeholder="(021) 000-0000">
+                            </div>
+                            <div class="f" style="margin-bottom:0;">
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" maxlength="150"
+                                    value="{{ old('email', data_get($meta, 'email')) }}"
+                                    placeholder="kemahasiswaan@kampus.ac.id">
+                            </div>
+                        </div>
 
-                    <div class="f">
-                        <label for="url_portal">Tautan terkait (opsional)</label>
-                        <input id="url_portal" name="url_portal" type="url" maxlength="255"
-                            value="{{ old('url_portal', data_get($meta, 'url_portal')) }}" placeholder="https://…">
-                        <small style="color:var(--mut);">Form pendaftaran UKM, portal mahasiswa, dll.</small>
-                    </div>
+                        <div class="f" style="margin-top:16px;">
+                            <label for="lokasi">Lokasi / Ruang</label>
+                            <input id="lokasi" name="lokasi" type="text" maxlength="150"
+                                value="{{ old('lokasi', data_get($meta, 'lokasi')) }}" placeholder="Gedung A lantai 2">
+                        </div>
 
-                    <div class="f" style="max-width:240px;">
-                        <label for="urutan">Urutan tampil</label>
-                        <input id="urutan" type="number" name="urutan" min="0" max="9999"
-                            value="{{ old('urutan', $item->urutan ?? 0) }}">
-                    </div>
+                        <div class="f">
+                            <label for="url_portal">Tautan Terkait (opsional)</label>
+                            <input id="url_portal" name="url_portal" type="url" maxlength="255"
+                                value="{{ old('url_portal', data_get($meta, 'url_portal')) }}" placeholder="https://…">
+                            <small style="color:var(--mut);display:block;margin-top:4px;">
+                                Form pendaftaran UKM, portal mahasiswa, dll.
+                            </small>
+                            @error('url_portal')
+                                <small style="color:var(--err);">{{ $message }}</small>
+                            @enderror
+                        </div>
 
-                    <div class="f">
-                        <span class="f-label">Publikasi</span>
-                        <label class="sw" for="urip">
-                            <input type="hidden" name="urip" value="0">
-                            <input id="urip" class="sw-in" type="checkbox" name="urip" value="1"
-                                @checked(old('urip', $item->urip ?? true))>
-                            <span class="sw-track" aria-hidden="true"></span>
-                            <span class="sw-text">
-                                <strong>Tampilkan di situs publik</strong>
-                                <small>Nonaktif = tersimpan, tidak tampil di landing.</small>
-                            </span>
-                            <span class="sw-state sw-state-on">Tampil</span>
-                            <span class="sw-state sw-state-off">Disembunyikan</span>
-                        </label>
-                    </div>
+                        <div class="f" style="max-width:240px;">
+                            <label for="urutan">Urutan Tampil</label>
+                            <input id="urutan" type="number" name="urutan" min="0" max="9999"
+                                value="{{ old('urutan', $item->urutan ?? 0) }}">
+                        </div>
 
-                    <div
-                        style="display:flex;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line);">
-                        <button type="submit" class="btn">{{ $isEdit ? 'Simpan perubahan' : 'Simpan' }}</button>
-                        <a href="{{ route('superadmin.kemaha.index') }}" class="btn gh">Batal</a>
-                    </div>
-                </form>
+                        <div class="f" style="margin-top:16px;">
+                            <span class="f-label" style="display:block;margin-bottom:8px;">Publikasi</span>
+                            <label class="sw" for="urip">
+                                <input type="hidden" name="urip" value="0">
+                                <input id="urip" class="sw-in" type="checkbox" name="urip" value="1"
+                                    @checked(old('urip', $item->urip ?? true))>
+                                <span class="sw-track" aria-hidden="true"></span>
+                                <span class="sw-text">
+                                    <strong>Tampilkan di situs publik</strong>
+                                    <small>Nonaktif = tersimpan, tidak tampil di landing.</small>
+                                </span>
+                                <span class="sw-state sw-state-on">Tampil</span>
+                                <span class="sw-state sw-state-off">Disembunyikan</span>
+                            </label>
+                        </div>
+
+                        <div
+                            style="display:flex;gap:10px;margin-top:32px;padding-top:20px;border-top:1px solid var(--line);">
+                            <button type="submit"
+                                class="btn">{{ $isEdit ? 'Simpan Perubahan' : 'Simpan Konten' }}</button>
+                            <a href="{{ route('superadmin.kemaha.index') }}" class="btn gh">Batal</a>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <div class="g" style="gap:16px;">
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Panduan</h3>
-                    <ul style="margin:0;padding-left:18px;color:var(--mut);font-size:0.88rem;line-height:1.7;">
-                        <li>Satu blok = satu topik (UKM, beasiswa internal, dll.).</li>
-                        <li>Isi kontak agar mudah dihubungi mahasiswa.</li>
-                        <li>Tautan opsional untuk form atau portal eksternal.</li>
+            {{-- KOLOM KANAN: SIDEBAR --}}
+            <aside class="kmh-form-aside">
+
+                {{-- Ringkasan --}}
+                <div class="card kmh-side-card">
+                    <div class="kmh-side-head">
+                        <span class="kmh-side-badge {{ $isEdit ? 'is-edit' : 'is-new' }}">
+                            {{ $isEdit ? 'Mode Edit' : 'Data Baru' }}
+                        </span>
+                        <h3 class="kmh-side-title">Ringkasan Pengisian</h3>
+                        <p class="kmh-side-desc">
+                            Lengkapi informasi dasar agar konten tampil optimal.
+                        </p>
+                    </div>
+
+                    <ul class="kmh-checklist" id="kmhChecklist">
+                        <li data-check="judhul"><span class="dot"></span> Judul</li>
+                        <li data-check="isi"><span class="dot"></span> Deskripsi</li>
+                        <li data-check="kontak"><span class="dot"></span> Kontak</li>
+                        <li data-check="email"><span class="dot"></span> Email</li>
+                        <li data-check="lokasi"><span class="dot"></span> Lokasi / ruang</li>
+                        <li data-check="url_portal"><span class="dot"></span> Tautan terkait (opsional)</li>
+                    </ul>
+
+                    <div class="kmh-progress">
+                        <div class="kmh-progress__bar">
+                            <span id="kmhProgressBar" style="width:0%"></span>
+                        </div>
+                        <small id="kmhProgressText">0%</small>
+                    </div>
+
+                    @if ($isEdit)
+                        <div class="kmh-kv"
+                            style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);">
+                            <span>Terakhir update</span>
+                            <strong>{{ $item->updated_at->format('d M Y') }}</strong>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Status publikasi --}}
+                <div class="card kmh-side-card">
+                    <h3 class="kmh-side-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        Status Publikasi
+                    </h3>
+                    <div class="kmh-pub-row {{ old('urip', $item->urip ?? true) ? '' : 'is-off' }}" id="kmhPubRow">
+                        <span class="kmh-pub-dot"></span>
+                        <strong id="kmhPubLabel">
+                            {{ old('urip', $item->urip ?? true) ? 'Tampil di publik' : 'Disembunyikan' }}
+                        </strong>
+                    </div>
+                    <p class="kmh-side-desc" style="margin-top:8px;">
+                        <span id="kmhPubDesc">
+                            {{ old('urip', $item->urip ?? true)
+                                ? 'Konten akan muncul di landing page kemahasiswaan.'
+                                : 'Konten tersimpan namun tidak tampil di landing page.' }}
+                        </span>
+                    </p>
+                </div>
+
+                {{-- Kontak & portal preview --}}
+                <div class="card kmh-side-card">
+                    <h3 class="kmh-side-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
+                        Kontak & Portal
+                    </h3>
+                    <div class="kmh-contact-list">
+                        <div class="kmh-contact-item">
+                            <span class="kmh-contact-label">Telepon</span>
+                            <code id="kmhPreviewKontak">—</code>
+                        </div>
+                        <div class="kmh-contact-item">
+                            <span class="kmh-contact-label">Email</span>
+                            <code id="kmhPreviewEmail">—</code>
+                        </div>
+                        <div class="kmh-contact-item">
+                            <span class="kmh-contact-label">Lokasi</span>
+                            <code id="kmhPreviewLokasi">—</code>
+                        </div>
+                        <div class="kmh-contact-item">
+                            <span class="kmh-contact-label">Portal</span>
+                            <code id="kmhPreviewUrl">—</code>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Tips --}}
+                <div class="card kmh-side-card">
+                    <h3 class="kmh-side-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18h6"></path>
+                            <path d="M10 22h4"></path>
+                            <path
+                                d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.45.55 2.67 1.5 3.5.76.76 1.23 1.52 1.41 2.5">
+                            </path>
+                        </svg>
+                        Tips Pengisian
+                    </h3>
+                    <ul class="kmh-tips">
+                        <li>Satu blok = satu topik (UKM, beasiswa, layanan).</li>
+                        <li>Isi kontak & email agar mudah dihubungi.</li>
+                        <li>URL wajib diawali <code>https://</code>.</li>
+                        <li>Gunakan urutan kecil untuk tampil lebih awal.</li>
                     </ul>
                 </div>
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Status form</h3>
-                    <div style="display:flex;justify-content:space-between;font-size:0.88rem;">
-                        <span style="color:var(--mut);">Mode</span>
-                        <strong>{{ $isEdit ? 'Edit' : 'Buat baru' }}</strong>
-                    </div>
-                </div>
-            </div>
+
+            </aside>
         </div>
     </div>
 
     @push('css')
-        <style>
-            /* ---------- Switch publikasi ---------- */
-            .f .f-label {
-                font-weight: 600;
-                font-size: .85rem;
-            }
-
-            .f label.sw {
-                position: relative;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                padding: 14px 16px;
-                border: 1px solid var(--line);
-                border-radius: 12px;
-                background: var(--bg);
-                font-weight: 400;
-                font-size: .9rem;
-                cursor: pointer;
-                transition: border-color .2s, background .2s;
-            }
-
-            .f label.sw:hover {
-                border-color: var(--pri);
-            }
-
-            /* sembunyikan checkbox asli (lawan aturan .f input) */
-            .f .sw .sw-in {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                border: 0;
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            .sw-track {
-                position: relative;
-                flex: none;
-                width: 44px;
-                height: 24px;
-                border-radius: 99px;
-                background: var(--line);
-                transition: background .25s;
-            }
-
-            .sw-track::after {
-                content: '';
-                position: absolute;
-                top: 3px;
-                left: 3px;
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: #fff;
-                box-shadow: 0 1px 3px rgba(16, 24, 40, .3);
-                transition: transform .25s var(--ease);
-            }
-
-            .sw-in:checked~.sw-track {
-                background: var(--ok);
-            }
-
-            .sw-in:checked~.sw-track::after {
-                transform: translateX(20px);
-            }
-
-            .sw-in:focus-visible~.sw-track {
-                outline: 2px solid var(--pri);
-                outline-offset: 2px;
-            }
-
-            .sw-text {
-                flex: 1;
-                min-width: 0;
-                line-height: 1.4;
-            }
-
-            .sw-text strong {
-                display: block;
-                color: var(--ink);
-            }
-
-            .sw-text small {
-                color: var(--mut);
-                font-size: .8rem;
-            }
-
-            .sw-state {
-                flex: none;
-                padding: 2px 10px;
-                border-radius: 99px;
-                font-size: .75rem;
-                font-weight: 700;
-            }
-
-            .sw-state-on {
-                background: var(--ok-t);
-                color: var(--ok);
-                display: none;
-            }
-
-            .sw-state-off {
-                background: var(--err-t);
-                color: var(--err);
-            }
-
-            .sw-in:checked~.sw-state-on {
-                display: inline-block;
-            }
-
-            .sw-in:checked~.sw-state-off {
-                display: none;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ asset('admin/landing/layanan/kemaha/form.css') }}">
     @endpush
 
+    @push('js')
+        <script src="{{ asset('admin/landing/layanan/kemaha/form.js') }}" defer></script>
+    @endpush
 </x-dashboard.layout.app>

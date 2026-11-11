@@ -1,0 +1,413 @@
+/* ============================================================
+   PUSAT KARIER — FORM
+   Dimuat SETELAH krr.css (wajib — untuk .krr-layout, .krr-hero,
+   .krr-aside, .krr-side-card, .krr-tips).
+   Namespace: .krr-form, .krr-switch, .krr-preview, .krr-kv
+   ============================================================ */
+
+/* ============================================================
+   HEAD FORM
+   ============================================================ */
+.krr-form-head {
+    margin-bottom: 20px;
+}
+
+.krr-form-head h2 {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+.krr-form-head p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--mut);
+    line-height: 1.55;
+}
+
+/* ============================================================
+   FALLBACK FIELD (.f)
+   Agar konsisten meski layout tidak menyediakan style .f.
+   Spesifisitas .krr-form .f > .f global, jadi aman.
+   ============================================================ */
+.krr-form .f {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+}
+
+.krr-form .f label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--ink);
+}
+
+.krr-form .f input,
+.krr-form .f textarea,
+.krr-form .f select {
+    width: 100%;
+}
+
+/* Spacing antar field (bukan antar elemen di dalam field) */
+.krr-form .f + .f,
+.krr-form .krr-form-row + .f,
+.krr-form .f + .krr-form-row,
+.krr-form .krr-form-row + .krr-form-row {
+    margin-top: 16px;
+}
+
+/* ============================================================
+   GRID 2 KOLOM
+   ============================================================ */
+.krr-form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.krr-form-row .f {
+    margin-top: 0 !important;
+}
+
+.krr-form-narrow {
+    max-width: 180px;
+}
+
+/* ============================================================
+   REQUIRED & HELP
+   ============================================================ */
+.krr-req {
+    color: var(--err);
+    font-weight: 700;
+}
+
+.krr-help {
+    display: block;
+    margin-top: 0;
+    font-size: 0.78rem;
+    color: var(--mut);
+    line-height: 1.4;
+}
+
+/* ============================================================
+   LABEL NON <label> (mis. "Publikasi")
+   ============================================================ */
+.krr-flabel {
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--ink);
+}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+.krr-form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.krr-form-actions .btn {
+    min-width: 120px;
+    justify-content: center;
+}
+
+/* ============================================================
+   ALERT (error validasi)
+   ============================================================ */
+.krr-alert {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+
+.krr-alert svg {
+    flex: none;
+    margin-top: 1px;
+}
+
+.krr-alert ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.krr-alert--error {
+    background: var(--err-t);
+    color: var(--err);
+    border: 1px solid color-mix(in srgb, var(--err) 35%, var(--line));
+}
+
+/* ============================================================
+   SWITCH PUBLIKASI
+   ============================================================ */
+.krr-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    font-weight: 400;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition:
+        border-color 0.2s,
+        background 0.2s;
+    width: 100%;
+}
+
+.krr-switch:hover {
+    border-color: var(--pri);
+}
+
+.krr-switch__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.krr-switch__track {
+    position: relative;
+    flex: none;
+    width: 44px;
+    height: 24px;
+    border-radius: 99px;
+    background: var(--line);
+    transition: background 0.25s;
+}
+
+.krr-switch__track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.3);
+    transition: transform 0.25s var(--ease, ease);
+}
+
+.krr-switch__input:checked ~ .krr-switch__track {
+    background: var(--ok);
+}
+
+.krr-switch__input:checked ~ .krr-switch__track::after {
+    transform: translateX(20px);
+}
+
+.krr-switch__input:focus-visible ~ .krr-switch__track {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+.krr-switch__text {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.4;
+}
+
+.krr-switch__text strong {
+    display: block;
+    color: var(--ink);
+}
+
+.krr-switch__text small {
+    color: var(--mut);
+    font-size: 0.8rem;
+}
+
+.krr-switch__state {
+    flex: none;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.krr-switch__state.is-on {
+    background: var(--ok-t);
+    color: var(--ok);
+    display: none;
+}
+
+.krr-switch__state.is-off {
+    background: var(--err-t);
+    color: var(--err);
+}
+
+.krr-switch__input:checked ~ .krr-switch__state.is-on {
+    display: inline-block;
+}
+
+.krr-switch__input:checked ~ .krr-switch__state.is-off {
+    display: none;
+}
+
+/* ============================================================
+   SIDEBAR — PREVIEW KONTEN
+   ============================================================ */
+.krr-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px dashed var(--line);
+    background: var(--bg);
+}
+
+.krr-preview__title {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--ink);
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.krr-preview__desc {
+    font-size: 0.8rem;
+    color: var(--mut);
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.krr-preview__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 0.75rem;
+}
+
+.krr-preview__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-weight: 700;
+}
+
+.krr-preview__badge i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex: none;
+}
+
+.krr-preview__badge.is-on {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.krr-preview__badge.is-on i {
+    background: var(--ok);
+}
+
+.krr-preview__badge.is-off {
+    background: var(--err-t);
+    color: var(--err);
+}
+
+.krr-preview__badge.is-off i {
+    background: var(--err);
+}
+
+.krr-preview__order {
+    color: var(--mut);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   SIDEBAR — KEY/VALUE (status form)
+   ============================================================ */
+.krr-kv {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.krr-kv > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+.krr-kv dt {
+    color: var(--mut);
+    margin: 0;
+}
+
+.krr-kv dd {
+    margin: 0;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: right;
+}
+
+/* ============================================================
+   BADGE UMUM (info / ok)
+   ============================================================ */
+.krr-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.krr-badge.is-ok {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.krr-badge.is-info {
+    background: color-mix(in srgb, var(--pri) 12%, transparent);
+    color: var(--pri);
+}
+
+/* ============================================================
+   RESPONSIF
+   ============================================================ */
+@media (max-width: 720px) {
+    .krr-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .krr-form-narrow {
+        max-width: none;
+    }
+
+    .krr-form-actions {
+        flex-wrap: wrap;
+    }
+
+    .krr-form-actions .btn {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+}

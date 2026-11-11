@@ -88,14 +88,54 @@
 
                         <div class="f">
                             <label for="akreditasi_id">Sertifikat Akreditasi</label>
-                            <select id="akreditasi_id" name="akreditasi_id">
-                                <option value="">— Pilih Sertifikat —</option>
-                                @foreach ($akreditasiList as $akr)
-                                    <option value="{{ $akr->id }}" @selected((string) old('akreditasi_id', $item->akreditasi_id) === (string) $akr->id)>
-                                        {{ $akr->status_akred }} - {{ $akr->jeneng }}
-                                    </option>
-                                @endforeach
-                            </select>
+
+                            {{-- Wrapper untuk Custom Select --}}
+                            <div class="cs-wrapper" id="cs-akreditasi">
+                                {{-- Elemen visual yang dilihat user --}}
+                                <div class="cs-trigger" tabindex="0">
+                                    <span class="cs-value">— Pilih Sertifikat —</span>
+                                    <svg class="cs-arrow" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </div>
+
+                                {{-- Dropdown isi pencarian dan opsi --}}
+                                <div class="cs-dropdown">
+                                    <div class="cs-search-box">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                        <input type="text" class="cs-search" placeholder="Cari sertifikat..."
+                                            autocomplete="off">
+                                    </div>
+
+                                    <div class="cs-options">
+                                        <div class="cs-option" data-value="">— Pilih Sertifikat —</div>
+                                        @foreach ($akreditasiList as $akr)
+                                            <div class="cs-option" data-value="{{ $akr->id }}"
+                                                data-search="{{ strtolower($akr->status_akred . ' ' . $akr->jeneng) }}"
+                                                @if ((string) old('akreditasi_id', $item->akreditasi_id) === (string) $akr->id) data-selected="true" @endif>
+                                                {{ $akr->status_akred }} - {{ $akr->jeneng }}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <div class="cs-empty" style="display: none;">Data tidak ditemukan.</div>
+                                </div>
+
+                                {{-- SELECT ASLI (Disembunyikan, tapi tetap berfungsi untuk form) --}}
+                                <select id="akreditasi_id" name="akreditasi_id" style="display: none;">
+                                    <option value="">— Pilih Sertifikat —</option>
+                                    @foreach ($akreditasiList as $akr)
+                                        <option value="{{ $akr->id }}" @selected((string) old('akreditasi_id', $item->akreditasi_id) === (string) $akr->id)>
+                                            {{ $akr->status_akred }} - {{ $akr->jeneng }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="f-hint" style="margin-top:8px;">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2">
@@ -128,8 +168,8 @@
                             @endif
                         </label>
                         <input id="tandha" name="tandha" type="text" maxlength="150"
-                            value="{{ old('tandha', $item->tandha) }}" placeholder="Otomatis dari nama prodi" readonly
-                            data-auto="1">
+                            value="{{ old('tandha', $item->tandha) }}" placeholder="Otomatis dari nama prodi"
+                            readonly data-auto="1">
                         <small style="color:var(--mut);font-size:.78rem;display:block;margin-top:6px;">
                             Dibuat otomatis dari nama program studi. Hanya huruf, angka, dan tanda hubung.
                         </small>

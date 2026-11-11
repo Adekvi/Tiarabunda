@@ -70,10 +70,10 @@ class ProdiSeeder extends Seeder
 
             Prodi::query()->updateOrCreate(
                 [
-                    'fakultas_id' => $fakultas->id,
-                    'tandha'      => $tandha,
+                    'tandha' => $tandha,
                 ],
                 [
+                    'fakultas_id'   => $fakultas->id,
                     'jeneng'        => $p['jeneng'],
                     'undhak'        => $p['undhak'],
                     'akreditasi_id' => $p['akreditasi_id'],

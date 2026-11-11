@@ -10,10 +10,21 @@ use Illuminate\View\View;
 
 class KemahaController extends Controller
 {
+
     public function index(Request $request): View
     {
+        return $this->renderList($request, trashed: false);
+    }
+
+    public function trashed(Request $request): View
+    {
+        return $this->renderList($request, trashed: true);
+    }
+
+    private function renderList(Request $request, bool $trashed): View
+    {
         $items = Kemahasiswaan::query()
-            ->select(['id', 'judhul', 'isi', 'data_tambahan', 'urutan', 'urip', 'updated_at'])
+            ->when($trashed, fn($q) => $q->onlyTrashed())
             ->when($request->status === 'active', fn($q) => $q->active())
             ->when($request->status === 'inactive', fn($q) => $q->inactive())
             ->when($request->filled('q'), function ($q) use ($request) {
@@ -24,21 +35,18 @@ class KemahaController extends Controller
                 });
             })
             ->ordered()
-            ->paginate(12)
+            ->paginate(10)
             ->withQueryString();
 
         $stats = [
-            'total' => Kemahasiswaan::query()->count(),
-            'aktif' => Kemahasiswaan::query()->active()->count(),
-            'nonaktif' => Kemahasiswaan::query()->inactive()->count(),
-            'ada_kontak' => Kemahasiswaan::query()
-                ->whereNotNull('data_tambahan')
-                ->get(['data_tambahan'])
-                ->filter(fn($r) => filled(data_get($r->data_tambahan, 'kontak')))
-                ->count(),
+            'total'      => Kemahasiswaan::count(),
+            'aktif'      => Kemahasiswaan::active()->count(),
+            'nonaktif'   => Kemahasiswaan::inactive()->count(),
+            'ada_kontak' => Kemahasiswaan::whereNotNull('data_tambahan->kontak')->count(),
+            'terhapus'   => Kemahasiswaan::onlyTrashed()->count(),
         ];
 
-        return view('superadmin.konten.layanan.kemaha.index', compact('items', 'stats'));
+        return view('superadmin.konten.layanan.kemaha.index', compact('items', 'stats', 'trashed'));
     }
 
     public function create(): View
@@ -98,6 +106,26 @@ class KemahaController extends Controller
             'success',
             $kemaha->urip ? 'Konten diaktifkan.' : 'Konten dinonaktifkan.'
         );
+    }
+
+    public function restore(int $id): RedirectResponse
+    {
+        Kemahasiswaan::onlyTrashed()->findOrFail($id)->restore();
+        return back()->with('success', 'Konten dipulihkan.');
+    }
+
+    public function forceDelete(int $id): RedirectResponse
+    {
+        Kemahasiswaan::onlyTrashed()->findOrFail($id)->forceDelete();
+        return back()->with('success', 'Konten dihapus permanen.');
+    }
+
+    public function emptyTrash(): RedirectResponse
+    {
+        Kemahasiswaan::onlyTrashed()->forceDelete();
+        return redirect()
+            ->route('superadmin.kemaha.trashed')
+            ->with('success', 'Sampah dikosongkan.');
     }
 
     private function validated(Request $request): array

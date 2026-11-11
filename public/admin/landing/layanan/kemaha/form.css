@@ -1,0 +1,467 @@
+/* ============================================================
+   KEMAHASISWAAN — Form
+   ============================================================ */
+
+.kmh-form-page {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Layout grid */
+.kmh-form-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 20px;
+    align-items: start;
+}
+
+.kmh-form-main {
+    min-width: 0;
+}
+
+.kmh-form-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 16px;
+    align-self: start;
+}
+
+/* Hero */
+.kmh-form-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.kmh-form-hero__crumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 6px;
+    font-size: 0.75rem;
+    color: var(--mut);
+}
+
+.kmh-form-hero__crumb a {
+    color: var(--pri);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.kmh-form-hero__crumb a:hover {
+    text-decoration: underline;
+}
+.kmh-form-hero__crumb .is-current {
+    color: var(--mut);
+}
+
+.kmh-form-hero__title {
+    margin: 0 0 4px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+.kmh-form-hero__desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--mut);
+    max-width: 62ch;
+    line-height: 1.55;
+}
+
+.kmh-form-hero__cta {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+/* Sidebar cards */
+.kmh-side-card {
+    padding: 20px;
+}
+
+.kmh-side-head {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+}
+
+.kmh-side-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.kmh-side-badge.is-new {
+    background: color-mix(in srgb, var(--pri) 12%, transparent);
+    color: var(--pri);
+}
+
+.kmh-side-badge.is-edit {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.kmh-side-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.kmh-side-title svg {
+    flex: none;
+    color: var(--pri);
+    opacity: 0.85;
+}
+
+.kmh-side-desc {
+    margin: 0;
+    font-size: 0.83rem;
+    color: var(--mut);
+    line-height: 1.6;
+}
+
+/* Checklist */
+.kmh-checklist {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    display: grid;
+    gap: 9px;
+}
+
+.kmh-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--mut);
+    transition: color 0.2s;
+}
+
+.kmh-checklist .dot {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line);
+    display: inline-grid;
+    place-items: center;
+    transition: all 0.2s;
+}
+
+.kmh-checklist .dot::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transform: scale(0);
+    transition: transform 0.2s;
+}
+
+.kmh-checklist li.done {
+    color: var(--ink);
+}
+.kmh-checklist li.done .dot {
+    border-color: var(--ok);
+    background: var(--ok-t);
+}
+.kmh-checklist li.done .dot::after {
+    background: var(--ok);
+    transform: scale(1);
+}
+
+/* Progress */
+.kmh-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.kmh-progress__bar {
+    flex: 1;
+    height: 8px;
+    border-radius: 99px;
+    background: var(--line);
+    overflow: hidden;
+}
+
+.kmh-progress__bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--pri), var(--ok));
+    transition: width 0.35s var(--ease);
+}
+
+.kmh-progress small {
+    flex: none;
+    font-size: 0.78rem;
+    color: var(--mut);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+/* KV */
+.kmh-kv {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.85rem;
+}
+
+.kmh-kv span {
+    color: var(--mut);
+}
+.kmh-kv strong {
+    color: var(--ink);
+}
+
+/* Publikasi */
+.kmh-pub-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--ok-t);
+    color: var(--ok);
+    font-size: 0.88rem;
+    transition:
+        background 0.2s,
+        color 0.2s;
+}
+
+.kmh-pub-row.is-off {
+    background: var(--err-t);
+    color: var(--err);
+}
+
+.kmh-pub-dot {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 20%, transparent);
+}
+
+/* Contact list */
+.kmh-contact-list {
+    display: grid;
+    gap: 8px;
+}
+
+.kmh-contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+}
+
+.kmh-contact-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mut);
+    font-weight: 700;
+}
+
+.kmh-contact-item code {
+    font-size: 0.82rem;
+    color: var(--ink);
+    background: none;
+    padding: 0;
+    word-break: break-all;
+}
+
+.kmh-contact-item code.is-filled {
+    color: var(--pri);
+}
+
+/* Tips */
+.kmh-tips {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--mut);
+    font-size: 0.84rem;
+    line-height: 1.7;
+}
+
+.kmh-tips li + li {
+    margin-top: 4px;
+}
+
+.kmh-tips code {
+    background: var(--bg);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    color: var(--pri);
+    border: 1px solid var(--line);
+}
+
+/* Switch publikasi (sama seperti Perpus) */
+.f .f-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.f label.sw {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    font-weight: 400;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition:
+        border-color 0.2s,
+        background 0.2s;
+}
+
+.f label.sw:hover {
+    border-color: var(--pri);
+}
+
+.f .sw .sw-in {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sw-track {
+    position: relative;
+    flex: none;
+    width: 44px;
+    height: 24px;
+    border-radius: 99px;
+    background: var(--line);
+    transition: background 0.25s;
+}
+
+.sw-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.3);
+    transition: transform 0.25s var(--ease);
+}
+
+.sw-in:checked ~ .sw-track {
+    background: var(--ok);
+}
+.sw-in:checked ~ .sw-track::after {
+    transform: translateX(20px);
+}
+.sw-in:focus-visible ~ .sw-track {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+.sw-text {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.4;
+}
+.sw-text strong {
+    display: block;
+    color: var(--ink);
+}
+.sw-text small {
+    color: var(--mut);
+    font-size: 0.8rem;
+}
+
+.sw-state {
+    flex: none;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.sw-state-on {
+    background: var(--ok-t);
+    color: var(--ok);
+    display: none;
+}
+.sw-state-off {
+    background: var(--err-t);
+    color: var(--err);
+}
+.sw-in:checked ~ .sw-state-on {
+    display: inline-block;
+}
+.sw-in:checked ~ .sw-state-off {
+    display: none;
+}
+
+/* Responsif */
+@media (max-width: 1100px) {
+    .kmh-form-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .kmh-form-aside {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kmh-form-aside .kmh-side-card:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 720px) {
+    .kmh-form-hero {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .kmh-form-hero__cta {
+        align-self: flex-start;
+    }
+    .kmh-form-aside {
+        grid-template-columns: 1fr;
+    }
+}

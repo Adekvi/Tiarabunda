@@ -17,29 +17,39 @@
                     <td class="is-num">{{ $items->firstItem() + $loop->index }}</td>
 
                     <td>
-                        <div class="akr-img">
-                            @if ($item->gambar_url)
-                                <img src="{{ $item->gambar_url }}" alt="{{ $item->jeneng }}" loading="lazy"
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            {{-- Bagian Gambar --}}
+                            <div class="akr-img" style="flex-shrink: 0;">
+                                @if ($item->gambar_url)
+                                    <img src="{{ $item->gambar_url }}" alt="{{ $item->jeneng }}" loading="lazy"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
 
-                                <span class="akr-img__placeholder" style="display:none;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16v16H4z" />
-                                        <path d="M4 12h16" />
-                                        <path d="M12 4v16" />
-                                    </svg>
-                                </span>
-                            @else
-                                <span class="akr-img__placeholder">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16v16H4z" />
-                                        <path d="M4 12h16" />
-                                        <path d="M12 4v16" />
-                                    </svg>
-                                </span>
-                            @endif
+                                    <span class="akr-img__placeholder" style="display:none;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M4 4h16v16H4z" />
+                                            <path d="M4 12h16" />
+                                            <path d="M12 4v16" />
+                                        </svg>
+                                    </span>
+                                @else
+                                    <span class="akr-img__placeholder">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M4 4h16v16H4z" />
+                                            <path d="M4 12h16" />
+                                            <path d="M12 4v16" />
+                                        </svg>
+                                    </span>
+                                @endif
+                            </div>
+
+                            {{-- Bagian Judul --}}
+                            <div class="akr-title" style="line-height: 1.4;">
+                                <div style="font-weight: 700; color: var(--ink); font-size: 0.9rem;">
+                                    {{ $item->jeneng }}
+                                </div>
+                            </div>
                         </div>
                     </td>
 

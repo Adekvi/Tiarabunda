@@ -121,24 +121,76 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::patch('/{beasiswa}/toggle', [BeasiswaController::class, 'toggle'])->name('toggle');
         });
 
-        Route::resource('akreditasi', AkreditasiController::class)->except(['show']);
-        Route::patch('akreditasi/{akreditasi}/toggle', [AkreditasiController::class, 'toggle'])
-            ->name('akreditasi.toggle');
+        Route::prefix('akreditasi')->name('akreditasi.')->group(function () {
+            Route::get('/', [AkreditasiController::class, 'index'])->name('index');
+            Route::get('/create', [AkreditasiController::class, 'create'])->name('create');
+            Route::post('/', [AkreditasiController::class, 'store'])->name('store');
+
+            Route::get('/trash', [AkreditasiController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [AkreditasiController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [AkreditasiController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [AkreditasiController::class, 'forceDelete'])->name('force-delete');
+            // -------------------------------------------------------------
+
+            Route::get('/{akreditasi}/edit', [AkreditasiController::class, 'edit'])->name('edit');
+            Route::put('/{akreditasi}', [AkreditasiController::class, 'update'])->name('update');
+            Route::delete('/{akreditasi}', [AkreditasiController::class, 'destroy'])->name('destroy');
+            Route::patch('/{akreditasi}/toggle', [AkreditasiController::class, 'toggle'])->name('toggle');
+        });
 
         /*
         | Layanan
         */
-        Route::resource('perpus', PerpusController::class)->except(['show']);
-        Route::patch('perpus/{perpus}/toggle', [PerpusController::class, 'toggle'])
-            ->name('perpus.toggle');
 
-        Route::resource('kemaha', KemahaController::class)->except(['show']);
-        Route::patch('kemaha/{kemaha}/toggle', [KemahaController::class, 'toggle'])
-            ->name('kemaha.toggle');
+        Route::prefix('perpus')->name('perpus.')->group(function () {
+            Route::get('/', [PerpusController::class, 'index'])->name('index');
+            Route::get('/create', [PerpusController::class, 'create'])->name('create');
+            Route::post('/', [PerpusController::class, 'store'])->name('store');
 
-        Route::resource('karir', KarirController::class)->except(['show']);
-        Route::patch('karir/{karir}/toggle', [KarirController::class, 'toggle'])
-            ->name('karir.toggle');
+            Route::get('/trash', [PerpusController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [PerpusController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [PerpusController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [PerpusController::class, 'forceDelete'])->name('force-delete');
+            // -------------------------------------------------------------
+
+            Route::get('/{perpus}/edit', [PerpusController::class, 'edit'])->name('edit');
+            Route::put('/{perpus}', [PerpusController::class, 'update'])->name('update');
+            Route::delete('/{perpus}', [PerpusController::class, 'destroy'])->name('destroy');
+            Route::patch('/{perpus}/toggle', [PerpusController::class, 'toggle'])->name('toggle');
+        });
+
+        Route::prefix('kemaha')->name('kemaha.')->group(function () {
+            Route::get('/', [KemahaController::class, 'index'])->name('index');
+            Route::get('/create', [KemahaController::class, 'create'])->name('create');
+            Route::post('/', [KemahaController::class, 'store'])->name('store');
+
+            Route::get('/trash', [KemahaController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [KemahaController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [KemahaController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [KemahaController::class, 'forceDelete'])->name('force-delete');
+            // -------------------------------------------------------------
+
+            Route::get('/{kemaha}/edit', [KemahaController::class, 'edit'])->name('edit');
+            Route::put('/{kemaha}', [KemahaController::class, 'update'])->name('update');
+            Route::delete('/{kemaha}', [KemahaController::class, 'destroy'])->name('destroy');
+            Route::patch('/{kemaha}/toggle', [KemahaController::class, 'toggle'])->name('toggle');
+        });
+
+        Route::prefix('karir')->name('karir.')->group(function () {
+            Route::get('/', [KarirController::class, 'index'])->name('index');
+            Route::get('/create', [KarirController::class, 'create'])->name('create');
+            Route::post('/', [KarirController::class, 'store'])->name('store');
+
+            Route::get('/trash', [KarirController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [KarirController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [KarirController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [KarirController::class, 'force-delete'])->name('force-delete');
+
+            Route::get('/{karir}/edit', [KarirController::class, 'edit'])->name('edit');
+            Route::put('/{karir}', [KarirController::class, 'update'])->name('update');
+            Route::delete('/{karir}', [KarirController::class, 'destroy'])->name('destroy');
+            Route::patch('/{karir}/toggle', [KarirController::class, 'toggle'])->name('toggle');
+        });
 
         Route::prefix('fasilitas')->name('fasilitas.')->group(function () {
             // Trash dulu supaya tidak ketabrak {fasilita}

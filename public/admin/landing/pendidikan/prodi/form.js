@@ -167,3 +167,113 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePreview()
     updateProgress()
 })
+;(() => {
+    const wrappers = document.querySelectorAll('.cs-wrapper')
+
+    wrappers.forEach((wrapper) => {
+        const trigger = wrapper.querySelector('.cs-trigger')
+        const valueDisplay = wrapper.querySelector('.cs-value')
+        const searchInput = wrapper.querySelector('.cs-search')
+        const optionsContainer = wrapper.querySelector('.cs-options')
+        const options = wrapper.querySelectorAll('.cs-option')
+        const emptyState = wrapper.querySelector('.cs-empty')
+        const nativeSelect = wrapper.querySelector('select')
+
+        // --- PERBAIKAN DI SINI ---
+        // 1. Set tampilan awal berdasarkan nilai dari <select> asli
+        const currentValue = nativeSelect.value
+        if (currentValue) {
+            const selectedOpt = Array.from(options).find(
+                (opt) => opt.dataset.value === currentValue
+            )
+            if (selectedOpt) {
+                valueDisplay.textContent = selectedOpt.textContent.trim()
+                selectedOpt.dataset.selected = 'true' // Tandai sebagai terpilih
+            }
+        }
+        // -------------------------
+
+        // 2. Buka/Tutup Dropdown
+        trigger.addEventListener('click', (e) => {
+            // Cegah event bubbling agar tidak langsung tertutup oleh document click
+            e.stopPropagation()
+
+            wrapper.classList.toggle('is-open')
+            if (wrapper.classList.contains('is-open')) {
+                searchInput.value = '' // Reset pencarian
+                filterOptions('') // Tampilkan semua
+                setTimeout(() => searchInput.focus(), 50) // Fokus ke input search
+            }
+        })
+
+        // Tutup jika klik di luar area
+        document.addEventListener('click', (e) => {
+            if (!wrapper.contains(e.target)) {
+                wrapper.classList.remove('is-open')
+            }
+        })
+
+        // 3. Fitur Pencarian
+        searchInput.addEventListener('input', (e) => {
+            const keyword = e.target.value.toLowerCase()
+            filterOptions(keyword)
+        })
+
+        function filterOptions(keyword) {
+            let hasVisible = false
+            options.forEach((opt) => {
+                const text = opt.textContent.toLowerCase()
+                const searchData = (opt.dataset.search || text).toLowerCase()
+
+                if (text.includes(keyword) || searchData.includes(keyword)) {
+                    opt.style.display = 'block'
+                    hasVisible = true
+                } else {
+                    opt.style.display = 'none'
+                }
+            })
+            emptyState.style.display = hasVisible ? 'none' : 'block'
+        }
+
+        // 4. Pilih Opsi
+        options.forEach((opt) => {
+            opt.addEventListener('click', () => {
+                const val = opt.dataset.value
+
+                // Update tampilan visual
+                valueDisplay.textContent = opt.textContent.trim()
+                wrapper.classList.remove('is-open')
+
+                // Hapus status terpilih sebelumnya
+                options.forEach((o) => delete o.dataset.selected)
+                opt.dataset.selected = 'true'
+
+                // Sinkronisasi ke select asli
+                nativeSelect.value = val
+
+                // Trigger event change agar validasi/form lain mendeteksinya
+                // (Penting: agar progress bar di form Prodi ikut update)
+                nativeSelect.dispatchEvent(new Event('change'))
+            })
+        })
+
+        // 5. Navigasi Keyboard Sederhana
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                wrapper.classList.remove('is-open')
+                trigger.focus()
+            }
+
+            // Fitur Enter untuk memilih opsi pertama yang terlihat (opsional)
+            if (e.key === 'Enter') {
+                e.preventDefault()
+                const visibleOptions = Array.from(options).filter(
+                    (opt) => opt.style.display !== 'none'
+                )
+                if (visibleOptions.length > 0) {
+                    visibleOptions[0].click()
+                }
+            }
+        })
+    })
+})()

@@ -4,7 +4,9 @@ namespace App\Models\Pendidikan;
 
 use App\Models\Concerns\HasUripState;
 use App\Models\Concerns\HasUrutan;
+use App\Models\Pendidikan\Program\Prodi;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
@@ -31,6 +33,11 @@ class Akreditasi extends Model
         ];
     }
 
+    public function prodi(): HasOne
+    {
+        return $this->hasOne(Prodi::class);
+    }
+
     /** URL publik gambar (aman jika null) */
     public function getGambarUrlAttribute(): ?string
     {
@@ -41,6 +48,9 @@ class Akreditasi extends Model
         /** @var FilesystemAdapter $disk */
         $disk = Storage::disk('public');
 
-        return $disk->url($this->path_gambar);
+        // Hapus awalan 'public/' jika tidak sengaja tersimpan di database
+        $path = str_replace('public/', '', $this->path_gambar);
+
+        return $disk->url($path);
     }
 }

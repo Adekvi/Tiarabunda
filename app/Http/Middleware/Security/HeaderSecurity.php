@@ -13,23 +13,20 @@ class HeaderSecurity
      *
      * @param  Closure(Request): (Response)  $next
      */
-
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
 
-        // Dashboard masih memakai CDN; hapus dua host ini setelah di-self-host
-        // $script = $request->is('superadmin*')
-        //     ? "'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net"
-        //     : "'self'";
-
         $response->headers->add([
             'Content-Security-Policy' => implode('; ', [
                 "default-src 'self'",
-                "script-src 'self'",   // hanya script dari domain kamu
+                "script-src 'self'",
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
                 "font-src 'self' https://fonts.gstatic.com",
-                "img-src 'self' data:",
+
+                // PERBAIKAN DI SINI:
+                "img-src 'self' data: http://localhost:8000 http://127.0.0.1:8000",
+
                 "connect-src 'self'",
                 "object-src 'none'",
                 "base-uri 'self'",
