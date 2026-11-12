@@ -8,7 +8,9 @@
         {{-- Hero --}}
         <x-landing.section.hero :data="$home['hero'] ?? []" />
 
-        <x-landing.section.info />
+        {{-- Info --}}
+        <x-landing.section.info :items="$home['info'] ?? []" />
+
         <x-landing.section.mitra />
 
         {{-- Pimpinan --}}

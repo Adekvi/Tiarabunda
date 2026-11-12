@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('urip')->default(true);
             $table->integer('urutan')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

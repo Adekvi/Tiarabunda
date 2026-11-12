@@ -33,8 +33,22 @@ Route::middleware(['auth', 'can:access-superadmin'])
         });
 
         // Info
-        Route::resource('info', InfoController::class)->except(['show']);
-        Route::patch('info/{info}/toggle', [InfoController::class, 'toggle'])->name('info.toggle');
+        Route::prefix('info')->name('info.')->group(function () {
+            Route::get('/',               [InfoController::class, 'index'])->name('index');
+            Route::get('/sampah',         [InfoController::class, 'trashed'])->name('trashed');
+            Route::get('/create',         [InfoController::class, 'create'])->name('create');
+            Route::post('/',              [InfoController::class, 'store'])->name('store');
+
+            // Statis dulu
+            Route::delete('/sampah/kosongkan', [InfoController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/sampah/{id}/restore', [InfoController::class, 'restore'])->name('restore');
+            Route::delete('/sampah/{id}/force', [InfoController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{info}/edit', [InfoController::class, 'edit'])->name('edit');
+            Route::put('/{info}',     [InfoController::class, 'update'])->name('update');
+            Route::delete('/{info}',  [InfoController::class, 'destroy'])->name('destroy');
+            Route::patch('/{info}/toggle', [InfoController::class, 'toggle'])->name('toggle');
+        });
 
         /*
         | Profil

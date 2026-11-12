@@ -5,6 +5,7 @@ namespace App\Services\Landing;
 use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
 use App\Models\Landing\Hero;
+use App\Models\Landing\Info;
 use App\Models\Layanan\Fasilitas;
 use App\Models\Layanan\Perpus;
 use App\Models\Pendidikan\Pmb;
@@ -22,6 +23,7 @@ class LandingHomeService
     {
         return [
             'hero'           => $this->hero(),
+            'info'           => $this->info(),
             'pimpinan'       => $this->pimpinan(),
             'fakultas_prodi'   => $this->fakultasProdi(),
             'jalur'          => $this->jalurPmb(),
@@ -31,8 +33,6 @@ class LandingHomeService
             'faq' => $this->faqs(),
         ];
     }
-
-    // Tambahkan di dalam class LandingHomeService
 
     public function hero(): array
     {
@@ -89,6 +89,34 @@ class LandingHomeService
         ];
     }
 
+    public function info()
+    {
+        $rows = Cache::remember('landing.home.info', self::TTL, function () {
+            return Info::query()
+                ->where('urip', true)
+                ->orderBy('urutan', 'asc')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'k'   => $item->k,
+                        't'   => $item->t,
+                        'd'   => $item->d,
+                        'tgl' => $item->tgl,
+                        'img' => $item->img,
+                    ];
+                })
+                ->values()
+                ->all();
+        });
+
+        if (!is_array($rows)) {
+            Cache::forget('landing.home.info');
+            $rows = [];
+        }
+
+        return $rows;
+    }
+
     public function pimpinan(): ?array
     {
         $row = Cache::remember('landing.home.pimpinan', self::TTL, function () {
@@ -125,7 +153,7 @@ class LandingHomeService
                 ->select(['id', 'jeneng', 'tandha'])
                 ->active()
                 ->ordered()
-                ->whereHas('activeProdis') // hanya fakultas yang punya prodi aktif
+                ->whereHas('activeProdis')
                 ->get();
 
             $prodi = Prodi::query()
@@ -135,7 +163,6 @@ class LandingHomeService
                 ->whereIn('fakultas_id', $fakultas->pluck('id'))
                 ->get();
 
-            // map fakultas_id → index array agar cocok dengan pola view ($fakultas[$p['fakultas']])
             $fakIndex = $fakultas->values()->mapWithKeys(
                 fn($f, $i) => [$f->id => $i]
             );
@@ -174,7 +201,6 @@ class LandingHomeService
                     'urutan',
                     'urip'
                 ])
-                // GUNAKAN WHERE EKSPLISIT JIKA TRAIT RAGU
                 ->where('urip', true)
                 ->where(function ($q) use ($today) {
                     $q->whereNull('wektu_tutup')
@@ -216,8 +242,8 @@ class LandingHomeService
                     'urutan',
                     'urip',
                 ])
-                ->active()        // ← hanya urip = true
-                ->ordered()       // ← urut sesuai master
+                ->active()
+                ->ordered()
                 ->limit($limit)
                 ->get()
                 ->map(function ($f) {
@@ -331,7 +357,6 @@ class LandingHomeService
 
     public function faqs(): Collection
     {
-        // Simpan ARRAY di cache, bukan Collection
         $rows = Cache::remember('landing.home.faq', self::TTL, function () {
             return Faq::query()
                 ->select(['id', 'pitakon', 'wangsulan', 'urutan'])
@@ -359,6 +384,11 @@ class LandingHomeService
     public function forgetHero(): void
     {
         Cache::forget('landing.home.hero');
+    }
+
+    public function forgetInfo(): void
+    {
+        Cache::forget('landing.home.info');
     }
 
     public function forgetPimpinan(): void
@@ -398,6 +428,7 @@ class LandingHomeService
 
     public function forgetHome(): void
     {
+        $this->forgetHero();
         $this->forgetHero();
         $this->forgetPimpinan();
         $this->forgetFakultasProdi();

@@ -527,3 +527,38 @@
         color: #4ade80;
     }
 }
+
+/* ===== TAMBAHAN UNTUK INPUT URUTAN & LAYOUT FORM ===== */
+
+.form-group input[type='number'] {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--ink);
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    font-family: inherit;
+    text-align: center; /* Angka di tengah agar rapi */
+    font-weight: 700;
+    color: var(--pri);
+}
+
+.form-group input[type='number']:focus {
+    outline: none;
+    border-color: var(--pri);
+    box-shadow: 0 0 0 3px var(--pri-t);
+}
+
+/* Menghilangkan panah default pada input number */
+.form-group input[type='number']::-webkit-inner-spin-button,
+.form-group input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.form-group input[type='number'] {
+    -moz-appearance: textfield;
+}

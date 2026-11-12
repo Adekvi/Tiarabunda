@@ -61,12 +61,24 @@
                     <div class="form-section">
                         <h4 class="form-section-title">Informasi Dasar</h4>
 
-                        <div class="form-group">
-                            <label for="k" class="lbl">Kategori / Tag <span class="req">*</span></label>
-                            <input id="k" type="text" name="k" value="{{ old('k', $item->k ?? '') }}"
-                                required maxlength="50" placeholder="Contoh: Pengumuman, Beasiswa">
-                            <small class="help">Gunakan 1–2 kata agar rapi di kartu info.</small>
+                        <div class="form-row" style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px;">
+                            <div class="form-group">
+                                <label for="k" class="lbl">Kategori / Tag <span
+                                        class="req">*</span></label>
+                                <input id="k" type="text" name="k"
+                                    value="{{ old('k', $item->k ?? '') }}" required maxlength="50"
+                                    placeholder="Contoh: Pengumuman">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="urutan" class="lbl">Urutan Tampil</label>
+                                <input id="urutan" type="number" name="urutan"
+                                    value="{{ old('urutan', $item->urutan ?? 0) }}" min="0" placeholder="0">
+                            </div>
                         </div>
+                        <small class="help" style="margin-top: -10px; margin-bottom: 18px; display: block;">
+                            Angka urutan lebih kecil (1, 2, 3) akan tampil lebih awal di landing page.
+                        </small>
 
                         <div class="form-group">
                             <label for="t" class="lbl">Judul Info <span class="req">*</span></label>
@@ -79,7 +91,6 @@
                                 <span style="color: var(--mut); font-weight: 400;">(opsional)</span>
                             </label>
                             <textarea id="d" name="d" rows="3" placeholder="Penjelasan singkat mengenai info ini...">{{ old('d', $item->d ?? '') }}</textarea>
-                            <small class="help">Tampil sebagai ringkasan di bawah judul.</small>
                         </div>
                     </div>
 
@@ -105,16 +116,13 @@
                                     data-panel="picker">
                                     <input type="date" id="tgl-picker" name="tgl_picker"
                                         value="{{ $isDateValue ? $savedTgl : '' }}">
-                                    <small class="help">Format standar: <em>YYYY-MM-DD</em>.</small>
                                 </div>
 
                                 <div class="mode-panel {{ $savedTgl && !$isDateValue ? 'active' : '' }}"
                                     data-panel="text">
                                     <input type="text" id="tgl-text" name="tgl_text"
                                         value="{{ $savedTgl && !$isDateValue ? $savedTgl : '' }}" maxlength="50"
-                                        placeholder="Contoh: Setiap Senin, 12–15 Nov 2026">
-                                    <small class="help">Bebas format teks untuk keterangan waktu yang tidak
-                                        spesifik.</small>
+                                        placeholder="Contoh: Setiap Senin">
                                 </div>
                             </div>
 
@@ -185,10 +193,10 @@
                                 <span id="publish-note-text">
                                     @if ($isActive)
                                         Setelah disimpan, info ini <strong>langsung tayang</strong> di slider beranda.
-                                        Pastikan poster & judul sudah final sebelum menyimpan.
+                                        Pastikan poster & judul sudah final.
                                     @else
                                         Info akan disimpan sebagai <strong>draf</strong>. Anda dapat mengaktifkannya
-                                        kapan saja dari halaman daftar Info Terkini.
+                                        kapan saja.
                                     @endif
                                 </span>
                             </div>
@@ -197,7 +205,16 @@
 
                     {{-- ACTIONS --}}
                     <div class="form-actions">
-                        <button type="submit" class="btn">Simpan Data</button>
+                        <button type="submit" class="btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" style="margin-right: 6px;">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            Simpan Data
+                        </button>
                         <a href="{{ route('superadmin.info.index') }}" class="btn gh">Batal</a>
                     </div>
                 </form>
@@ -255,7 +272,7 @@
                         <h3>Panduan Pengisian</h3>
                         <ul class="guide-list">
                             <li><strong>Kategori</strong> singkat & jelas.</li>
-                            <li><strong>Judul</strong> maksimal 1–2 baris.</li>
+                            <li><strong>Urutan</strong> angka kecil di atas.</li>
                             <li><strong>Poster</strong> wajib, portrait berkualitas.</li>
                             <li><strong>Status</strong> nonaktif jika belum siap tayang.</li>
                         </ul>
