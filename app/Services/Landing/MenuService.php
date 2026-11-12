@@ -4,6 +4,7 @@ namespace App\Services\Landing;
 
 use App\Models\Landing\Menu;
 use App\Models\Landing\Submenu;
+use App\Models\Pendidikan\Program\Fakultas;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -38,6 +39,22 @@ class MenuService
         });
 
         return $menus;
+    }
+
+    public function getNavFakultas(): Collection
+    {
+        return Cache::remember('landing.nav.fakultas', self::CACHE_TTL, function () {
+            return Fakultas::query()
+                ->where('urip', true)
+                ->whereNull('deleted_at')
+                ->with(['prodis' => function ($query) {
+                    $query->where('urip', true)
+                        ->whereNull('deleted_at')
+                        ->orderBy('urutan', 'asc');
+                }])
+                ->orderBy('urutan', 'asc')
+                ->get();
+        });
     }
 
     public function findPage(string $menuSlug, string $subSlug): ?Submenu

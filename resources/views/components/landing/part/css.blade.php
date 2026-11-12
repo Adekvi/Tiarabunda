@@ -9,7 +9,189 @@
 
 <link rel="stylesheet" href="{{ asset('landing/assets/css/additions.css') }}">
 
+{{-- Sejarah --}}
+<link rel="stylesheet"
+    href="{{ asset('landing/menu/profil/sejarah/sej.css') }}?v={{ @filemtime(public_path('landing/menu/profil/sejarah/sej.css')) ?: '1' }}">
+{{-- Visi Misi --}}
+<link rel="stylesheet"
+    href="{{ asset('landing/menu/profil/visi/visi.css') }}?v={{ @filemtime(public_path('landing/menu/profil/visi/visi.css')) ?: '1' }}">
+{{-- Pendidikan --}}
+<link rel="stylesheet"
+    href="{{ asset('landing/menu/pendidikan/program/prog.css') }}?v={{ @filemtime(public_path('landing/menu/pendidikan/program/prog.css')) ?: '1' }}">
+{{-- PMB --}}
+<link rel="stylesheet"
+    href="{{ asset('landing/menu/pendidikan/pmb/pmb.css') }}?v={{ @filemtime(public_path('landing/menu/pendidikan/pmb/pmb.css')) ?: '1' }}">
+{{-- Beasiswa --}}
+<link rel="stylesheet"
+    href="{{ asset('landing/menu/pendidikan/beasiswa/bea.css') }}?v={{ @filemtime(public_path('landing/menu/pendidikan/beasiswa/bea.css')) ?: '1' }}">
+{{-- Beasiswa --}}
+<link rel="stylesheet"
+    href="{{ asset('landing/menu/pendidikan/akreditasi/akre.css') }}?v={{ @filemtime(public_path('landing/menu/pendidikan/akreditasi/akre.css')) ?: '1' }}">
+
 <style>
+    /* ============================================================
+   NESTED DROPDOWN - PROGRAM PENDIDIKAN (CLICK TOGGLE)
+   ============================================================ */
+
+    /* Wrapper */
+    .dd-nested {
+        position: relative;
+    }
+
+    /* Toggle button (menggantikan <a> sebelumnya) */
+    .dd-nested-toggle {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px;
+        background: transparent;
+        border: 0;
+        font: inherit;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: background 0.2s;
+    }
+
+    .dd-nested-toggle:hover {
+        background: rgba(0, 0, 0, 0.04);
+    }
+
+    /* Panah indikator */
+    .dd-nested-toggle .dd-arrow {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+        transition: transform 0.25s var(--ease, ease);
+        margin-left: 8px;
+        flex-shrink: 0;
+    }
+
+    .dd-nested.open>.dd-nested-toggle .dd-arrow {
+        transform: rotate(-135deg);
+    }
+
+    /* Panel sub-dropdown (default: tersembunyi) */
+    .dd-nested-panel {
+        display: none;
+        margin-top: 4px;
+    }
+
+    .dd-nested.open>.dd-nested-panel {
+        display: block;
+        animation: ddFadeIn 0.2s ease;
+    }
+
+    @keyframes ddFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Item prodi & header fakultas */
+    .dd-fak-head {
+        padding: 8px 12px 4px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: var(--blue-d, #0b3d91);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid var(--line, #e5e7eb);
+        margin-bottom: 4px;
+    }
+
+    .dd-prodi {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 12px 6px 24px;
+        font-size: 0.9rem;
+        color: inherit;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background 0.15s;
+    }
+
+    .dd-prodi:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    .dd-badge {
+        font-size: 0.7rem;
+        background: var(--sky, #e0f2fe);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: var(--blue, #1e40af);
+    }
+
+    .dd-empty {
+        display: block;
+        padding: 4px 24px;
+        font-size: 0.85rem;
+        color: var(--mut, #6b7280);
+        font-style: italic;
+    }
+
+    /* ============================================================
+   DESKTOP: Panel muncul sebagai flyout ke kanan saat di-open
+   ============================================================ */
+    @media (min-width: 961px) {
+        .dd-nested-panel {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            min-width: 280px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+            padding: 8px;
+            z-index: 20;
+            margin-top: 0;
+        }
+
+        /* Panel sembunyi default di desktop */
+        .dd-nested-panel {
+            display: none;
+        }
+
+        .dd-nested.open>.dd-nested-panel {
+            display: block;
+        }
+    }
+
+    /* ============================================================
+   MOBILE: Accordion style
+   ============================================================ */
+    @media (max-width: 960px) {
+        .dd-nested-panel {
+            position: static;
+            box-shadow: none;
+            border: 0;
+            padding-left: 16px;
+            margin-left: 12px;
+            border-left: 2px solid var(--line, #e5e7eb);
+            margin-top: 4px;
+        }
+
+        /* Scroll bisa panjang di mobile */
+        .dd-nested.open>.dd-nested-panel {
+            max-height: none;
+        }
+    }
+
     /* ============ Footer ============
    Atur warna lewat variabel di bawah (atau definisikan --footer-bg / --accent
    di :root style.css Anda). */

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('visimisis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dianyari_dening')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('bagean')->nullable();      // visi | misi
+            $table->string('bagean')->nullable();
             $table->string('judhul')->nullable();
             $table->text('isi')->nullable();
             $table->json('dhaptar')->nullable();

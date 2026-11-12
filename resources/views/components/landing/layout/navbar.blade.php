@@ -1,4 +1,10 @@
 @props(['site' => config('landing.site'), 'menus' => config('landing.menus')])
+
+@php
+    // 1. Ambil data Fakultas & Prodi dari ProgramService
+    $navFakultas = app(\App\Services\Landing\Pendidikan\ProgramService::class)->getFakultasWithProdi();
+@endphp
+
 <header class="nav" id="nav">
     <div class="wrap nav-in">
         <a class="brand" href="/">
@@ -10,8 +16,35 @@
                     <button type="button" aria-expanded="false">{{ $m['t'] }}<i></i></button>
                     <div class="dd-p">
                         @foreach ($m['subs'] as $s => $d)
-                            <a href="/{{ $slug }}/{{ $s }}"
-                                @class(['active' => request()->is("$slug/$s")])>{{ $d['t'] }}</a>
+                            @if ($s === 'program-pendidikan' && $navFakultas->isNotEmpty())
+                                <div class="dd dd-nested">
+                                    <button type="button" class="dd-nested-toggle" aria-expanded="false">
+                                        <span>{{ $d['t'] }}</span>
+                                        <i class="dd-arrow"></i>
+                                    </button>
+
+                                    <div class="dd-p dd-nested-panel">
+                                        @foreach ($navFakultas as $fak)
+                                            <div class="dd-fak-head">{{ $fak->jeneng }}</div>
+
+                                            @forelse($fak->prodis as $prodi)
+                                                <a href="/{{ $slug }}/{{ $s }}#{{ $prodi->tandha ?? $prodi->id }}"
+                                                    class="dd-prodi">
+                                                    <span>{{ $prodi->jeneng }}</span>
+                                                    @if ($prodi->undhak)
+                                                        <span class="dd-badge">{{ $prodi->undhak }}</span>
+                                                    @endif
+                                                </a>
+                                            @empty
+                                                <span class="dd-empty">Belum ada prodi</span>
+                                            @endforelse
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @else
+                                <a href="/{{ $slug }}/{{ $s }}"
+                                    @class(['active' => request()->is("$slug/$s")])>{{ $d['t'] }}</a>
+                            @endif
                         @endforeach
                     </div>
                 </div>
@@ -19,7 +52,8 @@
         </nav>
         <form @class(['srch', 'open' => request()->routeIs('landing.search')]) id="srch" action="/cari" method="get" role="search">
             <input id="q" name="q" type="search" enterkeyhint="search" placeholder="Cari di situs…"
-                aria-label="Cari" autocomplete="off" minlength="2" maxlength="60" required value="{{ request('q') }}">
+                aria-label="Cari" autocomplete="off" minlength="2" maxlength="60" required
+                value="{{ request('q') }}">
             <button class="srch-b" id="srch-b" type="button" aria-label="Buka pencarian" aria-expanded="false"
                 aria-controls="q">
                 <svg class="i-s" viewBox="0 0 24 24" width="20" height="20" fill="none"

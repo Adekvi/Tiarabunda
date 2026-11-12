@@ -1,0 +1,458 @@
+/* =========================================================
+   PMB — scoped di bawah .pmb
+   ========================================================= */
+
+.pmb {
+    padding: 64px 0 80px;
+    background: #fafafa; /* Latar sedikit abu agar card putih menonjol */
+}
+
+.pmb__wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ---------- Intro & Typography ---------- */
+.pmb__intro {
+    margin-bottom: 48px;
+    max-width: 800px;
+}
+
+.pmb__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+}
+
+.pmb__eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--or);
+}
+
+.pmb__title {
+    margin: 0 0 16px;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--blue-d);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.pmb__lead {
+    margin: 0;
+    color: var(--mut);
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+/* ---------- Tombol Kembali (Detail) ---------- */
+.pmb__back-wrap {
+    margin-bottom: 32px;
+}
+
+.pmb__back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.pmb__back-btn:hover {
+    background: var(--sky);
+    border-color: var(--blue);
+}
+
+/* ---------- Status Badge ---------- */
+.pmb__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.pmb__status::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.pmb__status--buka {
+    background: #e7f8ee;
+    color: #11703f;
+}
+.pmb__status--belum {
+    background: #fff4e0;
+    color: #a35b00;
+}
+.pmb__status--tutup {
+    background: #fde8e8;
+    color: #9b1c1c;
+}
+
+/* ---------- Meta (Tanggal di Detail) ---------- */
+.pmb__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 32px;
+    align-items: center;
+}
+
+.pmb__date-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--mut);
+    font-size: 0.9rem;
+}
+
+.pmb__date-wrapper svg {
+    color: var(--blue);
+}
+.pmb__date-wrapper b {
+    color: var(--ink);
+    font-weight: 600;
+}
+.pmb__date-sep {
+    color: var(--line);
+    margin: 0 4px;
+}
+
+/* ---------- Grid Kartu Jalur ---------- */
+.pmb__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.pmb__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+
+.pmb__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--blue), var(--sky));
+    opacity: 0;
+    border-radius: 16px 16px 0 0;
+    transition: opacity 0.3s ease;
+}
+
+.pmb__card:hover {
+    border-color: transparent;
+    box-shadow: 0 20px 40px -10px rgba(23, 59, 102, 0.15);
+    transform: translateY(-6px);
+}
+
+.pmb__card:hover::before {
+    opacity: 1;
+}
+
+.pmb__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.pmb__card-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    line-height: 1.4;
+    flex: 1;
+}
+
+.pmb__card-desc {
+    margin: 0 0 20px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--mut);
+    /* Membatasi maksimal 3 baris agar rapi */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Memastikan tag <strong> atau <b> dari DB terlihat jelas */
+.pmb__card-desc strong,
+.pmb__card-desc b {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.pmb__card-dates {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--sky);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--blue-d);
+    margin-bottom: 24px;
+    align-self: flex-start;
+}
+
+.pmb__card-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.pmb__card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--blue);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.pmb__card-link svg {
+    transition: transform 0.2s ease;
+}
+
+.pmb__card:hover .pmb__card-link {
+    color: var(--or);
+}
+
+.pmb__card:hover .pmb__card-link svg {
+    transform: translateX(4px);
+}
+
+/* ---------- Detail Grid (Persyaratan & Alur) ---------- */
+.pmb__detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.pmb__panel {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.pmb__panel-title {
+    margin: 0 0 24px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+/* Syarat List */
+.pmb__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pmb__list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink);
+}
+
+.pmb__check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+}
+
+/* Langkah/Steps */
+.pmb__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pmb__steps li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink);
+}
+
+.pmb__step-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pmb__step-text {
+    padding-top: 4px;
+}
+
+/* ---------- CTA Box ---------- */
+.pmb__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 32px 40px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-d));
+    color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(23, 59, 102, 0.3);
+}
+
+.pmb__cta h3 {
+    margin: 0 0 8px;
+    font-size: 1.35rem;
+    color: #fff;
+}
+
+.pmb__cta p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 1rem;
+}
+
+.pmb__cta .btn {
+    background: #fff;
+    color: var(--blue-d);
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: transform 0.2s;
+}
+
+.pmb__cta .btn:hover {
+    transform: translateY(-2px);
+}
+
+/* ---------- Empty State ---------- */
+.pmb__empty,
+.pmb__empty-all {
+    color: var(--mut);
+    font-size: 1rem;
+    padding: 32px;
+    background: var(--sky);
+    border-radius: 12px;
+    text-align: center;
+    border: 1px dashed var(--blue);
+}
+
+.pmb__empty-all h3 {
+    margin: 0 0 8px;
+    color: var(--blue-d);
+    font-size: 1.2rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .pmb__detail-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 640px) {
+    .pmb {
+        padding: 40px 0 60px;
+    }
+    .pmb__grid {
+        grid-template-columns: 1fr;
+    }
+    .pmb__cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px;
+    }
+    .pmb__cta .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Aksesibilitas */
+@media (prefers-reduced-motion: reduce) {
+    .pmb__card,
+    .pmb__card-link,
+    .pmb__cta .btn {
+        transition: none !important;
+    }
+}

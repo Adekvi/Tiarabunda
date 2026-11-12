@@ -5,6 +5,7 @@ namespace App\Models\Landing;
 use App\Models\Concerns\HasTandha;
 use App\Models\Concerns\HasUripState;
 use App\Models\Concerns\HasUrutan;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,5 +36,24 @@ class Submenu extends Model
     public function menu(): BelongsTo
     {
         return $this->belongsTo(Menu::class);
+    }
+
+    protected function title(): Attribute
+    {
+        return Attribute::get(fn() => (string) ($this->judhul ?? ''));
+    }
+
+    protected function subtitle(): Attribute
+    {
+        return Attribute::get(fn() => (string) ($this->sub_judhul ?? ''));
+    }
+
+    protected function blocks(): Attribute
+    {
+        return Attribute::get(function () {
+            $blocks = $this->blok_isi;
+
+            return is_array($blocks) ? $blocks : [];
+        });
     }
 }

@@ -1,0 +1,298 @@
+/* =========================================================
+   SEJARAH — scoped di bawah .sej, pakai variabel template
+   ========================================================= */
+
+.sej {
+    padding: 48px 0 64px;
+}
+
+.sej__wrap {
+    max-width: 920px;
+}
+
+/* ---------- Cover ---------- */
+.sej__cover {
+    position: relative;
+    margin: 0 0 48px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: linear-gradient(135deg, var(--sky), var(--bg));
+    aspect-ratio: 21 / 9;
+    box-shadow: 0 24px 48px -30px rgba(23, 59, 102, 0.45);
+}
+
+.sej__cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease);
+}
+
+.sej__cover:hover img {
+    transform: scale(1.03);
+}
+
+.sej__cover-shade {
+    position: absolute;
+    inset: auto 0 0;
+    height: 45%;
+    background: linear-gradient(transparent, rgba(15, 39, 68, 0.28));
+    pointer-events: none;
+}
+
+/* ---------- Intro ---------- */
+.sej__intro {
+    margin-bottom: 64px;
+}
+
+.sej__title {
+    position: relative;
+    margin: 0 0 22px;
+    font-size: clamp(1.55rem, 3vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--blue-d);
+    padding-bottom: 14px;
+}
+
+.sej__title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 56px;
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--or), var(--blue));
+}
+
+.sej__body {
+    color: var(--mut);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.sej__body p {
+    margin: 0 0 16px;
+    max-width: 68ch;
+}
+
+.sej__body p:first-child {
+    font-size: 1.1rem;
+    color: var(--ink);
+}
+
+.sej__body p:last-child {
+    margin-bottom: 0;
+}
+
+.sej__body a {
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ---------- Kronologi head ---------- */
+.sej__kron-head {
+    margin-bottom: 32px;
+}
+
+.sej__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+}
+
+.sej__eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--or);
+}
+
+.sej__kron-head h3 {
+    margin: 0;
+    font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+    color: var(--blue-d);
+}
+
+/* ---------- Timeline ---------- */
+.sej__timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sej__item {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    position: relative;
+    padding-bottom: 28px;
+}
+
+.sej__item:last-child {
+    padding-bottom: 0;
+}
+
+/* garis vertikal penghubung */
+.sej__item:not(:last-child) .sej__marker::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 52px;
+    bottom: -16px;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--blue) 45%, var(--line)),
+        var(--line)
+    );
+}
+
+/* marker nomor */
+.sej__marker {
+    position: relative;
+    width: 52px;
+    height: 52px;
+}
+
+.sej__marker span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(150deg, var(--blue), var(--blue-d));
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.88rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 10px 22px rgba(23, 59, 102, 0.22);
+    transition:
+        transform 0.4s var(--ease),
+        box-shadow 0.4s var(--ease);
+}
+
+.sej__item:hover .sej__marker span {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 14px 26px rgba(23, 59, 102, 0.3);
+}
+
+/* kartu */
+.sej__card {
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+    transition:
+        border-color 0.35s var(--ease),
+        box-shadow 0.35s var(--ease),
+        transform 0.35s var(--ease);
+}
+
+.sej__item:hover .sej__card {
+    border-color: color-mix(in srgb, var(--or) 55%, var(--line));
+    box-shadow: 0 18px 34px -22px rgba(23, 59, 102, 0.55);
+    transform: translateY(-2px);
+}
+
+.sej__year {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--sky);
+    color: var(--blue);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.sej__item-title {
+    margin: 0 0 8px;
+    font-size: 1.12rem;
+    line-height: 1.35;
+    color: var(--ink, #132238);
+}
+
+.sej__item-text {
+    margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: var(--mut);
+    max-width: 62ch;
+}
+
+/* ---------- Animasi reveal (pakai class .rv dari template) ---------- */
+.sej .rv {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity 0.8s var(--ease),
+        transform 0.8s var(--ease);
+}
+
+.sej .rv.in {
+    opacity: 1;
+    transform: none;
+}
+
+/* stagger timeline: butuh tambahan class dari JS (opsional) */
+.sej__item.rv {
+    transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 640px) {
+    .sej__cover {
+        aspect-ratio: 16 / 10;
+        border-radius: 16px;
+        margin-bottom: 32px;
+    }
+
+    .sej__intro {
+        margin-bottom: 44px;
+    }
+
+    .sej__item {
+        grid-template-columns: 44px 1fr;
+        gap: 12px;
+    }
+
+    .sej__marker,
+    .sej__marker span {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+    }
+
+    .sej__item:not(:last-child) .sej__marker::after {
+        top: 44px;
+    }
+
+    .sej__card {
+        padding: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sej .rv,
+    .sej__cover img,
+    .sej__marker span,
+    .sej__card {
+        transition: none !important;
+    }
+}

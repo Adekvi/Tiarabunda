@@ -28,4 +28,17 @@ class Beasiswa extends Model
             'urutan' => 'integer',
         ];
     }
+
+    public function getSyaratListAttribute(): array
+    {
+        if (blank($this->syarat)) {
+            return [];
+        }
+
+        return collect(preg_split('/\r\n|\r|\n/', $this->syarat))
+            ->map(fn($item) => trim($item))
+            ->filter()
+            ->values()
+            ->toArray();
+    }
 }

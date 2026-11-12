@@ -1,0 +1,247 @@
+/* =========================================================
+   PROGRAM PENDIDIKAN — scoped di bawah .prog
+   ========================================================= */
+
+.prog {
+    /* Padding atas ditambah agar tidak mepet hero */
+    padding: 48px 0 64px;
+}
+
+.prog__wrap {
+    max-width: 1000px;
+}
+
+/* ---------- Intro ---------- */
+.prog__intro {
+    margin-bottom: 48px;
+}
+
+.prog__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+}
+
+.prog__eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--or);
+}
+
+.prog__title {
+    margin: 0 0 14px;
+    font-size: clamp(1.55rem, 3vw, 2rem);
+    color: var(--blue-d);
+    letter-spacing: -0.02em;
+}
+
+.prog__lead {
+    margin: 0;
+    max-width: 65ch;
+    color: var(--mut);
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+/* ---------- Fakultas ---------- */
+.prog__fak {
+    margin-bottom: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+}
+
+.prog__fak:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.prog__fak-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.prog__code {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--sky);
+    color: var(--blue);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.prog__fak-name {
+    margin: 0 0 10px;
+    font-size: 1.35rem;
+    color: var(--blue-d);
+    line-height: 1.3;
+}
+
+.prog__fak-desc {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--mut);
+    line-height: 1.65;
+    font-size: 0.96rem;
+}
+
+.prog__count {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    white-space: nowrap;
+}
+
+/* ---------- Grid & Kartu Prodi ---------- */
+.prog__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.prog__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+    overflow: hidden;
+    transition:
+        border-color 0.35s var(--ease),
+        box-shadow 0.35s var(--ease),
+        transform 0.35s var(--ease);
+}
+
+/* Pita aksen di atas kartu */
+.prog__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--sky));
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+}
+
+.prog__card:hover {
+    border-color: color-mix(in srgb, var(--blue) 30%, var(--line));
+    box-shadow: 0 16px 32px -20px rgba(23, 59, 102, 0.4);
+    transform: translateY(-4px);
+}
+
+.prog__card:hover::before {
+    opacity: 1;
+}
+
+.prog__card-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.prog__jenjang {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: linear-gradient(150deg, var(--blue), var(--blue-d));
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    box-shadow: 0 4px 10px -4px rgba(23, 59, 102, 0.4);
+}
+
+.prog__akred {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--or-s);
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 700;
+    border: 1px solid color-mix(in srgb, var(--or) 30%, transparent);
+}
+
+.prog__prodi {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    color: var(--blue-d);
+    line-height: 1.35;
+}
+
+.prog__prodi-desc {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--mut);
+
+    /* Batasi maksimal 3 baris agar kartu sejajar rapi */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ---------- Empty State ---------- */
+.prog__empty,
+.prog__empty-all {
+    color: var(--mut);
+    font-size: 0.95rem;
+    padding: 24px;
+    background: var(--sky);
+    border-radius: 16px;
+    text-align: center;
+}
+
+.prog__empty-all h3 {
+    margin: 0 0 8px;
+    color: var(--blue-d);
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 640px) {
+    .prog {
+        padding: 32px 0 48px;
+    }
+
+    .prog__fak-head {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .prog__count {
+        align-self: flex-start;
+    }
+
+    .prog__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prog__card {
+        transition: none !important;
+    }
+}

@@ -66,7 +66,9 @@ class ProdiSeeder extends Seeder
         foreach ($prodis as $i => $p) {
             $fakultas = $fakultasMap[$p['fakultas']];
 
-            $tandha = Str::slug(($p['undhak'] ?? 'profesi') . '-' . $p['jeneng']);
+            $tandha = Str::slug(
+                ($p['undhak'] ? $p['undhak'] . '-' : '') . $p['jeneng']
+            );
 
             Prodi::query()->updateOrCreate(
                 [

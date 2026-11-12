@@ -1,0 +1,247 @@
+/* =========================================================
+   VISI & MISI — scoped di bawah .vm
+   ========================================================= */
+
+.vm {
+    /* Padding atas ditambah agar tidak mepet hero */
+    padding: 48px 0 64px;
+}
+
+.vm__wrap {
+    max-width: 920px;
+}
+
+/* ---------- Eyebrow (Label Kecil) ---------- */
+.vm__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+}
+
+.vm__eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--or);
+}
+
+/* ---------- VISI ---------- */
+.vm__visi {
+    margin-bottom: 56px;
+}
+
+.vm__quote {
+    position: relative;
+    margin: 0;
+    padding: 32px 36px;
+    border-left: 4px solid var(--blue);
+    border-radius: 0 20px 20px 0;
+    background: linear-gradient(135deg, var(--sky) 0%, #fff 80%);
+    box-shadow: 0 16px 32px -24px rgba(23, 59, 102, 0.3);
+}
+
+/* Tanda kutip dekoratif di sudut */
+.vm__quote::after {
+    content: '\201C';
+    position: absolute;
+    top: 10px;
+    right: 24px;
+    font-size: 5rem;
+    line-height: 1;
+    font-family: Georgia, serif;
+    color: color-mix(in srgb, var(--blue) 15%, transparent);
+    pointer-events: none;
+}
+
+.vm__quote p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: clamp(1.15rem, 2.3vw, 1.45rem);
+    line-height: 1.6;
+    font-weight: 600;
+    color: var(--blue-d);
+}
+
+/* ---------- MISI & BAGIAN LAIN ---------- */
+.vm__misi,
+.vm__extra {
+    margin-bottom: 56px;
+}
+
+.vm__misi:last-child,
+.vm__extra:last-child {
+    margin-bottom: 0;
+}
+
+.vm__head {
+    margin-bottom: 24px;
+}
+
+.vm__title {
+    margin: 0 0 12px;
+    font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+    color: var(--blue-d);
+    letter-spacing: -0.01em;
+}
+
+.vm__lead {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--mut);
+    line-height: 1.7;
+    font-size: 1.02rem;
+}
+
+/* List Misi */
+.vm__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+}
+
+.vm__list > li {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+    transition: 
+        border-color 0.35s var(--ease),
+        box-shadow 0.35s var(--ease),
+        transform 0.35s var(--ease);
+}
+
+.vm__list > li:hover {
+    border-color: color-mix(in srgb, var(--or) 50%, var(--line));
+    box-shadow: 0 16px 32px -24px rgba(23, 59, 102, 0.5);
+    transform: translateY(-2px);
+}
+
+.vm__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(150deg, var(--blue), var(--blue-d));
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 8px 16px -6px rgba(23, 59, 102, 0.3);
+    transition: transform 0.3s var(--ease);
+}
+
+.vm__list > li:hover .vm__num {
+    transform: scale(1.05);
+}
+
+.vm__text {
+    padding-top: 6px;
+    color: var(--mut);
+    line-height: 1.65;
+    font-size: 1.02rem;
+}
+
+/* ---------- KARTU TAMBAHAN (Nilai, Tujuan, dll) ---------- */
+.vm__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.vm__card {
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+    transition: 
+        border-color 0.35s var(--ease),
+        box-shadow 0.35s var(--ease),
+        transform 0.35s var(--ease);
+}
+
+.vm__card:hover {
+    border-color: var(--blue);
+    box-shadow: 0 16px 32px -20px rgba(23, 59, 102, 0.4);
+    transform: translateY(-3px);
+}
+
+.vm__card-k {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--sky);
+    color: var(--blue);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.vm__card-t {
+    margin: 0;
+    color: var(--mut);
+    line-height: 1.65;
+    font-size: 0.96rem;
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 640px) {
+    .vm {
+        padding: 32px 0 48px;
+    }
+
+    .vm__visi {
+        margin-bottom: 44px;
+    }
+
+    .vm__quote {
+        padding: 24px 20px;
+    }
+
+    .vm__quote::after {
+        font-size: 3.5rem;
+        top: 6px;
+        right: 16px;
+    }
+
+    .vm__list > li {
+        grid-template-columns: 40px 1fr;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .vm__num {
+        width: 36px;
+        height: 36px;
+        font-size: 0.8rem;
+        border-radius: 10px;
+    }
+
+    .vm__text {
+        padding-top: 4px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vm__list > li,
+    .vm__num,
+    .vm__card {
+        transition: none !important;
+    }
+}
