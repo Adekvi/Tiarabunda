@@ -42,9 +42,9 @@ class ProdiSeeder extends Seeder
         $prodis = [
             // === Fakultas Ilmu Kesehatan (0) ===
             ['jeneng' => 'Farmasi',                         'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrFarmasi],
-            ['jeneng' => 'Kebidanan',                       'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD3],
+            ['jeneng' => 'Kebidanan (D3)',                  'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD3],
             ['jeneng' => 'Keperawatan Bidan Anestesiologi', 'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrAnestesi],
-            ['jeneng' => 'Kebidanan',                       'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD4],
+            ['jeneng' => 'Kebidanan (D4)',                  'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD4],
             ['jeneng' => 'Pendidikan Profesi Bidan',        'undhak' => null, 'fakultas' => 0, 'akreditasi_id' => $akrProfesi],
 
             // === Fakultas Keguruan dan Ilmu Pendidikan (1) ===

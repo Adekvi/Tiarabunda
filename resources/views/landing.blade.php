@@ -1,5 +1,3 @@
-{{-- Beranda: dirender server-side oleh komponen Blade, JS hanya menyalakan interaksi.
-     Konten ada di config/landing.php. --}}
 <x-landing.layout.app page="home" :ssr="true">
     <x-landing.layout.topbar />
     <x-landing.layout.navbar />

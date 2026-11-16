@@ -18,6 +18,8 @@ use Database\Seeders\Landing\Pendidikan\FakultasSeeder;
 use Database\Seeders\Landing\Pendidikan\PmbSeeder;
 use Database\Seeders\Landing\Pendidikan\ProdiSeeder;
 use Database\Seeders\Landing\Profil\PimpinanSeeder;
+use Database\Seeders\Landing\Profil\SejarahSeeder;
+use Database\Seeders\Landing\Profil\VisiSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -36,6 +38,8 @@ class DatabaseSeeder extends Seeder
             InfoSeeder::class,
 
             // Landing Profil
+            SejarahSeeder::class,
+            VisiSeeder::class,
             PimpinanSeeder::class,
 
             // Landing Pendidikan

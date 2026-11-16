@@ -55,7 +55,6 @@
 
                 @if (data_get($selectedJalur, 'katrangan'))
                     <div class="pmb__lead">
-                        {{-- Gunakan {!! !!} jika konten dari database mengandung tag HTML (seperti <strong>) --}}
                         {!! nl2br(data_get($selectedJalur, 'katrangan')) !!}
                     </div>
                 @endif
@@ -65,10 +64,15 @@
                 {{-- Syarat --}}
                 <div class="pmb__panel rv">
                     <h3 class="pmb__panel-title">Persyaratan</h3>
-                    @php $syarat = collect(data_get($selectedJalur, 'syarat', [])); @endphp
-                    @if ($syarat->isNotEmpty())
+                    @if (data_get($selectedJalur, 'syarat_html'))
+                        {{-- Jika menggunakan hasil dari method syaratHtml() --}}
+                        <div class="prose">
+                            {!! data_get($selectedJalur, 'syarat_html') !!}
+                        </div>
+                    @elseif (!empty(data_get($selectedJalur, 'syarat')))
+                        {{-- Fallback: render manual dari array JSON --}}
                         <ul class="pmb__list">
-                            @foreach ($syarat as $s)
+                            @foreach (data_get($selectedJalur, 'syarat') as $s)
                                 <li>
                                     <span class="pmb__check" aria-hidden="true">
                                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
@@ -89,10 +93,15 @@
                 {{-- Langkah --}}
                 <div class="pmb__panel rv">
                     <h3 class="pmb__panel-title">Alur Pendaftaran</h3>
-                    @php $langkah = collect(data_get($selectedJalur, 'langkah', [])); @endphp
-                    @if ($langkah->isNotEmpty())
+                    @if (data_get($selectedJalur, 'langkah_html'))
+                        {{-- Jika menggunakan hasil dari method langkahHtml() --}}
+                        <div class="prose">
+                            {!! data_get($selectedJalur, 'langkah_html') !!}
+                        </div>
+                    @elseif (!empty(data_get($selectedJalur, 'langkah')))
+                        {{-- Fallback: render manual dari array JSON --}}
                         <ol class="pmb__steps">
-                            @foreach ($langkah as $i => $step)
+                            @foreach (data_get($selectedJalur, 'langkah') as $i => $step)
                                 <li>
                                     <span class="pmb__step-num">{{ $i + 1 }}</span>
                                     <span class="pmb__step-text">{{ $step }}</span>
@@ -130,7 +139,7 @@
             @if ($items->isNotEmpty())
                 <div class="pmb__grid">
                     @foreach ($items as $j)
-                        <article class="pmb__card rv">
+                        <article class="pmb__card rv" id="{{ data_get($j, 'tandha') }}">
                             <div class="pmb__card-header">
                                 <h3 class="pmb__card-title">{{ data_get($j, 'jeneng') }}</h3>
                                 @if (data_get($j, 'status'))

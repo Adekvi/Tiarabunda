@@ -1,7 +1,6 @@
 @props(['site' => config('landing.site'), 'menus' => config('landing.menus')])
 
 @php
-    // 1. Ambil data Fakultas & Prodi dari ProgramService
     $navFakultas = app(\App\Services\Landing\Pendidikan\ProgramService::class)->getFakultasWithProdi();
 @endphp
 
@@ -9,7 +8,9 @@
     <div class="wrap nav-in">
         <a class="brand" href="/">
             <img src="{{ asset('landing/assets/img/logo.webp') }}" alt="" width="48" height="48" />
-            <span><b>{{ $site['nama'] }}</b><small>{{ $site['kota'] }}</small></span></a>
+            <span><b>{{ $site['nama'] }}</b><small>{{ $site['kota'] }}</small></span>
+        </a>
+
         <nav class="menu" id="menu" aria-label="Menu utama">
             @foreach ($menus as $slug => $m)
                 <div @class(['dd', 'active' => request()->is("$slug/*")])>
@@ -17,7 +18,7 @@
                     <div class="dd-p">
                         @foreach ($m['subs'] as $s => $d)
                             @if ($s === 'program-pendidikan' && $navFakultas->isNotEmpty())
-                                <div class="dd dd-nested">
+                                <div class="dd-nested">
                                     <button type="button" class="dd-nested-toggle" aria-expanded="false">
                                         <span>{{ $d['t'] }}</span>
                                         <i class="dd-arrow"></i>
@@ -25,31 +26,47 @@
 
                                     <div class="dd-p dd-nested-panel">
                                         @foreach ($navFakultas as $fak)
-                                            <div class="dd-fak-head">{{ $fak->jeneng }}</div>
+                                            @php
+                                                // Logika membersihkan nama fakultas agar tidak dobel kata "Fakultas"
+                                                $rawName = trim($fak->jeneng);
+                                                $cleanName = preg_replace('/^fakultas\s+/i', '', $rawName);
+                                            @endphp
 
-                                            @forelse($fak->prodis as $prodi)
-                                                <a href="/{{ $slug }}/{{ $s }}#{{ $prodi->tandha ?? $prodi->id }}"
-                                                    class="dd-prodi">
-                                                    <span>{{ $prodi->jeneng }}</span>
-                                                    @if ($prodi->undhak)
-                                                        <span class="dd-badge">{{ $prodi->undhak }}</span>
-                                                    @endif
-                                                </a>
-                                            @empty
-                                                <span class="dd-empty">Belum ada prodi</span>
-                                            @endforelse
+                                            <div class="dd-fakultas-group">
+                                                <div class="dd-fak-head">
+                                                    {{-- Label menggunakan huruf kecil/kapital standar agar serasi --}}
+                                                    <span class="dd-fak-label">Fakultas</span>
+                                                    <span class="dd-fak-name">{{ $cleanName }}</span>
+                                                </div>
+
+                                                <div class="dd-prodi-list">
+                                                    @forelse($fak->prodis as $prodi)
+                                                        <a href="/{{ $slug }}/{{ $s }}#{{ $prodi->tandha ?? $prodi->id }}"
+                                                            class="dd-prodi">
+                                                            <span class="dd-prodi-name">{{ $prodi->jeneng }}</span>
+                                                            @if ($prodi->undhak)
+                                                                <span class="dd-badge">{{ $prodi->undhak }}</span>
+                                                            @endif
+                                                        </a>
+                                                    @empty
+                                                        <span class="dd-empty">Belum ada prodi</span>
+                                                    @endforelse
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </div>
                                 </div>
                             @else
-                                <a href="/{{ $slug }}/{{ $s }}"
-                                    @class(['active' => request()->is("$slug/$s")])>{{ $d['t'] }}</a>
+                                <a href="/{{ $slug }}/{{ $s }}" @class(['active' => request()->is("$slug/$s")])>
+                                    {{ $d['t'] }}
+                                </a>
                             @endif
                         @endforeach
                     </div>
                 </div>
             @endforeach
         </nav>
+
         <form @class(['srch', 'open' => request()->routeIs('landing.search')]) id="srch" action="/cari" method="get" role="search">
             <input id="q" name="q" type="search" enterkeyhint="search" placeholder="Cari di situs…"
                 aria-label="Cari" autocomplete="off" minlength="2" maxlength="60" required

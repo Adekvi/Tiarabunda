@@ -1,0 +1,185 @@
+/* =========================================================
+   FAQ — scoped di bawah .faq
+   ========================================================= */
+
+.faq {
+    padding: 64px 0 80px;
+    background: #fafafa;
+}
+
+.faq__wrap {
+    max-width: 850px; /* Lebih ramping agar fokus membaca */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ---------- Intro ---------- */
+.faq__intro {
+    margin-bottom: 48px;
+    text-align: center;
+}
+
+.faq__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 0 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+}
+
+.faq__eyebrow::before,
+.faq__eyebrow::after {
+    content: '';
+    width: 24px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--or);
+}
+
+.faq__title {
+    margin: 0 0 16px;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--blue-d);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.faq__lead {
+    margin: 0 auto;
+    max-width: 600px;
+    color: var(--mut);
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+/* ---------- List Accordion ---------- */
+.faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.faq__item {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.faq__item:hover {
+    border-color: color-mix(in srgb, var(--blue) 30%, var(--line));
+    box-shadow: 0 4px 12px -2px rgba(23, 59, 102, 0.05);
+}
+
+.faq__item--active {
+    border-color: var(--blue);
+    box-shadow: 0 8px 24px -8px rgba(23, 59, 102, 0.15);
+}
+
+.faq__trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.faq__question {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    line-height: 1.4;
+}
+
+.faq__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease;
+}
+
+.faq__item--active .faq__icon {
+    transform: rotate(180deg);
+    background: var(--blue);
+    color: #fff;
+}
+
+.faq__answer {
+    padding: 0 24px 24px 24px;
+    color: var(--mut);
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* Animasi masuk yang halus */
+.faq__answer:not([hidden]) {
+    animation: faqFadeIn 0.3s ease;
+}
+
+@keyframes faqFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.faq__answer-inner {
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+}
+
+/* ---------- Empty State ---------- */
+.faq__empty {
+    text-align: center;
+    padding: 40px;
+    background: #fff;
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    color: var(--mut);
+}
+
+.faq__empty h3 {
+    margin: 0 0 8px;
+    color: var(--blue-d);
+    font-size: 1.25rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+    .faq {
+        padding: 40px 0 60px;
+    }
+    .faq__trigger {
+        padding: 20px;
+    }
+    .faq__answer {
+        padding: 0 20px 20px 20px;
+    }
+    .faq__question {
+        font-size: 1rem;
+    }
+}

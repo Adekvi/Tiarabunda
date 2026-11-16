@@ -34,8 +34,7 @@
 <footer class="ft">
     <div class="ft__wrap">
 
-        {{-- CTA Penerimaan Mahasiswa Baru
-        @if (!empty($site['pmb']))
+        {{-- @if (!empty($site['pmb']))
             <div class="ft__cta">
                 <div>
                     <h3>Siap bergabung dengan {{ $site['nama'] }}?</h3>

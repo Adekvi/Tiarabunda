@@ -429,7 +429,7 @@ class LandingHomeService
     public function forgetHome(): void
     {
         $this->forgetHero();
-        $this->forgetHero();
+        $this->forgetInfo();
         $this->forgetPimpinan();
         $this->forgetFakultasProdi();
         $this->forgetJalurPmb();

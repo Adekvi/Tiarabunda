@@ -296,4 +296,45 @@
     } else {
         $$('.rv').forEach(reveal)
     }
+
+    /* TOC aktif saat scroll di halaman submenu */
+    ;(() => {
+        const links = $$('.toc a[href^="#"]')
+        if (!links.length) return
+        const map = links
+            .map((a) => {
+                const id = decodeURIComponent(a.getAttribute('href').slice(1))
+                const el = document.getElementById(id)
+                return el ? { a, el } : null
+            })
+            .filter(Boolean)
+        if (!map.length) return
+
+        const setActive = (id) => {
+            links.forEach((a) =>
+                a.classList.toggle(
+                    'is-active',
+                    a.getAttribute('href') === '#' + id
+                )
+            )
+        }
+
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver(
+                (entries) => {
+                    const visible = entries
+                        .filter((e) => e.isIntersecting)
+                        .sort(
+                            (a, b) => b.intersectionRatio - a.intersectionRatio
+                        )
+                    if (visible[0]) setActive(visible[0].target.id)
+                },
+                {
+                    rootMargin: '-20% 0px -55% 0px',
+                    threshold: [0, 0.25, 0.5, 1]
+                }
+            )
+            map.forEach(({ el }) => io.observe(el))
+        }
+    })()
 })()

@@ -19,16 +19,15 @@
         <div class="wrap">
             <x-landing.ui.head kick="Berita & kegiatan" title="Kabar terbaru dari kampus" />
 
-            {{-- Menggunakan grid bawaan CSS Anda --}}
             <div class="news rv">
 
                 {{-- KARTU UTAMA (FEATURED) --}}
-                <article class="nf">
+                <a href="/informasi/berita-terbaru/{{ $f['tandha'] ?? '' }}" class="nf"
+                    style="text-decoration: none; color: inherit;">
                     @if (!empty($f['img']))
                         <div class="nf-cover">
-                            {{-- Hapus onerror agar jika error kita bisa tahu dari Inspect Element --}}
-                            <img src="{{ $f['img'] }}" alt="{{ $f['t'] ?? '' }}" loading="eager" fetchpriority="high"
-                                decoding="sync">
+                            <img src="{{ $f['img'] }}" alt="{{ $f['t'] ?? '' }}" loading="eager"
+                                fetchpriority="high" decoding="sync">
                         </div>
                     @else
                         <div class="nf-cover"
@@ -42,12 +41,13 @@
                         <h3>{{ $f['t'] ?? '' }}</h3>
                         <time>{{ $f['tgl'] ?? '' }}</time>
                     </div>
-                </article>
+                </a>
 
                 {{-- DAFTAR BERITA KANAN --}}
                 <div class="nl">
                     @foreach (array_slice($items, 1) as $n)
-                        <article>
+                        <a href="/informasi/berita-terbaru/{{ $n['tandha'] ?? '' }}" class="nl-item"
+                            style="text-decoration: none; color: inherit; display: flex; gap: 16px; margin-bottom: 16px;">
                             @if (!empty($n['img']))
                                 <div class="nl-thumb">
                                     <img src="{{ $n['img'] }}" alt="{{ $n['t'] ?? '' }}" loading="lazy">
@@ -58,10 +58,22 @@
                                 <h3>{{ $n['t'] ?? '' }}</h3>
                                 <time>{{ $n['tgl'] ?? '' }}</time>
                             </div>
-                        </article>
+                        </a>
                     @endforeach
                 </div>
 
+            </div>
+
+            {{-- Tambahkan tombol Lihat Semua Berita --}}
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="/informasi/berita-terbaru" class="btn-outline"
+                    style="display:inline-flex;align-items:center;gap:.5rem; padding:.75rem 1.5rem;border-radius:999px; font-weight:600;text-decoration:none;">
+                    Lihat Semua Berita
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                </a>
             </div>
         </div>
     </section>

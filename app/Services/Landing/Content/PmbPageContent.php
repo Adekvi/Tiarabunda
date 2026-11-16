@@ -13,22 +13,26 @@ class PmbPageContent implements PageContentInterface
     {
         $jalur = $this->pmbService->forPage();
 
-        // Fallback demo bila DB masih kosong
         if ($jalur->isEmpty()) {
             $jalur = $this->demoPmb();
         }
 
-        // Kalau ada slug → cari detail
         $selectedJalur = null;
         if ($slug) {
             $selectedJalur = $jalur->firstWhere('tandha', $slug);
 
-            // Coba cari juga di DB jika belum ketemu (untuk safety)
             if (! $selectedJalur) {
                 $selectedJalur = $this->pmbService->findBySlug($slug);
             }
 
             abort_if($selectedJalur === null, 404, 'Jalur PMB tidak ditemukan.');
+
+            if (method_exists($selectedJalur, 'syaratHtml')) {
+                $selectedJalur = (object) array_merge($selectedJalur->toArray(), [
+                    'syarat_html'  => $selectedJalur->syaratHtml(),
+                    'langkah_html' => $selectedJalur->langkahHtml(),
+                ]);
+            }
         }
 
         return [

@@ -8,10 +8,16 @@
             ->filter(fn($l) => $l !== '||' && $l !== '')
             ->implode("\n"),
     );
+
+    // Hitung statistik ringan untuk sidebar
+    $isiLength = mb_strlen(strip_tags($item->isi ?? ''));
+    $isiWords = $isiLength > 0 ? str_word_count(strip_tags($item->isi ?? '')) : 0;
+    $kronologiCount = count($item->kronologi ?? []);
 @endphp
 
 <x-dashboard.layout.app :title="$pageTitle" :page-title="$pageTitle">
     <div class="g">
+        {{-- Breadcrumb --}}
         <div class="card" style="padding:14px 22px;">
             <div class="ch2" style="margin-bottom:0;">
                 <div>
@@ -38,13 +44,14 @@
         @endif
 
         <div class="g g2" style="align-items:start;">
+            {{-- ================= KIRI: FORM ================= --}}
             <div class="card" style="min-width:0;">
                 <h2 style="margin-bottom:6px;">Detail konten</h2>
                 <p style="margin:0 0 20px;font-size:0.85rem;color:var(--mut);">
                     Tulis perjalanan kampus dengan jelas agar mudah dibaca pengunjung situs.
                 </p>
 
-                <form method="POST" enctype="multipart/form-data"
+                <form method="POST" enctype="multipart/form-data" id="sejarahForm"
                     action="{{ $isEdit ? route('superadmin.sejarah.update', $item) : route('superadmin.sejarah.store') }}">
                     @csrf
                     @if ($isEdit)
@@ -61,15 +68,109 @@
                         @enderror
                     </div>
 
+                    {{-- ===== Narasi Sejarah (Rich Text Editor) ===== --}}
                     <div class="f">
                         <label for="isi">Narasi sejarah <span style="color:var(--err);">*</span></label>
-                        <textarea id="isi" name="isi" rows="14" required
-                            placeholder="Ceritakan latar belakang, pendirian, dan perkembangan kampus…">{{ old('isi', $item->isi) }}</textarea>
+
+                        {{-- Fallback textarea (tampil jika JS mati) --}}
+                        <textarea id="isi" name="isi" rows="14" required data-rte-fallback
+                            placeholder="Ceritakan latar belakang, pendirian, dan perkembangan kampus…" style="display:none;">{{ old('isi', $item->isi) }}</textarea>
+
+                        {{-- Rich Text Editor --}}
+                        <div class="rte" data-rte hidden>
+                            <div class="rte-bar" role="toolbar" aria-label="Format teks">
+                                <button type="button" class="rb" data-cmd="formatBlock" data-val="h2"
+                                    title="Judul besar">H2</button>
+                                <button type="button" class="rb" data-cmd="formatBlock" data-val="h3"
+                                    title="Subjudul">H3</button>
+                                <span class="rte-sep"></span>
+                                <button type="button" class="rb" data-cmd="bold"
+                                    title="Tebal (Ctrl+B)"><b>B</b></button>
+                                <button type="button" class="rb" data-cmd="italic" title="Miring (Ctrl+I)"><i
+                                        style="font-family:serif;">I</i></button>
+                                <button type="button" class="rb" data-cmd="underline"
+                                    title="Garis bawah (Ctrl+U)"><u>U</u></button>
+                                <button type="button" class="rb" data-cmd="strikeThrough"
+                                    title="Coret"><s>S</s></button>
+                                <span class="rte-sep"></span>
+                                <button type="button" class="rb" data-cmd="insertUnorderedList"
+                                    title="Daftar poin">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round">
+                                        <path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="rb" data-cmd="insertOrderedList" title="Daftar nomor">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M10 6h10M10 12h10M10 18h10M4 5l1-1v4M3.5 13h2l-2 3h2.2" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="rb" data-cmd="formatBlock" data-val="blockquote"
+                                    title="Kutipan">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M4 17h4l2-4V7H4v6h3zM14 17h4l2-4V7h-6v6h3z" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="rb" data-cmd="createLink" title="Sisipkan tautan">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1" />
+                                    </svg>
+                                </button>
+                                <span class="rte-sep"></span>
+                                <button type="button" class="rb" data-cmd="justifyLeft" title="Rata kiri">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round">
+                                        <path d="M4 6h16M4 12h10M4 18h14" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="rb" data-cmd="justifyCenter" title="Rata tengah">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round">
+                                        <path d="M4 6h16M7 12h10M5 18h14" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="rb" data-cmd="justifyRight" title="Rata kanan">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round">
+                                        <path d="M4 6h16M10 12h10M6 18h14" />
+                                    </svg>
+                                </button>
+                                <span class="rte-sep"></span>
+                                <button type="button" class="rb" data-cmd="undo" title="Urungkan (Ctrl+Z)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="rb" data-cmd="redo" title="Ulangi (Ctrl+Y)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="rb" data-cmd="removeFormat"
+                                    title="Bersihkan format">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 7V4h16v3M9 20h6M12 4v16M4 20l16-16" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="rte-area" data-rte-area contenteditable="true" role="textbox"
+                                aria-multiline="true" aria-label="Isi narasi sejarah"
+                                data-placeholder="Tulis narasi lengkap sejarah kampus…"></div>
+                            <div class="rte-foot"><span data-rte-count>0 kata</span></div>
+                        </div>
+
                         @error('isi')
                             <small style="color:var(--err);">{{ $message }}</small>
                         @enderror
                     </div>
 
+                    {{-- ===== Kronologi ===== --}}
                     <div class="f">
                         <label for="kronologi_text">Tonggak sejarah (opsional)</label>
                         <textarea id="kronologi_text" name="kronologi_text" rows="7"
@@ -88,8 +189,8 @@
                                 accept="image/png,image/jpeg,image/webp">
 
                             <div class="dz-thumb" data-dz-thumb>
-                                <svg class="dz-ico" width="26" height="26" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                <svg class="dz-ico" width="26" height="26" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" aria-hidden="true">
                                     <path d="M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6M9 9h.01" />
                                 </svg>
@@ -102,8 +203,8 @@
                             </div>
 
                             <span class="dz-btn" data-dz-btn>Pilih gambar</span>
-                            <button type="button" class="dz-clear" data-dz-clear aria-label="Batalkan pilihan gambar"
-                                hidden>×</button>
+                            <button type="button" class="dz-clear" data-dz-clear
+                                aria-label="Batalkan pilihan gambar" hidden>×</button>
                         </div>
 
                         <small class="dz-error" data-dz-error role="alert" hidden></small>
@@ -149,43 +250,132 @@
                 </form>
             </div>
 
+            {{-- ================= KANAN: SIDEBAR ================= --}}
             <div class="g" style="gap:16px;">
+
+                {{-- 1. Ringkasan Status --}}
                 <div class="card">
-                    <h3 style="margin-bottom:10px;">Panduan Sejarah</h3>
-                    <ul style="margin:0;padding-left:18px;color:var(--mut);font-size:0.88rem;line-height:1.7;">
-                        <li>Fokus pada fakta dan tonggak penting.</li>
-                        <li>Hindari paragraf terlalu panjang.</li>
-                        <li>Gambar sampul disarankan landscape, max 2 MB.</li>
-                        <li>Tonggak opsional; boleh dikosongkan.</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="margin-bottom:10px;">Status form</h3>
-                    <div style="display:grid;gap:10px;font-size:0.88rem;">
-                        <div style="display:flex;justify-content:space-between;"><span
-                                style="color:var(--mut);">Mode</span><strong>{{ $isEdit ? 'Edit' : 'Buat baru' }}</strong>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                        <h3 style="margin:0;">Ringkasan</h3>
+                        <span class="badge {{ $item->urip ?? true ? 'ok' : 'err' }}">
+                            {{ $item->urip ?? true ? 'Aktif' : 'Nonaktif' }}
+                        </span>
+                    </div>
+
+                    <div class="side-stat">
+                        <div class="side-stat__row">
+                            <span class="side-stat__lbl">Mode</span>
+                            <strong class="side-stat__val">{{ $isEdit ? 'Edit' : 'Buat baru' }}</strong>
                         </div>
                         @if ($isEdit)
-                            <div style="display:flex;justify-content:space-between;"><span
-                                    style="color:var(--mut);">ID</span><strong>#{{ $item->id }}</strong></div>
-                            <div style="display:flex;justify-content:space-between;align-items:center;">
-                                <span style="color:var(--mut);">Status</span>
-                                <span
-                                    class="badge {{ $item->urip ? 'ok' : 'err' }}">{{ $item->urip ? 'Aktif' : 'Nonaktif' }}</span>
+                            <div class="side-stat__row">
+                                <span class="side-stat__lbl">ID</span>
+                                <strong class="side-stat__val">#{{ $item->id }}</strong>
                             </div>
+                            <div class="side-stat__row">
+                                <span class="side-stat__lbl">Terakhir diperbarui</span>
+                                <strong
+                                    class="side-stat__val">{{ $item->updated_at?->diffForHumans() ?? '—' }}</strong>
+                            </div>
+                            @if ($item->penganyar)
+                                <div class="side-stat__row">
+                                    <span class="side-stat__lbl">Diperbarui oleh</span>
+                                    <strong class="side-stat__val">{{ $item->penganyar->name }}</strong>
+                                </div>
+                            @endif
                         @endif
                     </div>
+
+                    <div class="side-stat__sep"></div>
+
+                    <div class="side-stat">
+                        <div class="side-stat__row">
+                            <span class="side-stat__lbl">Panjang narasi</span>
+                            <strong class="side-stat__val">{{ number_format($isiLength, 0, ',', '.') }}
+                                karakter</strong>
+                        </div>
+                        <div class="side-stat__row">
+                            <span class="side-stat__lbl">Jumlah kata</span>
+                            <strong class="side-stat__val">{{ number_format($isiWords, 0, ',', '.') }} kata</strong>
+                        </div>
+                        <div class="side-stat__row">
+                            <span class="side-stat__lbl">Tonggak</span>
+                            <strong class="side-stat__val">{{ $kronologiCount }} peristiwa</strong>
+                        </div>
+                        <div class="side-stat__row">
+                            <span class="side-stat__lbl">Gambar sampul</span>
+                            <strong class="side-stat__val">
+                                @if ($item->path_sampul)
+                                    <span style="color:var(--ok);">✓ Ada</span>
+                                @else
+                                    <span style="color:var(--mut);">—</span>
+                                @endif
+                            </strong>
+                        </div>
+                    </div>
                 </div>
+
+                {{-- 2. Checklist Kualitas --}}
+                <div class="card">
+                    <h3 style="margin-bottom:12px;">Checklist kualitas</h3>
+                    <ul class="side-check">
+                        <li data-check="judhul">
+                            <span class="side-check__dot"></span>
+                            <span>Judul singkat &amp; deskriptif</span>
+                        </li>
+                        <li data-check="isi">
+                            <span class="side-check__dot"></span>
+                            <span>Narasi minimal 300 karakter</span>
+                        </li>
+                        <li data-check="kronologi">
+                            <span class="side-check__dot"></span>
+                            <span>Tonggak sejarah terisi</span>
+                        </li>
+                        <li data-check="sampul">
+                            <span class="side-check__dot"></span>
+                            <span>Gambar sampul tersedia</span>
+                        </li>
+                    </ul>
+                </div>
+
+                {{-- 3. Panduan --}}
+                <div class="card">
+                    <h3 style="margin-bottom:10px;">Panduan penulisan</h3>
+                    <ul class="side-guide">
+                        <li>Mulai dari latar berdirinya kampus.</li>
+                        <li>Sertakan tonggak penting (tahun, capaian).</li>
+                        <li>Gunakan bahasa formal, ringkas, mudah dibaca.</li>
+                        <li>Gambar sampul landscape, max 2 MB.</li>
+                        <li>Urutan kecil = tampil lebih dulu.</li>
+                    </ul>
+                </div>
+
+                {{-- 4. Danger Zone --}}
                 @if ($isEdit)
-                    <div class="card">
-                        <h3 style="margin-bottom:8px;color:var(--err);">Hapus konten</h3>
-                        <p style="margin:0 0 14px;font-size:0.85rem;color:var(--mut);">Menghapus menyembunyikan data
-                            dari daftar aktif.</p>
+                    <div class="card side-danger">
+                        <h3 style="margin-bottom:8px;color:var(--err);">Zona berbahaya</h3>
+                        <p style="margin:0 0 14px;font-size:0.85rem;color:var(--mut);">
+                            Konten akan dipindahkan ke <strong>sampah</strong>. Anda masih bisa memulihkannya
+                            dari halaman daftar sampah.
+                        </p>
                         <form method="POST" action="{{ route('superadmin.sejarah.destroy', $item) }}"
-                            onsubmit="return confirm('Yakin hapus?');">
+                            data-confirm-form data-confirm-title="Pindahkan ke sampah?"
+                            data-confirm-message="Konten &laquo;{{ $item->judhul }}&raquo; akan dipindahkan ke sampah. Anda masih bisa memulihkannya nanti."
+                            data-confirm-action="{{ route('superadmin.sejarah.destroy', $item) }}"
+                            data-confirm-method="DELETE" data-confirm-type="danger"
+                            data-confirm-label="Ya, pindahkan">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn sm" style="background:var(--err);width:100%;">Hapus
-                                konten ini</button>
+                            <button type="submit" class="btn" style="background:var(--err);width:100%;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px;"
+                                    aria-hidden="true">
+                                    <path d="M3 6h18" />
+                                    <path d="M8 6V4h8v2" />
+                                    <path d="M19 6l-1 14H6L5 6" />
+                                </svg>
+                                Hapus konten ini
+                            </button>
                         </form>
                     </div>
                 @endif
@@ -194,352 +384,10 @@
     </div>
 
     @push('css')
-        <style>
-            /* ---------- Dropzone gambar sampul ---------- */
-            .f .dz {
-                position: relative;
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                padding: 16px;
-                border: 1.5px dashed var(--line);
-                border-radius: 12px;
-                background: var(--bg);
-                transition: border-color .2s, background .2s;
-            }
-
-            .f .dz:hover,
-            .f .dz.is-drag {
-                border-color: var(--pri);
-                background: var(--pri-t);
-            }
-
-            .f .dz:focus-within {
-                border-color: var(--pri);
-                box-shadow: 0 0 0 3px var(--pri-t);
-            }
-
-            /* input file menutupi seluruh area -> klik & drag-drop native */
-            .f .dz input[type="file"] {
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                padding: 0;
-                border: 0;
-                border-radius: 12px;
-                opacity: 0;
-                cursor: pointer;
-                z-index: 1;
-            }
-
-            .dz-thumb {
-                position: relative;
-                flex: none;
-                display: grid;
-                place-items: center;
-                width: 96px;
-                height: 72px;
-                border-radius: 10px;
-                overflow: hidden;
-                background: var(--card);
-                border: 1px solid var(--line);
-                color: var(--mut);
-            }
-
-            .dz-thumb img {
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-            .dz-thumb img[hidden] {
-                display: none;
-            }
-
-            .dz-text {
-                flex: 1;
-                min-width: 0;
-                line-height: 1.4;
-            }
-
-            .dz-text strong {
-                display: block;
-                font-size: .9rem;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-            .dz-text small {
-                color: var(--mut);
-                font-size: .78rem;
-            }
-
-            .dz-btn {
-                flex: none;
-                padding: 7px 14px;
-                border-radius: 10px;
-                background: var(--card);
-                border: 1px solid var(--line);
-                font-weight: 700;
-                font-size: .82rem;
-                color: var(--pri);
-            }
-
-            .dz:hover .dz-btn {
-                border-color: var(--pri);
-            }
-
-            .dz-clear {
-                position: relative;
-                z-index: 2;
-                /* di atas input file agar bisa diklik */
-                flex: none;
-                display: grid;
-                place-items: center;
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                border: 1px solid var(--line);
-                background: var(--card);
-                color: var(--err);
-                font-size: 1.15rem;
-                line-height: 1;
-            }
-
-            .dz-clear:hover {
-                background: var(--err-t);
-            }
-
-            .dz-clear[hidden] {
-                display: none;
-            }
-
-            .dz-error {
-                color: var(--err);
-            }
-
-            .dz-error[hidden] {
-                display: none;
-            }
-
-            @media (max-width: 560px) {
-                .f .dz {
-                    flex-wrap: wrap;
-                }
-
-                .dz-btn {
-                    display: none;
-                }
-            }
-
-            /* ---------- Switch publikasi ---------- */
-            .f .f-label {
-                font-weight: 600;
-                font-size: .85rem;
-            }
-
-            .f label.sw {
-                position: relative;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                padding: 14px 16px;
-                border: 1px solid var(--line);
-                border-radius: 12px;
-                background: var(--bg);
-                font-weight: 400;
-                font-size: .9rem;
-                cursor: pointer;
-                transition: border-color .2s, background .2s;
-            }
-
-            .f label.sw:hover {
-                border-color: var(--pri);
-            }
-
-            /* sembunyikan checkbox asli (lawan aturan .f input) */
-            .f .sw .sw-in {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                border: 0;
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            .sw-track {
-                position: relative;
-                flex: none;
-                width: 44px;
-                height: 24px;
-                border-radius: 99px;
-                background: var(--line);
-                transition: background .25s;
-            }
-
-            .sw-track::after {
-                content: '';
-                position: absolute;
-                top: 3px;
-                left: 3px;
-                width: 18px;
-                height: 18px;
-                border-radius: 50%;
-                background: #fff;
-                box-shadow: 0 1px 3px rgba(16, 24, 40, .3);
-                transition: transform .25s var(--ease);
-            }
-
-            .sw-in:checked~.sw-track {
-                background: var(--ok);
-            }
-
-            .sw-in:checked~.sw-track::after {
-                transform: translateX(20px);
-            }
-
-            .sw-in:focus-visible~.sw-track {
-                outline: 2px solid var(--pri);
-                outline-offset: 2px;
-            }
-
-            .sw-text {
-                flex: 1;
-                min-width: 0;
-                line-height: 1.4;
-            }
-
-            .sw-text strong {
-                display: block;
-                color: var(--ink);
-            }
-
-            .sw-text small {
-                color: var(--mut);
-                font-size: .8rem;
-            }
-
-            .sw-state {
-                flex: none;
-                padding: 2px 10px;
-                border-radius: 99px;
-                font-size: .75rem;
-                font-weight: 700;
-            }
-
-            .sw-state-on {
-                background: var(--ok-t);
-                color: var(--ok);
-                display: none;
-            }
-
-            .sw-state-off {
-                background: var(--err-t);
-                color: var(--err);
-            }
-
-            .sw-in:checked~.sw-state-on {
-                display: inline-block;
-            }
-
-            .sw-in:checked~.sw-state-off {
-                display: none;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ asset('admin/landing/profil/sejarah/form.css') }}">
     @endpush
 
     @push('js')
-        <script>
-            (() => {
-                const MAX = 2 * 1024 * 1024
-                const OK = ['image/png', 'image/jpeg', 'image/webp']
-
-                document.querySelectorAll('[data-dz]').forEach((dz) => {
-                    const input = dz.querySelector('input[type="file"]')
-                    const img = dz.querySelector('[data-dz-thumb] img')
-                    const ico = dz.querySelector('.dz-ico')
-                    const title = dz.querySelector('[data-dz-title]')
-                    const meta = dz.querySelector('[data-dz-meta]')
-                    const btn = dz.querySelector('[data-dz-btn]')
-                    const clear = dz.querySelector('[data-dz-clear]')
-                    const err = dz.parentElement.querySelector('[data-dz-error]')
-                    const initial = dz.dataset.initialSrc
-                    const def = {
-                        title: title.textContent,
-                        meta: meta.textContent
-                    }
-                    let blobUrl = null
-
-                    const show = (src) => {
-                        img.hidden = !src
-                        ico.style.display = src ? 'none' : ''
-                        if (src) img.src = src
-                        else img.removeAttribute('src')
-                    }
-
-                    const reset = () => {
-                        input.value = ''
-                        if (blobUrl) URL.revokeObjectURL(blobUrl)
-                        blobUrl = null
-                        clear.hidden = true
-                        if (initial) {
-                            show(initial)
-                            title.textContent = 'Gambar tersimpan'
-                            meta.textContent = 'Pilih gambar baru untuk menggantinya.'
-                            btn.textContent = 'Ganti gambar'
-                        } else {
-                            show('')
-                            title.textContent = def.title
-                            meta.textContent = def.meta
-                            btn.textContent = 'Pilih gambar'
-                        }
-                    }
-
-                    const fail = (msg) => {
-                        err.textContent = msg
-                        err.hidden = false
-                        reset()
-                    }
-
-                    input.addEventListener('change', () => {
-                        err.hidden = true
-                        const f = input.files[0]
-                        if (!f) return reset()
-                        if (!OK.includes(f.type)) return fail('Format harus PNG, JPG, atau WEBP.')
-                        if (f.size > MAX) return fail('Ukuran gambar maksimal 2 MB.')
-
-                        if (blobUrl) URL.revokeObjectURL(blobUrl)
-                        blobUrl = URL.createObjectURL(f)
-                        show(blobUrl)
-                        title.textContent = f.name
-                        meta.textContent = (f.size / 1024).toFixed(0) + ' KB · siap diunggah'
-                        btn.textContent = 'Ganti gambar'
-                        clear.hidden = false
-                    })
-
-                    clear.addEventListener('click', (e) => {
-                        e.preventDefault()
-                        err.hidden = true
-                        reset()
-                    })
-
-                    ;
-                    ['dragenter', 'dragover'].forEach((ev) =>
-                        dz.addEventListener(ev, () => dz.classList.add('is-drag'))
-                    );
-                    ['dragleave', 'drop'].forEach((ev) =>
-                        dz.addEventListener(ev, () => dz.classList.remove('is-drag'))
-                    )
-
-                    reset()
-                })
-            })()
-        </script>
+        <script src="{{ asset('admin/landing/profil/sejarah/form.js') }}" defer></script>
     @endpush
-
 </x-dashboard.layout.app>

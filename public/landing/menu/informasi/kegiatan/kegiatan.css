@@ -1,0 +1,317 @@
+/* =========================================================
+   KEGIATAN — scoped di bawah .kgt
+   ========================================================= */
+
+.kgt {
+    padding: 64px 0 80px;
+    background: #fafafa;
+}
+
+.kgt__wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ---------- Intro ---------- */
+.kgt__intro {
+    margin-bottom: 48px;
+    max-width: 800px;
+}
+
+.kgt__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+}
+
+.kgt__eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--or);
+}
+
+.kgt__page-title {
+    margin: 0 0 16px;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--blue-d);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.kgt__lead {
+    margin: 0;
+    color: var(--mut);
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+/* ---------- Grid Card Agenda ---------- */
+.kgt__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+.kgt__card {
+    position: relative;
+    display: flex;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.kgt__card:hover {
+    border-color: color-mix(in srgb, var(--blue) 30%, var(--line));
+    box-shadow: 0 16px 32px -20px rgba(23, 59, 102, 0.3);
+    transform: translateY(-4px);
+}
+
+.kgt__card-date {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 80px;
+    background: var(--sky);
+    border-radius: 12px;
+    margin-right: 20px;
+}
+
+.kgt__card-day {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--blue-d);
+    line-height: 1;
+}
+
+.kgt__card-month-year {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.kgt__card-month {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--blue);
+    text-transform: uppercase;
+}
+
+.kgt__card-year {
+    font-size: 0.7rem;
+    color: var(--mut);
+}
+
+.kgt__card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.kgt__card-title {
+    margin: 0 0 8px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.kgt__card-title a {
+    color: var(--blue-d);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.kgt__card-title a:hover {
+    color: var(--blue);
+}
+
+.kgt__card-loc {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--mut);
+    margin-bottom: 16px;
+}
+
+.kgt__card-link {
+    margin-top: auto;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--blue);
+    text-decoration: none;
+}
+
+.kgt__card-link:hover {
+    text-decoration: underline;
+}
+
+.kgt__card-time {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--blue);
+    background: #eff6ff;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* ---------- Halaman Detail ---------- */
+.kgt__back-wrap {
+    margin-bottom: 32px;
+}
+
+.kgt__back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.kgt__back-btn:hover {
+    background: var(--sky);
+    border-color: var(--blue);
+}
+
+.kgt__header {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-bottom: 32px;
+}
+
+.kgt__date-badge {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 100px;
+    background: var(--blue);
+    border-radius: 16px;
+    color: #fff;
+    box-shadow: 0 8px 16px -4px rgba(23, 59, 102, 0.3);
+}
+
+.kgt__date-day {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.kgt__date-month {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.kgt__title {
+    margin: 0 0 16px;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    line-height: 1.2;
+    color: var(--blue-d);
+    font-weight: 800;
+}
+
+.kgt__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.kgt__meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    color: var(--mut);
+    font-weight: 500;
+}
+
+.kgt__sampul {
+    margin-bottom: 40px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+.kgt__sampul img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    display: block;
+}
+
+.kgt__content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--ink);
+}
+
+.kgt__content p {
+    margin-bottom: 20px;
+}
+
+/* ---------- Empty State ---------- */
+.kgt__empty {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border: 1px dashed var(--line);
+    border-radius: 16px;
+    color: var(--mut);
+}
+
+.kgt__empty h3 {
+    margin: 0 0 8px;
+    color: var(--blue-d);
+    font-size: 1.25rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+    .kgt {
+        padding: 40px 0 60px;
+    }
+    .kgt__grid {
+        grid-template-columns: 1fr;
+    }
+    .kgt__header {
+        flex-direction: column;
+    }
+    .kgt__card-time {
+        position: static;
+        align-self: flex-start;
+        margin-top: 8px;
+    }
+}

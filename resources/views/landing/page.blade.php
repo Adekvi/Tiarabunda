@@ -6,6 +6,16 @@
     $pmbJalur = $pmbJalur ?? null;
     $beasiswaList = $beasiswaList ?? null;
     $akreditasiInstitusi = $akreditasiInstitusi ?? null;
+    $perpusHighlight = $perpusHighlight ?? null;
+    $perpusItems = $perpusItems ?? null;
+    $kemahasiswaanHighlight = $kemahasiswaanHighlight ?? null;
+    $kemahasiswaanItems = $kemahasiswaanItems ?? null;
+    $karierHighlight = $karierHighlight ?? null;
+    $karierItems = $karierItems ?? null;
+    $fasilitasItems = $fasilitasItems ?? null;
+    $beritaList = $beritaList ?? null;
+    $kegiatanList = $kegiatanList ?? null;
+    $faqList = $faqList ?? null;
 @endphp
 
 <x-landing.layout.app :title="$page['t'] . ' — ' . config('landing.site.nama')" :description="$page['sub']">
@@ -27,6 +37,20 @@
             <x-landing.section.pendidikan.beasiswa :beasiswa-list="$beasiswaList" :selected-beasiswa="$selectedBeasiswa ?? null" />
         @elseif ($akreditasiInstitusi)
             <x-landing.section.pendidikan.akreditasi :institusi="$akreditasiInstitusi" :prodi="$akreditasiProdi ?? []" />
+        @elseif ($perpusHighlight)
+            <x-landing.section.layanan.perpus :highlight="$perpusHighlight" :items="$perpusItems ?? []" />
+        @elseif ($kemahasiswaanHighlight)
+            <x-landing.section.layanan.kemaha :highlight="$kemahasiswaanHighlight" :items="$kemahasiswaanItems ?? []" />
+        @elseif ($karierHighlight)
+            <x-landing.section.layanan.karier :highlight="$karierHighlight" :items="$karierItems ?? []" />
+        @elseif ($fasilitasItems)
+            <x-landing.section.layanan.fasilitas :items="$fasilitasItems" />
+        @elseif ($beritaList)
+            <x-landing.section.informasi.berita :berita-list="$beritaList" :selected-berita="$selectedBerita ?? null" />
+        @elseif ($kegiatanList)
+            <x-landing.section.informasi.kegiatan :kegiatan-list="$kegiatanList" :selected-kegiatan="$selectedKegiatan ?? null" />
+        @elseif ($faqList)
+            <x-landing.section.informasi.faq :faq-list="$faqList" />
         @else
             <section class="sec page-body">
                 <div class="wrap page-wrap">

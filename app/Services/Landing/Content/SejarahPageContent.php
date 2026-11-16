@@ -13,11 +13,10 @@ class SejarahPageContent implements PageContentInterface
     {
         $sejarah = $this->sejarahService->forPage();
 
-        // Fallback ke demo jika kosong (bisa Anda pindahkan ke Seeder jika sudah production)
         if ($sejarah === null) {
             $sejarah = (object) [
                 'judhul' => 'Dari kebutuhan lapangan, lahir institusi vokasi',
-                'isi' => "Paragraf pertama.\n\nParagraf kedua.",
+                'isi' => "<p>Paragraf pertama.</p>\n\n<p>Paragraf kedua.</p>",
                 'path_sampul' => null,
                 'kronologi' => [
                     ['tahun' => 'Fondasi', 'judhul' => 'Peletakan dasar institusi', 'isi' => 'Program vokasi mulai ditata dengan fokus praktik.'],

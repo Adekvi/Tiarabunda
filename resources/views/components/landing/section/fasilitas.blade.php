@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="wrap" style="display:flex;justify-content:center;margin-top:2rem">
-            <a href="{{ url('/layanan/fasilitas') }}" class="btn-outline"
+            <a href="/layanan/fasilitas" class="btn-outline"
                 style="display:inline-flex;align-items:center;gap:.5rem;
               padding:.75rem 1.5rem;border-radius:999px;
               font-weight:600;text-decoration:none;

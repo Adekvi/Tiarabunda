@@ -53,13 +53,37 @@ Route::middleware(['auth', 'can:access-superadmin'])
         /*
         | Profil
         */
-        Route::resource('sejarah', SejarahController::class)->except(['show']);
-        Route::patch('sejarah/{sejarah}/toggle', [SejarahController::class, 'toggle'])
-            ->name('sejarah.toggle');
+        Route::prefix('sejarah')->name('sejarah.')->group(function () {
+            Route::get('/', [SejarahController::class, 'index'])->name('index');
+            Route::get('/sampah', [SejarahController::class, 'trashed'])->name('trashed');
 
-        Route::resource('visimisi', VisimisiController::class)->except(['show']);
-        Route::patch('visimisi/{visimisi}/toggle', [VisimisiController::class, 'toggle'])
-            ->name('visimisi.toggle');
+            Route::get('/create', [SejarahController::class, 'create'])->name('create');
+            Route::post('/', [SejarahController::class, 'store'])->name('store');
+            Route::get('/{sejarah}/edit', [SejarahController::class, 'edit'])->name('edit');
+            Route::put('/{sejarah}', [SejarahController::class, 'update'])->name('update');
+            Route::delete('/{sejarah}', [SejarahController::class, 'destroy'])->name('destroy');
+            Route::patch('/{sejarah}/toggle', [SejarahController::class, 'toggle'])->name('toggle');
+
+            Route::delete('/sampah/kosongkan', [SejarahController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/sampah/{id}/restore', [SejarahController::class, 'restore'])->name('restore');
+            Route::delete('/sampah/{id}/force', [SejarahController::class, 'forceDelete'])->name('force-delete');
+        });
+
+        Route::prefix('visimisi')->name('visimisi.')->group(function () {
+            Route::get('/', [VisimisiController::class, 'index'])->name('index');
+            Route::get('/sampah', [VisimisiController::class, 'trashed'])->name('trashed');
+
+            Route::get('/create', [VisimisiController::class, 'create'])->name('create');
+            Route::post('/', [VisimisiController::class, 'store'])->name('store');
+            Route::get('/{visimisi}/edit', [VisimisiController::class, 'edit'])->name('edit');
+            Route::put('/{visimisi}', [VisimisiController::class, 'update'])->name('update');
+            Route::delete('/{visimisi}', [VisimisiController::class, 'destroy'])->name('destroy');
+            Route::patch('/{visimisi}/toggle', [VisimisiController::class, 'toggle'])->name('toggle');
+
+            Route::delete('/sampah/kosongkan', [VisimisiController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/sampah/{id}/restore', [VisimisiController::class, 'restore'])->name('restore');
+            Route::delete('/sampah/{id}/force', [VisimisiController::class, 'forceDelete'])->name('force-delete');
+        });
 
         Route::prefix('pimpinan')->name('pimpinan.')->group(function () {
             Route::get('/',               [PimpinanController::class, 'index'])->name('index');

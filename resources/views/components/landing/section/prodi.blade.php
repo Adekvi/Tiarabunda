@@ -15,9 +15,11 @@
                     @php $fi = $p['fakultas'] ?? null; @endphp
                     @if ($fi !== null && isset($fakultas[$fi]))
                         <a class="pr" data-f="{{ $fi }}" style="--i:{{ $i }}"
-                            href="/pendidikan/program-pendidikan"><span class="lv">{{ $p['jenjang'] }}</span>
+                            href="/pendidikan/program-pendidikan">
+                            <span class="lv">{{ $p['jenjang'] }}</span>
                             <h3>{{ $p['nama'] }}</h3>
-                            <p>{{ $fakultas[$fi] }}</p><span class="more">Pelajari <x-landing.ui.arrow /></span>
+                            <p>{{ $fakultas[$fi] }}</p>
+                            <span class="more">Pelajari <x-landing.ui.arrow /></span>
                         </a>
                     @endif
                 @endforeach

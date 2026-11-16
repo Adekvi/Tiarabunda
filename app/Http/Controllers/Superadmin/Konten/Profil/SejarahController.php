@@ -13,8 +13,18 @@ class SejarahController extends Controller
 {
     public function index(Request $request): View
     {
+        $trashed = false;
+
         $items = Sejarah::query()
-            ->select(['id', 'judhul', 'isi', 'path_sampul', 'urutan', 'urip', 'updated_at'])
+            ->select([
+                'id',
+                'judhul',
+                'isi',
+                'path_sampul',
+                'urutan',
+                'urip',
+                'updated_at'
+            ])
             ->when($request->status === 'active', fn($q) => $q->active())
             ->when($request->status === 'inactive', fn($q) => $q->inactive())
             ->when($request->filled('q'), function ($q) use ($request) {
@@ -28,7 +38,39 @@ class SejarahController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        return view('superadmin.konten.profil.sejarah.sejarah', compact('items'));
+        $stats = $this->buildStats();
+
+        return view('superadmin.konten.profil.sejarah.sejarah', compact('items', 'stats', 'trashed'));
+    }
+
+    public function trashed(Request $request): View
+    {
+        $trashed = true;
+
+        $items = Sejarah::onlyTrashed()
+            ->select([
+                'id',
+                'judhul',
+                'isi',
+                'urutan',
+                'urip',
+                'deleted_at',
+                'updated_at'
+            ])
+            ->when($request->filled('q'), function ($q) use ($request) {
+                $term = '%' . str_replace(['%', '_'], ['\%', '\_'], $request->string('q')->trim()) . '%';
+                $q->where(function ($inner) use ($term) {
+                    $inner->where('judhul', 'like', $term)
+                        ->orWhere('isi', 'like', $term);
+                });
+            })
+            ->orderByDesc('deleted_at')
+            ->paginate(12)
+            ->withQueryString();
+
+        $stats = $this->buildStats();
+
+        return view('superadmin.konten.profil.sejarah.sejarah', compact('items', 'stats', 'trashed'));
     }
 
     public function create(): View
@@ -83,7 +125,7 @@ class SejarahController extends Controller
     {
         $sejarah->delete();
 
-        return back()->with('success', 'Sejarah berhasil dihapus.');
+        return back()->with('success', 'Sejarah berhasil dipindahkan ke sampah.');
     }
 
     public function toggle(Sejarah $sejarah): RedirectResponse
@@ -94,6 +136,52 @@ class SejarahController extends Controller
             'success',
             $sejarah->urip ? 'Sejarah diaktifkan.' : 'Sejarah dinonaktifkan.'
         );
+    }
+
+    public function restore(int $id): RedirectResponse
+    {
+        $item = Sejarah::onlyTrashed()->findOrFail($id);
+        $item->restore();
+
+        return back()->with('success', 'Sejarah berhasil dipulihkan.');
+    }
+
+    public function forceDelete(int $id): RedirectResponse
+    {
+        $item = Sejarah::onlyTrashed()->findOrFail($id);
+
+        if ($item->path_sampul) {
+            Storage::disk('public')->delete($item->path_sampul);
+        }
+
+        $item->forceDelete();
+
+        return back()->with('success', 'Sejarah berhasil dihapus permanen.');
+    }
+
+    public function emptyTrash(): RedirectResponse
+    {
+        Sejarah::onlyTrashed()->get()->each(function (Sejarah $item) {
+            if ($item->path_sampul) {
+                Storage::disk('public')->delete($item->path_sampul);
+            }
+            $item->forceDelete();
+        });
+
+        return back()->with('success', 'Sampah berhasil dikosongkan.');
+    }
+
+    private function buildStats(): array
+    {
+        $total    = Sejarah::count();
+        $aktif    = Sejarah::where('urip', true)->count();
+
+        return [
+            'total'    => $total,
+            'aktif'    => $aktif,
+            'nonaktif' => $total - $aktif,
+            'terhapus' => Sejarah::onlyTrashed()->count(),
+        ];
     }
 
     private function validated(Request $request): array
@@ -116,7 +204,6 @@ class SejarahController extends Controller
         return $data;
     }
 
-    /** Format baris: Tahun | Judul | Deskripsi */
     private function parseKronologi(?string $text): array
     {
         if (! filled($text)) {
