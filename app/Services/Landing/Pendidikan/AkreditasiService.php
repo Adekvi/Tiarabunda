@@ -26,6 +26,7 @@ class AkreditasiService
                     'bagean'       => $a->bagean,
                     'katrangan'    => $a->katrangan,
                     'path_gambar'  => $a->path_gambar,
+                    'gambar_url'   => $a->gambar_url,
                     'urutan'       => $a->urutan,
                 ])
                 ->all();

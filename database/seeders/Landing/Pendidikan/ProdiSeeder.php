@@ -42,14 +42,14 @@ class ProdiSeeder extends Seeder
         $prodis = [
             // === Fakultas Ilmu Kesehatan (0) ===
             ['jeneng' => 'Farmasi',                         'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrFarmasi],
-            ['jeneng' => 'Kebidanan',                       'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD3], // Hapus "(D3)"
+            ['jeneng' => 'Kebidanan',                       'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD3],
             ['jeneng' => 'Keperawatan Bidan Anestesiologi', 'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrAnestesi],
-            ['jeneng' => 'Kebidanan',                       'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD4], // Hapus "(D4)"
-            ['jeneng' => 'Pendidikan Profesi Bidan',        'undhak' => 'Profesi', 'fakultas' => 0, 'akreditasi_id' => $akrProfesi], // Ubah null jadi 'Profesi' agar badge muncul
+            ['jeneng' => 'Kebidanan',                       'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD4],
+            ['jeneng' => 'Pendidikan Profesi Bidan',        'undhak' => 'Bdn', 'fakultas' => 0, 'akreditasi_id' => $akrProfesi],
 
             // === Fakultas Keguruan dan Ilmu Pendidikan (1) ===
-            ['jeneng' => 'Pendidikan Guru PAUD',                 'undhak' => 'D3', 'fakultas' => 1, 'akreditasi_id' => null],
-            ['jeneng' => 'Pendidikan Guru Sekolah Dasar (PGSD)', 'undhak' => 'D3', 'fakultas' => 1, 'akreditasi_id' => null],
+            ['jeneng' => 'Pendidikan Guru PAUD',                 'undhak' => 'S1', 'fakultas' => 1, 'akreditasi_id' => null],
+            ['jeneng' => 'Pendidikan Guru Sekolah Dasar (PGSD)', 'undhak' => 'S1', 'fakultas' => 1, 'akreditasi_id' => null],
 
             // === Fakultas Ilmu Komputer (2) ===
             ['jeneng' => 'Teknologi Perangkat Lunak', 'undhak' => 'D4', 'fakultas' => 2, 'akreditasi_id' => null],

@@ -38,7 +38,6 @@ class Akreditasi extends Model
         return $this->hasOne(Prodi::class);
     }
 
-    /** URL publik gambar (aman jika null) */
     public function getGambarUrlAttribute(): ?string
     {
         if (! $this->path_gambar) {
@@ -48,8 +47,7 @@ class Akreditasi extends Model
         /** @var FilesystemAdapter $disk */
         $disk = Storage::disk('public');
 
-        // Hapus awalan 'public/' jika tidak sengaja tersimpan di database
-        $path = str_replace('public/', '', $this->path_gambar);
+        $path = preg_replace('/^(storage|public)\//', '', $this->path_gambar);
 
         return $disk->url($path);
     }

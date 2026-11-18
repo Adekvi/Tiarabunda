@@ -364,7 +364,7 @@ n .crumb {
 }
 
 .b-timeline__item::before {
-    content: '';
+    content: "";
     position: absolute;
     left: -7px;
     top: 6px;

@@ -18,7 +18,7 @@ return [
         // Kolom menu footer — selaras menus/landing
         'footer' => [
             [
-                'Profil',
+                'Tentang Kami',
                 [
                     ['Sejarah', '/profil/sejarah'],
                     ['Visi & Misi', '/profil/visi-misi'],
@@ -81,14 +81,27 @@ return [
         ],
     ],
     'menus' => [
-        'profil' => ['t' => 'Profil', 'subs' => [
-            'sejarah' => ['t' => 'Sejarah', 'sub' => 'Perjalanan Universitas Tiara Bunda.', 'blocks' => [
-                ['type' => 'text', 'isi' => ['Tulis sejarah berdirinya kampus di sini.']],
-            ]],
-            'visi-misi' => [
-                't'   => 'Visi & Misi',
-                'sub' => 'Arah dan tujuan kampus.',
+        'pmb' => [
+            't'    => 'Pendaftaran',
+            'link' => 'https://poltektiarabunda.pmbonline.siakad.tech/register',
+        ],
+        'profil' => ['t' => 'Tentang Kami', 'subs' => [
+            'sejarah' => [
+                't'      => 'Sejarah',
+                'sub'    => 'Perjalanan Universitas Tiara Bunda.',
                 'blocks' => [
+                    [
+                        'type' => 'text',
+                        'isi' => [
+                            'Tulis sejarah berdirinya kampus di sini.'
+                        ]
+                    ],
+                ]
+            ],
+            'visi-misi' => [
+                't'         => 'Visi & Misi',
+                'sub'       => 'Arah dan tujuan kampus.',
+                'blocks'    => [
                     [
                         'type' => 'text',
                         't'    => 'Visi',
@@ -97,9 +110,9 @@ return [
                         ]
                     ],
                     [
-                        'type' => 'text',
-                        't'    => 'Misi',
-                        'daftar' => [
+                        'type'      => 'text',
+                        't'         => 'Misi',
+                        'daftar'    => [
                             'Menyelenggarakan pendidikan serta pengajaran unggul yang menghasilkan lulusan kompeten dan inovatif dalam pemecahan masalah kesehatan.',
                             'Menyelenggarakan penelitian untuk pengembangan serta pemanfaatan ilmu pengetahuan dan teknologi kesehatan dalam pemecahan masalah kesehatan.',
                             'Menyelenggarakan pengabdian kepada masyarakat melalui pemanfaatan hasil penelitian untuk meningkatkan kualitas kesehatan masyarakat sesuai dengan evidence based.',
@@ -107,59 +120,112 @@ return [
                             'Menyelenggarakan kerjasama dengan pemerintah, perguruan tinggi dan industri baik dalam maupun luar negeri untuk mendukung pelaksanaan tri dharma perguruan tinggi.',
                         ]
                     ],
+                ],
+            ],
+            'sambutan' => [
+                't'      => 'Sambutan Rektor',
+                'sub'    => 'Sambutan Pimpinan Universitas.',
+                'blocks' => [
+                    ['type' => 'sambutan'],
+                ],
+            ],
+            'struktur' => [
+                't' => 'Struktur Organisasi',
+                'sub' => 'Bagan organisasi kampus.',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        'isi' => ['Tambahkan bagan struktur organisasi.']
+                    ],
                 ]
             ],
-            // 'pimpinan' => ['t' => 'Pimpinan Universitas', 'sub' => 'Pimpinan yang memandu kampus.', 'blocks' => [
-            //     ['type' => 'sambutan'],
-            // ]],
-            // 'struktur' => ['t' => 'Struktur Organisasi', 'sub' => 'Bagan organisasi kampus.', 'blocks' => [
-            //     ['type' => 'text', 'isi' => ['Tambahkan bagan struktur organisasi.']],
-            // ]],
+            'akreditasi' =>
+            [
+                't' => 'Akreditasi',
+                'sub' => 'Status akreditasi institusi dan program studi.',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        't' => 'Akreditasi Institusi',
+                        'isi' => ['Isi status dan nomor SK akreditasi institusi.']
+                    ],
+                    [
+                        'type' => 'text',
+                        't' => 'Akreditasi Program Studi',
+                        'isi' => ['Daftar akreditasi tiap program studi.']
+                    ],
+                ]
+            ],
         ]],
         'pendidikan' => ['t' => 'Pendidikan', 'subs' => [
-            'program-pendidikan' => ['t' => 'Program Pendidikan', 'sub' => 'Fakultas dan program studi.', 'blocks' => [
-                ['type' => 'prodi'],
-            ]],
-            'penerimaan-mahasiswa-baru' => ['t' => 'Penerimaan Mahasiswa Baru', 'sub' => 'Alur, persyaratan, dan jalur pendaftaran.', 'blocks' => [
-                ['type' => 'text', 't' => 'Alur pendaftaran', 'daftar' => ['Buat akun PMB', 'Lengkapi data diri', 'Unggah dokumen', 'Ikuti seleksi', 'Daftar ulang']],
-                ['type' => 'text', 't' => 'Persyaratan', 'daftar' => ['Ijazah/SKL', 'Pas foto terbaru', 'Fotokopi KTP/KK']],
-                ['type' => 'jalur'],
-            ]],
-            'beasiswa' => ['t' => 'Beasiswa', 'sub' => 'Dukungan biaya pendidikan.', 'blocks' => [
-                ['type' => 'text', 'isi' => ['KIP Kuliah, beasiswa prestasi, dan keringanan untuk keluarga alumni.']],
-            ]],
-            'akreditasi' => ['t' => 'Akreditasi', 'sub' => 'Status akreditasi institusi dan program studi.', 'blocks' => [
-                ['type' => 'text', 't' => 'Akreditasi Institusi', 'isi' => ['Isi status dan nomor SK akreditasi institusi.']],
-                ['type' => 'text', 't' => 'Akreditasi Program Studi', 'isi' => ['Daftar akreditasi tiap program studi.']],
-            ]],
+            'program-pendidikan' => [
+                't' => 'Program Pendidikan',
+                'sub' => 'Fakultas dan program studi.',
+                'blocks' => [
+                    [
+                        'type' => 'prodi'
+                    ],
+                ]
+            ],
         ]],
         'layanan' => ['t' => 'Layanan', 'subs' => [
             'perpustakaan' => ['t' => 'Perpustakaan', 'sub' => 'Koleksi dan jam layanan.', 'blocks' => [
-                ['type' => 'text', 'isi' => ['Jam layanan dan koleksi perpustakaan.']],
+                [
+                    'type' => 'text',
+                    'isi' => ['Jam layanan dan koleksi perpustakaan.']
+                ],
             ]],
-            'kemahasiswaan' => ['t' => 'Kemahasiswaan', 'sub' => 'Organisasi dan kegiatan mahasiswa.', 'blocks' => [
-                ['type' => 'text', 'isi' => ['Organisasi, kegiatan, dan beasiswa.']],
+            'kemahasiswaan' => ['t' => 'Kemahasiswaan', 'sub' => 'Organisasi, kegiatan, dan dukungan biaya.', 'blocks' => [
+                [
+                    'type' => 'text',
+                    'isi' => ['Organisasi, kegiatan, dan beasiswa.']
+                ],
+                [
+                    'type' => 'text',
+                    't' => 'Beasiswa',
+                    'isi' => ['KIP Kuliah, beasiswa prestasi, dan keringanan untuk keluarga alumni.']
+                ],
             ]],
             'pusat-karier' => ['t' => 'Pusat Karier', 'sub' => 'Pendampingan sampai bekerja.', 'blocks' => [
-                ['type' => 'text', 'isi' => ['Bursa kerja, pelatihan CV, dan penyaluran lulusan.']],
+                [
+                    'type' => 'text',
+                    'isi' => ['Bursa kerja, pelatihan CV, dan penyaluran lulusan.']
+                ],
             ]],
-            // 'dokumen' => ['t' => 'Dokumen', 'sub' => 'Unduh panduan dan kalender akademik.', 'blocks' => [
-            //     ['type' => 'text', 't' => 'Kalender Akademik', 'isi' => ['Tautan unduhan kalender akademik.']],
-            //     ['type' => 'text', 't' => 'Panduan Akademik', 'isi' => ['Tautan unduhan panduan akademik.']],
-            // ]],
             'fasilitas' => ['t' => 'Fasilitas', 'sub' => 'Ruang belajar yang mendukung praktik.', 'blocks' => [
-                ['type' => 'fasilitas'],
+                [
+                    'type' => 'fasilitas'
+                ],
             ]],
+        ]],
+        'lembaga' => ['t' => 'Lembaga', 'subs' => [
+            'lembaga' => [
+                't' => 'LPPM',
+                'sub' => 'Lembaga Penelitian dan Pengabdian kepada Masyarakat',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        'isi' => ['Jam layanan dan koleksi.']
+                    ],
+                ]
+            ],
         ]],
         'informasi' => ['t' => 'Informasi', 'subs' => [
             'berita-terbaru' => ['t' => 'Berita Terbaru', 'sub' => 'Kabar terbaru dari kampus.', 'blocks' => [
-                ['type' => 'berita'],
+                [
+                    'type' => 'berita'
+                ],
             ]],
             'kegiatan-kampus' => ['t' => 'Kegiatan Kampus', 'sub' => 'Agenda dan kegiatan kampus.', 'blocks' => [
-                ['type' => 'text', 'isi' => ['Daftar kegiatan dan agenda kampus.']],
+                [
+                    'type' => 'text',
+                    'isi' => ['Daftar kegiatan dan agenda kampus.']
+                ],
             ]],
             'faq' => ['t' => 'FAQ', 'sub' => 'Pertanyaan yang sering diajukan.', 'blocks' => [
-                ['type' => 'faq'],
+                [
+                    'type' => 'faq'
+                ],
             ]],
         ]],
     ],

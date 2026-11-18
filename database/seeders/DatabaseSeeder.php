@@ -43,8 +43,8 @@ class DatabaseSeeder extends Seeder
             PimpinanSeeder::class,
 
             // Landing Pendidikan
-            AkreditasiSeeder::class,
             FakultasSeeder::class,
+            AkreditasiSeeder::class,
             ProdiSeeder::class,
             PmbSeeder::class,
             BeasiswaSeeder::class,

@@ -521,25 +521,23 @@ a:hover > .ar,
     max-width: 920px;
 }
 
-/* Kotak/Lengkungan untuk Foto */
 .ava {
-    aspect-ratio: 4 / 5; /* Proporsi pas untuk portrait formal */
-    border-radius: 999px 999px 24px 24px; /* Lengkungan atas, sudut bawah */
+    aspect-ratio: 4 / 5;
+    border-radius: 999px 999px 24px 24px;
     background: linear-gradient(160deg, var(--or), #f7c08c);
     position: relative;
-    overflow: hidden; /* Kunci: Memotong gambar agar tidak keluar batas lengkung */
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 12px 28px -10px rgba(23, 59, 102, 0.3);
 }
 
-/* Gambar di dalam Lengkungan */
 .ava img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Kunci: Memaksa gambar memenuhi kotak tanpa merusak rasio */
-    object-position: center top; /* Fokus pemotongan di area wajah (atas) */
+    object-fit: cover;
+    object-position: center top;
     transition: transform 0.5s var(--ease);
 }
 
@@ -547,7 +545,6 @@ a:hover > .ar,
     transform: scale(1.05);
 }
 
-/* Huruf Inisial jika tidak ada foto */
 .ava-initial {
     font-size: 4rem;
     font-weight: 800;
@@ -578,7 +575,7 @@ a:hover > .ar,
     color: var(--blue-d);
     margin: 0 0 20px;
     padding-left: 20px;
-    border-left: 4px solid var(--or); /* Garis aksen elegan di kiri teks */
+    border-left: 4px solid var(--or);
 }
 
 .sam-body .who {
@@ -712,6 +709,415 @@ a:hover > .ar,
     box-shadow:
         0 4px 6px -1px rgba(0, 0, 0, 0.06),
         0 16px 36px -10px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================================
+   1. NESTED DROPDOWN (Program Pendidikan)
+   ============================================================ */
+.dd-nested {
+    position: relative;
+}
+
+.dd-nested-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: transparent;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.dd-nested-toggle:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.dd-nested-toggle .dd-arrow {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.25s var(--ease, ease);
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+
+.dd-nested.open > .dd-nested-toggle .dd-arrow {
+    transform: rotate(-135deg);
+}
+
+.dd-nested-panel {
+    display: none;
+    margin-top: 4px;
+}
+
+.dd-nested.open > .dd-nested-panel {
+    display: block;
+    animation: ddFadeIn 0.2s ease;
+}
+
+@keyframes ddFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   2. FAKULTAS ACCORDION (satu-satunya definisi)
+   ============================================================ */
+.dd-fakultas-group {
+    padding: 0;
+    margin-bottom: 2px;
+}
+
+.dd-fakultas-group:not(:last-child) {
+    border-bottom: 1px dashed color-mix(in srgb, var(--line) 55%, transparent);
+    padding-bottom: 2px;
+    margin-bottom: 2px;
+}
+
+.dd-fak-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.dd-fak-toggle:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.dd-fak-toggle[aria-expanded="true"] {
+    background: color-mix(in srgb, var(--blue) 5%, transparent);
+}
+
+.dd-fak-toggle-label {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
+.dd-fak-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--mut);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    flex: none;
+}
+
+.dd-fak-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    line-height: 1.3;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dd-fak-arrow {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.25s var(--ease, ease);
+    flex-shrink: 0;
+    opacity: 0.6;
+    margin-right: 2px;
+}
+
+.dd-fak-toggle[aria-expanded="true"] .dd-fak-arrow {
+    transform: rotate(-135deg);
+}
+
+.dd-fak-panel {
+    overflow: hidden;
+}
+
+.dd-fak-panel[hidden] {
+    display: none;
+}
+
+.dd-fak-panel .dd-prodi-list {
+    padding: 2px 0 8px 12px;
+    border-left: 2px solid var(--line);
+    margin-left: 18px;
+    margin-top: 2px;
+}
+
+.dd-nested-panel .dd-fak-panel .dd-prodi-list {
+    border-left-color: color-mix(in srgb, var(--blue) 20%, transparent);
+}
+
+.dd-fak-panel:not([hidden]) {
+    animation: fakSlide 0.2s ease;
+}
+
+@keyframes fakSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   3. DAFTAR PRODI (dipakai di flatten & nested)
+   ============================================================ */
+.dd-prodi-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Sedikit dilebarkan agar tidak terlalu rapat */
+    padding: 0 6px;
+}
+
+.dd-prodi {
+    display: flex;
+    align-items: flex-start; /* Ubah ke flex-start agar jika teks 2 baris badge tetap di atas */
+    gap: 10px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 7px;
+    background: transparent;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+
+.dd-prodi:hover {
+    background: color-mix(in srgb, var(--blue) 7%, transparent);
+    color: var(--blue);
+}
+
+/* Teks prodi */
+.dd-prodi-name {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.4; /* Agar jika teks panjang dan turun baris, jaraknya enak dilihat */
+    white-space: normal; /* Izinkan teks turun ke bawah jika kepanjangan (seperti Anestesiologi) */
+}
+
+/* Label Jenjang (D3, D4, S1, Bdn) di depan */
+.dd-prodi-jenjang {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: color-mix(in srgb, var(--blue) 10%, transparent);
+    color: var(--blue);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px; /* Sedikit diangkat agar sejajar dengan teks */
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+/* ============================================================
+   4. FLATTEN PANEL (fakultas & prodi langsung di dropdown)
+   ============================================================ */
+.dd-fakultas-list {
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px 2px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dd-fakultas-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.dd-fakultas-list::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 8px 0;
+}
+
+.dd-fakultas-list::-webkit-scrollbar-thumb {
+    background: #c5d0de;
+    border-radius: 10px;
+}
+
+.dd-fakultas-list::-webkit-scrollbar-thumb:hover {
+    background: #a8b8cc;
+}
+
+.dd-fakultas-list .dd-fakultas-group {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+/* ============================================================
+   5. DESKTOP (≥ 961px) - Flyout + Scroll untuk nested panel
+   ============================================================ */
+@media (min-width: 961px) {
+    .dd-p {
+        overflow: visible;
+    }
+
+    .dd-nested-panel {
+        position: absolute;
+        top: -8px;
+        width: max-content;
+        min-width: 280px;
+        max-width: min(380px, calc(100vw - 48px));
+        max-height: min(70vh, 520px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: 0 14px 36px -12px rgba(23, 59, 102, 0.22);
+        padding: 10px 8px;
+        z-index: 40;
+        margin-top: 0;
+        display: none;
+        left: calc(100% + 6px);
+        right: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .dd-nested-panel.flyout-left {
+        left: auto;
+        right: calc(100% + 6px);
+    }
+
+    .dd-nested.open > .dd-nested-panel {
+        display: block;
+    }
+
+    .dd-nested-panel::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .dd-nested-panel::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 8px 0;
+    }
+
+    .dd-nested-panel::-webkit-scrollbar-thumb {
+        background: #c5d0de;
+        border-radius: 10px;
+    }
+
+    .dd-nested-panel::-webkit-scrollbar-thumb:hover {
+        background: #a8b8cc;
+    }
+}
+
+/* ============================================================
+   6. TABLET & MOBILE (≤ 960px) - Accordion
+   ============================================================ */
+@media (max-width: 960px) {
+    .dd-fakultas-list {
+        max-height: 320px;
+        padding: 2px 0;
+    }
+
+    .dd-fak-toggle {
+        padding: 10px 8px;
+    }
+
+    .dd-fak-panel .dd-prodi-list {
+        padding-left: 10px;
+        margin-left: 12px;
+    }
+
+    .dd-nested-panel {
+        position: static !important;
+        left: auto !important;
+        right: auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        max-height: 280px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        box-shadow: none !important;
+        border: 0 !important;
+        border-radius: 0;
+        padding: 6px 0 6px 12px !important;
+        margin: 6px 0 0 10px !important;
+        border-left: 2px solid var(--line) !important;
+        background: transparent;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .dd-nested.open > .dd-nested-panel {
+        display: block;
+    }
+
+    .dd-prodi {
+        padding: 10px 10px 10px 8px;
+    }
+
+    .dd-nested-panel::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .dd-nested-panel::-webkit-scrollbar-thumb {
+        background: #c5d0de;
+        border-radius: 10px;
+    }
+}
+
+/* ============================================================
+   7. LAYAR SANGAT KECIL
+   ============================================================ */
+@media (max-width: 480px) {
+    .dd-fakultas-list {
+        max-height: 260px;
+    }
+
+    .dd-nested-panel {
+        max-height: 240px;
+        margin-left: 6px !important;
+        padding-left: 10px !important;
+    }
+
+    .dd-prodi-name {
+        font-size: 0.88rem;
+    }
 }
 
 /* Responsive */
