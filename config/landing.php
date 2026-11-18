@@ -56,17 +56,28 @@ return [
         'sosial' => [
             'youtube'  => 'https://www.youtube.com/@tiarabunda3025',
             'facebook' => 'https://www.facebook.com/PoliteknikTiaraBunda/',
-            'tiktok'   => '-',
+            'tiktok'   => 'https://www.tiktok.com/politekniktiarabunda/',
             'linktree' => 'https://linktr.ee/politekniktiarabunda',
             'instagram' => 'https://www.instagram.com/politekniktiarabunda/'
         ],
 
         'pmb' => '/pendidikan/penerimaan-mahasiswa-baru',
         'kontak' => [
-            'alamat' => 'Jl. Contoh Raya No. 1, Kota Depok, Jawa Barat',
+            'alamat' => [
+                [
+                    'label' => 'Kampus A',
+                    'isi'   => 'Jl. Cinere Raya Blok M No. 17, Cinere, Depok, Jawa Barat 16514',
+                    'maps'  => 'https://maps.google.com/?q=Jl.+Cinere+Raya+Blok+M+No.+17+Cinere+Depok',
+                ],
+                [
+                    'label' => 'Kampus B',
+                    'isi'   => 'Jl. Galur No. 8 Krukut, Limo, Kota Depok, Jawa Barat 16512',
+                    'maps'  => 'https://maps.google.com/?q=Jl.+Galur+No.+8+Krukut+Limo+Depok',
+                ],
+            ],
             'telp' => '(021) 000-0000',
-            'email' => 'info@tiarabunda.example',
-            'wa' => 'https://wa.me/620000000000',
+            'email' => 'universitastiarabunda.ac.id',
+            'wa' => 'https://wa.me/6285773825001',
         ],
     ],
     'menus' => [

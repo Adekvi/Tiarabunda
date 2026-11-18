@@ -3,7 +3,7 @@
     const $$ = (s, r = document) => [...r.querySelectorAll(s)]
     const body = document.body
 
-    /* navbar */
+    /* ===================== NAVBAR ===================== */
     const nav = $('#nav'),
         burger = $('#burger')
     const onScroll = () => nav && nav.classList.toggle('stuck', scrollY > 10)
@@ -24,7 +24,7 @@
         l.addEventListener('click', () => body.classList.remove('menu-open'))
     )
 
-    /* pencarian */
+    /* ===================== PENCARIAN ===================== */
     ;(() => {
         const navEl = document.getElementById('nav')
         const sf = document.getElementById('srch')
@@ -48,7 +48,6 @@
             }
         }
 
-        // keadaan awal (halaman hasil pencarian sudah terbuka dari server)
         if (sf.classList.contains('open')) {
             navEl?.classList.add('searching')
             sb.setAttribute('aria-expanded', 'true')
@@ -74,7 +73,7 @@
         })
     })()
 
-    /* alasan (tab) */
+    /* ===================== ALASAN (TAB) ===================== */
     const why = $('.why-l')
     why?.addEventListener('click', (e) => {
         const b = e.target.closest('button')
@@ -88,7 +87,7 @@
         )
     })
 
-    /* prodi (filter) */
+    /* ===================== PRODI FILTER ===================== */
     const tabs = $('#tabs')
     tabs?.addEventListener('click', (e) => {
         const b = e.target.closest('button')
@@ -103,7 +102,7 @@
         })
     })
 
-    /* faq */
+    /* ===================== FAQ ===================== */
     $$('.qa > button').forEach((b) =>
         b.addEventListener('click', () => {
             const q = b.parentElement,
@@ -117,18 +116,18 @@
         })
     )
 
-    /* hero: form PMB + ticker */
+    /* ===================== FORM PMB + TICKER ===================== */
     const form = $('#pmb')
     form?.addEventListener('submit', (e) => {
         e.preventDefault()
         const em = $('#em'),
             m = $('#msg'),
             ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)
-        m.className = 'msg show ' + (ok ? 'ok' : 'err')
+        m.className = 'hero-pmb__msg show ' + (ok ? 'ok' : 'err')
         m.textContent = ok
             ? 'Terima kasih! Tautan pendaftaran akan dikirim ke email Anda.'
             : 'Format email belum benar. Contoh: nama@email.com'
-        if (ok) em.value = '' // TODO: kirim ke endpoint PMB
+        if (ok) em.value = ''
     })
     const tk = $('#tick')
     if (tk) {
@@ -145,7 +144,7 @@
             }, 3800)
     }
 
-    /* info terkini: slider */
+    /* ===================== INFO SLIDER ===================== */
     ;(() => {
         const root = $('#info')
         if (!root) return
@@ -175,7 +174,6 @@
             dir = dir ?? (to > i ? 1 : -1)
             busy = true
 
-            // atur arah dulu, paksa reflow, baru ganti kelas → transisi mulai dari posisi benar
             root.style.setProperty('--dx', dir * 70 + 'px')
             void root.offsetWidth
 
@@ -201,16 +199,15 @@
             }, 950)
         }
 
-        // autoplay: pindah saat progress bar selesai (otomatis ikut pause saat hover/jeda)
         $('.info-dots', root).addEventListener('animationend', (e) => {
             if (e.animationName === 'info-fill' && playing) go(i + 1, 1)
         })
 
-        $('#info-next').addEventListener('click', () => go(i + 1, 1))
-        $('#info-prev').addEventListener('click', () => go(i - 1, -1))
+        $('#info-next')?.addEventListener('click', () => go(i + 1, 1))
+        $('#info-prev')?.addEventListener('click', () => go(i - 1, -1))
         dots.forEach((d, k) => d.addEventListener('click', () => go(k)))
 
-        tog.addEventListener('click', () => {
+        tog?.addEventListener('click', () => {
             playing = !playing
             tog.classList.toggle('is-paused', !playing)
             tog.setAttribute(
@@ -220,7 +217,6 @@
             sync()
         })
 
-        // jeda saat hover / fokus, saat keluar viewport, dan saat tab tidak aktif
         root.addEventListener('pointerenter', () => ((hold = true), sync()))
         root.addEventListener('pointerleave', () => ((hold = false), sync()))
         root.addEventListener('focusin', () => ((hold = true), sync()))
@@ -232,13 +228,11 @@
                 { threshold: 0.35 }
             ).observe(root)
 
-        // keyboard
         root.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') go(i + 1, 1)
             else if (e.key === 'ArrowLeft') go(i - 1, -1)
         })
 
-        // swipe (sentuh & mouse)
         let x0 = null,
             moved = false
         root.addEventListener('pointerdown', (e) => {
@@ -265,7 +259,7 @@
         sync()
     })()
 
-    /* reveal + counter */
+    /* ===================== REVEAL + COUNTER (PENTING!) ===================== */
     const count = (el) => {
         const to = +el.dataset.to,
             st = performance.now()
@@ -297,7 +291,7 @@
         $$('.rv').forEach(reveal)
     }
 
-    /* TOC aktif saat scroll di halaman submenu */
+    /* ===================== TOC ===================== */
     ;(() => {
         const links = $$('.toc a[href^="#"]')
         if (!links.length) return
@@ -337,4 +331,80 @@
             map.forEach(({ el }) => io.observe(el))
         }
     })()
+
+    /* ===================== NESTED DROPDOWN (Program Pendidikan) ===================== */
+    document.querySelectorAll('.dd-nested-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault()
+            e.stopPropagation()
+
+            const parent = btn.closest('.dd-nested')
+            const panel = parent.querySelector('.dd-nested-panel')
+            const isOpen = parent.classList.contains('open')
+
+            // Tutup nested lain
+            document
+                .querySelectorAll('.dd-nested.open')
+                .forEach(function (other) {
+                    if (other !== parent) {
+                        other.classList.remove('open')
+                        const t = other.querySelector('.dd-nested-toggle')
+                        if (t) t.setAttribute('aria-expanded', 'false')
+                        const pnl = other.querySelector('.dd-nested-panel')
+                        if (pnl) pnl.classList.remove('flyout-left')
+                    }
+                })
+
+            const willOpen = !isOpen
+            parent.classList.toggle('open', willOpen)
+            btn.setAttribute('aria-expanded', String(willOpen))
+
+            if (willOpen && panel && window.innerWidth >= 961) {
+                panel.classList.remove('flyout-left')
+                panel.scrollTop = 0
+                void panel.offsetWidth // force reflow
+
+                const parentRect = parent.getBoundingClientRect()
+                const panelRect = panel.getBoundingClientRect()
+                const panelWidth = panelRect.width || 320
+                const margin = 16
+
+                const spaceRight = window.innerWidth - parentRect.right
+                const spaceLeft = parentRect.left
+
+                if (
+                    spaceRight < panelWidth + margin &&
+                    spaceLeft > spaceRight
+                ) {
+                    panel.classList.add('flyout-left')
+                }
+            }
+        })
+    })
+
+    // Tutup nested saat klik di luar
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.dd-nested')) {
+            document.querySelectorAll('.dd-nested.open').forEach(function (el) {
+                el.classList.remove('open')
+                const t = el.querySelector('.dd-nested-toggle')
+                if (t) t.setAttribute('aria-expanded', 'false')
+                const pnl = el.querySelector('.dd-nested-panel')
+                if (pnl) pnl.classList.remove('flyout-left')
+            })
+        }
+    })
+
+    // Tutup saat tekan ESC
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.dd-nested.open').forEach(function (el) {
+                el.classList.remove('open')
+                const t = el.querySelector('.dd-nested-toggle')
+                if (t) t.setAttribute('aria-expanded', 'false')
+                const pnl = el.querySelector('.dd-nested-panel')
+                if (pnl) pnl.classList.remove('flyout-left')
+            })
+        }
+    })
 })()

@@ -63,15 +63,34 @@
                 </a>
 
                 <ul class="ft__contact">
-                    @if (!empty($kontak['alamat']))
-                        <li>
+                    @php
+                        $alamatList = $kontak['alamat'] ?? [];
+                        // Dukung format lama (string) agar tidak error jika config belum diubah
+                        if (is_string($alamatList) && $alamatList !== '') {
+                            $alamatList = [['label' => null, 'isi' => $alamatList, 'maps' => null]];
+                        }
+                    @endphp
+
+                    @foreach ($alamatList as $alamat)
+                        <li class="ft__alamat">
                             <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" />
                                 <circle cx="12" cy="10" r="2.5" />
                             </svg>
-                            <span>{{ $kontak['alamat'] }}</span>
+                            <span>
+                                @if (!empty($alamat['label']))
+                                    <strong class="ft__alamat-label">{{ $alamat['label'] }}</strong>
+                                @endif
+                                @if (!empty($alamat['maps']))
+                                    <a href="{{ $alamat['maps'] }}" target="_blank" rel="noopener noreferrer">
+                                        {{ $alamat['isi'] }}
+                                    </a>
+                                @else
+                                    {{ $alamat['isi'] }}
+                                @endif
+                            </span>
                         </li>
-                    @endif
+                    @endforeach
                     @if (!empty($kontak['telp']))
                         <li>
                             <svg viewBox="0 0 24 24" aria-hidden="true">

@@ -74,18 +74,19 @@
             <span class="chip c3">Kelas pagi &amp; sore</span>
         </div> --}}
 
-        <form class="pmb" id="pmb" novalidate>
-            <div class="pmb-head">
+        <form class="hero-pmb" id="pmb" novalidate>
+            <div class="hero-pmb__head">
                 <h2>Mulai pendaftaran</h2>
                 <p>Masukkan email aktif untuk membuat akun PMB.</p>
             </div>
 
-            <label for="em" class="sr">Email</label>
-            <input id="em" type="email" placeholder="nama@email.com" autocomplete="email" required>
+            <div class="hero-pmb__row">
+                <label for="em" class="sr">Email</label>
+                <input id="em" type="email" placeholder="nama@email.com" autocomplete="email" required>
+                <button class="btn" type="submit">Buat akun PMB</button>
+            </div>
 
-            <button class="btn" type="submit">Buat akun PMB</button>
-
-            <p class="msg" id="msg" role="status"></p>
+            <p class="hero-pmb__msg" id="msg" role="status"></p>
         </form>
     </div>
 </section>

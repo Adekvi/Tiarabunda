@@ -22,7 +22,7 @@ html {
 }
 body {
     font:
-        16px/1.65 'Plus Jakarta Sans',
+        16px/1.65 "Plus Jakarta Sans",
         system-ui,
         sans-serif;
     color: var(--ink);
@@ -279,7 +279,7 @@ a:hover > .ar,
 }
 .burger span,
 .burger span::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 12px;
     width: 20px;
@@ -305,7 +305,7 @@ a:hover > .ar,
     box-shadow: 0 0 0 var(--ink);
 }
 .menu-open .burger span::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     width: 20px;
@@ -449,113 +449,6 @@ a:hover > .ar,
     animation-delay: -4s;
 }
 
-/* ===== Form PMB ===== */
-.pmb {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-        'head  head'
-        'input button'
-        'msg   msg';
-    align-items: center;
-    gap: 14px 14px;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 26px 28px;
-    box-shadow: 0 22px 44px -28px rgba(23, 59, 102, 0.45);
-    scroll-margin-top: 100px;
-    max-width: 100%;
-}
-
-/* Header: judul + deskripsi */
-.pmb-head {
-    grid-area: head;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-}
-
-.pmb h2 {
-    font-size: 1.2rem;
-    line-height: 1.25;
-    color: var(--blue-d);
-    margin: 0;
-}
-
-.pmb-head > p {
-    color: var(--mut);
-    font-size: 0.88rem;
-    line-height: 1.4;
-    margin: 0;
-}
-
-/* Input */
-.pmb input {
-    grid-area: input;
-    width: 100%;
-    min-width: 0;
-    padding: 14px 20px;
-    border: 2px solid var(--line);
-    border-radius: 999px;
-    background: var(--bg);
-    font-size: 0.95rem;
-    transition:
-        border-color 0.25s,
-        box-shadow 0.25s,
-        background 0.25s;
-}
-
-.pmb input::placeholder {
-    color: #9aa8b8;
-}
-
-.pmb input:hover {
-    border-color: #c7d6e6;
-}
-
-.pmb input:focus {
-    outline: 0;
-    border-color: var(--blue);
-    background: #fff;
-    box-shadow: 0 0 0 4px var(--sky);
-}
-
-/* Tombol */
-.pmb .btn {
-    grid-area: button;
-    white-space: nowrap;
-    padding: 14px 26px;
-    min-height: 50px;
-}
-
-/* Pesan */
-.pmb .msg {
-    grid-area: msg;
-    font-size: 0.88rem;
-    line-height: 1.45;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: 0.4s var(--ease);
-}
-
-.pmb .msg.show {
-    max-height: 80px;
-    opacity: 1;
-    padding-top: 2px;
-}
-
-.pmb .msg.ok {
-    color: #1d7a4d;
-}
-
-.pmb .msg.err {
-    color: #c0392b;
-}
-
 /* mitra */
 .mitra {
     overflow: hidden;
@@ -697,6 +590,159 @@ a:hover > .ar,
 .sam-body .who b {
     font-size: 1.05rem;
     color: var(--ink);
+}
+
+/* ============================================================
+   HERO PMB FORM (Full width + tampilan rapi)
+   ============================================================ */
+
+.hero-pmb {
+    grid-column: 1 / -1; /* memenuhi lebar container */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #fff;
+    border: 1px solid rgba(223, 231, 241, 0.9);
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow:
+        0 4px 6px -1px rgba(23, 59, 102, 0.04),
+        0 12px 28px -8px rgba(23, 59, 102, 0.12);
+    width: 100%; /* full width */
+    max-width: none; /* hapus batasan max-width */
+    margin-top: 20px;
+}
+
+.hero-pmb__head {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.hero-pmb__head h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--blue-d);
+    margin: 0;
+}
+
+.hero-pmb__head p {
+    color: var(--mut);
+    font-size: 0.9rem;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.hero-pmb__row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+}
+
+.hero-pmb__row input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 20px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    background: #f8fafc;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background 0.2s;
+}
+
+.hero-pmb__row input::placeholder {
+    color: #94a3b8;
+}
+
+.hero-pmb__row input:hover {
+    border-color: #cbd5e1;
+    background: #fff;
+}
+
+.hero-pmb__row input:focus {
+    outline: 0;
+    border-color: var(--blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(47, 109, 181, 0.12);
+}
+
+.hero-pmb__row .btn {
+    flex-shrink: 0;
+    padding: 0 26px;
+    min-height: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.hero-pmb__msg {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: 0.3s ease;
+    margin: 0;
+}
+
+.hero-pmb__msg.show {
+    max-height: 50px;
+    opacity: 1;
+}
+
+.hero-pmb__msg.ok {
+    color: #15803d;
+}
+
+.hero-pmb__msg.err {
+    color: #b91c1c;
+}
+
+/* Saat ada background media */
+.hero.has-media .hero-pmb {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(14px);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.06),
+        0 16px 36px -10px rgba(0, 0, 0, 0.25);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .hero-pmb {
+        padding: 20px;
+        gap: 14px;
+        margin-top: 16px;
+    }
+
+    .hero-pmb__row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero-pmb__row .btn {
+        width: 100%;
+        min-height: 48px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-pmb {
+        padding: 18px 16px;
+        border-radius: 14px;
+    }
+
+    .hero-pmb__row input {
+        padding: 13px 16px;
+    }
 }
 
 /* Responsif Mobile */
@@ -1169,15 +1215,6 @@ blockquote {
         height: 320px;
         order: 2;
     } */
-    .pmb {
-        order: 3;
-        grid-template-columns: 1fr;
-    }
-    .pmb input,
-    .pmb .btn {
-        grid-column: 1;
-        grid-row: auto;
-    }
     .cards,
     .stat .wrap {
         grid-template-columns: repeat(2, 1fr);
@@ -1501,7 +1538,7 @@ blockquote {
     transform: scale(1.28);
 }
 .info-slide::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -1667,7 +1704,7 @@ blockquote {
     background: rgba(255, 255, 255, 0.55);
 }
 .info-dots i::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: var(--or);
@@ -1885,13 +1922,6 @@ blockquote {
     background: rgba(255, 255, 255, 0.14);
 }
 
-/* Form PMB tetap terang */
-.hero.has-media .pmb {
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
-}
-
 /* ============ Footer ============
    Atur warna lewat variabel di bawah (atau definisikan --footer-bg / --accent
    di :root style.css Anda). */
@@ -2099,7 +2129,7 @@ blockquote {
 }
 
 .ft__col h4::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: 0;
@@ -2152,6 +2182,31 @@ blockquote {
     color: var(--ft-accent);
 }
 
+/* Alamat multi-kampus */
+.ft__alamat span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ft__alamat-label {
+    color: var(--ft-strong);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.ft__contact .ft__alamat a {
+    color: inherit;
+}
+
+.ft__contact .ft__alamat a:hover {
+    color: var(--ft-strong);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 /* ---------- Responsif ---------- */
 @media (max-width: 1024px) {
     .ft__grid {
@@ -2194,25 +2249,6 @@ blockquote {
 @media (prefers-reduced-motion: reduce) {
     .ft * {
         transition: none !important;
-    }
-}
-
-/* Tablet & mobile: tumpuk vertikal */
-@media (max-width: 720px) {
-    .pmb {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            'head'
-            'input'
-            'button'
-            'msg';
-        padding: 22px 20px;
-        gap: 12px;
-    }
-
-    .pmb .btn {
-        width: 100%;
-        justify-content: center;
     }
 }
 

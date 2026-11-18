@@ -42,10 +42,10 @@ class ProdiSeeder extends Seeder
         $prodis = [
             // === Fakultas Ilmu Kesehatan (0) ===
             ['jeneng' => 'Farmasi',                         'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrFarmasi],
-            ['jeneng' => 'Kebidanan (D3)',                  'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD3],
+            ['jeneng' => 'Kebidanan',                       'undhak' => 'D3', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD3], // Hapus "(D3)"
             ['jeneng' => 'Keperawatan Bidan Anestesiologi', 'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrAnestesi],
-            ['jeneng' => 'Kebidanan (D4)',                  'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD4],
-            ['jeneng' => 'Pendidikan Profesi Bidan',        'undhak' => null, 'fakultas' => 0, 'akreditasi_id' => $akrProfesi],
+            ['jeneng' => 'Kebidanan',                       'undhak' => 'D4', 'fakultas' => 0, 'akreditasi_id' => $akrKebidananD4], // Hapus "(D4)"
+            ['jeneng' => 'Pendidikan Profesi Bidan',        'undhak' => 'Profesi', 'fakultas' => 0, 'akreditasi_id' => $akrProfesi], // Ubah null jadi 'Profesi' agar badge muncul
 
             // === Fakultas Keguruan dan Ilmu Pendidikan (1) ===
             ['jeneng' => 'Pendidikan Guru PAUD',                 'undhak' => 'D3', 'fakultas' => 1, 'akreditasi_id' => null],
