@@ -1,0 +1,575 @@
+/* ============================================================
+   PARTIAL: _base.css
+   Di-import dari style.css — jangan load file ini secara langsung di HTML
+   kecuali untuk debugging.
+   ============================================================ */
+:root {
+    --blue: #2f6db5;
+    --blue-d: #173b66;
+    --sky: #eaf2fc;
+    --or: #f2994a;
+    --or-s: #fdebd9;
+    --ink: #1c2a3a;
+    --mut: #5b6a7c;
+    --line: #dfe7f1;
+    --bg: #fbfdff;
+    --r: 18px;
+    --ease: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 84px;
+}
+body {
+    font:
+        16px/1.65 "Plus Jakarta Sans",
+        system-ui,
+        sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+button,
+input {
+    font: inherit;
+    color: inherit;
+}
+button {
+    cursor: pointer;
+    background: none;
+    border: 0;
+}
+:focus-visible {
+    outline: 3px solid var(--or);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+.wrap {
+    width: min(1180px, 100% - 40px);
+    margin-inline: auto;
+}
+.sr,
+.skip:not(:focus) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+.skip {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 99;
+    background: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+}
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   GLOBAL TAGLINE
+   ============================================================ */
+.kick,
+.tick {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 18px 6px 12px;
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf5 100%);
+    border: 1px solid var(--or-s, #fdebd9);
+    border-radius: 999px;
+    font-size: 0.8rem !important;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue-d) !important;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px -6px rgba(242, 153, 74, 0.2);
+    line-height: 1;
+    overflow: hidden;
+}
+.kick::before {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--or, #f2994a);
+    box-shadow: 0 0 0 4px var(--or-s, #fdebd9);
+}
+.tick .dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--or, #f2994a);
+    box-shadow: 0 0 0 0 rgba(242, 153, 74, 0.6);
+    animation: tickPulse 2s infinite;
+}
+@keyframes tickPulse {
+    70% {
+        box-shadow: 0 0 0 6px transparent;
+    }
+}
+.tick span#tick {
+    display: inline-block;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+.tick .out {
+    opacity: 0;
+    transform: translateY(-8px);
+}
+.hero.has-media .tick {
+    background: rgba(15, 39, 68, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff !important;
+    backdrop-filter: blur(8px);
+}
+.lead {
+    color: var(--mut);
+    max-width: 60ch;
+}
+
+/* tombol */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 700;
+    padding: 13px 24px;
+    border-radius: 999px;
+    transition:
+        transform 0.3s var(--ease),
+        background 0.3s,
+        box-shadow 0.3s;
+}
+.btn:hover {
+    background: var(--blue-d);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px -10px rgba(23, 59, 102, 0.6);
+}
+.btn.sm {
+    padding: 9px 18px;
+}
+.btn.ghost {
+    background: transparent;
+    color: var(--blue);
+    box-shadow: inset 0 0 0 2px var(--blue);
+}
+.btn.ghost:hover {
+    background: var(--sky);
+    box-shadow: inset 0 0 0 2px var(--blue);
+}
+.btn.ghost.w {
+    color: #fff;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.7);
+}
+.btn.ghost.w:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+.row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.ar {
+    transition: transform 0.3s var(--ease);
+}
+a:hover > .ar,
+.btn:hover .ar,
+.pr:hover .ar {
+    transform: translateX(4px);
+}
+
+/* top & nav */
+.top {
+    background: var(--blue-d);
+    color: #cfe0f5;
+    font-size: 0.82rem;
+}
+.top .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 7px 0;
+}
+.top nav {
+    display: flex;
+    gap: 18px;
+}
+.top a:hover {
+    color: #fff;
+}
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    transition: box-shadow 0.3s;
+}
+.nav.stuck {
+    box-shadow: 0 6px 24px -14px rgba(23, 59, 102, 0.5);
+}
+.nav-in {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 70px;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: auto;
+}
+.brand b {
+    display: block;
+    line-height: 1.1;
+}
+.brand small {
+    color: var(--mut);
+    font-size: 0.78rem;
+}
+.mark {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px 14px 14px 4px;
+    background: linear-gradient(135deg, var(--blue), #5d9be0);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+.menu {
+    display: flex;
+    gap: 2px;
+}
+.menu > a,
+.dd > button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition:
+        background 0.25s,
+        color 0.25s;
+}
+.menu > a:hover,
+.dd:hover > button,
+.dd.open > button {
+    background: var(--sky);
+    color: var(--blue);
+}
+.dd {
+    position: relative;
+}
+.dd i {
+    width: 7px;
+    height: 7px;
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform 0.3s;
+}
+.dd:hover i,
+.dd.open i {
+    transform: rotate(225deg);
+}
+.dd-p {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 230px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 8px;
+    box-shadow: 0 20px 40px -20px rgba(23, 59, 102, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: 0.3s var(--ease);
+}
+.dd:hover .dd-p,
+.dd:focus-within .dd-p,
+.dd.open .dd-p {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+.dd-p a {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 9px;
+    font-size: 0.92rem;
+}
+.dd-p a:hover {
+    background: var(--or-s);
+}
+.burger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    position: relative;
+}
+.burger span,
+.burger span::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: 0.3s var(--ease);
+}
+.burger span {
+    top: 21px;
+}
+.burger span::before {
+    top: -6px;
+    left: 0;
+    box-shadow: 0 12px 0 var(--ink);
+}
+.menu-open .burger span {
+    background: transparent;
+}
+.menu-open .burger span::before {
+    top: 0;
+    transform: rotate(45deg);
+    box-shadow: 0 0 0 var(--ink);
+}
+.menu-open .burger span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+    transform: rotate(-45deg);
+}
+
+/* ============================================================
+   BACKGROUND VARIATIONS — Terinspirasi dari .info
+   ============================================================ */
+
+/* VARIAN A: Background Gelap Penuh */
+.bg-dark {
+    background: linear-gradient(135deg, #0f2744 0%, #1a3a5c 100%);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+.bg-dark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(47, 109, 181, 0.25),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(242, 153, 74, 0.15),
+            transparent 45%
+        );
+}
+.bg-dark::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(
+        ellipse at 50% 50%,
+        #000 30%,
+        transparent 75%
+    );
+}
+.bg-dark > .wrap {
+    position: relative;
+    z-index: 1;
+}
+.bg-dark h2,
+.bg-dark h3 {
+    color: #fff;
+}
+.bg-dark p,
+.bg-dark .lead {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* VARIAN B: Split Diagonal */
+.bg-split {
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+    isolation: isolate;
+}
+.bg-split::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48%;
+    height: 100%;
+    background: linear-gradient(160deg, #0f2744 0%, #173b66 100%);
+    clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+    z-index: 0;
+}
+.bg-split::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48%;
+    height: 100%;
+    background-image: radial-gradient(
+        circle at 70% 30%,
+        rgba(242, 153, 74, 0.2),
+        transparent 50%
+    );
+    clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+.bg-split > .wrap {
+    position: relative;
+    z-index: 1;
+}
+
+/* VARIAN C: Blob Aksen di Sudut */
+.bg-glow {
+    background: linear-gradient(180deg, #fbfdff 0%, #f4f8fd 100%);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+.bg-glow::before {
+    content: "";
+    position: absolute;
+    top: -200px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(242, 153, 74, 0.12),
+        transparent 70%
+    );
+    filter: blur(70px);
+    animation: bgBlobFloat 22s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+.bg-glow::after {
+    content: "";
+    position: absolute;
+    bottom: -200px;
+    right: -150px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(47, 109, 181, 0.15),
+        transparent 70%
+    );
+    filter: blur(70px);
+    animation: bgBlobFloat 26s ease-in-out infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+}
+.bg-glow > .wrap {
+    position: relative;
+    z-index: 1;
+}
+@keyframes bgBlobFloat {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(40px, -30px) scale(1.1);
+    }
+}
+
+/* VARIAN D: Gradasi Halus dengan Overlay Grid Tipis */
+.bg-grid-fade {
+    background:
+        radial-gradient(ellipse at 50% 0%, #eaf2fc 0%, transparent 60%),
+        linear-gradient(180deg, #fbfdff 0%, #f7fafd 100%);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+.bg-grid-fade::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(47, 109, 181, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(47, 109, 181, 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 50% 40%, #000 25%, transparent 75%);
+    -webkit-mask-image: radial-gradient(
+        ellipse at 50% 40%,
+        #000 25%,
+        transparent 75%
+    );
+    z-index: 0;
+    pointer-events: none;
+}
+.bg-grid-fade > .wrap {
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive: Split di Mobile */
+@media (max-width: 960px) {
+    .bg-split::before,
+    .bg-split::after {
+        width: 100%;
+        height: 40%;
+        top: auto;
+        bottom: 0;
+        clip-path: none;
+    }
+}

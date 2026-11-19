@@ -1,6 +1,6 @@
 @props(['alasan' => config('landing.home.alasan')])
 
-<section class="sec why-section" id="alasan" data-why-section>
+<section class="sec why-section bg-split" id="alasan" data-why-section>
     {{-- Ornamen Background --}}
     <div class="why-bg" aria-hidden="true">
         <div class="why-bg-grid"></div>

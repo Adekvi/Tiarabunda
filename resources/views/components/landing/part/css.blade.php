@@ -10,6 +10,9 @@
 
 <link rel="stylesheet" href="{{ asset('landing/assets/css/additions.css') }}">
 
+<link rel="stylesheet"
+    href="{{ asset('landing/menu/info.css') }}v={{ @filemtime(public_path('landing/menu/info.css')) ?: '1' }}">
+
 {{-- Sejarah --}}
 <link rel="stylesheet"
     href="{{ asset('landing/menu/profil/sejarah/sej.css') }}?v={{ @filemtime(public_path('landing/menu/profil/sejarah/sej.css')) ?: '1' }}">

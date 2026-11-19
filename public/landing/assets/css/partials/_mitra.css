@@ -1,0 +1,32 @@
+/* ============================================================
+   PARTIAL: _mitra.css
+   Di-import dari style.css — jangan load file ini secara langsung di HTML
+   kecuali untuk debugging.
+   ============================================================ */
+/* mitra */
+.mitra {
+    overflow: hidden;
+    border-block: 1px solid var(--line);
+    background: #fff;
+    padding: 18px 0;
+}
+.track {
+    display: flex;
+    gap: 48px;
+    width: max-content;
+    animation: slide 30s linear infinite;
+}
+.mitra:hover .track {
+    animation-play-state: paused;
+}
+.track span {
+    font-weight: 700;
+    color: #8a9bb0;
+    white-space: nowrap;
+}
+@keyframes slide {
+    to {
+        transform: translateX(-50%);
+    }
+}
+

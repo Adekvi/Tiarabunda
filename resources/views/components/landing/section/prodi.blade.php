@@ -31,7 +31,7 @@
 @endphp
 
 @if (count($prodi) > 0)
-    <section class="sec prodi-sec" id="prodi">
+    <section class="sec prodi-sec bg-grid-fade" id="prodi">
         <div class="wrap">
             <x-landing.ui.head kick="Program studi" title="Temukan jurusan yang cocok untukmu" :lead="count($prodi) . ' program studi di ' . count($fakultas) . ' fakultas.'" />
 

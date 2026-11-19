@@ -30,6 +30,12 @@ return [
                 ],
             ],
             [
+                'Lembaga',
+                [
+                    ['LPPM', '/lembaga/lppm'],
+                ],
+            ],
+            [
                 'Pendidikan',
                 [
                     ['Program Pendidikan', '/pendidikan/program-pendidikan'],
@@ -42,12 +48,6 @@ return [
                     ['Kemahasiswaan', '/layanan/kemahasiswaan'],
                     ['Pusat Karier', '/layanan/pusat-karier'],
                     ['Fasilitas', '/layanan/fasilitas'],
-                ],
-            ],
-            [
-                'Lembaga',
-                [
-                    ['LPPM', '/lembaga/lppm'],
                 ],
             ],
             [
@@ -164,6 +164,17 @@ return [
                 ]
             ],
         ]],
+        'lembaga' => ['t' => 'Lembaga', 'subs' => [
+            'lppm' => [
+                't' => 'LPPM',
+                'sub' => 'Lembaga Penelitian dan Pengabdian kepada Masyarakat.',
+                'blocks' => [
+                    [
+                        'type' => 'lppm',
+                    ],
+                ],
+            ],
+        ]],
         'pendidikan' => ['t' => 'Pendidikan', 'subs' => [
             'program-pendidikan' => [
                 't' => 'Program Pendidikan',
@@ -204,17 +215,6 @@ return [
                     'type' => 'fasilitas'
                 ],
             ]],
-        ]],
-        'lembaga' => ['t' => 'Lembaga', 'subs' => [
-            'lppm' => [
-                't' => 'LPPM',
-                'sub' => 'Lembaga Penelitian dan Pengabdian kepada Masyarakat.',
-                'blocks' => [
-                    [
-                        'type' => 'lppm',
-                    ],
-                ],
-            ],
         ]],
         'informasi' => ['t' => 'Informasi', 'subs' => [
             'berita-terbaru' => ['t' => 'Berita Terbaru', 'sub' => 'Kabar terbaru dari kampus.', 'blocks' => [

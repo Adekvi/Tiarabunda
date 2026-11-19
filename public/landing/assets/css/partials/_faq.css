@@ -1,0 +1,166 @@
+/* ============================================================
+   PARTIAL: _faq.css
+   ============================================================ */
+
+.faq-in {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 60px;
+    align-items: start;
+}
+.faq-in .head {
+    margin: 0;
+    position: sticky;
+    top: 110px;
+}
+
+/* Card FAQ */
+.qa {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: all 0.3s var(--ease);
+    box-shadow: 0 4px 12px -6px rgba(23, 59, 102, 0.05);
+}
+.qa:last-child {
+    margin-bottom: 0;
+}
+.qa:hover {
+    border-color: var(--or);
+    box-shadow: 0 8px 24px -12px rgba(242, 153, 74, 0.2);
+}
+
+.qa button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    text-align: left;
+    padding: 22px 24px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    transition: background 0.3s;
+}
+.qa.open button {
+    background: var(--sky);
+    color: var(--blue);
+}
+
+.qa i {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--sky);
+    border: 0;
+    display: grid;
+    place-items: center;
+    position: relative;
+    transition: all 0.3s;
+}
+.qa i::before,
+.qa i::after {
+    content: "";
+    position: absolute;
+    background: var(--blue);
+    transition: all 0.3s;
+}
+.qa i::before {
+    width: 12px;
+    height: 2px;
+}
+.qa i::after {
+    width: 2px;
+    height: 12px;
+}
+
+.qa.open i {
+    background: var(--or);
+    transform: rotate(90deg);
+}
+.qa.open i::before,
+.qa.open i::after {
+    background: #fff;
+}
+.qa.open i::after {
+    opacity: 0;
+}
+
+/* Body (accordion) */
+.qa-b {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s var(--ease);
+}
+.qa.open .qa-b {
+    grid-template-rows: 1fr;
+}
+.qa-b p {
+    overflow: hidden;
+    color: var(--mut);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    padding: 0 24px;
+}
+.qa.open .qa-b p {
+    padding-bottom: 24px;
+}
+
+/* =========================================
+   OVERRIDE: FAQ di atas bg-dark
+   ========================================= */
+.bg-dark .faq-in .head h2,
+.bg-dark .faq-in .head .kick {
+    color: #fff;
+}
+.bg-dark .faq-in .head .lead {
+    color: rgba(255, 255, 255, 0.7);
+}
+.bg-dark .faq-in .head .kick {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.bg-dark .qa {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+.bg-dark .qa:hover {
+    border-color: var(--or);
+    background: rgba(255, 255, 255, 0.08);
+}
+.bg-dark .qa button {
+    color: #fff;
+}
+.bg-dark .qa.open button {
+    background: rgba(242, 153, 74, 0.15);
+    color: var(--or);
+}
+.bg-dark .qa-b p {
+    color: rgba(255, 255, 255, 0.75);
+}
+.bg-dark .qa i {
+    background: rgba(255, 255, 255, 0.1);
+}
+.bg-dark .qa i::before,
+.bg-dark .qa i::after {
+    background: #fff;
+}
+.bg-dark .qa.open i {
+    background: var(--or);
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+    .faq-in {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .faq-in .head {
+        position: static;
+    }
+}

@@ -1,0 +1,34 @@
+/* ============================================================
+   PARTIAL: _sections.css
+   Di-import dari style.css — jangan load file ini secara langsung di HTML
+   kecuali untuk debugging.
+   ============================================================ */
+/* sections */
+.sec {
+    padding: 92px 0;
+}
+.alt {
+    background: var(--sky);
+}
+.head {
+    margin-bottom: 38px;
+}
+.head h2 {
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    color: var(--blue-d);
+}
+.head .lead {
+    margin-top: 10px;
+}
+.rv {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+        opacity 0.8s var(--ease),
+        transform 0.8s var(--ease);
+}
+.rv.in {
+    opacity: 1;
+    transform: none;
+}
+

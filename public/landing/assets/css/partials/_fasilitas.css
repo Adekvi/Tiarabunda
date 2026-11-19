@@ -1,0 +1,479 @@
+/* ============================================================
+   FASILITAS — Premium & Luxurious Gallery
+   ============================================================ */
+
+.fasilitas-sec {
+    position: relative;
+    padding: 92px 0 88px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Background ornaments */
+.fasilitas-sec::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(
+            to right,
+            color-mix(in srgb, var(--blue) 4%, transparent) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--blue) 4%, transparent) 1px,
+            transparent 1px
+        );
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(
+        ellipse at 50% 30%,
+        #000 20%,
+        transparent 70%
+    );
+    opacity: 0.55;
+}
+
+.fasilitas-sec::after {
+    content: "";
+    position: absolute;
+    top: -180px;
+    right: -120px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        color-mix(in srgb, var(--or) 14%, transparent),
+        transparent 70%
+    );
+    filter: blur(70px);
+    z-index: 0;
+    pointer-events: none;
+    animation: fasBlob 22s ease-in-out infinite;
+}
+
+@keyframes fasBlob {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(-30px, 40px) scale(1.08);
+    }
+}
+
+.fasilitas-sec > .wrap,
+.fasilitas-sec > .fas-gal,
+.fasilitas-sec > .fas-cta {
+    position: relative;
+    z-index: 1;
+}
+
+/* Gallery wrapper */
+.fas-gal {
+    margin-top: 28px;
+    overflow: hidden;
+    mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        #000 5%,
+        #000 95%,
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        #000 5%,
+        #000 95%,
+        transparent 100%
+    );
+}
+
+.fas-track {
+    display: flex;
+    gap: 28px;
+    width: max-content;
+    animation: fasSlide 48s linear infinite;
+    padding: 16px 0 36px;
+}
+
+.fasilitas-sec:hover .fas-track {
+    animation-play-state: paused;
+}
+
+@keyframes fasSlide {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* ========== Card ========== */
+.fas-card {
+    flex: none;
+    width: min(360px, 80vw);
+    border-radius: 22px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+    box-shadow:
+        0 4px 6px -2px rgba(23, 59, 102, 0.04),
+        0 18px 40px -16px rgba(23, 59, 102, 0.14),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+    text-decoration: none;
+    color: inherit;
+    transition:
+        transform 0.5s var(--ease),
+        box-shadow 0.5s var(--ease),
+        border-color 0.4s;
+    position: relative;
+}
+
+/* Accent bar atas */
+.fas-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue-d), var(--or), #d4a24a);
+    z-index: 4;
+    opacity: 0.9;
+    transition: opacity 0.35s;
+}
+
+.fas-card:hover {
+    transform: translateY(-10px) scale(1.015);
+    border-color: color-mix(in srgb, var(--or) 35%, transparent);
+    box-shadow:
+        0 12px 28px -10px rgba(23, 59, 102, 0.16),
+        0 32px 56px -20px rgba(23, 59, 102, 0.22),
+        0 0 0 1px color-mix(in srgb, var(--or) 25%, transparent);
+}
+
+.fas-card:hover::before {
+    opacity: 1;
+}
+
+/* Media */
+.fas-card-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: linear-gradient(145deg, #e8f0fa, #d0dff0);
+}
+
+.fas-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.85s var(--ease);
+}
+
+.fas-card:hover .fas-card-media img {
+    transform: scale(1.1);
+}
+
+.fas-card-media.is-empty {
+    background: linear-gradient(145deg, #e8f0fa 0%, #d6e4f5 100%);
+}
+
+.fas-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--sky), #c5d8f0);
+}
+
+/* Overlay lebih mewah */
+.fas-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        transparent 28%,
+        rgba(15, 39, 68, 0.35) 58%,
+        rgba(15, 39, 68, 0.82) 100%
+    );
+    opacity: 0.88;
+    transition: opacity 0.45s var(--ease);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.fas-card:hover .fas-overlay {
+    opacity: 0.95;
+    background: linear-gradient(
+        180deg,
+        transparent 20%,
+        rgba(15, 39, 68, 0.45) 55%,
+        rgba(15, 39, 68, 0.88) 100%
+    );
+}
+
+/* Shine effect saat hover */
+.fas-card-media::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.18) 45%,
+        transparent 100%
+    );
+    transform: skewX(-18deg);
+    transition: left 0.7s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.fas-card:hover .fas-card-media::after {
+    left: 130%;
+}
+
+/* Body / Caption */
+.fas-card-body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 24px 22px 22px;
+    color: #fff;
+    z-index: 3;
+}
+
+.fas-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ffd7a8;
+    margin-bottom: 8px;
+    padding: 4px 10px 4px 8px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+}
+
+.fas-label::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--or);
+    box-shadow: 0 0 0 3px rgba(242, 153, 74, 0.35);
+}
+
+.fas-title {
+    font-size: 1.22rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 14px;
+    color: #fff;
+    letter-spacing: -0.015em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.fas-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.92);
+    opacity: 0.9;
+    transition: all 0.35s var(--ease);
+}
+
+.fas-card:hover .fas-link {
+    opacity: 1;
+    gap: 12px;
+    color: #fff;
+}
+
+.fas-link svg {
+    transition: transform 0.35s var(--ease);
+}
+
+.fas-card:hover .fas-link svg {
+    transform: translateX(3px);
+}
+
+/* ========== CTA Button ========== */
+.fas-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.fas-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #fff 0%, #fffaf5 100%);
+    border: 1px solid color-mix(in srgb, var(--or) 30%, var(--line));
+    color: var(--blue-d);
+    font-weight: 700;
+    font-size: 0.98rem;
+    text-decoration: none;
+    box-shadow:
+        0 8px 24px -12px rgba(23, 59, 102, 0.18),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    transition: all 0.4s var(--ease);
+    position: relative;
+    overflow: hidden;
+}
+
+.fas-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--or) 0%, #d4a24a 100%);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+    z-index: 0;
+}
+
+.fas-btn span,
+.fas-btn svg {
+    position: relative;
+    z-index: 1;
+}
+
+.fas-btn:hover {
+    color: #fff;
+    border-color: transparent;
+    transform: translateY(-3px);
+    box-shadow:
+        0 14px 32px -12px rgba(242, 153, 74, 0.45),
+        0 8px 16px -8px rgba(23, 59, 102, 0.2);
+}
+
+.fas-btn:hover::before {
+    opacity: 1;
+}
+
+.fas-btn svg {
+    transition: transform 0.35s var(--ease);
+}
+
+.fas-btn:hover svg {
+    transform: translateX(5px);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 960px) {
+    .fasilitas-sec {
+        padding: 72px 0 64px;
+    }
+
+    .fas-track {
+        gap: 20px;
+        animation-duration: 40s;
+        padding: 12px 0 28px;
+    }
+
+    .fas-card {
+        width: min(320px, 78vw);
+        border-radius: 18px;
+    }
+
+    .fas-title {
+        font-size: 1.1rem;
+    }
+
+    .fas-card-body {
+        padding: 20px 18px 18px;
+    }
+}
+
+@media (max-width: 640px) {
+    .fasilitas-sec {
+        padding: 56px 0 52px;
+    }
+
+    .fas-gal {
+        mask-image: linear-gradient(
+            90deg,
+            transparent 0%,
+            #000 7%,
+            #000 93%,
+            transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+            90deg,
+            transparent 0%,
+            #000 7%,
+            #000 93%,
+            transparent 100%
+        );
+    }
+
+    .fas-track {
+        gap: 16px;
+        padding: 10px 0 24px;
+        animation-duration: 34s;
+    }
+
+    .fas-card {
+        width: min(290px, 84vw);
+        border-radius: 16px;
+    }
+
+    .fas-card-body {
+        padding: 18px 16px 16px;
+    }
+
+    .fas-title {
+        font-size: 1.02rem;
+        margin-bottom: 10px;
+    }
+
+    .fas-label {
+        font-size: 0.64rem;
+        padding: 3px 8px 3px 7px;
+        margin-bottom: 6px;
+    }
+
+    .fas-cta {
+        margin-top: 12px;
+        padding-inline: 16px;
+    }
+
+    .fas-btn {
+        padding: 13px 24px;
+        font-size: 0.92rem;
+        width: 100%;
+        max-width: 340px;
+        justify-content: center;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .fas-track {
+        animation: none;
+    }
+    .fasilitas-sec::after {
+        animation: none;
+    }
+    .fas-card,
+    .fas-card-media img,
+    .fas-btn {
+        transition: none;
+    }
+}

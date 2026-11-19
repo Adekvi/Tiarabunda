@@ -1,0 +1,65 @@
+/* ============================================================
+   PARTIAL: _cta.css
+   ============================================================ */
+
+.cta {
+    background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue) 100%);
+    color: #fff;
+    text-align: center;
+    padding: 90px 0;
+    position: relative;
+    overflow: hidden;
+}
+.cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, #000 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(
+        circle at center,
+        #000 20%,
+        transparent 80%
+    );
+}
+.cta .wrap {
+    position: relative;
+    z-index: 1;
+}
+.cta h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+.cta p {
+    color: #d3e3f7;
+    font-size: 1.1rem;
+    margin-bottom: 36px;
+}
+.cta .row {
+    justify-content: center;
+}
+.cta .btn {
+    padding: 16px 32px;
+    font-size: 1.05rem;
+    border-radius: 99px;
+}
+.cta .btn:not(.ghost) {
+    background: linear-gradient(135deg, var(--or) 0%, #f5b942 100%);
+    color: var(--blue-d);
+    box-shadow: 0 8px 24px -8px rgba(242, 153, 74, 0.6);
+}
+.cta .btn:not(.ghost):hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 32px -8px rgba(242, 153, 74, 0.8);
+}
+.cta .btn.ghost.w {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.cta .btn.ghost.w:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+}

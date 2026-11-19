@@ -53,7 +53,7 @@
             @endif
 
             <div class="row">
-                <a class="btn" href="{{ $d['btn1_link'] }}" target="_blank">{{ $d['btn1_teks'] }}</a>
+                <a class="btn" href="https://forms.gle/eDmoP7SdmJyS1YxD6" target="_blank">{{ $d['btn1_teks'] }}</a>
                 <a class="btn ghost {{ $hasMedia ? 'w' : '' }}" href="{{ $d['btn2_link'] }}">
                     {{ $d['btn2_teks'] }} <x-landing.ui.arrow />
                 </a>

@@ -1,0 +1,411 @@
+/* ============================================================
+   PARTIAL: _hero.css
+   Di-import dari style.css — jangan load file ini secara langsung di HTML
+   kecuali untuk debugging.
+   ============================================================ */
+/* hero */
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--sky), var(--bg) 85%);
+    padding: 56px 0 72px;
+}
+.hero-in {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+}
+.hero-t > * {
+    animation: up 0.9s var(--ease) both;
+}
+.hero-t > :nth-child(2) {
+    animation-delay: 0.1s;
+}
+.hero-t > :nth-child(3) {
+    animation-delay: 0.2s;
+}
+.hero-t > :nth-child(4) {
+    animation-delay: 0.3s;
+}
+@keyframes up {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+}
+.hero h1 {
+    font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+    margin: 16px 0;
+    color: var(--blue-d);
+}
+.hero .lead {
+    margin-bottom: 26px;
+    font-size: 1.08rem;
+}
+.tick {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--blue);
+}
+.tick span:last-child {
+    transition: 0.35s;
+    display: inline-block;
+}
+.tick .out {
+    opacity: 0;
+    transform: translateY(-6px);
+}
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--or);
+    box-shadow: 0 0 0 0 rgba(242, 153, 74, 0.6);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    70% {
+        box-shadow: 0 0 0 9px transparent;
+    }
+}
+.arch {
+    position: absolute;
+    inset: 0 12% 0 12%;
+    border-radius: 999px 999px 24px 24px;
+    background: linear-gradient(170deg, #9cc4f0, var(--blue));
+    overflow: hidden;
+}
+.sun {
+    position: absolute;
+    top: 22%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    margin-left: -60px;
+    border-radius: 50%;
+    background: var(--or);
+    animation: float 7s ease-in-out infinite;
+}
+.hill {
+    position: absolute;
+    left: -20%;
+    right: -20%;
+    bottom: -34%;
+    height: 62%;
+    border-radius: 50%;
+    background: var(--blue-d);
+}
+@keyframes float {
+    50% {
+        transform: translateY(-14px);
+    }
+}
+.chip {
+    position: absolute;
+    background: #fff;
+    padding: 9px 16px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 14px 30px -14px rgba(23, 59, 102, 0.5);
+    animation: float 6s ease-in-out infinite;
+}
+.c1 {
+    top: 14%;
+    left: 0;
+}
+.c2 {
+    top: 46%;
+    right: 0;
+    animation-delay: -2s;
+}
+.c3 {
+    bottom: 12%;
+    left: 6%;
+    animation-delay: -4s;
+}
+
+/* mitra */
+.mitra {
+    overflow: hidden;
+    border-block: 1px solid var(--line);
+    background: #fff;
+    padding: 18px 0;
+}
+.track {
+    display: flex;
+    gap: 48px;
+    width: max-content;
+    animation: slide 30s linear infinite;
+}
+.mitra:hover .track {
+    animation-play-state: paused;
+}
+.track span {
+    font-weight: 700;
+    color: #8a9bb0;
+    white-space: nowrap;
+}
+@keyframes slide {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* sections */
+.sec {
+    padding: 92px 0;
+}
+.alt {
+    background: var(--sky);
+}
+.head {
+    margin-bottom: 38px;
+}
+.head h2 {
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    color: var(--blue-d);
+}
+.head .lead {
+    margin-top: 10px;
+}
+.rv {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+        opacity 0.8s var(--ease),
+        transform 0.8s var(--ease);
+}
+.rv.in {
+    opacity: 1;
+    transform: none;
+}
+
+/* ============================================================ */
+/* WRAPPER UNTUK DUA TOMBOL (GRID)                              */
+/* ============================================================ */
+.hero-action-group {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr; /* Default mobile */
+    gap: 16px;
+    margin-top: 32px;
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .hero-action-group {
+        grid-template-columns: 1fr 1fr; /* Berdampingan di tablet & desktop */
+        gap: 20px;
+    }
+}
+
+/* ============================================================ */
+/* DESAIN KARTU TOMBOL                        */
+/* ============================================================ */
+.hero-cta-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.3s ease;
+    /* Default Glassmorphism */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 20px -2px rgba(23, 59, 102, 0.08);
+}
+
+.hero-cta-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px -8px rgba(23, 59, 102, 0.15);
+}
+
+/* Ikon di Kiri */
+.hero-cta-card .hero-cta__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.hero-cta-card:hover .hero-cta__icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* Teks di Tengah */
+.hero-cta-card .hero-cta__text {
+    flex: 1;
+    text-align: left;
+}
+
+.hero-cta-card .hero-cta__text h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: var(--blue-d);
+    line-height: 1.3;
+}
+
+.hero-cta-card .hero-cta__text p {
+    font-size: 0.85rem;
+    margin: 0;
+    color: var(--mut);
+    line-height: 1.4;
+}
+
+/* Panah di Kanan */
+.hero-cta-card .hero-cta__arrow {
+    flex-shrink: 0;
+    opacity: 0.4;
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+    color: var(--blue-d);
+}
+
+.hero-cta-card:hover .hero-cta__arrow {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+/* ============================================================ */
+/* VARIAN WARNA KARTU (Primary & Secondary)                     */
+/* ============================================================ */
+
+/* Tombol 1: Pendaftaran (Warna Biru Gelap - Mewah) */
+.hero-cta-card--primary {
+    background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue) 100%);
+    border-color: transparent;
+}
+
+.hero-cta-card--primary .hero-cta__icon {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+.hero-cta-card--primary .hero-cta__text h2 {
+    color: #fff;
+}
+.hero-cta-card--primary .hero-cta__text p {
+    color: rgba(255, 255, 255, 0.8);
+}
+.hero-cta-card--primary .hero-cta__arrow {
+    color: #fff;
+}
+
+.hero-cta-card--primary:hover {
+    box-shadow: 0 12px 28px -8px rgba(23, 59, 102, 0.4);
+}
+
+/* Tombol 2: Google Form (Warna Putih Bersih - Elegan) */
+.hero-cta-card--secondary .hero-cta__icon {
+    background: var(--sky);
+    color: var(--blue);
+}
+
+/* Efek Kilau (Shine Effect) */
+.hero-cta-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transform: skewX(-25deg);
+    transition: left 0.6s ease;
+    pointer-events: none;
+}
+
+.hero-cta-card:hover::before {
+    left: 150%;
+}
+
+/* ============================================================
+   HERO MEDIA BACKGROUND - TANPA MERUBAH LAYOUT ASLI
+   ============================================================ */
+
+/* Pastikan section hero menjadi acuan posisi absolute */
+.hero {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Video/Gambar jadi lapisan belakang */
+.hero.has-media .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Overlay gelap agar teks putih terbaca */
+.hero.has-media .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+        135deg,
+        rgba(15, 39, 68, 0.85) 0%,
+        rgba(15, 39, 68, 0.4) 100%
+    );
+}
+
+/* Pastikan grid konten berada di atas media */
+.hero.has-media .hero-in {
+    position: relative;
+    z-index: 2;
+    /* HAPUS grid-template-columns: 1fr; dan text-align: center; */
+    /* Biarkan grid bawaan .hero-in (1.1fr 0.9fr) tetap bekerja */
+}
+
+/* Teks menjadi putih agar kontras dengan overlay */
+.hero.has-media .hero-t h1,
+.hero.has-media .hero-t .lead {
+    color: #fff;
+}
+
+.hero.has-media .hero-t .tick {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    backdrop-filter: blur(8px);
+}
+
+/* Tombol ghost jadi putih */
+.hero.has-media .btn.ghost.w {
+    color: #fff;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.7);
+}
+.hero.has-media .btn.ghost.w:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+

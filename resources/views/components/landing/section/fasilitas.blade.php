@@ -1,7 +1,7 @@
 @props(['items' => []])
 
 @if (count($items))
-    <section class="sec fasilitas-sec" id="fasilitas">
+    <section class="sec fasilitas-sec bg-glow" id="fasilitas">
         <div class="wrap">
             <x-landing.ui.head kick="Fasilitas" title="Ruang belajar yang mendukung praktik"
                 lead="Laboratorium, studio, dan ruang belajar dirancang agar mahasiswa siap praktik sejak hari pertama." />
@@ -9,7 +9,6 @@
 
         <div class="fas-gal rv" aria-label="Galeri fasilitas kampus">
             <div class="fas-track">
-                {{-- Duplikasi untuk infinite scroll --}}
                 @foreach ([false, true] as $dup)
                     @foreach ($items as $f)
                         <a href="{{ url('/layanan/fasilitas/' . ($f['tandha'] ?? Str::slug($f['nama'] ?? ''))) }}"
