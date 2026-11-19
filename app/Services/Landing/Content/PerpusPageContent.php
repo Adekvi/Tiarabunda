@@ -13,18 +13,25 @@ class PerpusPageContent implements PageContentInterface
     {
         $perpus = $this->perpusService->forPage();
 
-        // Fallback demo jika kosong
         if ($perpus->isEmpty()) {
             $perpus = $this->demoPerpus();
         }
 
-        // Ambil 1 item pertama untuk banner/highlight (opsional)
-        $highlight = $perpus->first();
-        $items     = $perpus->slice(1)->values();
+        $selectedPerpus = null;
+
+        if ($slug) {
+            $selectedPerpus = $perpus->first(function ($item) use ($slug) {
+                return data_get($item, 'tandha') === $slug
+                    || data_get($item, 'data_tambahan.fakultas_slug') === $slug;
+            });
+
+            abort_if($selectedPerpus === null, 404, 'Halaman perpustakaan fakultas tidak ditemukan.');
+        }
 
         return [
-            'perpusHighlight' => $highlight,
-            'perpusItems'     => $items,
+            'perpusHighlight' => $perpus->first(),
+            'perpusItems'     => $perpus->slice(1)->values(),
+            'selectedPerpus'  => $selectedPerpus,
         ];
     }
 
@@ -32,24 +39,10 @@ class PerpusPageContent implements PageContentInterface
     {
         return collect([
             (object) [
-                'judhul' => 'Selamat Datang di Perpustakaan',
-                'isi'    => '<p>Perpustakaan Universitas Tiara Bunda menyediakan berbagai koleksi buku, jurnal, dan ruang baca yang nyaman untuk mendukung kegiatan belajar mahasiswa.</p>',
-                'data_tambahan' => ['ikon' => 'book-open', 'warna' => 'blue'],
-            ],
-            (object) [
-                'judhul' => 'Jam Operasional',
-                'isi'    => '<ul><li>Senin - Jumat: 08.00 - 20.00 WIB</li><li>Sabtu: 08.00 - 12.00 WIB</li><li>Minggu & Libur Nasional: Tutup</li></ul>',
-                'data_tambahan' => ['ikon' => 'clock', 'warna' => 'green'],
-            ],
-            (object) [
-                'judhul' => 'Layanan & Fasilitas',
-                'isi'    => '<ul><li>Ruang baca ber-AC</li><li>Akses Wi-Fi gratis</li><li>Peminjaman buku mandiri</li><li>Ruang diskusi kelompok</li><li>Akses jurnal elektronik</li></ul>',
-                'data_tambahan' => ['ikon' => 'layers', 'warna' => 'orange'],
-            ],
-            (object) [
-                'judhul' => 'Aturan Peminjaman',
-                'isi'    => '<p>Mahasiswa dapat meminjam maksimal 3 buku untuk jangka waktu 7 hari. Keterlambatan pengembalian akan dikenakan denda sebesar Rp 1.000/hari/buku.</p>',
-                'data_tambahan' => ['ikon' => 'shield-alert', 'warna' => 'red'],
+                'judhul'        => 'Perpustakaan Pusat Universitas Tiara Bunda',
+                'tandha'        => 'perpustakaan-pusat',
+                'isi'           => '<p>Perpustakaan pusat menyediakan berbagai koleksi buku, jurnal, dan ruang baca yang nyaman untuk mendukung kegiatan belajar mahasiswa.</p>',
+                'data_tambahan' => ['ikon' => 'book-open', 'warna' => 'blue', 'url_portal' => PerpusService::DEFAULT_PORTAL_URL],
             ],
         ]);
     }

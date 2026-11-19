@@ -15,12 +15,16 @@ class HeaderSecurity
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $nonce = base64_encode(random_bytes(16));
+        $request->attributes->set('csp_nonce', $nonce);
+
         $response = $next($request);
 
         $response->headers->add([
             'Content-Security-Policy' => implode('; ', [
                 "default-src 'self'",
-                "script-src 'self'",
+                // "script-src 'self'",
+                "script-src 'self' 'nonce-{$nonce}'",
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
                 "font-src 'self' https://fonts.gstatic.com",
 

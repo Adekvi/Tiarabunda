@@ -12,6 +12,7 @@ use App\Models\Pendidikan\Pmb;
 use App\Models\Pendidikan\Program\Fakultas;
 use App\Models\Pendidikan\Program\Prodi;
 use App\Models\Profil\Pimpinan;
+use App\Services\Landing\Layanan\PerpusService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -286,13 +287,12 @@ class LandingHomeService
                 ->limit($limit)
                 ->get()
                 ->map(function ($p) {
-                    /** @var Perpus $f */
                     $meta = $p->data_tambahan ?? [];
 
                     return [
                         'judul'       => $p->judhul ?? '',
                         'deskripsi'   => trim(strip_tags($p->isi ?? '')),
-                        'url_portal'  => $meta['url_portal'] ?? null,
+                        'url_portal'  => PerpusService::normalizePortalUrl($meta['url_portal'] ?? null),
                         'jam_layanan' => $meta['jam_layanan'] ?? null,
                         'kontak'      => $meta['kontak'] ?? null,
                         'email'       => $meta['email'] ?? null,
@@ -302,7 +302,6 @@ class LandingHomeService
                 ->all();
         });
 
-        // Guard cache rusak (mis. format lama)
         if (! is_array($rows)) {
             Cache::forget('landing.home.perpus');
             $rows = [];

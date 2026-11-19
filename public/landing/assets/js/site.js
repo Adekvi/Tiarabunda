@@ -92,19 +92,56 @@
     });
 
     /* ===================== PRODI FILTER ===================== */
-    const tabs = $("#tabs");
-    tabs?.addEventListener("click", (e) => {
-        const b = e.target.closest("button");
-        if (!b) return;
-        $$("button", tabs).forEach((x) => x.classList.toggle("on", x === b));
-        const f = +b.dataset.f;
-        let n = 0;
-        $$("#grid .pr").forEach((c) => {
-            const show = f < 0 || +c.dataset.f === f;
-            c.hidden = !show;
-            if (show) c.style.setProperty("--i", n++);
+    (() => {
+        const tabs = document.getElementById("tabs");
+        const grid = document.getElementById("grid");
+        const empty = document.getElementById("prodi-empty");
+        if (!tabs || !grid) return;
+
+        const cards = [...grid.querySelectorAll("[data-prodi-card]")];
+
+        const filter = (f) => {
+            let visible = 0;
+
+            cards.forEach((card) => {
+                const show = f < 0 || +card.dataset.f === f;
+
+                if (show) {
+                    card.hidden = false;
+                    card.style.setProperty("--i", visible);
+                    // re-trigger animation
+                    card.style.animation = "none";
+                    void card.offsetWidth;
+                    card.style.animation = "";
+                    visible++;
+                } else {
+                    card.hidden = true;
+                }
+            });
+
+            if (empty) empty.hidden = visible > 0;
+        };
+
+        tabs.addEventListener("click", (e) => {
+            const btn = e.target.closest(".prodi-tab");
+            if (!btn) return;
+
+            tabs.querySelectorAll(".prodi-tab").forEach((t) => {
+                const isOn = t === btn;
+                t.classList.toggle("on", isOn);
+                t.setAttribute("aria-selected", isOn ? "true" : "false");
+            });
+
+            filter(+btn.dataset.f);
+
+            // Auto scroll tab di mobile
+            if (window.innerWidth <= 960) {
+                const left =
+                    btn.offsetLeft - tabs.offsetWidth / 2 + btn.offsetWidth / 2;
+                tabs.scrollTo({ left, behavior: "smooth" });
+            }
         });
-    });
+    })();
 
     /* ===================== FAQ ===================== */
     $$(".qa > button").forEach((b) =>

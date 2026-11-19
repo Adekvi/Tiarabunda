@@ -9,6 +9,7 @@ use App\Http\Controllers\Superadmin\Konten\Layanan\FasilitasController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KarirController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KemahaController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\PerpusController;
+use App\Http\Controllers\Superadmin\Konten\Lembaga\LPPM\LppmController;
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\AkreditasiController;
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\BeasiswaController;
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\PmbController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Superadmin\Konten\Pendidikan\Program\FakultasController
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\Program\ProdiController;
 use App\Http\Controllers\Superadmin\Konten\Profil\PimpinanController;
 use App\Http\Controllers\Superadmin\Konten\Profil\SejarahController;
+use App\Http\Controllers\Superadmin\Konten\Profil\StrukturController;
 use App\Http\Controllers\Superadmin\Konten\Profil\VisimisiController;
 use Illuminate\Support\Facades\Route;
 
@@ -100,6 +102,23 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::put('/{pimpinan}',     [PimpinanController::class, 'update'])->name('update');
             Route::delete('/{pimpinan}',  [PimpinanController::class, 'destroy'])->name('destroy');
             Route::patch('/{pimpinan}/toggle', [PimpinanController::class, 'toggle'])->name('toggle');
+        });
+
+        Route::prefix('struktur')->name('struktur.')->group(function () {
+            Route::get('/',               [StrukturController::class, 'index'])->name('index');
+            Route::get('/sampah',         [StrukturController::class, 'trashed'])->name('trashed');
+            Route::get('/create',         [StrukturController::class, 'create'])->name('create');
+            Route::post('/',              [StrukturController::class, 'store'])->name('store');
+
+            // Statis dulu
+            Route::delete('/sampah/kosongkan', [StrukturController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/sampah/{id}/restore', [StrukturController::class, 'restore'])->name('restore');
+            Route::delete('/sampah/{id}/force', [StrukturController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{struktur}/edit', [StrukturController::class, 'edit'])->name('edit');
+            Route::put('/{struktur}',     [StrukturController::class, 'update'])->name('update');
+            Route::delete('/{struktur}',  [StrukturController::class, 'destroy'])->name('destroy');
+            Route::patch('/{struktur}/toggle', [StrukturController::class, 'toggle'])->name('toggle');
         });
 
         /*
@@ -257,6 +276,22 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::put('{fasilita}',  [FasilitasController::class, 'update'])->name('update');
             Route::delete('{fasilita}', [FasilitasController::class, 'destroy'])->name('destroy');
             Route::patch('{fasilita}/toggle', [FasilitasController::class, 'toggle'])->name('toggle');
+        });
+
+        // Lembaga 
+        Route::prefix('lppm')->name('lppm.')->group(function () {
+            Route::get('trashed',            [LppmController::class, 'trashed'])->name('trashed');
+            Route::post('trashed/empty',     [LppmController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('trashed/{id}/restore', [LppmController::class, 'restore'])->name('restore');
+            Route::delete('trashed/{id}/force',  [LppmController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/',           [LppmController::class, 'index'])->name('index');
+            Route::get('create',      [LppmController::class, 'create'])->name('create');
+            Route::post('/',          [LppmController::class, 'store'])->name('store');
+            Route::get('{lppm}/edit', [LppmController::class, 'edit'])->name('edit');
+            Route::put('{lppm}',  [LppmController::class, 'update'])->name('update');
+            Route::delete('{lppm}', [LppmController::class, 'destroy'])->name('destroy');
+            Route::patch('{lppm}/toggle', [LppmController::class, 'toggle'])->name('toggle');
         });
 
         /*

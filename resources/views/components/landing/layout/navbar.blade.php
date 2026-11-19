@@ -57,8 +57,11 @@
                                         <div class="dd-fak-panel" id="{{ $fakId }}" hidden>
                                             <div class="dd-prodi-list">
                                                 @forelse($fak->prodis as $prodi)
-                                                    <a href="/{{ $slug }}/program-pendidikan#{{ $prodi->tandha ?? $prodi->id }}"
-                                                        class="dd-prodi">
+                                                    @php
+                                                        $prodiSlug = $prodi->tandha ?? $prodi->id;
+                                                        $prodiPath = "$slug/program-pendidikan/$prodiSlug";
+                                                    @endphp
+                                                    <a href="/{{ $prodiPath }}" @class(['dd-prodi', 'active' => request()->is($prodiPath)])>
                                                         <span class="dd-prodi-name">
                                                             @if ($prodi->undhak)
                                                                 <span
@@ -107,8 +110,12 @@
                                                     <div class="dd-fak-panel" id="{{ $fakId }}" hidden>
                                                         <div class="dd-prodi-list">
                                                             @forelse($fak->prodis as $prodi)
-                                                                <a href="/{{ $slug }}/{{ $s }}#{{ $prodi->tandha ?? $prodi->id }}"
-                                                                    class="dd-prodi">
+                                                                @php
+                                                                    $prodiSlug = $prodi->tandha ?? $prodi->id;
+                                                                    $prodiPath = "$slug/$s/$prodiSlug";
+                                                                @endphp
+                                                                <a href="/{{ $prodiPath }}"
+                                                                    @class(['dd-prodi', 'active' => request()->is($prodiPath)])>
                                                                     <span class="dd-prodi-name">
                                                                         @if ($prodi->undhak)
                                                                             <span

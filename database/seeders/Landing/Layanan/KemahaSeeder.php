@@ -9,11 +9,17 @@ class KemahaSeeder extends Seeder
 {
     public function run(): void
     {
+        Kemahasiswaan::withTrashed()
+            ->whereIn('judhul', ['Beasiswa Prestasi Akademik', 'Beasiswa KIP-Kuliah'])
+            ->forceDelete();
+
         $rows = [
             [
                 'judhul' => 'Biro Kemahasiswaan & Alumni',
                 'isi' => 'Biro yang mengelola layanan kemahasiswaan, beasiswa internal/eksternal, organisasi mahasiswa, dan hubungan alumni. Menyediakan layanan konsultasi mahasiswa setiap hari kerja.',
                 'data_tambahan' => [
+                    'ikon' => 'users',
+                    'warna' => 'blue',
                     'kontak' => '(021) 555-0201',
                     'email' => 'kemahasiswaan@tiarabunda.ac.id',
                     'lokasi' => 'Gedung Rektorat Lt. 1, Ruang 105',
@@ -26,6 +32,8 @@ class KemahaSeeder extends Seeder
                 'judhul' => 'Unit Kegiatan Mahasiswa (UKM) Olahraga',
                 'isi' => 'Wadah kegiatan olahraga mahasiswa: futsal, basket, voli, badminton, dan atletik. Latihan rutin setiap Selasa dan Kamis.',
                 'data_tambahan' => [
+                    'ikon' => 'star',
+                    'warna' => 'orange',
                     'kontak' => '0812-3456-7890',
                     'email' => 'ukm.olahraga@tiarabunda.ac.id',
                     'lokasi' => 'Gedung Olahraga Kampus A',
@@ -38,6 +46,8 @@ class KemahaSeeder extends Seeder
                 'judhul' => 'Unit Kegiatan Mahasiswa (UKM) Seni & Budaya',
                 'isi' => 'Mewadahi minat seni mahasiswa: paduan suara, tari tradisional, teater, dan band kampus. Terbuka untuk semua fakultas.',
                 'data_tambahan' => [
+                    'ikon' => 'star',
+                    'warna' => 'purple',
                     'kontak' => '0813-2233-4455',
                     'email' => 'ukm.seni@tiarabunda.ac.id',
                     'lokasi' => 'Gedung Student Center Lt. 2',
@@ -46,84 +56,84 @@ class KemahaSeeder extends Seeder
                 'urip' => true,
             ],
             [
-                'judhul' => 'Beasiswa Prestasi Akademik',
-                'isi' => 'Program beasiswa bagi mahasiswa berprestasi akademik dengan IPK minimal 3.50. Mencakup potongan UKT hingga 100% selama 2 semester.',
+                'judhul' => 'Informasi & Layanan Beasiswa',
+                'isi' => 'Fasilitasi dan pendampingan pengajuan berbagai program beasiswa internal maupun eksternal (beasiswa prestasi akademik, non-akademik, hingga KIP-Kuliah) bagi calon mahasiswa baru dan mahasiswa aktif.',
                 'data_tambahan' => [
+                    'tipe' => 'beasiswa',
+                    'ikon' => 'graduation-cap',
+                    'warna' => 'orange',
                     'kontak' => '(021) 555-0202',
                     'email' => 'beasiswa@tiarabunda.ac.id',
                     'lokasi' => 'Biro Kemahasiswaan, Gedung Rektorat Lt. 1',
-                    'url_portal' => 'https://tiarabunda.ac.id/beasiswa/prestasi',
                 ],
                 'urutan' => 4,
-                'urip' => true,
-            ],
-            [
-                'judhul' => 'Beasiswa KIP-Kuliah',
-                'isi' => 'Bantuan biaya pendidikan dari pemerintah bagi mahasiswa dari keluarga ekonomi kurang mampu. Pendaftaran dibuka setiap awal semester.',
-                'data_tambahan' => [
-                    'kontak' => '(021) 555-0203',
-                    'email' => 'kip@tiarabunda.ac.id',
-                    'lokasi' => 'Biro Kemahasiswaan, Gedung Rektorat Lt. 1',
-                    'url_portal' => 'https://kip-kuliah.kemdikbud.go.id',
-                ],
-                'urutan' => 5,
                 'urip' => true,
             ],
             [
                 'judhul' => 'Layanan Konseling Mahasiswa',
                 'isi' => 'Konsultasi psikologi gratis untuk mahasiswa yang mengalami stres akademik, masalah pribadi, atau kebutuhan pengembangan diri. Dijaga kerahasiaannya.',
                 'data_tambahan' => [
+                    'ikon' => 'heart',
+                    'warna' => 'red',
                     'kontak' => '0813-5566-7788',
                     'email' => 'konseling@tiarabunda.ac.id',
                     'lokasi' => 'Gedung Student Center Lt. 1, Ruang BK',
                     'url_portal' => 'https://tiarabunda.ac.id/konseling',
                 ],
-                'urutan' => 6,
+                'urutan' => 5,
                 'urip' => true,
             ],
             [
                 'judhul' => 'Badan Eksekutif Mahasiswa (BEM)',
                 'isi' => 'Organisasi mahasiswa tingkat universitas yang menaungi aspirasi mahasiswa dan kegiatan lintas fakultas. Sekretariat terbuka setiap hari kerja.',
                 'data_tambahan' => [
+                    'ikon' => 'users',
+                    'warna' => 'blue',
                     'kontak' => '0812-9988-7766',
                     'email' => 'bem@tiarabunda.ac.id',
                     'lokasi' => 'Gedung Student Center Lt. 3',
                     'url_portal' => 'https://tiarabunda.ac.id/bem',
                 ],
-                'urutan' => 7,
+                'urutan' => 6,
                 'urip' => true,
             ],
             [
                 'judhul' => 'Layanan Kesejahteraan Mahasiswa',
                 'isi' => 'Bantuan darurat bagi mahasiswa yang mengalami musibah, termasuk bantuan biaya hidup, konseling keluarga, dan pendampingan hukum ringan.',
                 'data_tambahan' => [
+                    'ikon' => 'heart',
+                    'warna' => 'green',
                     'kontak' => '(021) 555-0204',
                     'email' => 'kesejahteraan@tiarabunda.ac.id',
                     'lokasi' => 'Biro Kemahasiswaan, Gedung Rektorat Lt. 1',
                 ],
-                'urutan' => 8,
+                'urutan' => 7,
                 'urip' => true,
             ],
             [
                 'judhul' => 'Pusat Karier & Alumni',
                 'isi' => 'Layanan bimbingan karier, pelatihan CV & interview, job fair tahunan, dan tracer study alumni. Terbuka untuk mahasiswa semester akhir dan alumni.',
                 'data_tambahan' => [
+                    'ikon' => 'lightbulb',
+                    'warna' => 'green',
                     'kontak' => '(021) 555-0205',
                     'email' => 'karier@tiarabunda.ac.id',
                     'lokasi' => 'Gedung Student Center Lt. 2',
                     'url_portal' => 'https://karier.tiarabunda.ac.id',
                 ],
-                'urutan' => 9,
+                'urutan' => 8,
                 'urip' => true,
             ],
             [
                 'judhul' => 'Komunitas Mahasiswa Berprestasi',
                 'isi' => 'Komunitas bagi mahasiswa penerima beasiswa dan peraih prestasi nasional/internasional. Menyediakan mentoring dan networking.',
                 'data_tambahan' => [
+                    'ikon' => 'star',
+                    'warna' => 'purple',
                     'email' => 'prestasi@tiarabunda.ac.id',
                     'lokasi' => 'Gedung Student Center Lt. 3',
                 ],
-                'urutan' => 10,
+                'urutan' => 9,
                 'urip' => true,
             ],
         ];
@@ -135,7 +145,6 @@ class KemahaSeeder extends Seeder
             );
         }
 
-        // Contoh nonaktif (uji filter status)
         Kemahasiswaan::query()->updateOrCreate(
             ['judhul' => 'Kegiatan Mahasiswa 2022 (Arsip)'],
             [
@@ -150,7 +159,6 @@ class KemahaSeeder extends Seeder
             ]
         );
 
-        // Contoh soft-deleted (uji mode sampah)
         $trashed = Kemahasiswaan::query()->firstOrCreate(
             ['judhul' => 'UKM Lama (Dihapus)'],
             [

@@ -20,7 +20,7 @@ class InfoSeeder extends Seeder
         $data = [
             [
                 'k'      => 'PMB',
-                't'      => 'Pendaftaran Mahasiswa Baru Gelombang 1 Dibuka',
+                't'      => 'Pendaftaran Mahasiswa Baru Dibuka',
                 'd'      => 'Dapatkan potongan biaya pendaftaran bagi pendaftar awal. Tersedia jalur prestasi, reguler, dan beasiswa KIP Kuliah.',
                 'tgl'    => '2026-10-20',
                 'img'    => 'info/brosur-pmb-2026.webp',

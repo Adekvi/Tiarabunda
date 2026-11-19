@@ -11,8 +11,10 @@
 
         <x-landing.section.mitra />
 
-        {{-- Pimpinan --}}
-        <x-landing.section.sambutan :r="$home['pimpinan'] ?? null" />
+        {{-- Market --}}
+        <x-landing.section.market :fakultas="$home['fakultas_prodi']['fakultas'] ?? []" :prodi="$home['fakultas_prodi']['prodi'] ?? []" gambar="seed/fasilitas/fas5.webp" />
+
+        {{-- <x-landing.section.sambutan :r="$home['pimpinan'] ?? null" /> --}}
 
         <x-landing.section.alasan />
 

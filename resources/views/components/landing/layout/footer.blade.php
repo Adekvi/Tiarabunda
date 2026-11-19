@@ -1,4 +1,8 @@
-@props(['site' => config('landing.site')])
+@props([
+    'site' => config('landing.site'),
+    'menus' => config('landing.menus'),
+    'fakultas' => config('landing.home.fakultas', []),
+])
 
 @php
     $sosial = array_filter($site['sosial'] ?? [], fn($url) => filled($url));
@@ -136,13 +140,38 @@
             </div>
 
             {{-- Kolom menu --}}
-            @foreach ($site['footer'] ?? [] as $col)
-                <nav class="ft__col" aria-label="{{ $col[0] }}">
-                    <h4>{{ $col[0] }}</h4>
+            @foreach ($menus ?? [] as $menuKey => $menu)
+                <nav class="ft__col" aria-label="{{ $menu['t'] }}">
+                    <h4>{{ $menu['t'] }}</h4>
                     <ul>
-                        @foreach ($col[1] as $link)
-                            <li><a href="{{ $link[1] }}">{{ $link[0] }}</a></li>
-                        @endforeach
+                        @if ($menuKey === 'pendidikan')
+                            @foreach ($fakultas as $namaFakultas)
+                                <li>
+                                    <a
+                                        href="{{ route('landing.prodi', [
+                                            'menu' => 'pendidikan',
+                                            'sub' => 'program-pendidikan',
+                                            'prodi' => \Illuminate\Support\Str::slug($namaFakultas),
+                                        ]) }}">
+                                        Fakultas {{ $namaFakultas }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        @elseif (!empty($menu['subs']))
+                            @foreach ($menu['subs'] as $subKey => $sub)
+                                <li>
+                                    <a href="{{ route('landing.page', ['menu' => $menuKey, 'sub' => $subKey]) }}">
+                                        {{ $sub['t'] }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        @elseif (!empty($menu['link']))
+                            <li>
+                                <a href="{{ $menu['link'] }}" target="_blank" rel="noopener noreferrer">
+                                    Pendaftaran Mahasiswa Baru
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </nav>
             @endforeach

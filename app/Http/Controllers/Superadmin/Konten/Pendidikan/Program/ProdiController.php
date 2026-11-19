@@ -114,12 +114,18 @@ class ProdiController extends Controller
 
     public function edit(Prodi $prodi): View
     {
-        $prodi->load('akreditasis');
+        $prodi->load('akreditasi');
 
         return view('superadmin.konten.pendidikan.program.prodi.form', [
             'item' => $prodi,
             'fakultasList' => Fakultas::query()->ordered()->get(['id', 'jeneng']),
-            'akreditasiList' => Akreditasi::query()->where('bagean', 'prodi')->where('urip', true)->ordered()->get(),
+            'akreditasiList' => Akreditasi::query()
+                ->where('bagean', 'prodi')
+                ->where(fn($q) => $q
+                    ->where('urip', true)
+                    ->orWhere('id', $prodi->akreditasi_id))
+                ->ordered()
+                ->get(),
         ]);
     }
 

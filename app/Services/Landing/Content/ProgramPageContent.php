@@ -13,28 +13,32 @@ class ProgramPageContent implements PageContentInterface
     {
         $program = $this->programService->forPage();
 
-        // Fallback demo jika kosong
         if ($program->isEmpty()) {
             $program = $this->demoProgram();
         }
 
         $selectedProdi = null;
 
-        // Cari detail prodi berdasarkan slug URL
         if ($prodiSlug) {
-            foreach ($program as $fak) {
-                $found = collect(data_get($fak, 'activeProdis', data_get($fak, 'prodis', [])))
-                    ->firstWhere('tandha', $prodiSlug);
+            $matchedFakultas = $program->firstWhere('tandha', $prodiSlug);
 
-                if ($found) {
-                    // Clone agar tidak mengubah original collection
-                    $selectedProdi = clone $found;
-                    $selectedProdi->fakultas_jeneng = data_get($fak, 'jeneng');
-                    $selectedProdi->fakultas_kodhe = data_get($fak, 'kodhe');
-                    break;
+            if ($matchedFakultas) {
+                $program = collect([$matchedFakultas]);
+            } else {
+                foreach ($program as $fak) {
+                    $found = collect(data_get($fak, 'activeProdis', data_get($fak, 'prodis', [])))
+                        ->firstWhere('tandha', $prodiSlug);
+
+                    if ($found) {
+                        $selectedProdi = clone $found;
+                        $selectedProdi->fakultas_jeneng = data_get($fak, 'jeneng');
+                        $selectedProdi->fakultas_kodhe = data_get($fak, 'kodhe');
+                        break;
+                    }
                 }
+
+                abort_if($selectedProdi === null, 404, 'Program studi tidak ditemukan.');
             }
-            abort_if($selectedProdi === null, 404, 'Program studi tidak ditemukan.');
         }
 
         return [

@@ -48,9 +48,20 @@ return [
                     'active' => 'superadmin.visimisi.*',
                 ],
                 [
-                    'label' => 'Sambutan',
+                    'label' => 'Sambutan rektor',
                     'route' => 'superadmin.pimpinan.index',
                     'active' => 'superadmin.pimpinan.*',
+                ],
+                [
+                    'label' => 'Struktur Organisasi',
+                    'route' => 'superadmin.struktur.index',
+                    'active' => 'superadmin.struktur.*',
+                ],
+
+                [
+                    'label' => 'Akreditasi',
+                    'route' => 'superadmin.akreditasi.index',
+                    'active' => 'superadmin.akreditasi.*',
                 ],
             ],
         ],
@@ -71,19 +82,9 @@ return [
                     'active' => 'superadmin.prodi.*',
                 ],
                 [
-                    'label' => 'PMB',
-                    'route' => 'superadmin.pmb.index',
-                    'active' => 'superadmin.pmb.*',
-                ],
-                [
                     'label' => 'Beasiswa',
                     'route' => 'superadmin.beasiswa.index',
                     'active' => 'superadmin.beasiswa.*',
-                ],
-                [
-                    'label' => 'Akreditasi',
-                    'route' => 'superadmin.akreditasi.index',
-                    'active' => 'superadmin.akreditasi.*',
                 ],
             ],
         ],
@@ -112,6 +113,18 @@ return [
                     'label' => 'Fasilitas',
                     'route' => 'superadmin.fasilitas.index',
                     'active' => 'superadmin.fasilitas.*',
+                ],
+            ],
+        ],
+        [
+            'type' => 'group',
+            'label' => 'LPPM',
+            'icon' => 'book',
+            'children' => [
+                [
+                    'label' => 'Program & Layanan LPPM',
+                    'route' => 'superadmin.lppm.index',
+                    'active' => 'superadmin.lppm.*',
                 ],
             ],
         ],

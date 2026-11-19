@@ -12,6 +12,7 @@ use Database\Seeders\Landing\InfoSeeder;
 use Database\Seeders\Landing\Layanan\FasilitasSeeder;
 use Database\Seeders\Landing\Layanan\KemahaSeeder;
 use Database\Seeders\Landing\Layanan\PerpusSeeder;
+use Database\Seeders\Landing\Lembaga\LppmSeeder;
 use Database\Seeders\Landing\Pendidikan\AkreditasiSeeder;
 use Database\Seeders\Landing\Pendidikan\BeasiswaSeeder;
 use Database\Seeders\Landing\Pendidikan\FakultasSeeder;
@@ -53,6 +54,9 @@ class DatabaseSeeder extends Seeder
             FasilitasSeeder::class,
             PerpusSeeder::class,
             KemahaSeeder::class,
+
+            // Landing lembaga
+            LppmSeeder::class,
 
             // Landing Informasi
             BeritaSeeder::class,

@@ -4,27 +4,56 @@ namespace App\Services\Landing\Content;
 
 use App\Services\Landing\Contracts\PageContentInterface;
 use App\Services\Landing\Layanan\KemahaService;
+use App\Services\Landing\Pendidikan\BeasiswaService;
+use Illuminate\Support\Str;
 
 class KemahaPageContent implements PageContentInterface
 {
-    public function __construct(private KemahaService $kemahasiswaanService) {}
+    public function __construct(
+        private KemahaService $kemahasiswaanService,
+        private BeasiswaService $beasiswaService
+    ) {}
 
     public function getData(?string $slug = null): array
     {
         $kemahasiswaan = $this->kemahasiswaanService->forPage();
-
-        // Fallback demo jika kosong
         if ($kemahasiswaan->isEmpty()) {
             $kemahasiswaan = $this->demoKemahasiswaan();
         }
 
-        // Ambil 1 item pertama untuk banner/highlight
-        $highlight = $kemahasiswaan->first();
-        $items     = $kemahasiswaan->slice(1)->values();
+        $beasiswa = $this->beasiswaService->forPage();
+        if ($beasiswa->isEmpty()) {
+            $beasiswa = $this->demoBeasiswa();
+        }
+
+        $selectedKemahasiswaan = null;
+        $showBeasiswaList = false;
+        $selectedBeasiswa = null;
+
+        if ($slug) {
+            if ($slug === 'beasiswa') {
+                $showBeasiswaList = true;
+            } elseif (Str::startsWith($slug, 'beasiswa/')) {
+                $beasiswaSlug = Str::after($slug, 'beasiswa/');
+                $selectedBeasiswa = $beasiswa->firstWhere('tandha', $beasiswaSlug)
+                    ?? $this->beasiswaService->findBySlug($beasiswaSlug);
+
+                abort_if($selectedBeasiswa === null, 404, 'Program beasiswa tidak ditemukan.');
+            } else {
+                $selectedKemahasiswaan = $kemahasiswaan->firstWhere('tandha', $slug);
+
+                abort_if($selectedKemahasiswaan === null, 404, 'Informasi kemahasiswaan tidak ditemukan.');
+            }
+        }
 
         return [
-            'kemahasiswaanHighlight' => $highlight,
-            'kemahasiswaanItems'     => $items,
+            'kemahasiswaanHighlight'       => $kemahasiswaan->first(),
+            'kemahasiswaanItems'           => $kemahasiswaan->slice(1)->values(),
+            'kemahasiswaanBeasiswaInfo'    => $kemahasiswaan->firstWhere('is_beasiswa', true),
+            'selectedKemahasiswaan'        => $selectedKemahasiswaan,
+            'showKemahasiswaanBeasiswa'    => $showBeasiswaList,
+            'kemahasiswaanBeasiswaList'    => $beasiswa,
+            'selectedKemahasiswaanBeasiswa' => $selectedBeasiswa,
         ];
     }
 
@@ -32,24 +61,38 @@ class KemahaPageContent implements PageContentInterface
     {
         return collect([
             (object) [
-                'judhul' => 'Badan Eksekutif Mahasiswa (BEM)',
-                'isi'    => '<p>BEM adalah lembaga tertinggi kemahasiswaan di tingkat universitas yang berfungsi sebagai wadah aspirasi dan penggerak kegiatan mahasiswa.</p>',
+                'judhul'        => 'Biro Kemahasiswaan & Alumni',
+                'tandha'        => 'biro-kemahasiswaan-alumni',
+                'is_beasiswa'   => false,
+                'isi'           => '<p>Biro yang mengelola layanan kemahasiswaan, beasiswa internal/eksternal, organisasi mahasiswa, dan hubungan alumni.</p>',
                 'data_tambahan' => ['ikon' => 'users', 'warna' => 'blue'],
             ],
             (object) [
-                'judhul' => 'Unit Kegiatan Mahasiswa (UKM)',
-                'isi'    => '<ul><li>UKM Olahraga (Futsal, Basket, Voli)</li><li>UKM Seni (Paduan Suara, Tari Tradisional)</li><li>UKM Penalaran (Debat, Karya Tulis Ilmiah)</li><li>UKM Keagamaan</li></ul>',
-                'data_tambahan' => ['ikon' => 'star', 'warna' => 'orange'],
+                'judhul'        => 'Informasi & Layanan Beasiswa',
+                'tandha'        => 'beasiswa',
+                'is_beasiswa'   => true,
+                'isi'           => '<p>Fasilitasi dan pendampingan pengajuan berbagai program beasiswa internal maupun eksternal bagi mahasiswa.</p>',
+                'data_tambahan' => ['tipe' => 'beasiswa', 'ikon' => 'graduation-cap', 'warna' => 'orange'],
+            ],
+        ]);
+    }
+
+    private function demoBeasiswa()
+    {
+        return collect([
+            (object) [
+                'jeneng'    => 'Beasiswa Prestasi Akademik',
+                'tandha'    => 'beasiswa-prestasi',
+                'katrangan' => '<p>Beasiswa yang diberikan kepada calon mahasiswa baru dengan nilai rapor semester 1-5 yang sangat memuaskan.</p>',
+                'syarat'    => '<ul><li>Nilai rapor rata-rata minimal 85</li><li>Memiliki sertifikat kejuaraan minimal tingkat kabupaten</li><li>Mengisi formulir pendaftaran beasiswa</li></ul>',
+                'jangkepan' => 'Potongan UKT 100% selama 1 semester (dapat diperpanjang dengan syarat IPK).',
             ],
             (object) [
-                'judhul' => 'Program Kreativitas Mahasiswa',
-                'isi'    => '<p>Wadah bagi mahasiswa untuk mengembangkan ide kreatif dan inovatif melalui penelitian, pengabdian masyarakat, dan kewirausahaan.</p>',
-                'data_tambahan' => ['ikon' => 'lightbulb', 'warna' => 'green'],
-            ],
-            (object) [
-                'judhul' => 'Layanan Bimbingan Konseling',
-                'isi'    => '<p>Layanan psikologis dan konseling gratis untuk membantu mahasiswa mengatasi masalah pribadi, akademik, maupun sosial.</p>',
-                'data_tambahan' => ['ikon' => 'heart', 'warna' => 'red'],
+                'jeneng'    => 'Beasiswa KIP Kuliah',
+                'tandha'    => 'kip-kuliah',
+                'katrangan' => '<p>Bantuan biaya pendidikan dari pemerintah bagi mahasiswa dari keluarga ekonomi kurang mampu.</p>',
+                'syarat'    => '<ul><li>Memiliki Kartu Indonesia Pintar (KIP) yang aktif</li><li>Lolos seleksi verifikasi ekonomi</li><li>Tidak sedang menerima beasiswa lain</li></ul>',
+                'jangkepan' => 'Bebas biaya kuliah (UKT) dan bantuan biaya hidup bulanan dari pemerintah.',
             ],
         ]);
     }

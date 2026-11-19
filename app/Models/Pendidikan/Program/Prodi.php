@@ -8,7 +8,7 @@ use App\Models\Concerns\HasUrutan;
 use App\Models\Pendidikan\Akreditasi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+// use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Prodi extends Model
@@ -44,11 +44,11 @@ class Prodi extends Model
         return $this->belongsTo(Akreditasi::class);
     }
 
-    // Opsional: hanya mengambil akreditasi yang aktif
-    public function activeAkreditasis(): HasMany
-    {
-        return $this->hasMany(Akreditasi::class)
-            ->where('urip', true)
-            ->ordered();
-    }
+    // // Opsional: hanya mengambil akreditasi yang aktif
+    // public function activeAkreditasis(): HasMany
+    // {
+    //     return $this->hasMany(Akreditasi::class)
+    //         ->where('urip', true)
+    //         ->ordered();
+    // }
 }

@@ -36,7 +36,6 @@ class LandingController extends Controller
 
     public function page(Request $request, string $menu, string $sub, ?string $prodi = null): View
     {
-        $prodiSlug = $prodi;
         $pageModel = app(MenuService::class)->findPage($menu, $sub);
 
         if ($pageModel !== null) {
@@ -63,7 +62,6 @@ class LandingController extends Controller
                 ],
             ];
         } else {
-            // Fallback config
             $cfg = config("landing.menus.$menu.subs.$sub");
             abort_unless(is_array($cfg), 404);
 
@@ -88,7 +86,7 @@ class LandingController extends Controller
             ];
         }
 
-        $contentData = PageContentFactory::make($sub)?->getData($prodiSlug) ?? [];
+        $contentData = PageContentFactory::make($sub)?->getData($prodi) ?? [];
 
         return view('landing.page', array_merge($pageData, $contentData));
     }

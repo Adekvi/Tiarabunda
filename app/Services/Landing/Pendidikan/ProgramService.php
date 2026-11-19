@@ -16,7 +16,6 @@ class ProgramService
      */
     public function forPage(): Collection
     {
-        // 1. Ambil dari cache dalam bentuk Array (bukan Model)
         $data = Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
             return Fakultas::query()
                 ->active()
@@ -37,10 +36,51 @@ class ProgramService
                     'activeProdis.akreditasi:id,jeneng,status_akred,bagean,path_gambar,urip',
                 ])
                 ->get()
-                ->toArray();
+                ->map(function ($fak) {
+                    return [
+                        'id'           => $fak->id,
+                        'jeneng'       => $fak->jeneng,
+                        'tandha'       => $fak->tandha,
+                        'kodhe'        => $fak->kodhe,
+                        'katrangan'    => $fak->katrangan,
+                        'urutan'       => $fak->urutan,
+                        'urip'         => $fak->urip,
+                        'activeProdis' => $fak->activeProdis->map(function ($prodi) {
+                            return [
+                                'id'            => $prodi->id,
+                                'fakultas_id'   => $prodi->fakultas_id,
+                                'akreditasi_id' => $prodi->akreditasi_id,
+                                'jeneng'        => $prodi->jeneng,
+                                'tandha'        => $prodi->tandha,
+                                'undhak'        => $prodi->undhak,
+                                'katrangan'     => $prodi->katrangan,
+                                'urutan'        => $prodi->urutan,
+                                'urip'          => $prodi->urip,
+                                'akreditasi'    => ($prodi->akreditasi && $prodi->akreditasi->urip) ? [
+                                    'id'           => $prodi->akreditasi->id,
+                                    'jeneng'       => $prodi->akreditasi->jeneng,
+                                    'status_akred' => $prodi->akreditasi->status_akred,
+                                    'bagean'       => $prodi->akreditasi->bagean,
+                                    'gambar_url'   => $prodi->akreditasi->gambar_url,
+                                ] : null,
+                            ];
+                        })->values()->all(),
+                    ];
+                })
+                ->values()
+                ->all();
         });
 
-        return collect($data)->map(fn($item) => (object) $item);
+        return collect($data)->map(function ($item) {
+            $item['activeProdis'] = collect($item['activeProdis'] ?? [])->map(function ($p) {
+                if (! empty($p['akreditasi'])) {
+                    $p['akreditasi'] = (object) $p['akreditasi'];
+                }
+                return (object) $p;
+            });
+
+            return (object) $item;
+        });
     }
 
     /**

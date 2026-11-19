@@ -9,7 +9,7 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/cari', [LandingController::class, 'search'])->name('landing.search');
 
 Route::get('/{menu}/{sub}/{prodi}', [LandingController::class, 'page'])
-    ->where(['menu' => $menus, 'sub' => '.*', 'prodi' => '.*'])
+    ->where(['menu' => $menus, 'sub' => '[^/]+', 'prodi' => '.*'])
     ->name('landing.prodi');
 
 Route::get('/{menu}/{sub}', [LandingController::class, 'page'])
@@ -34,3 +34,6 @@ Route::redirect('/pendidikan/beasiswa', '/layanan/kemahasiswaan', 301);
 
 Route::redirect('/fakultas', '/pendidikan/program-pendidikan', 301);
 Route::redirect('/dokumen', '/layanan/dokumen', 301);
+
+Route::redirect('/lppm', '/lembaga/lppm', 301);
+Route::redirect('/lembaga/lembaga', '/lembaga/lppm', 301);

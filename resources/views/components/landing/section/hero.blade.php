@@ -27,7 +27,6 @@
 
 <section class="hero {{ $hasMedia ? 'has-media' : '' }}" id="top">
 
-    {{-- BACKGROUND MEDIA --}}
     @if ($hasMedia)
         @if ($d['tipe'] === 'video')
             <video class="hero-bg" autoplay loop muted playsinline preload="auto" webkit-playsinline
@@ -41,8 +40,6 @@
     @endif
 
     <div class="wrap hero-in">
-        {{-- Teks Hero --}}
-        {{-- PERUBAHAN: Tambahkan class text-light agar teks tetap putih dan terbaca di atas overlay --}}
         <div class="hero-t {{ $hasMedia ? 'text-light' : '' }}">
             <p class="tick" aria-live="off">
                 <span class="dot"></span>
@@ -56,37 +53,65 @@
             @endif
 
             <div class="row">
-                <a class="btn" href="{{ $d['btn1_link'] }}">{{ $d['btn1_teks'] }}</a>
+                <a class="btn" href="{{ $d['btn1_link'] }}" target="_blank">{{ $d['btn1_teks'] }}</a>
                 <a class="btn ghost {{ $hasMedia ? 'w' : '' }}" href="{{ $d['btn2_link'] }}">
                     {{ $d['btn2_teks'] }} <x-landing.ui.arrow />
                 </a>
             </div>
         </div>
 
-        {{-- Visual Animasi (TETAP MUNCUL, baik ada media maupun tidak) --}}
-        {{-- <div class="hero-v" aria-hidden="true">
-            <div class="arch">
-                <div class="sun"></div>
-                <div class="hill"></div>
-            </div>
-            <span class="chip c1">Praktik di laboratorium</span>
-            <span class="chip c2">Magang industri</span>
-            <span class="chip c3">Kelas pagi &amp; sore</span>
-        </div> --}}
+        <div class="hero-action-group">
 
-        <form class="hero-pmb" id="pmb" novalidate>
-            <div class="hero-pmb__head">
-                <h2>Mulai pendaftaran</h2>
-                <p>Masukkan email aktif untuk membuat akun PMB.</p>
-            </div>
+            <a href="https://poltektiarabunda.pmbonline.siakad.tech/register" target="_blank" rel="noopener noreferrer"
+                class="hero-cta-card hero-cta-card--primary">
+                <div class="hero-cta__icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                </div>
+                <div class="hero-cta__text">
+                    <h2>Buat Akun Pendaftaran</h2>
+                    <p>Sistem PMB Terintegrasi</p>
+                </div>
+                <div class="hero-cta__arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
 
-            <div class="hero-pmb__row">
-                <label for="em" class="sr">Email</label>
-                <input id="em" type="email" placeholder="nama@email.com" autocomplete="email" required>
-                <button class="btn" type="submit">Buat akun PMB</button>
-            </div>
+            <a href="https://forms.gle/eDmoP7SdmJyS1YxD6" target="_blank" rel="noopener noreferrer"
+                class="hero-cta-card hero-cta-card--secondary">
+                <div class="hero-cta__icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <div class="hero-cta__text">
+                    <h2>Isi Formulir Bantuan</h2>
+                    <p>Layanan Google Form</p>
+                </div>
+                <div class="hero-cta__arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
 
-            <p class="hero-pmb__msg" id="msg" role="status"></p>
-        </form>
+        </div>
+
     </div>
 </section>

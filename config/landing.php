@@ -15,22 +15,24 @@ return [
             ['Portal', '#'],
         ],
 
-        // Kolom menu footer — selaras menus/landing
         'footer' => [
+            [
+                'Pendaftaran Mahasiswa Baru',
+            ],
             [
                 'Tentang Kami',
                 [
                     ['Sejarah', '/profil/sejarah'],
                     ['Visi & Misi', '/profil/visi-misi'],
+                    ['Sambutan rektor', '/profil/sambutan'],
+                    ['Struktur Organisasi', '/profil/struktur'],
+                    ['Akreditasi', '/pendidikan/akreditasi'],
                 ],
             ],
             [
                 'Pendidikan',
                 [
                     ['Program Pendidikan', '/pendidikan/program-pendidikan'],
-                    ['Penerimaan Mahasiswa Baru', '/pendidikan/penerimaan-mahasiswa-baru'],
-                    ['Beasiswa', '/pendidikan/beasiswa'],
-                    ['Akreditasi', '/pendidikan/akreditasi'],
                 ],
             ],
             [
@@ -43,6 +45,12 @@ return [
                 ],
             ],
             [
+                'Lembaga',
+                [
+                    ['LPPM', '/lembaga/lppm'],
+                ],
+            ],
+            [
                 'Informasi',
                 [
                     ['Berita Terbaru', '/informasi/berita-terbaru'],
@@ -52,13 +60,12 @@ return [
             ],
         ],
 
-        // Media sosial — kosongkan string jika belum ada URL
         'sosial' => [
             'youtube'  => 'https://www.youtube.com/@tiarabunda3025',
             'facebook' => 'https://www.facebook.com/PoliteknikTiaraBunda/',
-            'tiktok'   => 'https://www.tiktok.com/politekniktiarabunda/',
+            'tiktok'   => 'https://www.tiktok.com/@universitastiarabunda?lang=id-ID',
             'linktree' => 'https://linktr.ee/politekniktiarabunda',
-            'instagram' => 'https://www.instagram.com/politekniktiarabunda/'
+            'instagram' => 'https://www.instagram.com/universitastiarabunda/'
         ],
 
         'pmb' => '/pendidikan/penerimaan-mahasiswa-baru',
@@ -199,15 +206,14 @@ return [
             ]],
         ]],
         'lembaga' => ['t' => 'Lembaga', 'subs' => [
-            'lembaga' => [
+            'lppm' => [
                 't' => 'LPPM',
-                'sub' => 'Lembaga Penelitian dan Pengabdian kepada Masyarakat',
+                'sub' => 'Lembaga Penelitian dan Pengabdian kepada Masyarakat.',
                 'blocks' => [
                     [
-                        'type' => 'text',
-                        'isi' => ['Jam layanan dan koleksi.']
+                        'type' => 'lppm',
                     ],
-                ]
+                ],
             ],
         ]],
         'informasi' => ['t' => 'Informasi', 'subs' => [
@@ -269,89 +275,110 @@ return [
         ],
         'fakultas' => ['Ilmu Kesehatan', 'Keguruan dan Ilmu Pendidikan', 'Ilmu Komputer', 'Ekonomi Bisnis'],
         'prodi' => [
+            // ===== Fakultas Ilmu Kesehatan =====
             [
                 'nama' => 'Farmasi',
                 'jenjang' => 'D3',
                 'gelar' => 'A.Md.Farm',
-                'fakultas' => 0
+                'fakultas' => 0,
+                'tema' => 'stabilo'
             ],
             [
                 'nama' => 'Kebidanan',
                 'jenjang' => 'D3',
                 'gelar' => 'A.Md.Keb',
-                'fakultas' => 0
+                'fakultas' => 0,
+                'tema' => 'biru'
             ],
             [
                 'nama' => 'Keperawatan Bidan Anestesiologi',
                 'jenjang' => 'D4',
                 'gelar' => 'S.Tr.Kes',
-                'fakultas' => 0
+                'fakultas' => 0,
+                'tema' => 'hijau-tua'
             ],
             [
                 'nama' => 'Kebidanan',
                 'jenjang' => 'D4',
                 'gelar' => 'S.Tr.Keb',
-                'fakultas' => 0
+                'fakultas' => 0,
+                'tema' => 'biru-muda'
             ],
             [
                 'nama' => 'Pendidikan Profesi Bidan',
                 'jenjang' => '',
                 'gelar' => 'Bdn',
-                'fakultas' => 0
+                'fakultas' => 0,
+                'tema' => 'marun'
             ],
+
+            // ===== Fakultas Keguruan dan Ilmu Pendidikan =====
             [
                 'nama' => 'Pendidikan Guru PAUD',
                 'jenjang' => 'D3',
                 'gelar' => 'S.Pd',
-                'fakultas' => 1
+                'fakultas' => 1,
+                'tema' => 'mawar'
             ],
             [
                 'nama' => 'Pendidikan Guru Sekolah Dasar (PGSD)',
                 'jenjang' => 'D3',
                 'gelar' => 'S.Pd',
-                'fakultas' => 1
+                'fakultas' => 1,
+                'tema' => 'amber'
             ],
+
+            // ===== Fakultas Ilmu Komputer =====
             [
                 'nama' => 'Teknologi Perangkat Lunak',
                 'jenjang' => 'D4',
                 'gelar' => 'S.Tr.Kom',
-                'fakultas' => 2
+                'fakultas' => 2,
+                'tema' => 'indigo'
             ],
             [
                 'nama' => 'Sistem Informasi',
                 'jenjang' => 'S1',
                 'gelar' => 'S.Kom',
-                'fakultas' => 2
+                'fakultas' => 2,
+                'tema' => 'teal'
             ],
             [
                 'nama' => 'Kecerdasan Buatan',
                 'jenjang' => 'S1',
                 'gelar' => 'S.Kom',
-                'fakultas' => 2
+                'fakultas' => 2,
+                'tema' => 'violet'
             ],
             [
                 'nama' => 'Ilmu Komputer',
                 'jenjang' => 'S1',
                 'gelar' => 'S.Kom',
-                'fakultas' => 2
+                'fakultas' => 2,
+                'tema' => 'slate'
             ],
+
+            // ===== Fakultas Ekonomi Bisnis =====
             [
                 'nama' => 'Logistik Bisnis',
                 'jenjang' => 'D4',
                 'gelar' => 'S.Tr.Log',
-                'fakultas' => 3
+                'fakultas' => 3,
+                'tema' => 'terakota'
             ],
             [
                 'nama' => 'Bisnis Digital',
                 'jenjang' => 'D4',
                 'gelar' => 'S.Tr.Bns',
-                'fakultas' => 3
+                'fakultas' => 3,
+                'tema' => 'anggrek'
             ],
             [
                 'nama' => 'Manajemen',
                 'jenjang' => 'S1',
                 'gelar' => 'S.M',
-                'fakultas' => 3
+                'fakultas' => 3,
+                'tema' => 'taupe'
             ],
         ],
         'fasilitas' => [

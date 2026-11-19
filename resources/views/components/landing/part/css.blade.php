@@ -3,6 +3,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
     href="{{ asset('landing/assets/css/style.css') }}?v={{ filemtime(public_path('landing/assets/css/style.css')) }}">
@@ -39,6 +40,9 @@
 {{-- Fasilitas --}}
 <link rel="stylesheet"
     href="{{ asset('landing/menu/layanan/fasilitas/fasi.css') }}?v={{ @filemtime(public_path('landing/menu/layanan/fasilitas/fasi.css')) ?: '1' }}">
+{{-- Lppm --}}
+<link rel="stylesheet"
+    href="{{ asset('landing/menu/lembaga/lppm/lppm.css') }}?v={{ @filemtime(public_path('landing/menu/lembaga/lppm/lppm.css')) ?: '1' }}">
 {{-- Informasi --}}
 <link rel="stylesheet"
     href="{{ asset('landing/menu/informasi/berita/berita.css') }}?v={{ @filemtime(public_path('landing/menu/informasi/berita/berita.css')) ?: '1' }}">
