@@ -130,6 +130,8 @@ class FasilitasController extends Controller
     public function update(FasilitasRequest $request, Fasilitas $fasilita): RedirectResponse
     {
         $data = $request->validated();
+        $oldPaths = [];
+        $newPaths = [];
 
         if ($request->hasFile('path_gambar')) {
             $file = $request->file('path_gambar');
@@ -150,13 +152,13 @@ class FasilitasController extends Controller
                     ->withErrors(['path_gambar' => 'Gagal memproses gambar: ' . $e->getMessage()]);
             }
 
-            // Simpan yang baru dulu, baru hapus yang lama
-            $this->images->delete($fasilita->path_gambar, $fasilita->path_thumb);
+            $oldPaths = [$fasilita->path_gambar, $fasilita->path_thumb];
+            $newPaths = [$stored['path'], $stored['thumb']];
 
             $data['path_gambar'] = $stored['path'];
             $data['path_thumb']  = $stored['thumb'];
         } elseif ($request->boolean('hapus_gambar')) {
-            $this->images->delete($fasilita->path_gambar, $fasilita->path_thumb);
+            $oldPaths = [$fasilita->path_gambar, $fasilita->path_thumb];
             $data['path_gambar'] = null;
             $data['path_thumb']  = null;
         }
@@ -164,10 +166,14 @@ class FasilitasController extends Controller
         try {
             $fasilita->update($data);
         } catch (\Throwable $e) {
+            $this->images->delete(...$newPaths);
+
             Log::error('Gagal update fasilitas', ['id' => $fasilita->id, 'error' => $e->getMessage()]);
             return back()->withInput()
                 ->withErrors(['jeneng' => 'Gagal menyimpan perubahan. Coba lagi.']);
         }
+
+        $this->images->delete(...$oldPaths);
 
         return redirect()
             ->route('superadmin.fasilitas.index')

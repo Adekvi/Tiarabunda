@@ -60,7 +60,6 @@ class MenuService
         });
     }
 
-
     public function getNavFakultas(): Collection
     {
         return Cache::remember('landing.nav.fakultas.v2', self::CACHE_TTL, function () {

@@ -223,7 +223,7 @@
     color: #c05f0a;
 }
 
-[data-theme='dark'] .sej-tag--soon {
+[data-theme="dark"] .sej-tag--soon {
     color: var(--acc);
 }
 
@@ -244,7 +244,7 @@
     font-weight: 700;
 }
 
-[data-theme='dark'] .sej-time--soon {
+[data-theme="dark"] .sej-time--soon {
     color: var(--acc);
 }
 
@@ -307,7 +307,7 @@
     color: #c05f0a;
 }
 
-[data-theme='dark'] .sej-tag--soon {
+[data-theme="dark"] .sej-tag--soon {
     color: var(--acc);
 }
 
@@ -330,7 +330,7 @@
     font-weight: 700;
 }
 
-[data-theme='dark'] .sej-time--soon {
+[data-theme="dark"] .sej-time--soon {
     color: var(--acc);
 }
 
@@ -683,7 +683,7 @@
     --tint: var(--hov);
 }
 
-[data-theme='dark'] .is-soon {
+[data-theme="dark"] .is-soon {
     --tone: var(--acc);
 }
 
@@ -895,7 +895,7 @@
     color: var(--err);
 }
 
-.cmodal[data-type='restore'] .cmodal__ico {
+.cmodal[data-type="restore"] .cmodal__ico {
     background: var(--ok-t);
     color: var(--ok);
 }
@@ -920,13 +920,13 @@
     gap: 10px;
 }
 
-.cmodal[data-type='danger'] #cmConfirm {
+.cmodal[data-type="danger"] #cmConfirm {
     background: var(--err);
     border-color: var(--err);
     color: #fff;
 }
 
-.cmodal[data-type='danger'] #cmConfirm:hover {
+.cmodal[data-type="danger"] #cmConfirm:hover {
     background: color-mix(in srgb, var(--err) 85%, black);
 }
 

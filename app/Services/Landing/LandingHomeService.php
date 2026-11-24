@@ -8,6 +8,7 @@ use App\Models\Landing\Hero;
 use App\Models\Landing\Info;
 use App\Models\Layanan\Fasilitas;
 use App\Models\Layanan\Perpus;
+use App\Models\Pendidikan\Beasiswa;
 use App\Models\Pendidikan\Pmb;
 use App\Models\Pendidikan\Program\Fakultas;
 use App\Models\Pendidikan\Program\Prodi;
@@ -23,70 +24,131 @@ class LandingHomeService
     public function forHome(): array
     {
         return [
-            'hero'           => $this->hero(),
-            'info'           => $this->info(),
-            'pimpinan'       => $this->pimpinan(),
-            'fakultas_prodi'   => $this->fakultasProdi(),
-            'jalur'          => $this->jalurPmb(),
-            'fasilitas' => $this->fasilitas(),
-            'perpus'         => $this->perpus(),
-            'berita' => $this->beritas(),
-            'faq' => $this->faqs(),
+            'hero'               => $this->hero(),
+            'info'               => $this->info(),
+            'pimpinan'           => $this->pimpinan(),
+            'fakultas_prodi'     => $this->fakultasProdi(),
+            'jalur'              => $this->jalurPmb(),
+            'beasiswa'           => $this->beasiswa(),
+            'fasilitas'          => $this->fasilitas(),
+            'perpus'             => $this->perpus(),
+            'berita'             => $this->beritas(),
+            'faq'                => $this->faqs(),
         ];
     }
 
     public function hero(): array
     {
-        // 1. Simpan sebagai ARRAY di cache, bukan object Model
         $data = Cache::remember('landing.home.hero', self::TTL, function () {
-            $row = Hero::query()->where('urip', true)->first();
+            $row = Hero::with('activeMedias')
+                ->where('urip', true)
+                ->first();
 
             if (! $row) {
                 return null;
             }
 
-            // Konversi ke array di dalam cache closure
+            $videoItem = null;
+            $fotoItems = [];
+
+            foreach ($row->activeMedias as $media) {
+                if ($media->tipe === 'video') {
+                    // Ambil maksimal 1 video utama untuk posisi paling depan
+                    if ($videoItem === null) {
+                        $videoItem = [
+                            'tipe'        => 'video',
+                            'media_path'  => $media->path_media,
+                            'poster_path' => $media->path_poster,
+                        ];
+                    }
+                } elseif ($media->tipe === 'gambar') {
+                    $fotoItems[] = [
+                        'tipe'        => 'gambar',
+                        'media_path'  => $media->path_media,
+                        'poster_path' => null,
+                    ];
+                }
+            }
+
+            // Fallback ke kolom tabel heroes jika relasi heromedia masih kosong
+            if ($videoItem === null && empty($fotoItems) && in_array($row->tipe_media, ['video', 'gambar'], true) && ! empty($row->path_media)) {
+                $fallback = [
+                    'tipe'        => $row->tipe_media,
+                    'media_path'  => $row->path_media,
+                    'poster_path' => $row->tipe_media === 'video' ? $row->path_poster : null,
+                ];
+
+                if ($row->tipe_media === 'video') {
+                    $videoItem = $fallback;
+                } else {
+                    $fotoItems[] = $fallback;
+                }
+            }
+
+            $mediaItems = array_merge(
+                $videoItem ? [$videoItem] : [],
+                $fotoItems
+            );
+
             return [
-                'judul'     => $row->judul,
-                'sub_judul' => $row->sub_judul,
-                'btn1_teks' => $row->teks_tombol_1,
-                'btn1_link' => $row->link_tombol_1,
-                'btn2_teks' => $row->teks_tombol_2,
-                'btn2_link' => $row->link_tombol_2,
-                'tipe'      => $row->tipe_media,
-                'media_path' => $row->path_media,
-                'poster_path' => $row->path_poster,
+                'judul'         => $row->judul,
+                'sub_judul'     => $row->sub_judul,
+                'btn1_teks'     => $row->teks_tombol_1,
+                'btn1_link'     => $row->link_tombol_1,
+                'btn2_teks'     => $row->teks_tombol_2,
+                'btn2_link'     => $row->link_tombol_2,
+                'durasi_slider' => $row->durasi_slider ?? 6,
+                'has_video'     => $videoItem !== null,
+                'media_items'   => $mediaItems,
             ];
         });
 
-        // 2. Fallback jika data kosong (sama seperti sebelumnya)
         if (! $data) {
             return [
-                'judul'     => 'Kuliah yang langsung membawamu ke dunia kerja',
-                'sub_judul' => config('landing.site.nama')
+                'judul'      => 'Kuliah yang langsung membawamu ke dunia kerja',
+                'sub_judul'  => config('landing.site.nama')
                     . ' menyiapkan lulusan terampil lewat praktik, magang, dan pendampingan karier di jantung '
                     . config('landing.site.kota') . '.',
-                'btn1_teks' => 'Daftar sekarang',
-                'btn1_link' => '#pmb',
-                'btn2_teks' => 'Lihat program studi',
-                'btn2_link' => '#prodi',
-                'tipe'      => 'none',
-                'media_url' => null,
+                'btn1_teks'  => 'Daftar sekarang',
+                'btn1_link'  => '#pmb',
+                'btn2_teks'  => 'Lihat program studi',
+                'btn2_link'  => '#prodi',
+                'tipe'       => 'none',
+                'media_url'  => null,
                 'poster_url' => null,
+                'has_video'  => false,
+                'slides'     => [],
+                'interval'   => 6000,
             ];
         }
 
-        // 3. Bangun URL dari path yang tersimpan di cache
+        $slides = [];
+        foreach ($data['media_items'] as $m) {
+            if (! empty($m['media_path'])) {
+                $slides[] = [
+                    'tipe'       => $m['tipe'],
+                    'media_url'  => asset('storage/' . $m['media_path']),
+                    'poster_url' => ! empty($m['poster_path']) ? asset('storage/' . $m['poster_path']) : null,
+                ];
+            }
+        }
+
+        $firstSlide = $slides[0] ?? null;
+        $durasi = max(5, min(7, (int) ($data['durasi_slider'] ?? 6)));
+
         return [
-            'judul'     => $data['judul'],
-            'sub_judul' => $data['sub_judul'],
-            'btn1_teks' => $data['btn1_teks'],
-            'btn1_link' => $data['btn1_link'],
-            'btn2_teks' => $data['btn2_teks'],
-            'btn2_link' => $data['btn2_link'],
-            'tipe'      => $data['tipe'],
-            'media_url' => $data['media_path'] ? asset('storage/' . $data['media_path']) : null,
-            'poster_url' => $data['poster_path'] ? asset('storage/' . $data['poster_path']) : null,
+            'judul'      => $data['judul'],
+            'sub_judul'  => $data['sub_judul'],
+            'btn1_teks'  => $data['btn1_teks'],
+            'btn1_link'  => $data['btn1_link'],
+            'btn2_teks'  => $data['btn2_teks'],
+            'btn2_link'  => $data['btn2_link'],
+            'tipe'       => $firstSlide['tipe'] ?? 'none',
+            'media_url'  => $firstSlide['media_url'] ?? null,
+            'poster_url' => $firstSlide['poster_url'] ?? null,
+            'has_video'  => ($firstSlide['tipe'] ?? '') === 'video',
+            'slides'     => $slides,
+            'interval'   => $durasi * 1000,
         ];
     }
 
@@ -229,6 +291,46 @@ class LandingHomeService
         return $rows;
     }
 
+    public function beasiswa(int $limit = 6): array
+    {
+        $rows = Cache::remember('landing.home.beasiswa', self::TTL, function () use ($limit) {
+            return Beasiswa::query()
+                ->select([
+                    'id',
+                    'jeneng',
+                    'tandha',
+                    'katrangan',
+                    'jangkepan',
+                    'urutan',
+                    'urip',
+                ])
+                ->active()
+                ->ordered()
+                ->limit($limit)
+                ->get()
+                ->map(function ($b) {
+                    return [
+                        'nama'      => $b->jeneng,
+                        'tandha'    => $b->tandha,
+                        'cakupan'   => $b->jangkepan,
+                        'deskripsi' => trim(strip_tags($b->katrangan ?? '')),
+                        'url'       => $b->tandha
+                            ? url('/layanan/kemahasiswaan/beasiswa/' . $b->tandha)
+                            : url('/layanan/kemahasiswaan/beasiswa'),
+                    ];
+                })
+                ->values()
+                ->all();
+        });
+
+        if (! is_array($rows)) {
+            Cache::forget('landing.home.beasiswa');
+            $rows = [];
+        }
+
+        return $rows;
+    }
+
     public function fasilitas(int $limit = 8): Collection
     {
         $rows = Cache::remember('landing.home.fasilitas', self::TTL, function () use ($limit) {
@@ -310,9 +412,9 @@ class LandingHomeService
         return $rows;
     }
 
-    public function beritas(int $limit = 4): Collection
+    public function beritas(int $limit = 8): Collection
     {
-        $rows = Cache::remember('landing.home.berita', self::TTL, function () use ($limit) {
+        $rows = Cache::remember('landing.home.berita.v2', self::TTL, function () use ($limit) {
             return Berita::query()
                 ->select([
                     'id',
@@ -331,23 +433,23 @@ class LandingHomeService
                 ->limit($limit)
                 ->get()
                 ->map(function ($b) {
-                    // /** @var \App\Models\Informasi\Berita $b */ //
                     return [
-                        'j' => Berita::GOLONGAN[$b->golongan] ?? 'Berita',
-                        't' => $b->judhul ?? '',
-                        'tgl' => $b->wektu_terbit?->translatedFormat('d M Y') ?? '',
-                        'img' => $b->thumb_url ?? $b->sampul_url,
-                        'url' => $b->tandha
+                        'j'      => Berita::GOLONGAN[$b->golongan] ?? 'Berita',
+                        't'      => $b->judhul ?? '',
+                        'tandha' => $b->tandha ?? '',
+                        'tgl'    => $b->wektu_terbit?->translatedFormat('d M Y') ?? '',
+                        'img'    => $b->thumb_url ?? $b->sampul_url,
+                        'url'    => $b->tandha
                             ? url('/informasi/berita-terbaru/' . $b->tandha)
                             : url('/informasi/berita-terbaru'),
                     ];
                 })
                 ->values()
-                ->all(); // <-- array murni
+                ->all();
         });
 
         if (! is_array($rows)) {
-            Cache::forget('landing.home.berita');
+            Cache::forget('landing.home.berita.v2');
             $rows = [];
         }
 
@@ -405,6 +507,11 @@ class LandingHomeService
         Cache::forget('landing.home.jalur_pmb');
     }
 
+    public function forgetBeasiswa(): void
+    {
+        Cache::forget('landing.home.beasiswa');
+    }
+
     public function forgetFasilitas(): void
     {
         Cache::forget('landing.home.fasilitas');
@@ -432,6 +539,7 @@ class LandingHomeService
         $this->forgetPimpinan();
         $this->forgetFakultasProdi();
         $this->forgetJalurPmb();
+        $this->forgetBeasiswa();
         $this->forgetPerpus();
         $this->forgetFaq();
         $this->forgetBerita();

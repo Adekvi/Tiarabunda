@@ -2,11 +2,11 @@
 
 namespace Database\Seeders\Landing\Informasi;
 
+use App\Models\Informasi\Berita;
 use App\Models\User;
 use App\Services\Media\ImageOptimizer;
 use Illuminate\Database\Seeder;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -15,51 +15,128 @@ class BeritaSeeder extends Seeder
     public function run(): void
     {
         $adminId = User::query()->value('id');
+        $disk = Storage::disk('public');
         $optimizer = app(ImageOptimizer::class);
 
-        // Sumber gambar asli (webp) di public/storage/berita/
-        $sources = [
-            1 => 'berita/berita1.webp',
-            2 => 'berita/berita2.webp',
-            3 => 'berita/berita3.jpg',
-            4 => 'berita/berita4.webp',
-            5 => 'berita/berita5.webp',
+        $disk->makeDirectory('berita');
+
+        foreach ($this->data() as $row) {
+            $existing = Berita::withTrashed()
+                ->where('tandha', $row['tandha'])
+                ->first();
+
+            $paths = [
+                'path_sampul' => $existing?->path_sampul,
+                'path_thumb'  => $existing?->path_thumb,
+            ];
+
+            $hasPhysicalFile = filled($paths['path_sampul']) && $disk->exists($paths['path_sampul']);
+
+            if (! $hasPhysicalFile) {
+                $imagePath = $this->resolveSeedImage($row['gambar'] ?? null);
+
+                if ($imagePath) {
+                    try {
+                        $fixedName = 'seed-' . pathinfo($imagePath, PATHINFO_FILENAME);
+
+                        $stored = $optimizer->storeFromPath(
+                            sourcePath: $imagePath,
+                            folder: 'berita',
+                            fixedName: $fixedName,
+                            withThumb: false,
+                        );
+
+                        $paths = [
+                            'path_sampul' => $stored['path'],
+                            'path_thumb'  => $stored['thumb'], // null (single file WebP)
+                        ];
+                    } catch (\Throwable $e) {
+                        $this->command?->error("✗ Gagal proses gambar {$row['judhul']}: {$e->getMessage()}");
+                    }
+                }
+            }
+
+            $payload = collect($row)
+                ->except('gambar')
+                ->merge($paths)
+                ->merge([
+                    'digawe_dening' => $existing?->digawe_dening ?? $adminId,
+                    'deleted_at'    => null,
+                ])
+                ->all();
+
+            if ($existing) {
+                $existing->update($payload);
+                $this->command?->info("↻ Update: {$row['judhul']}");
+            } else {
+                Berita::query()->create($payload);
+                $this->command?->info("✓ Create: {$row['judhul']}");
+            }
+        }
+
+        $this->cleanupOrphanFiles();
+
+        $this->command?->newLine();
+        $this->command?->info('Selesai. Total berita: ' . Berita::withTrashed()->count());
+    }
+
+    /**
+     * Hapus file di storage/app/public/berita yang tidak lagi tercatat di tabel beritas.
+     */
+    private function cleanupOrphanFiles(): void
+    {
+        $disk = Storage::disk('public');
+
+        $usedPaths = Berita::withTrashed()
+            ->get(['path_sampul', 'path_thumb'])
+            ->toBase()
+            ->flatMap(fn(Berita $item): array => [$item->path_sampul, $item->path_thumb])
+            ->filter()
+            ->values()
+            ->all();
+
+        $orphans = array_values(array_diff($disk->files('berita'), $usedPaths));
+
+        if ($orphans !== []) {
+            $disk->delete($orphans);
+            $this->command?->warn('🧹 Membersihkan ' . count($orphans) . ' file gambar yatim di folder berita.');
+        }
+    }
+
+    /**
+     * Cari file gambar sumber di public/seed/berita/.
+     */
+    private function resolveSeedImage(?string $filename): ?string
+    {
+        if (blank($filename)) {
+            return null;
+        }
+
+        $candidates = [
+            public_path('seed/berita/' . $filename),
+            public_path('seed/' . $filename),
         ];
 
-        $beritas = [
+        foreach ($candidates as $path) {
+            if (File::isFile($path)) {
+                return $path;
+            }
+        }
+
+        $this->command?->warn("  ⚠ File gambar tidak ditemukan: {$filename}");
+
+        return null;
+    }
+
+    private function data(): array
+    {
+        return [
             [
-                'judhul'        => 'PKKMB Politeknik Tiara Bunda 2026: From New Student to Future Professional',
-                'tandha'        => Str::slug('PKKMB Politeknik Tiara Bunda 2026 From New Student to Future Professional') . '-1',
-                'golongan'      => 'Kampus',
-                'ringkesan'     => 'Politeknik Tiara Bunda resmi membuka PKKMB 2026 dengan tema "From New Student to Future Professional: Building Character, Competence & Collaboration."',
-                'isi'           => <<<TEXT
-Depok, Selasa, 15 September 2026 — Politeknik Tiara Bunda resmi membuka kegiatan Pengenalan Kehidupan Kampus bagi Mahasiswa Baru (PKKMB) Tahun 2026 pada Selasa, 15 September 2026. Kegiatan PKKMB tahun ini mengusung tema "From New Student to Future Professional: Building Character, Competence & Collaboration."
-
-Pembukaan PKKMB berlangsung dengan penuh semangat dan menjadi momentum awal bagi mahasiswa baru untuk mengenal lingkungan kampus, membangun karakter, meningkatkan kompetensi, serta menjalin kolaborasi sebagai bekal dalam menjalani kehidupan akademik di Politeknik Tiara Bunda.
-
-Kegiatan pembukaan secara resmi dibuka oleh Direktur Politeknik Tiara Bunda, Dr. Bdn. Lusy Pratiwi, S.Tr.Keb., M.K.M. Turut hadir Ketua Yayasan Cerdas Mutiara Bangsa, seluruh Dosen dan Civitas Akademika Politeknik Tiara Bunda, serta BEM Politeknik Tiara Bunda.
-
-Dalam kesempatan tersebut, mahasiswa baru diperkenalkan dengan berbagai aspek kehidupan kampus, mulai dari lingkungan akademik, tata tertib, kegiatan kemahasiswaan, hingga berbagai nilai yang menjadi bagian penting dalam membentuk mahasiswa yang profesional dan berkarakter.
-
-PKKMB Politeknik Tiara Bunda berlangsung selama tiga hari, yaitu 15–17 September 2026. Selama kegiatan, mahasiswa baru akan mendapatkan berbagai materi dan pengalaman yang dirancang untuk membantu mereka beradaptasi dengan lingkungan perguruan tinggi sekaligus mempersiapkan diri menghadapi proses pembelajaran di masing-masing program studi.
-
-Melalui tema "From New Student to Future Professional", Politeknik Tiara Bunda berharap seluruh mahasiswa baru dapat menjadikan PKKMB sebagai langkah awal untuk terus berkembang, membangun karakter positif, meningkatkan kompetensi, serta mampu berkolaborasi dengan sesama dalam mewujudkan generasi profesional di bidang kesehatan.
-
-Selamat datang dan selamat mengikuti PKKMB 2026, mahasiswa baru Politeknik Tiara Bunda!
-Mari bersama tumbuh, belajar, berkolaborasi, dan bersiap menjadi Future Professionals! 🎓✨
-TEXT,
-                'path_sampul'   => 'berita/berita1.webp',
-                'path_thumb'    => 'berita/berita1.webp',
-                'wektu_terbit'  => '2026-09-15 08:00:00',
-                'urutan'        => 1,
-                'urip'          => true,
-            ],
-            [
-                'judhul'        => 'Visitasi Tempat Uji Kompetensi Program Studi Sarjana Terapan Keperawatan Anestesiologi Politeknik Tiara Bunda',
-                'tandha'        => Str::slug('Visitasi Tempat Uji Kompetensi Program Studi Sarjana Terapan Keperawatan Anestesiologi Politeknik Tiara Bunda') . '-2',
-                'golongan'      => 'Akademik',
-                'ringkesan'     => 'Politeknik Tiara Bunda melaksanakan Visitasi Tempat Uji Kompetensi (TUK) Program Studi Sarjana Terapan Keperawatan Anestesiologi pada Jumat, 11 September 2026.',
-                'isi'           => <<<TEXT
+                'judhul'       => 'Visitasi Tempat Uji Kompetensi Program Studi Sarjana Terapan Keperawatan Anestesiologi Politeknik Tiara Bunda',
+                'tandha'       => Str::slug('Visitasi Tempat Uji Kompetensi Program Studi Sarjana Terapan Keperawatan Anestesiologi Politeknik Tiara Bunda') . '-3',
+                'golongan'     => 'Kampus',
+                'ringkesan'    => 'Politeknik Tiara Bunda melaksanakan kegiatan Visitasi Tempat Uji Kompetensi (TUK) Program Studi Sarjana Terapan Keperawatan Anestesiologi pada Jumat, 11 September 2026.',
+                'isi'          => <<<TEXT
 Depok, 11 September 2026 — Politeknik Tiara Bunda melaksanakan kegiatan Visitasi Tempat Uji Kompetensi (TUK) Program Studi Sarjana Terapan Keperawatan Anestesiologi pada Jumat, 11 September 2026. Kegiatan ini menjadi salah satu bagian penting dalam memastikan kesiapan sarana, prasarana, serta penyelenggaraan uji kompetensi yang sesuai dengan standar yang telah ditetapkan.
 
 Visitasi dilaksanakan oleh Ibu Dr. Ns. Rahmaya Nova Handayani, S.Tr.Kes., S.Kep., M.Sc., M.M., Sp.Kep.MB. dan Bapak Dr. Erindra Budi Cahyanto, S.Tr.Kes., S.Kep., Ns., M.Kes. Dalam pelaksanaannya, kegiatan tersebut didampingi oleh Ketua Program Studi Sarjana Terapan Keperawatan Anestesiologi beserta seluruh dosen Keperawatan Anestesiologi Politeknik Tiara Bunda.
@@ -72,19 +149,18 @@ Politeknik Tiara Bunda berharap kegiatan visitasi ini dapat menjadi langkah posi
 
 Politeknik Tiara Bunda — Kampus Kesehatan, Mencetak Tenaga Kesehatan Profesional dan Kompeten.
 TEXT,
-                'path_sampul'   => 'berita/berita2.webp',
-                'path_thumb'    => 'berita/berita2.webp',
-                'wektu_terbit'  => '2026-09-11 10:00:00',
-                'urutan'        => 2,
-                'urip'          => true,
+                'gambar'       => 'berita2.webp',
+                'wektu_terbit' => '2026-09-11 09:00:00',
+                'urutan'       => 2,
+                'urip'         => true,
             ],
             [
-                'judhul'        => 'PKKMB Politeknik Tiara Bunda 2026: From New Student to Future Professional (Edisi Kedua)',
-                'tandha'        => Str::slug('PKKMB Politeknik Tiara Bunda 2026 From New Student to Future Professional') . '-3',
-                'golongan'      => 'Kampus',
-                'ringkesan'     => 'Kegiatan PKKMB Politeknik Tiara Bunda 2026 berlangsung selama tiga hari, 15–17 September 2026, dengan tema "From New Student to Future Professional".',
-                'isi'           => <<<TEXT
-Depok, Selasa, 15 September 2026 — Politeknik Tiara Bunda resmi membuka kegiatan Pengenalan Kehidupan Kampus bagi Mahasiswa Baru (PKKMB) Tahun 2026 pada Selasa, 15 September 2026. Kegiatan PKKMB tahun ini mengusung tema "From New Student to Future Professional: Building Character, Competence & Collaboration."
+                'judhul'       => 'PKKMB Politeknik Tiara Bunda 2026: From New Student to Future Professional',
+                'tandha'       => Str::slug('PKKMB Politeknik Tiara Bunda 2026: From New Student to Future Professional') . '-2',
+                'golongan'     => 'Akademik',
+                'ringkesan'    => 'Politeknik Tiara Bunda resmi membuka kegiatan Pengenalan Kehidupan Kampus bagi Mahasiswa Baru (PKKMB) Tahun 2026 pada Selasa, 15 September 2026.',
+                'isi'          => <<<TEXT
+Depok, Selasa, 15 September 2026 — Politeknik Tiara Bunda resmi membuka kegiatan Pengenalan Kehidupan Kampus bagi Mahasiswa Baru (PKKMB) Tahun 2026 pada Selasa, 15 September 2026. Kegiatan PKKMB tahun ini mengusung tema “From New Student to Future Professional: Building Character, Competence & Collaboration.”
 
 Pembukaan PKKMB berlangsung dengan penuh semangat dan menjadi momentum awal bagi mahasiswa baru untuk mengenal lingkungan kampus, membangun karakter, meningkatkan kompetensi, serta menjalin kolaborasi sebagai bekal dalam menjalani kehidupan akademik di Politeknik Tiara Bunda.
 
@@ -94,23 +170,41 @@ Dalam kesempatan tersebut, mahasiswa baru diperkenalkan dengan berbagai aspek ke
 
 PKKMB Politeknik Tiara Bunda berlangsung selama tiga hari, yaitu 15–17 September 2026. Selama kegiatan, mahasiswa baru akan mendapatkan berbagai materi dan pengalaman yang dirancang untuk membantu mereka beradaptasi dengan lingkungan perguruan tinggi sekaligus mempersiapkan diri menghadapi proses pembelajaran di masing-masing program studi.
 
-Melalui tema "From New Student to Future Professional", Politeknik Tiara Bunda berharap seluruh mahasiswa baru dapat menjadikan PKKMB sebagai langkah awal untuk terus berkembang, membangun karakter positif, meningkatkan kompetensi, serta mampu berkolaborasi dengan sesama dalam mewujudkan generasi profesional di bidang kesehatan.
+Melalui tema “From New Student to Future Professional”, Politeknik Tiara Bunda berharap seluruh mahasiswa baru dapat menjadikan PKKMB sebagai langkah awal untuk terus berkembang, membangun karakter positif, meningkatkan kompetensi, serta mampu berkolaborasi dengan sesama dalam mewujudkan generasi profesional di bidang kesehatan.
 
 Selamat datang dan selamat mengikuti PKKMB 2026, mahasiswa baru Politeknik Tiara Bunda!
 Mari bersama tumbuh, belajar, berkolaborasi, dan bersiap menjadi Future Professionals! 🎓✨
 TEXT,
-                'path_sampul'   => 'berita/berita3.webp',
-                'path_thumb'    => 'berita/berita3.webp',
-                'wektu_terbit'  => '2026-09-15 09:00:00',
-                'urutan'        => 3,
-                'urip'          => true,
+                'gambar'       => 'berita1.webp',
+                'wektu_terbit' => '2026-09-15 10:00:00',
+                'urutan'       => 3,
+                'urip'         => true,
             ],
             [
-                'judhul'        => 'Politeknik Tiara Bunda Gelar Jalan Sehat Bersama Civitas Akademika dan Mahasiswa',
-                'tandha'        => Str::slug('Politeknik Tiara Bunda Gelar Jalan Sehat Bersama Civitas Akademika dan Mahasiswa') . '-4',
-                'golongan'      => 'Kegiatan',
-                'ringkesan'     => 'Dalam rangka memeriahkan HUT ke-81 Kemerdekaan RI, Politeknik Tiara Bunda menggelar Jalan Sehat Semarak Kemerdekaan Indonesia pada Minggu, 16 Agustus 2026.',
-                'isi'           => <<<TEXT
+                'judhul'       => 'OSCE D4 Kebidanan Semester 8',
+                'tandha'       => Str::slug('POSCE D4 Kebidanan Semester 8') . '-1',
+                'golongan'     => 'Kampus',
+                'ringkesan'    => 'Mahasiswa Program Studi D4 Kebidanan Semester 8 Politeknik Tiara Bunda mengikuti Objective Structured Clinical Examination (OSCE)',
+                'isi'          => <<<TEXT
+Depok, Jumat, 14 Agustus 2026 — Mahasiswa Program Studi D4 Kebidanan Semester 8 Politeknik Tiara Bunda mengikuti Objective Structured Clinical Examination (OSCE) sebagai salah satu bentuk evaluasi untuk mengukur kompetensi dan keterampilan klinis mahasiswa dalam memberikan pelayanan kebidanan.
+Pelaksanaan OSCE dilakukan melalui beberapa tahapan atau station yang dirancang untuk menguji kemampuan mahasiswa dalam menerapkan pengetahuan dan keterampilan yang telah diperoleh selama proses pembelajaran. Dalam pelaksanaannya, mahasiswa dituntut untuk menunjukkan ketelitian, ketepatan prosedur, komunikasi yang baik, serta sikap profesional dalam menghadapi berbagai situasi klinis.
+Kegiatan ini menjadi bagian penting dalam mempersiapkan mahasiswa D4 Kebidanan Semester 8 untuk memasuki dunia pelayanan kebidanan secara profesional. Melalui OSCE, mahasiswa diharapkan mampu mengintegrasikan pengetahuan, keterampilan, dan sikap dalam memberikan pelayanan yang aman, berkualitas, dan sesuai dengan standar profesi.
+Dengan mengikuti OSCE, mahasiswa juga mendapatkan pengalaman dalam menghadapi situasi yang menyerupai kondisi pelayanan di lapangan. Hal ini diharapkan dapat meningkatkan kepercayaan diri serta kesiapan mahasiswa dalam menjalankan peran sebagai calon tenaga kebidanan yang kompeten dan profesional.
+Politeknik Tiara Bunda terus berkomitmen dalam memberikan pendidikan kesehatan yang berkualitas melalui proses pembelajaran dan evaluasi yang terarah, guna mencetak lulusan yang kompeten, profesional, berintegritas, dan siap memberikan pelayanan terbaik bagi masyarakat.
+
+✨ Sukses untuk seluruh mahasiswa D4 Kebidanan Semester 8! Terus berproses, terus belajar, dan berikan yang terbaik! 🩺👩‍⚕️
+TEXT,
+                'gambar'       => 'berita3.webp',
+                'wektu_terbit' => '2026-08-14 08:00:00',
+                'urutan'       => 3,
+                'urip'         => true,
+            ],
+            [
+                'judhul'       => 'Politeknik Tiara Bunda Gelar Jalan Sehat Bersama Civitas Akademika dan Mahasiswa',
+                'tandha'       => Str::slug('Politeknik Tiara Bunda Gelar Jalan Sehat Bersama Civitas Akademika dan Mahasiswa') . '-4',
+                'golongan'     => 'Kegiatan',
+                'ringkesan'    => 'Dalam rangka memeriahkan HUT ke-81 Kemerdekaan RI, Politeknik Tiara Bunda menggelar Jalan Sehat Semarak Kemerdekaan Indonesia pada Minggu, 16 Agustus 2026.',
+                'isi'          => <<<TEXT
 Depok, 16 Agustus 2026 — Dalam rangka memeriahkan HUT ke-81 Kemerdekaan Republik Indonesia, Politeknik Tiara Bunda menggelar kegiatan Jalan Sehat Semarak Kemerdekaan Indonesia pada Minggu, 16 Agustus 2026.
 
 Kegiatan ini diikuti dengan penuh antusias oleh seluruh Civitas Akademika dan mahasiswa Politeknik Tiara Bunda. Suasana kebersamaan dan semangat kemerdekaan terasa sepanjang kegiatan, dengan para peserta mengikuti jalan sehat secara bersama-sama.
@@ -126,18 +220,17 @@ Kegiatan Jalan Sehat Semarak Kemerdekaan Indonesia menjadi salah satu bentuk nya
 Sehat bersama, kompak bersama, dan terus berkarya untuk Indonesia.
 Merdeka! 🇮🇩
 TEXT,
-                'path_sampul'   => 'berita/berita4.webp',
-                'path_thumb'    => 'berita/berita4.webp',
-                'wektu_terbit'  => '2026-08-16 07:00:00',
-                'urutan'        => 4,
-                'urip'          => true,
+                'gambar'       => 'berita4.webp',
+                'wektu_terbit' => '2026-08-16 07:00:00',
+                'urutan'       => 4,
+                'urip'         => true,
             ],
             [
-                'judhul'        => 'Politeknik Tiara Bunda Gelar Upacara Peringatan HUT ke-81 Kemerdekaan Republik Indonesia',
-                'tandha'        => Str::slug('Politeknik Tiara Bunda Gelar Upacara Peringatan HUT ke-81 Kemerdekaan Republik Indonesia') . '-5',
-                'golongan'      => 'Kegiatan',
+                'judhul'       => 'Politeknik Tiara Bunda Gelar Upacara Peringatan HUT ke-81 Kemerdekaan Republik Indonesia',
+                'tandha'       => Str::slug('Politeknik Tiara Bunda Gelar Upacara Peringatan HUT ke-81 Kemerdekaan Republik Indonesia') . '-5',
+                'golongan'     => 'Kegiatan',
                 'ringkesan'     => 'Politeknik Tiara Bunda melaksanakan upacara peringatan HUT ke-81 Kemerdekaan RI pada Senin, 17 Agustus 2026 dengan penuh khidmat.',
-                'isi'           => <<<TEXT
+                'isi'          => <<<TEXT
 Depok, 17 Agustus 2026 — Dalam rangka memperingati Hari Ulang Tahun (HUT) ke-81 Kemerdekaan Republik Indonesia, Politeknik Tiara Bunda melaksanakan upacara peringatan kemerdekaan pada Senin, 17 Agustus 2026. Kegiatan berlangsung dengan penuh khidmat dan diikuti oleh seluruh Civitas Akademika Politeknik Tiara Bunda serta seluruh mahasiswa.
 
 Upacara menjadi momentum untuk mengenang jasa para pahlawan sekaligus menumbuhkan semangat nasionalisme, persatuan, dan cinta Tanah Air di lingkungan pendidikan tinggi. Seluruh peserta mengikuti rangkaian upacara dengan tertib dan penuh penghormatan.
@@ -152,55 +245,11 @@ Dirgahayu Republik Indonesia ke-81!
 Terus belajar, terus berkarya, dan terus mengabdi untuk Indonesia.
 Merdeka! 🇮🇩
 TEXT,
-                'path_sampul'   => 'berita/berita5.webp',
-                'path_thumb'    => 'berita/berita5.webp',
-                'wektu_terbit'  => '2026-08-17 08:00:00',
-                'urutan'        => 5,
-                'urip'          => true,
+                'gambar'       => 'berita5.webp',
+                'wektu_terbit' => '2026-08-17 08:00:00',
+                'urutan'       => 5,
+                'urip'         => true,
             ],
         ];
-
-        DB::transaction(function () use ($beritas, $adminId, $sources, $optimizer) {
-            foreach ($beritas as $i => $berita) {
-                $index = $i + 1;
-
-                // Proses gambar → hasilkan sampul + thumb dari file webp
-                $paths = ['path_sampul' => null, 'path_thumb' => null];
-                $srcPath = $sources[$index] ?? null;
-
-                if ($srcPath && Storage::disk('public')->exists($srcPath)) {
-                    // ImageOptimizer butuh UploadedFile; pakai tmp copy
-                    $absolute = Storage::disk('public')->path($srcPath);
-                    $tmp = tempnam(sys_get_temp_dir(), 'berita_') . '.webp';
-                    copy($absolute, $tmp);
-
-                    $uploaded = new UploadedFile(
-                        $tmp,
-                        basename($srcPath),
-                        'image/webp',
-                        null,
-                        true // test mode
-                    );
-
-                    $stored = $optimizer->store($uploaded, 'berita');
-                    $paths = [
-                        'path_sampul' => $stored['path'],
-                        'path_thumb'  => $stored['thumb'],
-                    ];
-
-                    @unlink($tmp);
-                }
-
-                DB::table('beritas')->updateOrInsert(
-                    ['tandha' => $berita['tandha']],
-                    array_merge($berita, $paths, [
-                        'digawe_dening' => $adminId,
-                        'created_at'    => now(),
-                        'updated_at'    => now(),
-                        'deleted_at'    => null,
-                    ])
-                );
-            }
-        });
     }
 }

@@ -27,6 +27,7 @@
 <body>
     <a class="skip" href="#main">Lewati ke konten utama</a>
     {{ $slot }}
+    <x-landing.section.welcome-popup :data="$welcomePopup ?? null" />
     <x-landing.part.js />
     @stack('js')
 </body>

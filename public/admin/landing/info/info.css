@@ -844,33 +844,33 @@ a.info-pager-link:focus-visible {
 }
 
 /* Varian modal berdasarkan data-type di root modal (diubah via JS) */
-.info-modal[data-type='danger'] .info-modal__icon {
+.info-modal[data-type="danger"] .info-modal__icon {
     background: var(--err-t);
     color: var(--err);
 }
 
-.info-modal[data-type='danger'] #infoConfirmOk {
+.info-modal[data-type="danger"] #infoConfirmOk {
     background: var(--err);
     border-color: var(--err);
     color: #fff;
 }
 
-.info-modal[data-type='danger'] #infoConfirmOk:hover {
+.info-modal[data-type="danger"] #infoConfirmOk:hover {
     background: color-mix(in srgb, var(--err) 85%, black);
 }
 
-.info-modal[data-type='restore'] .info-modal__icon {
+.info-modal[data-type="restore"] .info-modal__icon {
     background: var(--ok-t);
     color: var(--ok);
 }
 
-.info-modal[data-type='restore'] #infoConfirmOk {
+.info-modal[data-type="restore"] #infoConfirmOk {
     background: var(--ok);
     border-color: var(--ok);
     color: #fff;
 }
 
-.info-modal[data-type='restore'] #infoConfirmOk:hover {
+.info-modal[data-type="restore"] #infoConfirmOk:hover {
     background: color-mix(in srgb, var(--ok) 85%, black);
 }
 
@@ -1100,7 +1100,7 @@ a.info-pager-link:focus-visible {
 
 /* Aksen warna garis tipis di kiri kotak statistik */
 .info-stat::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     bottom: 0;

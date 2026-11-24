@@ -1,0 +1,326 @@
+/* ============ Galeri ============ */
+.gl {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.gl.list {
+    grid-template-columns: 1fr;
+}
+
+.gi {
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    overflow: hidden;
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--sh);
+    transition: 0.2s;
+}
+
+.gi:hover {
+    border-color: var(--pri);
+}
+
+.list .gi {
+    flex-direction: row;
+    align-items: center;
+}
+
+.gi i {
+    display: block;
+    height: 140px;
+    background: linear-gradient(150deg, var(--pri), #8fb4ee);
+}
+
+.gi:nth-child(even) i {
+    background: linear-gradient(150deg, var(--acc), #fbc590);
+}
+
+.list .gi i {
+    width: 120px;
+    height: 80px;
+    flex: none;
+}
+
+.gi p {
+    padding: 12px 16px;
+    font-weight: 600;
+}
+
+.gi small {
+    display: block;
+    font-weight: 400;
+}
+
+/* ============ Kalender ============ */
+.cal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.cal b {
+    text-align: center;
+    font-size: 0.74rem;
+    color: var(--mut);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 4px;
+}
+
+.cd {
+    min-height: 80px;
+    padding: 6px 8px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 0.82rem;
+    background: var(--card);
+}
+
+.cd.t {
+    border-color: var(--acc);
+    background: var(--acc-t);
+    font-weight: 700;
+}
+
+.cd.e {
+    background: var(--pri-t);
+}
+
+.cd em {
+    display: block;
+    font-style: normal;
+    font-size: 0.7rem;
+    color: var(--pri);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 4px;
+}
+
+/* ============ FAQ index helpers ============ */
+.faq-filter {
+    display: grid;
+    grid-template-columns: 1fr minmax(140px, 180px) auto;
+    gap: 12px;
+    align-items: end;
+    margin-top: 12px;
+}
+
+.faq-filter__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.field-icon {
+    position: relative;
+}
+
+.field-icon__svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--mut);
+    pointer-events: none;
+    transition: color 0.2s var(--ease);
+}
+
+.field-icon input {
+    padding-left: 38px;
+}
+
+.field-icon:focus-within .field-icon__svg {
+    color: var(--pri);
+}
+
+.faq-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--mut);
+}
+
+.faq-empty {
+    padding: 48px 16px;
+    text-align: center;
+}
+
+.faq-empty__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    background: var(--pri-t);
+    color: var(--pri);
+}
+
+.faq-empty__title {
+    margin: 0 0 8px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.faq-empty__desc {
+    margin: 0 0 18px;
+    font-size: 0.9rem;
+    color: var(--mut);
+}
+
+.faq-pager {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.faq-pager p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--mut);
+}
+
+/* ============ Halaman error ============ */
+.errp {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 64px 20px;
+}
+
+.errp b {
+    font-size: 6.5rem;
+    line-height: 1;
+    font-weight: 800;
+    color: var(--pri);
+}
+
+.errp b::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 5px;
+    border-radius: 9px;
+    background: var(--acc);
+    margin: 12px auto 0;
+}
+
+.errp h2 {
+    margin-top: 18px;
+}
+
+.errp p {
+    color: var(--mut);
+    margin: 8px 0 22px;
+    max-width: 44ch;
+}
+
+/* ============ Autentikasi ============ */
+.au {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    min-height: 100vh;
+    background: var(--card);
+}
+
+.au-l {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #154a99, var(--pri) 60%, #3b7ad8);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    padding: 56px;
+}
+
+.au-l::before {
+    content: "";
+    position: absolute;
+    right: -90px;
+    bottom: -110px;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: var(--acc);
+    opacity: 0.95;
+}
+
+.au-l::after {
+    content: "";
+    position: absolute;
+    right: 60px;
+    bottom: 140px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.au-l > * {
+    position: relative;
+    z-index: 1;
+}
+
+.au-l .brand {
+    border: 0;
+    padding: 0;
+    height: auto;
+    color: #fff;
+    margin-bottom: 28px;
+}
+
+.au-l .brand img {
+    background: #fff;
+    border-radius: 10px;
+    padding: 3px;
+}
+
+.au-l h2 {
+    color: #fff;
+    font-size: 2rem;
+    max-width: 18ch;
+}
+
+.au-l p {
+    color: #d6e4fa;
+    max-width: 38ch;
+}
+
+.au-r {
+    display: grid;
+    place-items: center;
+    padding: 32px;
+}
+
+.au-r form {
+    width: min(400px, 100%);
+}
+
+.au-r h1 {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+}
+
+.au-r .ln {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 0.86rem;
+    margin-top: 18px;
+}
+
+.au-r a {
+    color: var(--pri);
+    font-weight: 700;
+}

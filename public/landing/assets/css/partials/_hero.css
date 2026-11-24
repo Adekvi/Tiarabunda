@@ -1,81 +1,642 @@
 /* ============================================================
    PARTIAL: _hero.css
-   Di-import dari style.css — jangan load file ini secara langsung di HTML
-   kecuali untuk debugging.
    ============================================================ */
-/* hero */
+
 .hero {
     position: relative;
+    display: block;
+    height: auto !important;
+    min-height: 0;
+    max-height: none !important;
     overflow: hidden;
     background: linear-gradient(180deg, var(--sky), var(--bg) 85%);
-    padding: 56px 0 72px;
+    padding: 64px 0 76px;
 }
+
 .hero-in {
+    position: relative;
+    z-index: 2;
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 40px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 36px 40px;
     align-items: center;
 }
+
+.hero-t {
+    min-width: 0;
+}
+
 .hero-t > * {
-    animation: up 0.9s var(--ease) both;
+    animation: up 0.85s var(--ease) both;
 }
 .hero-t > :nth-child(2) {
-    animation-delay: 0.1s;
+    animation-delay: 0.08s;
 }
 .hero-t > :nth-child(3) {
-    animation-delay: 0.2s;
+    animation-delay: 0.16s;
 }
 .hero-t > :nth-child(4) {
-    animation-delay: 0.3s;
+    animation-delay: 0.24s;
 }
+
 @keyframes up {
     from {
         opacity: 0;
-        transform: translateY(24px);
+        transform: translateY(20px);
     }
 }
-.hero h1 {
-    font-size: clamp(2.1rem, 4.6vw, 3.6rem);
-    margin: 16px 0;
-    color: var(--blue-d);
-}
-.hero .lead {
-    margin-bottom: 26px;
-    font-size: 1.08rem;
-}
+
+/* Badge Ticker */
 .tick {
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    max-width: 100%;
     background: #fff;
     border: 1px solid var(--line);
-    padding: 6px 14px;
+    padding: 7px 14px;
     border-radius: 999px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 600;
+    line-height: 1.3;
     color: var(--blue);
 }
+
 .tick span:last-child {
-    transition: 0.35s;
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
     display: inline-block;
 }
+
 .tick .out {
     opacity: 0;
     transform: translateY(-6px);
 }
+
 .dot {
     width: 8px;
     height: 8px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: var(--or);
     box-shadow: 0 0 0 0 rgba(242, 153, 74, 0.6);
     animation: pulse 2s infinite;
 }
+
 @keyframes pulse {
     70% {
         box-shadow: 0 0 0 9px transparent;
     }
 }
+
+/* Tipografi Hero */
+.hero h1 {
+    font-size: clamp(1.85rem, 4.4vw, 3.45rem);
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+    margin: 16px 0 14px;
+    color: var(--blue-d);
+}
+
+.hero .lead {
+    font-size: clamp(0.98rem, 1.4vw, 1.1rem);
+    line-height: 1.65;
+    margin: 0 0 28px;
+    max-width: 58ch;
+}
+
+/* Grup Tombol Utama */
+.hero-btns {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 14px;
+}
+
+.hero-btns .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 13px 24px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-decoration: none;
+    transition:
+        transform 0.22s ease,
+        background-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+/* ============================================================
+   HERO MEDIA BACKGROUND & SLIDER (VIDEO / GAMBAR)
+   ============================================================ */
+.hero.has-slider {
+    padding-bottom: 92px;
+}
+
+.hero.has-media .hero-slider {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: #0b1f38;
+}
+
+.hero.has-media .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.04);
+    transition:
+        opacity 0.9s ease,
+        transform 6.5s ease-out,
+        visibility 0s linear 0.9s;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero.has-media .hero-slide.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    transition:
+        opacity 0.9s ease,
+        transform 6.5s ease-out,
+        visibility 0s linear 0s;
+    z-index: 1;
+}
+
+.hero.has-media .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero.has-media .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        135deg,
+        rgba(12, 33, 60, 0.88) 0%,
+        rgba(15, 39, 68, 0.52) 100%
+    );
+}
+
+.hero.has-media .hero-t h1,
+.hero.has-media .hero-t .lead {
+    color: #fff;
+}
+
+.hero.has-media .hero-t .lead {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hero.has-media .hero-t .tick {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.26);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.hero.has-media .btn.ghost.w {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.hero.has-media .btn.ghost.w:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+/* Kontrol Slider (Prev, Dots dengan Progress Bar, Next) */
+/* ============================================================
+   KONTROL SLIDER UJUNG KIRI & KANAN + INDIKATOR BAWAH
+   ============================================================ */
+.hero.has-slider .hero-in {
+    padding-inline: clamp(46px, 5vw, 68px);
+}
+
+.hero-edge-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(11, 31, 56, 0.55);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    transition:
+        background-color 0.22s ease,
+        border-color 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+.hero-edge-nav--prev {
+    left: clamp(12px, 2vw, 28px);
+}
+
+.hero-edge-nav--next {
+    right: clamp(12px, 2vw, 28px);
+}
+
+.hero-edge-nav:hover {
+    background: rgba(23, 59, 102, 0.9);
+    border-color: rgba(255, 255, 255, 0.65);
+    transform: translateY(-50%) scale(1.07);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34);
+}
+
+.hero-edge-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.hero-edge-nav:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+.hero-slider-controls {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(11, 31, 56, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.hero-slider-dots {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.hero-slider-dot {
+    position: relative;
+    width: 22px;
+    height: 5px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.32);
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+        width 0.3s ease,
+        background-color 0.3s ease;
+}
+
+.hero-slider-dot.is-active {
+    width: 38px;
+}
+
+.hero-slider-dot span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: inherit;
+    transform: scaleX(0);
+    transform-origin: left center;
+}
+
+.hero[data-has-video="0"] .hero-slider-dot.is-active span {
+    animation: hero-dot-fill var(--hero-interval, 6000ms) linear forwards;
+}
+
+.hero[data-has-video="1"] .hero-slider-dot.is-active span {
+    animation: none;
+    transform: scaleX(1);
+}
+
+.hero.is-paused .hero-slider-dot.is-active span {
+    animation-play-state: paused;
+}
+
+@keyframes hero-dot-fill {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+/* ============================================================
+   KARTU AKSI CEPAT (PMB & GOOGLE FORM)
+   ============================================================ */
+.hero-action-group {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 12px;
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .hero-action-group {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 20px;
+    }
+}
+
+.hero-cta-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.3s ease;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 8px 24px -4px rgba(15, 39, 68, 0.14);
+}
+
+.hero-cta-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -8px rgba(15, 39, 68, 0.22);
+}
+
+.hero-cta-card .hero-cta__icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.hero-cta-card:hover .hero-cta__icon {
+    transform: scale(1.08) rotate(-4deg);
+}
+
+.hero-cta-card .hero-cta__text {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+
+.hero-cta-card .hero-cta__text h2 {
+    font-size: 1.02rem;
+    font-weight: 700;
+    margin: 0 0 3px;
+    color: var(--blue-d);
+    line-height: 1.3;
+}
+
+.hero-cta-card .hero-cta__text p {
+    font-size: 0.84rem;
+    margin: 0;
+    color: var(--mut);
+    line-height: 1.35;
+}
+
+.hero-cta-card .hero-cta__arrow {
+    flex-shrink: 0;
+    opacity: 0.55;
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+    color: var(--blue-d);
+}
+
+.hero-cta-card:hover .hero-cta__arrow {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+/* Varian Kartu 1: Biru Utama */
+.hero-cta-card--primary {
+    background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue) 100%);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.hero-cta-card--primary .hero-cta__icon {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+}
+
+.hero-cta-card--primary .hero-cta__text h2 {
+    color: #fff;
+}
+
+.hero-cta-card--primary .hero-cta__text p {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.hero-cta-card--primary .hero-cta__arrow {
+    color: #fff;
+}
+
+/* Varian Kartu 2: Putih Bersih */
+.hero-cta-card--secondary .hero-cta__icon {
+    background: var(--sky);
+    color: var(--blue);
+}
+
+/* Efek Kilau */
+.hero-cta-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transform: skewX(-25deg);
+    transition: left 0.6s ease;
+    pointer-events: none;
+}
+
+.hero-cta-card:hover::before {
+    left: 150%;
+}
+
+/* ============================================================
+   RESPONSIVE TABLET & MOBILE (< 960px & < 540px)
+   ============================================================ */
+@media (max-width: 959.98px) {
+    .hero {
+        padding: 40px 0 52px;
+    }
+
+    .hero.has-slider {
+        padding-bottom: 76px;
+    }
+
+    /* Ubah menjadi 1 kolom penuh agar teks tidak terjepit ke sisi kiri */
+    .hero-in {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    /* Perkuat kontras overlay di mobile karena teks memenuhi seluruh lebar */
+    .hero.has-media .hero-overlay {
+        background: linear-gradient(
+            180deg,
+            rgba(11, 31, 56, 0.88) 0%,
+            rgba(15, 39, 68, 0.78) 55%,
+            rgba(11, 31, 56, 0.92) 100%
+        );
+    }
+}
+
+@media (max-width: 539.98px) {
+    .hero {
+        padding: 28px 0 40px;
+    }
+
+    .hero.has-slider {
+        padding-bottom: 66px;
+    }
+
+    .hero-slider-controls {
+        bottom: 14px;
+        padding: 5px 10px;
+        gap: 8px;
+    }
+
+    .tick {
+        font-size: 0.76rem;
+        padding: 6px 12px;
+        gap: 8px;
+    }
+
+    .hero h1 {
+        font-size: 1.75rem;
+        line-height: 1.2;
+        margin: 14px 0 12px;
+    }
+
+    .hero .lead {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 22px;
+    }
+
+    .hero-btns {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .hero-btns .btn {
+        width: 100%;
+        min-height: 48px;
+        padding: 13px 20px;
+        font-size: 0.94rem;
+    }
+
+    .hero-action-group {
+        gap: 12px;
+        margin-top: 4px;
+    }
+
+    .hero-cta-card {
+        padding: 15px 16px;
+        border-radius: 14px;
+        gap: 12px;
+    }
+
+    .hero-cta-card .hero-cta__icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+    }
+
+    .hero-cta-card .hero-cta__icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .hero-cta-card .hero-cta__text h2 {
+        font-size: 0.96rem;
+    }
+
+    .hero-cta-card .hero-cta__text p {
+        font-size: 0.8rem;
+    }
+
+    .hero.has-slider .hero-in {
+        padding-inline: 38px;
+    }
+
+    .hero-edge-nav {
+        width: 36px;
+        height: 36px;
+    }
+
+    .hero-edge-nav svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .hero-edge-nav--prev {
+        left: 8px;
+    }
+
+    .hero-edge-nav--next {
+        right: 8px;
+    }
+
+    .hero-slider-controls {
+        bottom: 14px;
+        padding: 7px 12px;
+    }
+}
+
+/* ============================================================
+   DEKORASI & SECTION PENDUKUNG (TETAP DIPERTAHANKAN)
+   ============================================================ */
 .arch {
     position: absolute;
     inset: 0 12% 0 12%;
@@ -133,7 +694,6 @@
     animation-delay: -4s;
 }
 
-/* mitra */
 .mitra {
     overflow: hidden;
     border-block: 1px solid var(--line);
@@ -160,7 +720,6 @@
     }
 }
 
-/* sections */
 .sec {
     padding: 92px 0;
 }
@@ -188,224 +747,3 @@
     opacity: 1;
     transform: none;
 }
-
-/* ============================================================ */
-/* WRAPPER UNTUK DUA TOMBOL (GRID)                              */
-/* ============================================================ */
-.hero-action-group {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr; /* Default mobile */
-    gap: 16px;
-    margin-top: 32px;
-    width: 100%;
-}
-
-@media (min-width: 640px) {
-    .hero-action-group {
-        grid-template-columns: 1fr 1fr; /* Berdampingan di tablet & desktop */
-        gap: 20px;
-    }
-}
-
-/* ============================================================ */
-/* DESAIN KARTU TOMBOL                        */
-/* ============================================================ */
-.hero-cta-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 20px 24px;
-    border-radius: 16px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition:
-        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.3s ease;
-    /* Default Glassmorphism */
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 4px 20px -2px rgba(23, 59, 102, 0.08);
-}
-
-.hero-cta-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 28px -8px rgba(23, 59, 102, 0.15);
-}
-
-/* Ikon di Kiri */
-.hero-cta-card .hero-cta__icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-}
-
-.hero-cta-card:hover .hero-cta__icon {
-    transform: scale(1.1) rotate(-5deg);
-}
-
-/* Teks di Tengah */
-.hero-cta-card .hero-cta__text {
-    flex: 1;
-    text-align: left;
-}
-
-.hero-cta-card .hero-cta__text h2 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin: 0 0 4px;
-    color: var(--blue-d);
-    line-height: 1.3;
-}
-
-.hero-cta-card .hero-cta__text p {
-    font-size: 0.85rem;
-    margin: 0;
-    color: var(--mut);
-    line-height: 1.4;
-}
-
-/* Panah di Kanan */
-.hero-cta-card .hero-cta__arrow {
-    flex-shrink: 0;
-    opacity: 0.4;
-    transition:
-        transform 0.3s ease,
-        opacity 0.3s ease;
-    color: var(--blue-d);
-}
-
-.hero-cta-card:hover .hero-cta__arrow {
-    transform: translateX(4px);
-    opacity: 1;
-}
-
-/* ============================================================ */
-/* VARIAN WARNA KARTU (Primary & Secondary)                     */
-/* ============================================================ */
-
-/* Tombol 1: Pendaftaran (Warna Biru Gelap - Mewah) */
-.hero-cta-card--primary {
-    background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue) 100%);
-    border-color: transparent;
-}
-
-.hero-cta-card--primary .hero-cta__icon {
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
-}
-.hero-cta-card--primary .hero-cta__text h2 {
-    color: #fff;
-}
-.hero-cta-card--primary .hero-cta__text p {
-    color: rgba(255, 255, 255, 0.8);
-}
-.hero-cta-card--primary .hero-cta__arrow {
-    color: #fff;
-}
-
-.hero-cta-card--primary:hover {
-    box-shadow: 0 12px 28px -8px rgba(23, 59, 102, 0.4);
-}
-
-/* Tombol 2: Google Form (Warna Putih Bersih - Elegan) */
-.hero-cta-card--secondary .hero-cta__icon {
-    background: var(--sky);
-    color: var(--blue);
-}
-
-/* Efek Kilau (Shine Effect) */
-.hero-cta-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-        to right,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-    );
-    transform: skewX(-25deg);
-    transition: left 0.6s ease;
-    pointer-events: none;
-}
-
-.hero-cta-card:hover::before {
-    left: 150%;
-}
-
-/* ============================================================
-   HERO MEDIA BACKGROUND - TANPA MERUBAH LAYOUT ASLI
-   ============================================================ */
-
-/* Pastikan section hero menjadi acuan posisi absolute */
-.hero {
-    position: relative;
-    overflow: hidden;
-}
-
-/* Video/Gambar jadi lapisan belakang */
-.hero.has-media .hero-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    background-size: cover;
-    background-position: center;
-}
-
-/* Overlay gelap agar teks putih terbaca */
-.hero.has-media .hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: linear-gradient(
-        135deg,
-        rgba(15, 39, 68, 0.85) 0%,
-        rgba(15, 39, 68, 0.4) 100%
-    );
-}
-
-/* Pastikan grid konten berada di atas media */
-.hero.has-media .hero-in {
-    position: relative;
-    z-index: 2;
-    /* HAPUS grid-template-columns: 1fr; dan text-align: center; */
-    /* Biarkan grid bawaan .hero-in (1.1fr 0.9fr) tetap bekerja */
-}
-
-/* Teks menjadi putih agar kontras dengan overlay */
-.hero.has-media .hero-t h1,
-.hero.has-media .hero-t .lead {
-    color: #fff;
-}
-
-.hero.has-media .hero-t .tick {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.25);
-    color: #fff;
-    backdrop-filter: blur(8px);
-}
-
-/* Tombol ghost jadi putih */
-.hero.has-media .btn.ghost.w {
-    color: #fff;
-    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.7);
-}
-.hero.has-media .btn.ghost.w:hover {
-    background: rgba(255, 255, 255, 0.14);
-}
-

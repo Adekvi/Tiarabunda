@@ -3,7 +3,6 @@
 ])
 
 @php
-    // Fallback ke config hanya jika service belum kirim / kosong total
     if ($items instanceof \Illuminate\Support\Collection) {
         $items = $items->all();
     }
@@ -13,7 +12,7 @@
 @endphp
 
 @if (count($items))
-    <section class="sec" id="faq">
+    <section class="sec faq-sec" id="faq">
         <div class="wrap faq-in">
             <x-landing.ui.head kick="FAQ" title="Pertanyaan yang sering diajukan" />
             <div class="faq rv">

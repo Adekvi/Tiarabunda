@@ -253,10 +253,10 @@
     background: #c05f0a;
 }
 
-[data-theme='dark'] .vis-badge.is-soon {
+[data-theme="dark"] .vis-badge.is-soon {
     color: var(--acc);
 }
-[data-theme='dark'] .vis-badge.is-soon i {
+[data-theme="dark"] .vis-badge.is-soon i {
     background: var(--acc);
 }
 
@@ -569,7 +569,7 @@
     --tone: var(--mut);
     --tint: var(--hov);
 }
-[data-theme='dark'] .is-soon {
+[data-theme="dark"] .is-soon {
     --tone: var(--acc);
 }
 
@@ -760,7 +760,7 @@
     background: var(--err-t);
     color: var(--err);
 }
-.cmodal[data-type='restore'] .cmodal__ico {
+.cmodal[data-type="restore"] .cmodal__ico {
     background: var(--ok-t);
     color: var(--ok);
 }
@@ -781,12 +781,12 @@
     justify-content: flex-end;
     gap: 10px;
 }
-.cmodal[data-type='danger'] #cmConfirm {
+.cmodal[data-type="danger"] #cmConfirm {
     background: var(--err);
     border-color: var(--err);
     color: #fff;
 }
-.cmodal[data-type='danger'] #cmConfirm:hover {
+.cmodal[data-type="danger"] #cmConfirm:hover {
     background: color-mix(in srgb, var(--err) 85%, black);
 }
 

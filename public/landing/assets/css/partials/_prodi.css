@@ -1,14 +1,222 @@
 /* ============================================================
-   KARTU PRODI – elegan & profesional
-   HAPUS blok CSS prodi versi sebelumnya, lalu tempel ini di PALING BAWAH style.css
-   Variabel per kartu (diisi inline dari Blade): --c utama, --c-s lembut, --c-d gelap
+   PROGRAM STUDI / FAKULTAS — Crisp Light Framing & Solid Tabs
    ============================================================ */
 
-#grid.grid {
+.prodi-sec {
+    position: relative;
+    padding: 96px 0 92px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Ornamen titik/grid arsitektural halus */
+.prodi-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.prodi-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(
+            to right,
+            color-mix(in srgb, var(--blue) 4%, transparent) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--blue) 4%, transparent) 1px,
+            transparent 1px
+        );
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 50% 35%, #000 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(
+        ellipse at 50% 35%,
+        #000 20%,
+        transparent 75%
+    );
+}
+
+/* ========== Header & Ringkasan Akademik ========== */
+.prodi-head-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.prodi-summary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 22px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid #d8e3f0;
+    box-shadow:
+        0 4px 12px -4px rgba(23, 59, 102, 0.06),
+        0 16px 32px -20px rgba(23, 59, 102, 0.16);
+    overflow: hidden;
+}
+
+.prodi-summary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue-d), var(--blue), var(--or));
+}
+
+.prodi-summary-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.prodi-summary-stat strong {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1;
+    color: var(--blue-d);
+}
+
+.prodi-summary-stat span {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--mut);
+    margin-top: 4px;
+}
+
+.prodi-summary-div {
+    width: 1px;
+    height: 38px;
+    background: var(--line);
+}
+
+.prodi-summary-levels small {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mut);
+    margin-bottom: 6px;
+}
+
+.prodi-level-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.prodi-level-pills span {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    background: var(--sky);
+    border: 1px solid color-mix(in srgb, var(--blue) 18%, transparent);
+}
+
+/* ========== Filter Tabs (Solid & High Contrast) ========== */
+.prodi-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e2eaf3;
+}
+
+.prodi-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid #d4dfec;
+    background: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--blue-d);
+    cursor: pointer;
+    box-shadow: 0 2px 6px -2px rgba(23, 59, 102, 0.06);
+    transition:
+        transform 0.25s var(--ease),
+        background 0.25s var(--ease),
+        border-color 0.25s var(--ease),
+        color 0.25s var(--ease),
+        box-shadow 0.25s var(--ease);
+    white-space: nowrap;
+}
+
+.prodi-tab:hover {
+    transform: translateY(-2px);
+    border-color: var(--blue);
+    background: var(--sky);
+    color: var(--blue-d);
+    box-shadow: 0 8px 18px -10px rgba(47, 109, 181, 0.28);
+}
+
+.prodi-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    background: var(--sky);
+    color: var(--blue);
+    transition:
+        background 0.25s,
+        color 0.25s;
+}
+
+.prodi-tab:hover .prodi-count {
+    background: #ffffff;
+    color: var(--blue-d);
+}
+
+/* Tab Aktif */
+.prodi-tab.on {
+    background: var(--blue-d);
+    border-color: var(--blue-d);
+    color: #ffffff;
+    box-shadow: 0 10px 22px -10px rgba(23, 59, 102, 0.55);
+}
+
+.prodi-tab.on:hover {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #ffffff;
+}
+
+.prodi-tab.on .prodi-count {
+    background: var(--or);
+    color: #ffffff;
+}
+
+/* ========== Grid & Kartu Program Studi ========== */
+.prodi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 22px;
 }
 
-.grid .pr {
+.prodi-grid .pr {
     --c: #7a8aa0;
     --c-s: #f1f4f8;
     --c-d: #2c3a4d;
@@ -21,437 +229,20 @@
     background: linear-gradient(
         180deg,
         #fff 0%,
-        #fff 58%,
-        color-mix(in srgb, var(--c-s) 75%, #fff) 100%
+        #fff 60%,
+        color-mix(in srgb, var(--c-s) 70%, #fff) 100%
     );
-    border: 1px solid #e5ebf3;
-    border-radius: 16px;
-    box-shadow:
-        0 1px 2px rgba(23, 59, 102, 0.04),
-        0 14px 26px -20px rgba(23, 59, 102, 0.28);
-    transition:
-        transform 0.4s var(--ease),
-        border-color 0.4s,
-        box-shadow 0.4s;
-}
-
-/* garis aksen tipis di atas */
-.grid .pr::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 3px;
-    background: linear-gradient(
-        90deg,
-        var(--c),
-        color-mix(in srgb, var(--c) 20%, #fff)
-    );
-}
-
-/* ornamen busur konsentris halus di pojok kanan atas */
-.grid .pr::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 130px;
-    height: 130px;
-    background: radial-gradient(
-        circle at 100% 0,
-        transparent 0 44px,
-        color-mix(in srgb, var(--c) 22%, transparent) 44px 45px,
-        transparent 45px 68px,
-        color-mix(in srgb, var(--c) 14%, transparent) 68px 69px,
-        transparent 69px 92px,
-        color-mix(in srgb, var(--c) 8%, transparent) 92px 93px,
-        transparent 93px
-    );
-    pointer-events: none;
-    transition: transform 0.6s var(--ease);
-    transform-origin: 100% 0;
-}
-
-.grid .pr:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--c) 40%, #fff);
-    box-shadow:
-        0 1px 2px rgba(23, 59, 102, 0.05),
-        0 24px 36px -22px color-mix(in srgb, var(--c) 75%, #000);
-}
-.grid .pr:hover::after {
-    transform: scale(1.12);
-}
-
-/* baris atas: cincin jenjang + gelar */
-.pr-top {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-.pr-ring {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: var(--c-s);
-    border: 1.5px solid color-mix(in srgb, var(--c) 55%, #fff);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 10%, transparent);
-    color: var(--c-d);
-    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-    font-weight: 700;
-    font-size: 0.88rem;
-    letter-spacing: 0.02em;
-}
-.pr-gelar {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mut);
-}
-
-/* judul serif */
-.grid .pr h3 {
-    position: relative;
-    z-index: 1;
-    margin: 20px 0 0;
-    min-height: 2.65em;
-    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    line-height: 1.32;
-    letter-spacing: -0.005em;
-    color: var(--ink);
-}
-.grid .pr h3::after {
-    content: "";
-    display: block;
-    width: 30px;
-    height: 2px;
-    margin-top: 12px;
-    background: var(--c);
-    border-radius: 2px;
-    transition: width 0.45s var(--ease);
-}
-.grid .pr:hover h3::after {
-    width: 56px;
-}
-
-.grid .pr .pr-fak {
-    position: relative;
-    z-index: 1;
-    margin: 12px 0 24px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--c-d) 70%, #fff);
-}
-
-/* footer */
-.pr-foot {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: auto;
-    padding-top: 14px;
-    border-top: 1px solid #edf1f6;
-    font-size: 0.84rem;
-    font-weight: 600;
-    color: var(--c-d);
-}
-.pr-go {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1px solid color-mix(in srgb, var(--c) 45%, #fff);
-    color: var(--c-d);
-    transition:
-        background 0.35s,
-        color 0.35s,
-        border-color 0.35s;
-}
-.pr-go svg {
-    width: 14px;
-    height: 14px;
-}
-.grid .pr:hover .pr-go {
-    background: var(--c-d);
-    border-color: var(--c-d);
-    color: #fff;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .grid .pr,
-    .grid .pr::after,
-    .grid .pr h3::after,
-    .pr-go {
-        transition: none;
-    }
-}
-
-.stat {
-    background: linear-gradient(120deg, var(--blue-d), var(--blue));
-    color: #fff;
-    padding: 54px 0;
-}
-.stat .wrap {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-}
-.stat b {
-    display: block;
-    font-size: clamp(2rem, 4vw, 3.1rem);
-    line-height: 1.1;
-}
-.stat small {
-    display: block;
-    color: #cfe0f5;
-    margin-top: 6px;
-    max-width: 22ch;
-}
-
-.tabs {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 28px;
-}
-.tabs button {
-    padding: 10px 20px;
-    border-radius: 999px;
-    background: #fff;
-    border: 1px solid var(--line);
-    font-weight: 600;
-    font-size: 0.92rem;
-    transition: 0.3s var(--ease);
-}
-.tabs button:hover {
-    border-color: var(--blue);
-}
-.tabs button.on {
-    background: var(--blue);
-    border-color: var(--blue);
-    color: #fff;
-}
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 18px;
-}
-.pr {
-    position: relative;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 24px;
-    transition: 0.35s var(--ease);
-    animation: pop 0.55s var(--ease) both;
-    animation-delay: calc(var(--i) * 55ms);
-}
-@keyframes pop {
-    from {
-        opacity: 0;
-        transform: translateY(16px) scale(0.97);
-    }
-}
-.pr:hover {
-    transform: translateY(-6px);
-    border-color: var(--or);
-    box-shadow: 0 22px 36px -24px rgba(23, 59, 102, 0.55);
-}
-.lv {
-    display: inline-block;
-    background: var(--sky);
-    color: var(--blue);
-    font-weight: 800;
-    font-size: 0.78rem;
-    padding: 3px 12px;
-    border-radius: 999px;
-    margin-bottom: 14px;
-}
-.pr h3 {
-    font-size: 1.15rem;
-    margin-bottom: 4px;
-}
-.pr p {
-    color: var(--mut);
-    font-size: 0.88rem;
-    margin-bottom: 16px;
-}
-.more {
-    display: inline-flex;
-    gap: 6px;
-    align-items: center;
-    font-weight: 700;
-    color: var(--blue);
-    font-size: 0.9rem;
-}
-
-.gal {
-    overflow: hidden;
-    padding: 4px 0 8px;
-    -webkit-mask-image: linear-gradient(
-        90deg,
-        transparent,
-        #000 6%,
-        #000 94%,
-        transparent
-    );
-    mask-image: linear-gradient(
-        90deg,
-        transparent,
-        #000 6%,
-        #000 94%,
-        transparent
-    );
-}
-.gal-track {
-    display: flex;
-    width: max-content;
-    animation: gal 40s linear infinite;
-}
-.gal:hover .gal-track {
-    animation-play-state: paused;
-}
-@keyframes gal {
-    to {
-        transform: translateX(-50%);
-    }
-}
-.tile {
-    flex: none;
-    width: min(320px, 74vw);
-    height: 300px;
-    margin-right: 18px;
-    border-radius: var(--r);
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(150deg, var(--blue), #8fb8ea);
-}
-.tile:nth-child(even) {
-    background: linear-gradient(150deg, var(--or), #f8c898);
-}
-.tile img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.8s var(--ease);
-}
-.tile:hover img {
-    transform: scale(1.06);
-}
-.tile figcaption {
-    position: absolute;
-    inset: auto 0 0;
-    padding: 44px 20px 18px;
-    color: #fff;
-    font-weight: 700;
-    background: linear-gradient(transparent, rgba(10, 25, 45, 0.6));
-}
-
-/* ============================================================
-   PROGRAM STUDI / FAKULTAS
-   ============================================================ */
-
-.prodi-sec {
-    position: relative;
-}
-
-/* Tabs */
-.prodi-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 36px;
-}
-
-.prodi-tab {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: #fff;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--mut);
-    cursor: pointer;
-    transition: all 0.3s var(--ease);
-    white-space: nowrap;
-}
-
-.prodi-tab:hover {
-    border-color: color-mix(in srgb, var(--blue) 35%, transparent);
-    color: var(--blue-d);
-    background: var(--sky);
-}
-
-.prodi-tab.on {
-    background: linear-gradient(135deg, var(--or) 0%, #d4a24a 100%);
-    border-color: linear-gradient(135deg, var(--or) 0%, #d4a24a 100%);
-    color: #fff;
-    box-shadow: 0 8px 20px -8px rgba(23, 59, 102, 0.35);
-}
-
-.prodi-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 22px;
-    height: 22px;
-    padding: 0 6px;
-    border-radius: 999px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    background: color-mix(in srgb, var(--blue) 12%, transparent);
-    color: var(--blue);
-}
-
-.prodi-tab.on .prodi-count {
-    background: rgba(255, 255, 255, 0.22);
-    color: #fff;
-}
-
-/* Grid */
-.prodi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-/* Card */
-.pr {
-    --c: var(--blue);
-    --c-s: var(--sky);
-    --c-d: var(--blue-d);
-
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-    border: 1px solid var(--line);
+    border: 1px solid #e1e8f2;
     border-radius: 18px;
-    padding: 24px 22px 20px;
     text-decoration: none;
     color: inherit;
-    position: relative;
-    overflow: hidden;
+    box-shadow:
+        0 2px 4px rgba(23, 59, 102, 0.04),
+        0 16px 32px -20px rgba(23, 59, 102, 0.24);
     transition:
-        transform 0.35s var(--ease),
-        box-shadow 0.35s var(--ease),
-        border-color 0.3s;
+        transform 0.4s var(--ease),
+        border-color 0.35s,
+        box-shadow 0.4s var(--ease);
 
     opacity: 0;
     transform: translateY(16px);
@@ -466,79 +257,173 @@
     }
 }
 
-.pr::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--c);
-}
-
-.pr:hover {
-    transform: translateY(-6px);
-    border-color: color-mix(in srgb, var(--c) 40%, transparent);
-    box-shadow: 0 18px 36px -18px color-mix(in srgb, var(--c) 40%, transparent);
-}
-
-.pr[hidden] {
+.prodi-grid .pr[hidden] {
     display: none !important;
 }
 
+/* Garis aksen atas sesuai warna jurusan */
+.prodi-grid .pr::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3.5px;
+    background: linear-gradient(
+        90deg,
+        var(--c),
+        color-mix(in srgb, var(--c) 25%, #fff)
+    );
+    z-index: 2;
+}
+
+/* Ornamen busur konsentris halus di pojok kanan atas */
+.prodi-grid .pr::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 132px;
+    height: 132px;
+    background: radial-gradient(
+        circle at 100% 0,
+        transparent 0 44px,
+        color-mix(in srgb, var(--c) 22%, transparent) 44px 45px,
+        transparent 45px 68px,
+        color-mix(in srgb, var(--c) 14%, transparent) 68px 69px,
+        transparent 69px 92px,
+        color-mix(in srgb, var(--c) 8%, transparent) 92px 93px,
+        transparent 93px
+    );
+    pointer-events: none;
+    transition: transform 0.6s var(--ease);
+    transform-origin: 100% 0;
+    z-index: 0;
+}
+
+.prodi-grid .pr:hover {
+    transform: translateY(-6px);
+    border-color: color-mix(in srgb, var(--c) 45%, #fff);
+    box-shadow:
+        0 4px 10px rgba(23, 59, 102, 0.06),
+        0 26px 42px -22px color-mix(in srgb, var(--c) 70%, #000);
+}
+
+.prodi-grid .pr:hover::after {
+    transform: scale(1.14);
+}
+
+/* Baris atas: cincin jenjang + gelar */
 .pr-top {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 12px;
 }
 
 .pr-ring {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 42px;
-    height: 28px;
+    display: grid;
+    place-items: center;
+    flex: none;
+    min-width: 46px;
+    height: 46px;
     padding: 0 10px;
-    border-radius: 8px;
+    border-radius: 999px;
     background: var(--c-s);
+    border: 1.5px solid color-mix(in srgb, var(--c) 55%, #fff);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 10%, transparent);
     color: var(--c-d);
-    font-size: 0.78rem;
-    font-weight: 800;
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.02em;
+    transition: transform 0.35s var(--ease);
+}
+
+.prodi-grid .pr:hover .pr-ring {
+    transform: scale(1.06);
 }
 
 .pr-gelar {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--mut);
-    background: var(--bg);
-    padding: 4px 10px;
-    border-radius: 6px;
-}
-
-.pr h3 {
-    font-size: 1.12rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    color: var(--blue-d);
-    line-height: 1.35;
-    margin-bottom: 8px;
-}
-
-.pr-fak {
-    font-size: 0.84rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--mut);
-    margin-bottom: 20px;
+    background: #f7f9fc;
+    border: 1px solid #e4ebf3;
+    padding: 4px 10px;
+    border-radius: 999px;
 }
 
+/* Judul serif + garis bawah animasi */
+.prodi-grid .pr h3 {
+    position: relative;
+    z-index: 1;
+    margin: 20px 0 0;
+    min-height: 2.65em;
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.32;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    transition: color 0.3s;
+}
+
+.prodi-grid .pr:hover h3 {
+    color: var(--c-d);
+}
+
+.prodi-grid .pr h3::after {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 2px;
+    margin-top: 12px;
+    background: var(--c);
+    border-radius: 2px;
+    transition: width 0.45s var(--ease);
+}
+
+.prodi-grid .pr:hover h3::after {
+    width: 58px;
+}
+
+/* Nama fakultas */
+.prodi-grid .pr .pr-fak {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin: 12px 0 24px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--c-d) 72%, #fff);
+}
+
+.prodi-grid .pr .pr-fak::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c);
+    flex: none;
+}
+
+/* Footer kartu */
 .pr-foot {
-    margin-top: auto;
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    margin-top: auto;
     padding-top: 14px;
-    border-top: 1px dashed var(--line);
-    font-size: 0.88rem;
+    border-top: 1px solid #edf1f6;
+    font-size: 0.84rem;
     font-weight: 600;
     color: var(--c-d);
 }
@@ -550,17 +435,28 @@
     height: 32px;
     border-radius: 50%;
     background: var(--c-s);
+    border: 1px solid color-mix(in srgb, var(--c) 40%, #fff);
     color: var(--c-d);
-    transition: all 0.3s var(--ease);
+    transition:
+        background 0.35s,
+        color 0.35s,
+        border-color 0.35s,
+        transform 0.35s var(--ease);
 }
 
-.pr:hover .pr-go {
-    background: var(--c);
+.pr-go svg {
+    width: 14px;
+    height: 14px;
+}
+
+.prodi-grid .pr:hover .pr-go {
+    background: var(--c-d);
+    border-color: var(--c-d);
     color: #fff;
     transform: translateX(3px);
 }
 
-/* Empty */
+/* Empty state */
 .prodi-empty {
     padding: 48px 20px;
     text-align: center;
@@ -568,13 +464,22 @@
     font-weight: 500;
 }
 
-/* Responsive */
+/* ========== Responsive ========== */
 @media (max-width: 960px) {
+    .prodi-sec {
+        padding: 72px 0 64px;
+    }
+
+    .prodi-summary {
+        display: none;
+    }
+
     .prodi-tabs {
         flex-wrap: nowrap;
         overflow-x: auto;
         gap: 8px;
-        padding-bottom: 8px;
+        padding-bottom: 16px;
+        margin-bottom: 28px;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
@@ -597,16 +502,36 @@
 }
 
 @media (max-width: 640px) {
+    .prodi-sec {
+        padding: 56px 0 52px;
+    }
+
     .prodi-grid {
         grid-template-columns: 1fr;
     }
 
-    .pr {
-        padding: 20px 18px 18px;
+    .prodi-grid .pr {
+        padding: 22px 20px 18px;
+        border-radius: 16px;
     }
 
-    .pr h3 {
-        font-size: 1.05rem;
+    .prodi-grid .pr h3 {
+        font-size: 1.08rem;
+        min-height: auto;
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .prodi-grid .pr {
+        opacity: 1;
+        transform: none;
+        animation: none;
+    }
+    .prodi-grid .pr,
+    .prodi-grid .pr::after,
+    .prodi-grid .pr h3::after,
+    .pr-ring,
+    .pr-go {
+        transition: none;
+    }
+}

@@ -1,12 +1,13 @@
 @php
     $isEdit = $item && $item->exists;
     $pageTitle = 'Pengaturan Hero';
+    $videoMedia = $item?->videoMedia;
+    $fotoMedias = $item?->fotoMedias ?? collect();
 @endphp
 
 <x-dashboard.layout.app :title="$pageTitle" :page-title="$pageTitle">
     <div class="g">
 
-        {{-- Breadcrumb aksi atas --}}
         <div class="card" style="padding: 16px 22px;">
             <div class="ch2" style="margin-bottom: 0;">
                 <div>
@@ -41,18 +42,15 @@
             </div>
         @endif
 
-        {{-- Konten: form + sidebar --}}
         <div class="g g2" style="align-items: start;">
 
-            {{-- Kolom form --}}
             <div class="card" style="min-width: 0; padding: 0; overflow: hidden;">
 
-                {{-- Header form --}}
                 <div
-                    style="padding: 22px 26px 18px; border-bottom: 1px solid var(--line); background: linear-gradient(135deg, var(--bg) 0%, transparent 100%);">
+                    style="padding: 22px 26px 18px; border-bottom: 1px solid var(--line); background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 100%);">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div
-                            style="width: 40px; height: 40px; border-radius: 10px; background: var(--pri); opacity: 0.1; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            style="width: 40px; height: 40px; border-radius: 10px; background: rgba(99,102,241,0.14); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--pri)"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -61,9 +59,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h2 style="margin: 0; font-size: 1.05rem;">Detail Hero</h2>
+                            <h2 style="margin: 0; font-size: 1.05rem;">Detail Hero & Slider</h2>
                             <p style="margin: 2px 0 0; font-size: 0.82rem; color: var(--mut);">
-                                Atur teks, tombol, dan media yang tampil di bagian paling atas halaman beranda.
+                                Atur teks utama, tombol aksi, 1 video pembuka, dan galeri foto slider.
                             </p>
                         </div>
                     </div>
@@ -74,7 +72,6 @@
                     @csrf
                     @method('PUT')
 
-                    {{-- Section 01: Teks utama --}}
                     <div style="margin-bottom: 28px;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
                             <span
@@ -109,7 +106,6 @@
                         </div>
                     </div>
 
-                    {{-- Section 02: Tombol aksi --}}
                     <div style="margin-bottom: 28px;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
                             <span
@@ -159,214 +155,295 @@
                         </div>
                     </div>
 
-                    {{-- Section 03: Media --}}
                     <div style="margin-bottom: 28px;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
                             <span
                                 style="font-size: 0.7rem; font-weight: 700; color: var(--pri); text-transform: uppercase; letter-spacing: 0.08em;">03</span>
-                            <h3 style="margin: 0; font-size: 0.95rem;">Media background</h3>
+                            <h3 style="margin: 0; font-size: 0.95rem;">Media Slider (Video & Galeri Foto)</h3>
                             <div style="flex: 1; height: 1px; background: var(--line);"></div>
                         </div>
 
-                        {{-- Tipe media --}}
-                        <div class="f" style="margin-bottom: 18px;">
-                            <label style="font-weight: 600; font-size: 0.85rem;">Tipe media <span
-                                    style="color: var(--err);">*</span></label>
-                            <div
-                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 8px;">
-                                @php
-                                    $currentTipe = old('tipe_media', $item->tipe_media ?? 'none');
-                                @endphp
-                                @foreach ([
-        'none' => ['label' => 'Tanpa media', 'desc' => 'Warna dasar', 'icon' => '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line>'],
-        'gambar' => ['label' => 'Gambar', 'desc' => 'Rasio 16:9', 'icon' => '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline>'],
-        'video' => ['label' => 'Video', 'desc' => 'MP4 / WebM', 'icon' => '<polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>'],
-    ] as $val => $opt)
-                                    <label style="position: relative; display: block; cursor: pointer; margin: 0;">
-                                        <input type="radio" name="tipe_media" value="{{ $val }}"
-                                            class="tipe-media peer" {{ $currentTipe === $val ? 'checked' : '' }}
-                                            style="position: absolute; opacity: 0; width: 0; height: 0;">
-                                        <div class="media-option" data-value="{{ $val }}"
-                                            style="padding: 14px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); transition: all 0.18s ease; text-align: center;">
-                                            <div class="media-icon"
-                                                style="width: 34px; height: 34px; margin: 0 auto 8px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(99,102,241,0.08); transition: all 0.18s ease;">
-                                                <svg width="16" height="16" viewBox="0 0 24 24"
-                                                    fill="none" stroke="var(--mut)" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    {!! $opt['icon'] !!}
-                                                </svg>
-                                            </div>
-                                            <div style="font-weight: 600; font-size: 0.85rem;">{{ $opt['label'] }}
-                                            </div>
-                                            <div style="font-size: 0.72rem; color: var(--mut); margin-top: 2px;">
-                                                {{ $opt['desc'] }}</div>
-                                        </div>
-                                    </label>
-                                @endforeach
-                            </div>
-                            @error('tipe_media')
+                        <div
+                            style="margin-bottom: 18px; padding: 12px 14px; border-radius: 10px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.28); font-size: 0.82rem; color: var(--fg); line-height: 1.55;">
+                            <strong>Alur putar otomatis:</strong>
+                            <span style="color: var(--pri); font-weight: 600;">1. Video Utama</span> →
+                            <span style="color: var(--pri); font-weight: 600;">2. Seluruh Foto Aktif (berurutan)</span>
+                            →
+                            <span style="color: var(--pri); font-weight: 600;">3. Kembali ke Video (Loop)</span>.
+                        </div>
+
+                        <div class="f" style="margin-bottom: 20px;">
+                            <label for="durasi_slider" style="font-weight: 600; font-size: 0.85rem;">
+                                Rentang waktu perpindahan slide <span style="color: var(--err);">*</span>
+                            </label>
+                            @php
+                                $durasiVal = (int) old('durasi_slider', $item->durasi_slider ?? 6);
+                            @endphp
+                            <select id="durasi_slider" name="durasi_slider" style="max-width: 250px;">
+                                <option value="5" @selected($durasiVal === 5)>5 detik (Cepat)</option>
+                                <option value="6" @selected($durasiVal === 6)>6 detik (Direkomendasikan)</option>
+                                <option value="7" @selected($durasiVal === 7)>7 detik (Santai)</option>
+                            </select>
+                            @error('durasi_slider')
                                 <small style="color: var(--err);">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        {{-- Upload area --}}
-                        <div id="upload_section" style="display: none; margin-bottom: 18px;">
-                            <label style="font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 8px;">
-                                Upload media <span style="color: var(--err);">*</span>
-                            </label>
+                        <div
+                            style="padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); margin-bottom: 20px;">
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                                <label style="font-weight: 700; font-size: 0.88rem; margin: 0; color: var(--fg);">
+                                    A. Video Utama <span
+                                        style="font-size: 0.75rem; font-weight: 600; color: var(--pri);">(Slide #1 •
+                                        Cukup 1 Video)</span>
+                                </label>
+                                <label
+                                    style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: var(--fg); cursor: pointer; margin: 0;">
+                                    <input type="hidden" name="video_urip" value="0">
+                                    <input type="checkbox" name="video_urip" value="1"
+                                        @checked(old('video_urip', $videoMedia?->urip ?? true))>
+                                    Tampilkan video di slider
+                                </label>
+                            </div>
 
-                            <input type="file" id="input_media" name="path_media" style="display: none;">
+                            <input type="file" id="input_video" name="path_video"
+                                accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov" style="display: none;">
 
-                            <div id="dropzone"
-                                style="position: relative; border: 2px dashed var(--line); border-radius: 12px; background: var(--bg); padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.18s ease;">
-                                <div id="dropzone_empty">
+                            <div id="video_dropzone" class="hero-dz">
+                                <div id="video_empty">
                                     <div
-                                        style="width: 48px; height: 48px; margin: 0 auto 12px; border-radius: 12px; background: rgba(99,102,241,0.08); display: flex; align-items: center; justify-content: center;">
-                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                        style="width: 44px; height: 44px; margin: 0 auto 10px; border-radius: 10px; background: rgba(99,102,241,0.14); display: flex; align-items: center; justify-content: center;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                             stroke="var(--pri)" stroke-width="2" stroke-linecap="round"
                                             stroke-linejoin="round">
-                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                            <polyline points="17 8 12 3 7 8"></polyline>
-                                            <line x1="12" y1="3" x2="12" y2="15">
-                                            </line>
+                                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                            <rect x="1" y="5" width="15" height="14" rx="2"
+                                                ry="2"></rect>
                                         </svg>
                                     </div>
-                                    <div style="font-weight: 600; font-size: 0.88rem; margin-bottom: 4px;">Klik atau
-                                        seret file ke sini</div>
-                                    <div id="dropzone_hint" style="font-size: 0.78rem; color: var(--mut);">Format yang
-                                        didukung: JPG, PNG, WEBP</div>
+                                    <div
+                                        style="font-weight: 600; font-size: 0.86rem; color: var(--fg); margin-bottom: 3px;">
+                                        {{ $videoMedia ? 'Klik atau seret video baru untuk mengganti' : 'Klik atau seret 1 file video ke sini' }}
+                                    </div>
+                                    <div style="font-size: 0.76rem; color: var(--mut);">Format: MP4 / WebM. Maksimal
+                                        15MB (opsional).</div>
                                 </div>
 
-                                {{-- Preview container --}}
-                                <div id="dropzone_preview" class="hidden-preview">
-                                    <div id="preview_wrap"
-                                        style="position: relative; display: inline-block; margin-bottom: 12px; width: 100%;">
-                                        <img id="preview_img" alt="Preview"
-                                            style="max-height: 180px; max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: none;">
-                                        <video id="preview_video"
-                                            style="max-height: 180px; max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: none;"
-                                            muted playsinline preload="metadata" controls></video>
+                                <div id="video_preview_box" class="hidden-preview">
+                                    <div style="margin-bottom: 10px;">
+                                        <video id="preview_video" muted playsinline preload="metadata" controls
+                                            style="max-height: 190px; max-width: 100%; border-radius: 10px; background: #0f172a; display: none;"></video>
                                     </div>
                                     <div
                                         style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                                        <div style="text-align: left; min-width: 0;">
-                                            <div id="preview_name"
-                                                style="font-weight: 600; font-size: 0.85rem; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                            </div>
-                                            <div id="preview_size" style="font-size: 0.75rem; color: var(--mut);">
-                                            </div>
+                                        <div style="text-align: left;">
+                                            <div id="video_preview_name"
+                                                style="font-weight: 600; font-size: 0.84rem; color: var(--fg);"></div>
+                                            <div id="video_preview_size"
+                                                style="font-size: 0.74rem; color: var(--mut);"></div>
                                         </div>
-                                        <button type="button" id="btn_remove_media"
-                                            style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--err); background: transparent; color: var(--err); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.15s;">Hapus</button>
+                                        <button type="button" id="btn_remove_video"
+                                            class="btn-mini-danger">Batalkan</button>
                                     </div>
-                                </div>
-
-                                <div id="dropzone_loading" style="display: none;">
-                                    <div
-                                        style="width: 32px; height: 32px; margin: 0 auto 10px; border: 3px solid rgba(99,102,241,0.15); border-top-color: var(--pri); border-radius: 50%; animation: heroSpin 0.8s linear infinite;">
-                                    </div>
-                                    <div style="font-size: 0.82rem; color: var(--mut);">Memuat preview...</div>
                                 </div>
                             </div>
 
-                            @if ($item->path_media ?? false)
-                                <div id="current_media"
-                                    style="margin-top: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); display: flex; align-items: center; gap: 12px;">
-                                    @if (($item->tipe_media ?? '') === 'gambar')
-                                        <img src="{{ asset('storage/' . $item->path_media) }}" alt="Media"
-                                            style="width: 60px; height: 45px; object-fit: cover; border-radius: 6px; flex-shrink: 0;">
-                                    @elseif (($item->tipe_media ?? '') === 'video')
-                                        <video src="{{ asset('storage/' . $item->path_media) }}"
-                                            style="width: 60px; height: 45px; object-fit: cover; border-radius: 6px; flex-shrink: 0;"
-                                            muted></video>
-                                    @endif
+                            @if ($videoMedia)
+                                <div id="current_video_card" class="hero-current-media">
+                                    <video src="{{ asset('storage/' . $videoMedia->path_media) }}"
+                                        style="width: 72px; height: 50px; object-fit: cover; border-radius: 6px; background: #0f172a; flex-shrink: 0;"
+                                        muted></video>
                                     <div style="min-width: 0; flex: 1;">
                                         <div
-                                            style="font-size: 0.72rem; font-weight: 700; color: var(--pri); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">
-                                            File saat ini</div>
+                                            style="font-size: 0.7rem; font-weight: 700; color: var(--pri); text-transform: uppercase; letter-spacing: 0.05em;">
+                                            Video tersimpan saat ini
+                                        </div>
                                         <div
                                             style="font-size: 0.8rem; color: var(--mut); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                            {{ basename($item->path_media) }}</div>
+                                            {{ basename($videoMedia->path_media) }}
+                                        </div>
                                     </div>
+                                    <label
+                                        style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: var(--err); cursor: pointer; margin: 0;">
+                                        <input type="checkbox" name="hapus_video" value="1"
+                                            id="chk_hapus_video">
+                                        Hapus video
+                                    </label>
                                 </div>
                             @endif
 
-                            @error('path_media')
+                            @error('path_video')
                                 <small
-                                    style="color: var(--err); display: block; margin-top: 8px;">{{ $message }}</small>
+                                    style="color: var(--err); display: block; margin-top: 6px;">{{ $message }}</small>
                             @enderror
+
+                            <div style="margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line);">
+                                <label
+                                    style="font-weight: 600; font-size: 0.82rem; display: block; margin-bottom: 8px; color: var(--fg);">
+                                    Poster Video <span style="color: var(--mut); font-weight: 500;">(opsional, gambar
+                                        pembuka sebelum video jalan)</span>
+                                </label>
+                                <input type="file" id="input_poster" name="path_poster" accept="image/*"
+                                    style="display: none;">
+
+                                <div id="poster_dropzone" class="hero-dz" style="padding: 14px;">
+                                    <div id="poster_empty"
+                                        style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                        <span style="font-size: 0.82rem; font-weight: 600; color: var(--pri);">+ Pilih
+                                            gambar poster (Maks 2MB)</span>
+                                    </div>
+                                    <div id="poster_preview_box" class="hidden-preview">
+                                        <img id="poster_img" alt="Poster"
+                                            style="max-height: 110px; max-width: 100%; border-radius: 8px; margin-bottom: 8px; display: none;">
+                                        <div
+                                            style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                            <span id="poster_name"
+                                                style="font-size: 0.8rem; font-weight: 600; color: var(--fg);"></span>
+                                            <button type="button" id="btn_remove_poster"
+                                                class="btn-mini-danger">Hapus</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (!empty($videoMedia?->path_poster))
+                                    <div id="current_poster_card" class="hero-current-media"
+                                        style="margin-top: 10px; padding: 10px 12px;">
+                                        <img src="{{ asset('storage/' . $videoMedia->path_poster) }}" alt="Poster"
+                                            style="width: 52px; height: 38px; object-fit: cover; border-radius: 6px; flex-shrink: 0;">
+                                        <div
+                                            style="min-width: 0; flex: 1; font-size: 0.78rem; color: var(--mut); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                            {{ basename($videoMedia->path_poster) }}
+                                        </div>
+                                        <label
+                                            style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; font-weight: 600; color: var(--err); cursor: pointer; margin: 0;">
+                                            <input type="checkbox" name="hapus_poster" value="1">
+                                            Hapus
+                                        </label>
+                                    </div>
+                                @endif
+
+                                @error('path_poster')
+                                    <small
+                                        style="color: var(--err); display: block; margin-top: 6px;">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
 
-                        {{-- Poster video --}}
-                        <div id="poster_section" style="display: none;">
-                            <label style="font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 8px;">
-                                Poster video <span style="color: var(--mut); font-weight: 500;">(opsional)</span>
-                            </label>
-
-                            <input type="file" id="input_poster" name="path_poster" accept="image/*"
-                                style="display: none;">
-
-                            <div id="poster_dropzone"
-                                style="position: relative; border: 2px dashed var(--line); border-radius: 12px; background: var(--bg); padding: 20px; text-align: center; cursor: pointer; transition: all 0.18s ease;">
-                                <div id="poster_empty"
-                                    style="display: flex; align-items: center; justify-content: center; gap: 12px;">
-                                    <div
-                                        style="width: 40px; height: 40px; border-radius: 10px; background: rgba(245,158,11,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                            stroke="rgb(245,158,11)" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <rect x="3" y="3" width="18" height="18" rx="2"
-                                                ry="2"></rect>
-                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                            <polyline points="21 15 16 10 5 21"></polyline>
-                                        </svg>
-                                    </div>
-                                    <div style="text-align: left;">
-                                        <div style="font-weight: 600; font-size: 0.85rem;">Upload poster (thumbnail
-                                            video)</div>
-                                        <div style="font-size: 0.75rem; color: var(--mut);">Gambar tampil sebelum video
-                                            diputar. Maks 2MB.</div>
-                                    </div>
-                                </div>
-
-                                <div id="poster_preview" class="hidden-preview">
-                                    <img id="poster_img" alt="Poster"
-                                        style="max-height: 120px; max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 10px; display: none;">
-                                    <div
-                                        style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                                        <div id="poster_name"
-                                            style="font-weight: 600; font-size: 0.82rem; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                        </div>
-                                        <button type="button" id="btn_remove_poster"
-                                            style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--err); background: transparent; color: var(--err); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.15s;">Hapus</button>
-                                    </div>
-                                </div>
+                        <div
+                            style="padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg);">
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px;">
+                                <label style="font-weight: 700; font-size: 0.88rem; margin: 0; color: var(--fg);">
+                                    B. Galeri Foto Slider <span
+                                        style="font-size: 0.75rem; font-weight: 600; color: var(--pri);">(Slide #2 dst.
+                                        • Tanpa Batas Jumlah)</span>
+                                </label>
                             </div>
 
-                            @if ($item->path_poster ?? false)
-                                <div id="current_poster"
-                                    style="margin-top: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); display: flex; align-items: center; gap: 12px;">
-                                    <img src="{{ asset('storage/' . $item->path_poster) }}" alt="Poster"
-                                        style="width: 60px; height: 45px; object-fit: cover; border-radius: 6px; flex-shrink: 0;">
-                                    <div style="min-width: 0; flex: 1;">
-                                        <div
-                                            style="font-size: 0.72rem; font-weight: 700; color: rgb(245,158,11); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">
-                                            Poster saat ini</div>
-                                        <div
-                                            style="font-size: 0.8rem; color: var(--mut); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                            {{ basename($item->path_poster) }}</div>
+                            <input type="file" id="input_fotos" name="fotos[]"
+                                accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" multiple
+                                style="display: none;">
+
+                            <div id="fotos_dropzone" class="hero-dz">
+                                <div
+                                    style="width: 44px; height: 44px; margin: 0 auto 10px; border-radius: 10px; background: rgba(99,102,241,0.14); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="var(--pri)" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2"
+                                            ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                </div>
+                                <div
+                                    style="font-weight: 600; font-size: 0.86rem; color: var(--fg); margin-bottom: 3px;">
+                                    Klik atau seret
+                                    banyak foto sekaligus ke sini</div>
+                                <div style="font-size: 0.76rem; color: var(--mut);">Format: JPG, PNG, WEBP. Maks 2MB
+                                    per foto. Otomatis dikompres ke WebP.</div>
+                            </div>
+                            <div id="new_fotos_wrap" style="display: none; margin-top: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                    <span
+                                        style="font-size: 0.76rem; font-weight: 700; color: #4ade80; text-transform: uppercase; letter-spacing: 0.04em;">
+                                        Foto baru siap diupload (<span id="new_fotos_count">0</span>)
+                                    </span>
+                                    <button type="button" id="btn_clear_new_fotos" class="btn-mini-danger">Hapus
+                                        semua pilihan baru</button>
+                                </div>
+                                <div id="new_fotos_grid" class="hero-foto-grid"></div>
+                            </div>
+
+                            @if ($fotoMedias->isNotEmpty())
+                                <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line);">
+                                    <div
+                                        style="font-size: 0.76rem; font-weight: 700; color: var(--pri); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;">
+                                        Foto tersimpan ({{ $fotoMedias->count() }}) — Atur urutan, status tampil, atau
+                                        hapus
+                                    </div>
+                                    <div class="hero-foto-manage-grid">
+                                        @foreach ($fotoMedias as $idx => $foto)
+                                            <div class="hero-foto-card {{ !$foto->urip ? 'is-inactive' : '' }}"
+                                                data-existing-foto>
+                                                <div class="hero-foto-thumb">
+                                                    <span class="hero-foto-badge">Foto #{{ $idx + 1 }}</span>
+                                                    <img src="{{ asset('storage/' . $foto->path_media) }}"
+                                                        alt="Foto {{ $idx + 1 }}">
+                                                </div>
+
+                                                <div class="hero-foto-controls">
+                                                    <div
+                                                        style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                                                        <label
+                                                            style="font-size: 0.72rem; color: var(--mut); font-weight: 600; margin: 0;">Urutan</label>
+                                                        <input type="number"
+                                                            name="existing_fotos[{{ $foto->id }}][urutan]"
+                                                            value="{{ old("existing_fotos.{$foto->id}.urutan", $foto->urutan) }}"
+                                                            min="0" class="hero-order-input">
+                                                    </div>
+
+                                                    <div
+                                                        style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line);">
+                                                        <label
+                                                            style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; color: var(--fg); cursor: pointer; margin: 0;">
+                                                            <input type="hidden"
+                                                                name="existing_fotos[{{ $foto->id }}][urip]"
+                                                                value="0">
+                                                            <input type="checkbox"
+                                                                name="existing_fotos[{{ $foto->id }}][urip]"
+                                                                value="1" class="chk-urip-foto"
+                                                                @checked(old("existing_fotos.{$foto->id}.urip", $foto->urip))>
+                                                            <span>Tampil</span>
+                                                        </label>
+
+                                                        <label
+                                                            style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 700; color: var(--err); cursor: pointer; margin: 0;">
+                                                            <input type="checkbox" name="hapus_fotos[]"
+                                                                value="{{ $foto->id }}" class="chk-hapus-foto">
+                                                            <span>Hapus</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             @endif
 
-                            @error('path_poster')
+                            @error('fotos')
                                 <small
-                                    style="color: var(--err); display: block; margin-top: 8px;">{{ $message }}</small>
+                                    style="color: var(--err); display: block; margin-top: 6px;">{{ $message }}</small>
+                            @enderror
+                            @error('fotos.*')
+                                <small
+                                    style="color: var(--err); display: block; margin-top: 6px;">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
 
-                    {{-- Section 04: Status publikasi --}}
                     <div style="margin-bottom: 8px;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
                             <span
@@ -408,13 +485,12 @@
                                         @checked(old('urip', $item->urip ?? true))
                                         style="opacity: 0; width: 0; height: 0; position: absolute;">
                                     <span class="toggle-slider"
-                                        style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgb(203,213,225); border-radius: 26px; transition: all 0.25s ease;"></span>
+                                        style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(148,163,184,0.28); border-radius: 26px; transition: all 0.25s ease;"></span>
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Footer aksi --}}
                     <div
                         style="display: flex; gap: 10px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); flex-wrap: wrap; justify-content: flex-end;">
                         <a href="{{ route('superadmin.hero.index') }}" class="btn gh">Batal</a>
@@ -425,14 +501,12 @@
                 </form>
             </div>
 
-            {{-- SIDEBAR SCROLL --}}
-            {{-- Sidebar kanan: sticky + scroll internal --}}
             <div class="hero-sidebar"
-                style="display: flex; flex-direction: column; gap: 16px; min-width: 0; max-height: calc(100vh - 140px); overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; scrollbar-width: thin; scrollbar-color: rgba(148,163,184,0.4) transparent;">
+                style="display: flex; flex-direction: column; gap: 16px; min-width: 0; max-height: calc(100vh - 140px); overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; scrollbar-width: thin; scrollbar-color: rgba(148,163,184,0.35) transparent;">
                 <div class="card" style="padding: 18px 20px; flex-shrink: 0;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
                         <div
-                            style="width: 32px; height: 32px; border-radius: 8px; background: rgba(99, 102, 241, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            style="width: 32px; height: 32px; border-radius: 8px; background: rgba(99, 102, 241, 0.14); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                 stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
@@ -440,25 +514,27 @@
                                 <line x1="12" y1="8" x2="12.01" y2="8"></line>
                             </svg>
                         </div>
-                        <h3 style="margin: 0; font-size: 0.9rem;">Panduan singkat</h3>
+                        <h3 style="margin: 0; font-size: 0.9rem;">Aturan Slider Hero</h3>
                     </div>
                     <ul
                         style="margin: 0; padding-left: 0; list-style: none; font-size: 0.82rem; color: var(--mut); line-height: 1.7;">
                         <li style="padding-left: 18px; position: relative; margin-bottom: 6px;">
                             <span style="position: absolute; left: 0; color: var(--pri);">•</span>
-                            Judul maksimal 1–2 baris agar terbaca cepat.
+                            <strong style="color: var(--fg);">Video cukup 1 saja</strong> dan selalu tampil pada urutan
+                            pertama.
                         </li>
                         <li style="padding-left: 18px; position: relative; margin-bottom: 6px;">
                             <span style="position: absolute; left: 0; color: var(--pri);">•</span>
-                            Sub judul menjelaskan keunggulan kampus.
+                            <strong style="color: var(--fg);">Foto tidak dibatasi</strong> dan tampil setelah video
+                            sesuai nomor urutan.
                         </li>
                         <li style="padding-left: 18px; position: relative; margin-bottom: 6px;">
                             <span style="position: absolute; left: 0; color: var(--pri);">•</span>
-                            Tombol 1 untuk aksi utama (mis. Daftar).
+                            Anda bisa menyembunyikan foto sementara tanpa menghapusnya (centang <em>Tampil</em>).
                         </li>
                         <li style="padding-left: 18px; position: relative;">
                             <span style="position: absolute; left: 0; color: var(--pri);">•</span>
-                            Media ringan = halaman beranda lebih cepat.
+                            Slider berputar otomatis (loop) dengan rentang 5–7 detik.
                         </li>
                     </ul>
                 </div>
@@ -466,7 +542,7 @@
                 <div class="card" style="padding: 18px 20px; flex-shrink: 0;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
                         <div
-                            style="width: 32px; height: 32px; border-radius: 8px; background: rgba(34, 197, 94, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            style="width: 32px; height: 32px; border-radius: 8px; background: rgba(34, 197, 94, 0.14); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                 stroke="rgb(34, 197, 94)" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -474,18 +550,19 @@
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
                         </div>
-                        <h3 style="margin: 0; font-size: 0.9rem;">Status form</h3>
+                        <h3 style="margin: 0; font-size: 0.9rem;">Ringkasan Media</h3>
                     </div>
                     <div style="display: grid; gap: 10px; font-size: 0.84rem;">
                         <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center;">
-                            <span style="color: var(--mut);">Mode</span>
-                            <strong>{{ $isEdit ? 'Edit' : 'Buat baru' }}</strong>
+                            <span style="color: var(--mut);">Video Utama</span>
+                            <strong>{{ $videoMedia ? ($videoMedia->urip ? '1 aktif' : '1 (nonaktif)') : 'Belum ada' }}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center;">
+                            <span style="color: var(--mut);">Total Foto</span>
+                            <strong>{{ $fotoMedias->count() }} ({{ $fotoMedias->where('urip', true)->count() }}
+                                aktif)</strong>
                         </div>
                         @if ($isEdit)
-                            <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center;">
-                                <span style="color: var(--mut);">ID</span>
-                                <strong>#{{ $item->id }}</strong>
-                            </div>
                             <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center;">
                                 <span style="color: var(--mut);">Diperbarui</span>
                                 <strong style="font-size: 0.8rem;">
@@ -494,49 +571,13 @@
                             </div>
                             <div
                                 style="display: flex; justify-content: space-between; gap: 8px; align-items: center; padding-top: 8px; border-top: 1px solid var(--line);">
-                                <span style="color: var(--mut);">Saat ini</span>
+                                <span style="color: var(--mut);">Status Hero</span>
                                 <span class="badge {{ $item->urip ? 'ok' : 'err' }}">
                                     {{ $item->urip ? 'Aktif' : 'Nonaktif' }}
                                 </span>
                             </div>
-                        @else
-                            <p style="margin: 0; color: var(--mut); font-size: 0.82rem; line-height: 1.55;">
-                                Setelah disimpan, Hero langsung bisa dipratinjau di halaman index.
-                            </p>
                         @endif
                     </div>
-                </div>
-
-                <div class="card" style="padding: 18px 20px; flex-shrink: 0;">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
-                        <div
-                            style="width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                stroke="rgb(245, 158, 11)" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2">
-                                </rect>
-                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                <polyline points="21 15 16 10 5 21"></polyline>
-                            </svg>
-                        </div>
-                        <h3 style="margin: 0; font-size: 0.9rem;">Saran media</h3>
-                    </div>
-                    <ul
-                        style="margin: 0; padding-left: 0; list-style: none; font-size: 0.82rem; color: var(--mut); line-height: 1.7;">
-                        <li style="padding-left: 18px; position: relative; margin-bottom: 6px;">
-                            <span style="position: absolute; left: 0; color: rgb(245, 158, 11);">•</span>
-                            Video: MP4/WebM, durasi pendek.
-                        </li>
-                        <li style="padding-left: 18px; position: relative; margin-bottom: 6px;">
-                            <span style="position: absolute; left: 0; color: rgb(245, 158, 11);">•</span>
-                            Gambar: rasio 16:9, maks 2MB.
-                        </li>
-                        <li style="padding-left: 18px; position: relative;">
-                            <span style="position: absolute; left: 0; color: rgb(245, 158, 11);">•</span>
-                            Poster video membantu tampilan awal.
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>

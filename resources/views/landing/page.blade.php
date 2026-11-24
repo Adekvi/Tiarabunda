@@ -16,9 +16,12 @@
     $kemahasiswaanItems = $kemahasiswaanItems ?? null;
     $karierHighlight = $karierHighlight ?? null;
     $karierItems = $karierItems ?? null;
+    $akademikItems = $akademikItems ?? null;
+    $akademikKategori = $akademikKategori ?? [];
     $lppmHighlight = $lppmHighlight ?? null;
     $lppmItems = $lppmItems ?? null;
     $selectedLppm = $selectedLppm ?? null;
+    $isLppmPortalProgress = $isLppmPortalProgress ?? false;
     $fasilitasItems = $fasilitasItems ?? null;
     $beritaList = $beritaList ?? null;
     $kegiatanList = $kegiatanList ?? null;
@@ -56,9 +59,6 @@
         @elseif (isset($pmbJalur) && $pmbJalur)
             <x-landing.section.pendidikan.pmb :pmb-jalur="$pmbJalur" :selected-jalur="$selectedJalur ?? null" />
 
-            {{-- @elseif ($beasiswaList)
-            <x-landing.section.pendidikan.beasiswa :beasiswa-list="$beasiswaList" :selected-beasiswa="$selectedBeasiswa ?? null" /> --}}
-
             {{-- Akreditasi --}}
         @elseif ($akreditasiInstitusi)
             <x-landing.section.pendidikan.akreditasi :institusi="$akreditasiInstitusi" :prodi="$akreditasiProdi ?? []" />
@@ -79,6 +79,10 @@
             {{-- Pusat Karir --}}
         @elseif ($karierHighlight)
             <x-landing.section.layanan.karier :highlight="$karierHighlight" :items="$karierItems ?? []" />
+
+            {{-- Akademik --}}
+        @elseif ($akademikItems !== null)
+            <x-landing.section.layanan.akademik :items="$akademikItems" :kategori-list="$akademikKategori" />
 
             {{-- Fasilitas --}}
         @elseif ($fasilitasItems)

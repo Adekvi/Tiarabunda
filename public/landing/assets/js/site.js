@@ -3,31 +3,121 @@
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
     const body = document.body;
 
-    /* ===================== NAVBAR ===================== */
+    /* ===================== NAVBAR & DRAWER ===================== */
     const nav = $("#nav"),
-        burger = $("#burger");
+        burger = $("#burger"),
+        menuBody = $("#menu-body");
+
+    const DESKTOP_MIN = 1100;
+
+    const closeAllDropdowns = (exceptDd = null) => {
+        $$("#nav .dd.open").forEach((dd) => {
+            if (dd === exceptDd) return;
+            dd.classList.remove("open");
+            dd.querySelector(":scope > button")?.setAttribute(
+                "aria-expanded",
+                "false",
+            );
+        });
+    };
+
+    const setMenuOpen = (open) => {
+        body.classList.toggle("menu-open", open);
+        document.documentElement.classList.toggle("menu-open", open);
+        burger?.setAttribute("aria-expanded", String(open));
+        burger?.setAttribute("aria-label", open ? "Tutup menu" : "Buka menu");
+
+        if (!open) {
+            closeAllDropdowns();
+            if (menuBody) menuBody.scrollTop = 0;
+        }
+    };
+
     const onScroll = () => nav && nav.classList.toggle("stuck", scrollY > 10);
     addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    burger?.addEventListener("click", () =>
-        burger.setAttribute(
-            "aria-expanded",
-            body.classList.toggle("menu-open"),
-        ),
+
+    document.addEventListener(
+        "click",
+        (e) => {
+            // 1. Toggle Hamburger
+            if (e.target.closest("#burger")) {
+                e.preventDefault();
+                setMenuOpen(!body.classList.contains("menu-open"));
+                return;
+            }
+
+            // 2. Tutup Drawer via tombol X atau Backdrop
+            if (
+                e.target.closest("#menu-close") ||
+                e.target.closest("#nav-backdrop")
+            ) {
+                e.preventDefault();
+                setMenuOpen(false);
+                return;
+            }
+
+            // 3. Dropdown Induk (Tentang Kami, Lembaga, Pendidikan, dll.)
+            const ddBtn = e.target.closest("#nav .dd > button");
+            if (ddBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const parent = ddBtn.parentElement;
+                const willOpen = !parent.classList.contains("open");
+
+                closeAllDropdowns(parent);
+
+                parent.classList.toggle("open", willOpen);
+                ddBtn.setAttribute("aria-expanded", String(willOpen));
+
+                if (willOpen && window.innerWidth < DESKTOP_MIN) {
+                    requestAnimationFrame(() => {
+                        parent.scrollIntoView({
+                            block: "nearest",
+                            behavior: "smooth",
+                        });
+                    });
+                }
+                return;
+            }
+
+            // 4. Klik Link di dalam Menu -> tutup drawer
+            if (e.target.closest("#menu a[href]")) {
+                setMenuOpen(false);
+                return;
+            }
+
+            // 5. Klik di luar navbar -> tutup semua dropdown
+            if (!e.target.closest("#nav")) {
+                closeAllDropdowns();
+            }
+        },
+        true,
     );
 
-    // Dropdown induk (Profil, Pendidikan, Layanan, ...)
-    $$(".dd > button").forEach((b) =>
-        b.addEventListener("click", () =>
-            b.setAttribute(
-                "aria-expanded",
-                b.parentElement.classList.toggle("open"),
-            ),
-        ),
-    );
-    $$("#menu a").forEach((l) =>
-        l.addEventListener("click", () => body.classList.remove("menu-open")),
-    );
+    let rt;
+    window.addEventListener("resize", () => {
+        clearTimeout(rt);
+        rt = setTimeout(() => {
+            if (
+                window.innerWidth >= DESKTOP_MIN &&
+                body.classList.contains("menu-open")
+            ) {
+                setMenuOpen(false);
+            }
+        }, 100);
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeAllDropdowns();
+            if (body.classList.contains("menu-open")) {
+                setMenuOpen(false);
+                burger?.focus();
+            }
+        }
+    });
 
     /* ===================== PENCARIAN ===================== */
     (() => {
@@ -38,6 +128,9 @@
         if (!sf || !sb || !sq) return;
 
         const set = (o) => {
+            if (o && body.classList.contains("menu-open")) {
+                setMenuOpen(false);
+            }
             sf.classList.toggle("open", o);
             navEl?.classList.toggle("searching", o);
             sb.setAttribute("aria-expanded", o);
@@ -109,7 +202,6 @@
                 if (show) {
                     card.hidden = false;
                     card.style.setProperty("--i", visible);
-                    // re-trigger animation
                     card.style.animation = "none";
                     void card.offsetWidth;
                     card.style.animation = "";
@@ -122,10 +214,8 @@
             if (empty) empty.hidden = visible > 0;
         };
 
-        tabs.addEventListener("click", (e) => {
-            const btn = e.target.closest(".prodi-tab");
+        const activateTab = (btn) => {
             if (!btn) return;
-
             tabs.querySelectorAll(".prodi-tab").forEach((t) => {
                 const isOn = t === btn;
                 t.classList.toggle("on", isOn);
@@ -134,13 +224,26 @@
 
             filter(+btn.dataset.f);
 
-            // Auto scroll tab di mobile
             if (window.innerWidth <= 960) {
                 const left =
                     btn.offsetLeft - tabs.offsetWidth / 2 + btn.offsetWidth / 2;
                 tabs.scrollTo({ left, behavior: "smooth" });
             }
+        };
+
+        tabs.addEventListener("click", (e) => {
+            const btn = e.target.closest(".prodi-tab");
+            if (btn) activateTab(btn);
         });
+
+        // Aktifkan tab fakultas otomatis jika dibuka dari menu navbar (?f=0, ?f=1, dst.)
+        const paramF = new URLSearchParams(window.location.search).get("f");
+        if (paramF !== null && paramF !== "") {
+            const targetTab = tabs.querySelector(
+                `.prodi-tab[data-f="${paramF}"]`,
+            );
+            if (targetTab) activateTab(targetTab);
+        }
     })();
 
     /* ===================== FAQ ===================== */
@@ -184,6 +287,131 @@
                 }, 350);
             }, 3800);
     }
+
+    /* ===================== HERO SLIDER ===================== */
+    (() => {
+        const root = $("[data-hero-slider]");
+        if (!root) return;
+
+        const slides = $$("[data-hero-slide]", root);
+        const dots = $$("[data-hero-dot]", root);
+        const n = slides.length;
+        if (n < 2) return;
+
+        const interval = Math.max(5000, +(root.dataset.interval || 6000));
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        let index = 0;
+        let timer = null;
+        let visible = true;
+        let paused = false;
+
+        const handleVideo = (slide, shouldPlay) => {
+            const video = slide?.querySelector("video");
+            if (!video) return;
+            if (shouldPlay) {
+                video.currentTime = 0;
+                video.play().catch(() => {});
+            } else {
+                setTimeout(() => {
+                    if (!slide.classList.contains("is-active")) {
+                        video.pause();
+                    }
+                }, 900);
+            }
+        };
+
+        const restartDotAnim = (dot) => {
+            if (!dot) return;
+            const bar = dot.querySelector("span");
+            if (!bar) return;
+            bar.style.animation = "none";
+            void bar.offsetWidth;
+            bar.style.animation = "";
+        };
+
+        const stopTimer = () => {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        };
+
+        const startTimer = () => {
+            stopTimer();
+            if (reduce || !visible || document.hidden) return;
+            paused = false;
+            root.classList.remove("is-paused");
+            restartDotAnim(dots[index]);
+            timer = setInterval(() => go(index + 1), interval);
+        };
+
+        const pauseTimer = () => {
+            stopTimer();
+            paused = true;
+            root.classList.add("is-paused");
+        };
+
+        const go = (to) => {
+            const next = (to + n) % n;
+            if (next === index) return;
+
+            const prevSlide = slides[index];
+            const nextSlide = slides[next];
+
+            prevSlide.classList.remove("is-active");
+            nextSlide.classList.add("is-active");
+
+            handleVideo(prevSlide, false);
+            handleVideo(nextSlide, true);
+
+            dots[index]?.classList.remove("is-active");
+            dots[index]?.removeAttribute("aria-current");
+            dots[next]?.classList.add("is-active");
+            dots[next]?.setAttribute("aria-current", "true");
+
+            index = next;
+
+            if (!paused) startTimer();
+        };
+
+        $("[data-hero-next]", root)?.addEventListener("click", () =>
+            go(index + 1),
+        );
+        $("[data-hero-prev]", root)?.addEventListener("click", () =>
+            go(index - 1),
+        );
+        dots.forEach((dot, k) => dot.addEventListener("click", () => go(k)));
+
+        document.addEventListener("visibilitychange", () => {
+            document.hidden ? pauseTimer() : startTimer();
+        });
+
+        if ("IntersectionObserver" in window) {
+            new IntersectionObserver(
+                ([entry]) => {
+                    visible = entry.isIntersecting;
+                    visible ? startTimer() : pauseTimer();
+                },
+                { threshold: 0.25 },
+            ).observe(root);
+        }
+
+        let startX = null;
+        root.addEventListener("pointerdown", (e) => {
+            if (!e.target.closest("a, button")) startX = e.clientX;
+        });
+        root.addEventListener("pointerup", (e) => {
+            if (startX === null) return;
+            const dx = e.clientX - startX;
+            startX = null;
+            if (Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
+        });
+        root.addEventListener("pointercancel", () => (startX = null));
+
+        handleVideo(slides[0], true);
+        startTimer();
+    })();
 
     /* ===================== INFO SLIDER ===================== */
     (() => {
@@ -373,136 +601,407 @@
         }
     })();
 
-    /* ===================== NESTED DROPDOWN (Program Pendidikan) ===================== */
-    const DESKTOP_MIN = 961;
-    const PANEL_W = 360;
-    const NEED = PANEL_W + 8 + 16;
+    /* ===================== LOKASI KAMPUS INTERACTIVE ===================== */
+    (() => {
+        const root = $("[data-lokasi-root]");
+        if (!root) return;
 
-    const clearPanel = (panel) => {
-        panel.classList.remove("flyout-left", "flyout-stack");
-        panel.style.maxHeight = "";
-    };
+        const dataScript = $("[data-lokasi-json]", root);
+        if (!dataScript) return;
 
-    const closeNested = (el) => {
-        el.classList.remove("open");
-        el.querySelector(".dd-nested-toggle")?.setAttribute(
-            "aria-expanded",
-            "false",
-        );
-        const pnl = el.querySelector(".dd-nested-panel");
-        if (pnl) clearPanel(pnl);
-    };
-
-    const closeAllNested = (except) => {
-        $$(".dd-nested.open").forEach((el) => {
-            if (el !== except) closeNested(el);
-        });
-    };
-
-    const place = (parent) => {
-        const panel = parent.querySelector(".dd-nested-panel");
-        if (!panel) return;
-        clearPanel(panel);
-        if (window.innerWidth < DESKTOP_MIN) return;
-
-        const vw = document.documentElement.clientWidth;
-        const vh = document.documentElement.clientHeight;
-        const outer = parent.closest(".dd-p") || parent;
-        const a = outer.getBoundingClientRect();
-
-        if (vw - a.right >= NEED) {
-            /* muat di kanan: default CSS */
-        } else if (a.left >= NEED) {
-            panel.classList.add("flyout-left");
-        } else {
-            panel.classList.add("flyout-stack");
+        let kampusData = [];
+        try {
+            kampusData = JSON.parse(dataScript.textContent || "[]");
+        } catch (_) {
             return;
         }
+        if (!kampusData.length) return;
 
-        const top = parent.getBoundingClientRect().top;
-        panel.style.maxHeight = Math.max(vh - top - 16, 200) + "px";
-    };
+        const tabs = $$("[data-lokasi-tab]", root);
+        const viewBtns = $$("[data-view-mode]", root);
+        const detailBox = $(".lokasi-detail", root);
 
-    // Satu handler capture untuk toggle nested + fakultas accordion
-    document.addEventListener(
-        "click",
-        (e) => {
-            // --- Nested toggle (Program Pendidikan) ---
-            const nbtn = e.target.closest(".dd-nested-toggle");
-            if (nbtn) {
-                e.preventDefault();
-                e.stopPropagation();
+        const photoPane = $("[data-pane-photo]", root);
+        const mapPane = $("[data-pane-map]", root);
+        const elImg = $("[data-stage-img]", root);
+        const elIframe = $("[data-stage-iframe]", root);
+        const elMapName = $("[data-map-name]", root);
+        const elMapExt = $("[data-map-ext]", root);
 
-                const parent = nbtn.closest(".dd-nested");
-                const willOpen = !parent.classList.contains("open");
+        const elBadge = $("[data-stage-badge]", root);
+        const elCoord = $("[data-stage-coord]", root);
+        const elNama = $("[data-stage-nama]", root);
+        const elDesc = $("[data-stage-desc]", root);
+        const elChips = $("[data-stage-chips]", root);
+        const elAlamat = $("[data-stage-alamat]", root);
+        const elJam = $("[data-stage-jam]", root);
+        const elTelp = $("[data-stage-telp]", root);
+        const elUrl = $("[data-stage-url]", root);
+        const elPill = $("[data-stage-pill]", root);
+        const elAkses = $("[data-stage-akses]", root);
+        const copyBtn = $("[data-copy-alamat]", root);
+        const copyLabel = $("[data-copy-label]", root);
 
-                closeAllNested(parent);
-                parent.classList.toggle("open", willOpen);
-                nbtn.setAttribute("aria-expanded", String(willOpen));
+        let currentMode = "photo";
 
-                const topDd = parent.parentElement.closest(".dd");
-                if (topDd && willOpen) topDd.classList.add("open");
+        elImg?.addEventListener("error", () => {
+            const fb = elImg.dataset.fallback;
+            if (fb && elImg.src !== fb) {
+                elImg.src = fb;
+            }
+        });
 
-                const panel = parent.querySelector(".dd-nested-panel");
-                if (willOpen && panel) {
-                    panel.scrollTop = 0;
-                    place(parent);
-                } else if (panel) {
-                    clearPanel(panel);
+        const setViewMode = (mode) => {
+            currentMode = mode;
+            const isMap = mode === "map";
+
+            if (photoPane) photoPane.hidden = isMap;
+            if (mapPane) mapPane.hidden = !isMap;
+
+            if (
+                isMap &&
+                elIframe &&
+                elIframe.dataset.src &&
+                elIframe.src !== elIframe.dataset.src
+            ) {
+                elIframe.src = elIframe.dataset.src;
+            }
+
+            viewBtns.forEach((b) => {
+                b.classList.toggle("is-active", b.dataset.viewMode === mode);
+            });
+        };
+
+        const selectKampus = (idx) => {
+            const item = kampusData[idx];
+            if (!item) return;
+
+            detailBox?.classList.add("is-switching");
+
+            setTimeout(() => {
+                if (elBadge) elBadge.textContent = item.badge || "";
+                if (elCoord) elCoord.textContent = item.koordinat || "";
+                if (elNama) elNama.textContent = item.nama || "";
+                if (elDesc) elDesc.textContent = item.deskripsi || "";
+                if (elAlamat) elAlamat.textContent = item.alamat || "";
+                if (elJam) elJam.textContent = item.jam || "";
+                if (elTelp) elTelp.textContent = item.telepon || "";
+                if (elPill) elPill.textContent = `Kampus ${item.kode || ""}`;
+                if (elAkses) elAkses.textContent = item.akses || "";
+                if (elUrl && item.map_url) elUrl.href = item.map_url;
+                if (elMapName) elMapName.textContent = item.nama || "";
+                if (elMapExt && item.map_url) elMapExt.href = item.map_url;
+
+                if (elImg && item.img) {
+                    elImg.dataset.fallback = item.fallback || item.img;
+                    elImg.src = item.img;
+                    elImg.alt = `Foto ${item.nama || ""}`;
                 }
+
+                if (elIframe && item.map_embed) {
+                    elIframe.dataset.src = item.map_embed;
+                    if (currentMode === "map") {
+                        elIframe.src = item.map_embed;
+                    }
+                }
+
+                if (elChips && Array.isArray(item.unggulan)) {
+                    elChips.innerHTML = item.unggulan
+                        .map(
+                            (chip) =>
+                                `<span class="lokasi-chip">${chip}</span>`,
+                        )
+                        .join("");
+                }
+
+                if (copyBtn) {
+                    copyBtn.dataset.copyAlamat = item.alamat || "";
+                    copyBtn.classList.remove("is-copied");
+                    if (copyLabel) copyLabel.textContent = "Salin Alamat";
+                }
+
+                tabs.forEach((t, i) => {
+                    const active = i === idx;
+                    t.classList.toggle("is-active", active);
+                    t.setAttribute("aria-selected", String(active));
+                });
+
+                detailBox?.classList.remove("is-switching");
+            }, 150);
+        };
+
+        tabs.forEach((btn) => {
+            btn.addEventListener("click", () =>
+                selectKampus(+btn.dataset.lokasiTab),
+            );
+        });
+
+        viewBtns.forEach((btn) => {
+            btn.addEventListener("click", () =>
+                setViewMode(btn.dataset.viewMode),
+            );
+        });
+
+        copyBtn?.addEventListener("click", async () => {
+            const text = copyBtn.dataset.copyAlamat || "";
+            if (!text) return;
+
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const ta = document.createElement("textarea");
+                    ta.value = text;
+                    ta.style.position = "fixed";
+                    ta.style.opacity = "0";
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand("copy");
+                    ta.remove();
+                }
+
+                copyBtn.classList.add("is-copied");
+                if (copyLabel) copyLabel.textContent = "Alamat Tersalin!";
+                setTimeout(() => {
+                    copyBtn.classList.remove("is-copied");
+                    if (copyLabel) copyLabel.textContent = "Salin Alamat";
+                }, 2200);
+            } catch (_) {}
+        });
+    })();
+
+    /* ===================== TESTIMONI INTERACTIVE ===================== */
+    (() => {
+        const root = $("[data-testimoni-root]");
+        if (!root) return;
+
+        const cards = $$("[data-testi-card]", root);
+        const triggers = $$("[data-spot-trigger]", root);
+        const filterBtns = $$("[data-testi-filter]", root);
+        const spotContent = $(".testi-spot-content", root);
+        const spotBox = $("[data-testi-spotlight]", root);
+
+        if (!cards.length) return;
+
+        const elImg = $("[data-spot-img]", root);
+        const elInit = $("[data-spot-initials]", root);
+        const elAngkatan = $("[data-spot-angkatan]", root);
+        const elName = $("[data-spot-name]", root);
+        const elRole = $("[data-spot-role]", root);
+        const elInstansi = $("[data-spot-instansi]", root);
+        const elSorotan = $("[data-spot-sorotan]", root);
+        const elQuote = $("[data-spot-quote]", root);
+        const elIndex = $("[data-spot-index]", root);
+
+        let current = 0;
+        let autoTimer = null;
+        const reduceMotion = matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        const showSpotlight = (idx, scrollToSpot = false) => {
+            const total = cards.length;
+            current = (idx + total) % total;
+            const card = cards[current];
+            if (!card) return;
+
+            spotContent?.classList.add("is-switching");
+
+            setTimeout(() => {
+                const {
+                    nama,
+                    peran,
+                    angkatan,
+                    instansi,
+                    sorotan,
+                    kutipan,
+                    foto,
+                    initials,
+                } = card.dataset;
+
+                if (elName) elName.textContent = nama || "";
+                if (elRole) elRole.textContent = peran || "";
+                if (elAngkatan) elAngkatan.textContent = angkatan || "";
+                if (elInstansi) elInstansi.textContent = instansi || "";
+                if (elSorotan) elSorotan.textContent = sorotan || "";
+                if (elQuote) elQuote.textContent = `“${kutipan || ""}”`;
+                if (elIndex)
+                    elIndex.textContent = String(current + 1).padStart(2, "0");
+
+                if (elImg && elInit) {
+                    if (foto) {
+                        elImg.src = foto;
+                        elImg.alt = `Foto ${nama || ""}`;
+                        elImg.style.display = "block";
+                        elInit.style.display = "none";
+                    } else {
+                        elImg.style.display = "none";
+                        elInit.textContent = initials || "TB";
+                        elInit.style.display = "grid";
+                    }
+                }
+
+                triggers.forEach((btn, i) => {
+                    const active = i === current;
+                    btn.classList.toggle("is-active", active);
+                    btn.setAttribute("aria-selected", String(active));
+                });
+
+                cards.forEach((c, i) =>
+                    c.classList.toggle("is-spotlighted", i === current),
+                );
+                spotContent?.classList.remove("is-switching");
+            }, 160);
+
+            if (scrollToSpot && spotBox) {
+                spotBox.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                });
+            }
+        };
+
+        const stopAuto = () => {
+            if (autoTimer) {
+                clearInterval(autoTimer);
+                autoTimer = null;
+            }
+        };
+
+        const startAuto = () => {
+            stopAuto();
+            if (reduceMotion || cards.length < 2) return;
+            autoTimer = setInterval(() => showSpotlight(current + 1), 6500);
+        };
+
+        $("[data-spot-prev]", root)?.addEventListener("click", () => {
+            showSpotlight(current - 1);
+            startAuto();
+        });
+        $("[data-spot-next]", root)?.addEventListener("click", () => {
+            showSpotlight(current + 1);
+            startAuto();
+        });
+        triggers.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                showSpotlight(+btn.dataset.spotTrigger);
+                startAuto();
+            });
+        });
+
+        cards.forEach((card, idx) => {
+            card.addEventListener("click", () => {
+                showSpotlight(idx, true);
+                startAuto();
+            });
+        });
+
+        filterBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const cat = btn.dataset.testiFilter;
+                filterBtns.forEach((b) => {
+                    const on = b === btn;
+                    b.classList.toggle("is-active", on);
+                    b.setAttribute("aria-selected", String(on));
+                });
+
+                let firstMatch = -1;
+                cards.forEach((card, idx) => {
+                    const match =
+                        cat === "all" || card.dataset.category === cat;
+                    card.hidden = !match;
+                    if (match && firstMatch === -1) firstMatch = idx;
+                });
+
+                if (firstMatch !== -1) showSpotlight(firstMatch);
+            });
+        });
+
+        spotBox?.addEventListener("pointerenter", stopAuto);
+        spotBox?.addEventListener("pointerleave", startAuto);
+        startAuto();
+    })();
+
+    /* ===================== WELCOME POP-UP SLIDER ===================== */
+    const wpop = $("#welcome-popup");
+    if (wpop) {
+        const track = $("[data-wpop-track]", wpop);
+        const slides = $$("[data-wpop-slide]", wpop);
+        const dots = $$("[data-wpop-go]", wpop);
+        const prevBtn = $("[data-wpop-prev]", wpop);
+        const nextBtn = $("[data-wpop-next]", wpop);
+        const counter = $("[data-wpop-counter]", wpop);
+        const total = slides.length;
+        let currentIndex = 0;
+
+        const goToSlide = (idx) => {
+            if (!total) return;
+            currentIndex = ((idx % total) + total) % total;
+
+            if (track) {
+                track.style.transform = `translate3d(-${currentIndex * 100}%, 0, 0)`;
+            }
+
+            slides.forEach((s, i) => {
+                const active = i === currentIndex;
+                s.classList.toggle("is-active", active);
+                s.setAttribute("aria-hidden", String(!active));
+            });
+
+            dots.forEach((d, i) => {
+                const active = i === currentIndex;
+                d.classList.toggle("is-active", active);
+                d.setAttribute("aria-selected", String(active));
+            });
+
+            if (counter) {
+                counter.textContent = `${currentIndex + 1} / ${total}`;
+            }
+        };
+
+        const closeWelcomePopup = () => {
+            wpop.hidden = true;
+            document.documentElement.style.overflow = "";
+        };
+
+        const openWelcomePopup = () => {
+            goToSlide(0);
+            wpop.hidden = false;
+            document.documentElement.style.overflow = "hidden";
+        };
+
+        requestAnimationFrame(() => {
+            setTimeout(openWelcomePopup, 400);
+        });
+
+        wpop.addEventListener("click", (e) => {
+            if (e.target.closest("[data-wpop-close]")) {
+                e.preventDefault();
+                closeWelcomePopup();
                 return;
             }
-
-            // --- Fakultas accordion ---
-            const fbtn = e.target.closest(".dd-fak-toggle");
-            if (fbtn) {
+            if (e.target.closest("[data-wpop-prev]")) {
                 e.preventDefault();
-                e.stopPropagation();
-
-                const group = fbtn.closest(".dd-fakultas-group");
-                const panel = group?.querySelector(".dd-fak-panel");
-                if (!group || !panel) return;
-
-                const willOpen = fbtn.getAttribute("aria-expanded") !== "true";
-
-                // Tutup fakultas lain di container yang sama
-                const container = group.closest(
-                    ".dd-fakultas-list, .dd-nested-panel",
-                );
-                container
-                    ?.querySelectorAll('.dd-fak-toggle[aria-expanded="true"]')
-                    .forEach((other) => {
-                        if (other === fbtn) return;
-                        other.setAttribute("aria-expanded", "false");
-                        const p = other
-                            .closest(".dd-fakultas-group")
-                            ?.querySelector(".dd-fak-panel");
-                        if (p) p.hidden = true;
-                    });
-
-                fbtn.setAttribute("aria-expanded", String(willOpen));
-                panel.hidden = !willOpen;
-
-                // Jaga dropdown induk tetap terbuka
-                fbtn.closest(".dd")?.classList.add("open");
+                goToSlide(currentIndex - 1);
+                return;
             }
-        },
-        true,
-    );
+            if (e.target.closest("[data-wpop-next]")) {
+                e.preventDefault();
+                goToSlide(currentIndex + 1);
+                return;
+            }
+            const dot = e.target.closest("[data-wpop-go]");
+            if (dot) {
+                e.preventDefault();
+                goToSlide(+dot.dataset.wpopGo);
+            }
+        });
 
-    let rt;
-    window.addEventListener("resize", () => {
-        clearTimeout(rt);
-        rt = setTimeout(() => {
-            $$(".dd-nested.open").forEach(place);
-        }, 100);
-    });
-
-    document.addEventListener("click", (e) => {
-        if (!e.target.closest(".dd-nested")) closeAllNested();
-    });
-
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeAllNested();
-    });
+        document.addEventListener("keydown", (e) => {
+            if (wpop.hidden) return;
+            if (e.key === "Escape") closeWelcomePopup();
+            else if (e.key === "ArrowLeft") goToSlide(currentIndex - 1);
+            else if (e.key === "ArrowRight") goToSlide(currentIndex + 1);
+        });
+    }
 })();

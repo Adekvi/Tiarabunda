@@ -1,0 +1,692 @@
+/* ============================================================
+   PARTIAL: _lokasi.css
+   Section Lokasi Kampus — Unified Architectural Photo & Detail Showcase
+   ============================================================ */
+
+.lokasi-sec {
+    position: relative;
+    padding: 96px 0 98px;
+    background:
+        radial-gradient(
+            circle at 12% 14%,
+            rgba(47, 109, 181, 0.08) 0%,
+            transparent 42%
+        ),
+        radial-gradient(
+            circle at 88% 82%,
+            rgba(212, 162, 74, 0.12) 0%,
+            transparent 44%
+        ),
+        linear-gradient(180deg, #f5f8fd 0%, #ebf2fb 50%, #f8f7f3 100%);
+    border-top: 1px solid var(--line, #e2e8f0);
+    border-bottom: 1px solid var(--line, #e2e8f0);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Ornamen Latar Berlapis */
+.lokasi-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.lokasi-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(
+            to right,
+            color-mix(in srgb, var(--blue-d, #173b66) 4.5%, transparent) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--blue-d, #173b66) 4.5%, transparent) 1px,
+            transparent 1px
+        );
+    background-size: 52px 52px;
+    mask-image: radial-gradient(ellipse at 50% 45%, #000 28%, transparent 78%);
+    -webkit-mask-image: radial-gradient(
+        ellipse at 50% 45%,
+        #000 28%,
+        transparent 78%
+    );
+}
+
+.lokasi-bg-contours {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: rgba(23, 59, 102, 0.075);
+}
+
+.lokasi-bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(75px);
+}
+
+.lokasi-bg-glow--blue {
+    top: -150px;
+    left: -120px;
+    width: 520px;
+    height: 520px;
+    background: rgba(47, 109, 181, 0.14);
+}
+
+.lokasi-bg-glow--gold {
+    bottom: -160px;
+    right: -110px;
+    width: 500px;
+    height: 500px;
+    background: rgba(212, 162, 74, 0.16);
+}
+
+.lokasi-sec > .wrap {
+    position: relative;
+    z-index: 2;
+}
+
+/* ========== Header + Campus Switcher Tabs ========== */
+.lokasi-head-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 34px;
+}
+
+.lokasi-switcher {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 6px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #d5e1f0;
+    box-shadow: 0 12px 28px -16px rgba(23, 59, 102, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.lokasi-switch-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 18px;
+    border-radius: 13px;
+    border: 0;
+    background: transparent;
+    color: var(--blue-d, #173b66);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.28s ease;
+}
+
+.lokasi-switch-btn:hover {
+    background: #eef5fd;
+}
+
+.lokasi-switch-btn.is-active {
+    background: linear-gradient(135deg, #0f2744 0%, #173b66 100%);
+    color: #ffffff;
+    box-shadow: 0 10px 22px -10px rgba(15, 39, 68, 0.55);
+}
+
+.lokasi-switch-code {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    background: #e6effa;
+    color: var(--blue-d, #173b66);
+    transition: all 0.28s ease;
+}
+
+.lokasi-switch-btn.is-active .lokasi-switch-code {
+    background: linear-gradient(135deg, #f3c46b 0%, var(--or, #f2994a) 100%);
+    color: #0f2744;
+}
+
+.lokasi-switch-label {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.lokasi-switch-label strong {
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.lokasi-switch-label small {
+    font-size: 0.72rem;
+    color: var(--mut, #64748b);
+    font-weight: 600;
+}
+
+.lokasi-switch-btn.is-active .lokasi-switch-label small {
+    color: #f6d58e;
+}
+
+/* ============================================================
+   SATU SHOWCASE UTAMA (Foto Gedung + Detail Royal Navy)
+   ============================================================ */
+.lokasi-showcase {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    border-radius: 26px;
+    overflow: hidden;
+    background: #0f2744;
+    border: 1px solid rgba(212, 162, 74, 0.38);
+    box-shadow:
+        0 26px 56px -22px rgba(15, 39, 68, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+/* Sisi Kiri: Bingkai Foto & Peta */
+.lokasi-visual {
+    position: relative;
+    min-height: 450px;
+    background: #dbe8f8;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.lokasi-visual-bar {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.lokasi-view-toggle {
+    pointer-events: auto;
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(15, 39, 68, 0.84);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.4);
+}
+
+.lokasi-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 13px;
+    border-radius: 999px;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.lokasi-view-btn:hover {
+    color: #ffffff;
+}
+
+.lokasi-view-btn.is-active {
+    background: linear-gradient(135deg, #f3c46b, var(--or, #f2994a));
+    color: #0f2744;
+}
+
+.lokasi-coord-chip {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(15, 39, 68, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #f8fafc;
+    font-size: 0.72rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    backdrop-filter: blur(8px);
+}
+
+/* Pane Foto */
+.lokasi-photo-pane {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    overflow: hidden;
+}
+
+.lokasi-photo-pane[hidden] {
+    display: none;
+}
+
+.lokasi-photo-pane img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition:
+        transform 0.8s ease,
+        opacity 0.3s ease;
+}
+
+.lokasi-showcase:hover .lokasi-photo-pane img {
+    transform: scale(1.04);
+}
+
+.lokasi-photo-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(15, 39, 68, 0.24) 0%,
+        transparent 38%,
+        rgba(15, 39, 68, 0.82) 100%
+    );
+    pointer-events: none;
+}
+
+.lokasi-photo-caption {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 18px;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: #ffffff;
+}
+
+.lokasi-photo-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 13px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(8px);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #f6d58e;
+}
+
+.lokasi-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.28);
+}
+
+.lokasi-photo-access {
+    margin: 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+/* Pane Peta */
+.lokasi-map-pane {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    min-height: 450px;
+    background: #e2ecf8;
+}
+
+.lokasi-map-pane[hidden] {
+    display: none;
+}
+
+.lokasi-map-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    color: var(--blue-d, #173b66);
+    gap: 12px;
+}
+
+.lokasi-map-ext {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 18px;
+    border-radius: 999px;
+    background: var(--blue-d, #173b66);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.lokasi-map-pane iframe {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    border: 0;
+    display: block;
+}
+
+/* Sisi Kanan: Panel Detail Royal Navy & Gold */
+.lokasi-detail {
+    position: relative;
+    padding: 36px 38px;
+    background:
+        radial-gradient(
+            circle at 92% 10%,
+            rgba(212, 162, 74, 0.18) 0%,
+            transparent 48%
+        ),
+        linear-gradient(155deg, #0f2744 0%, #173b66 60%, #1c487a 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.lokasi-detail::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3.5px;
+    background: linear-gradient(90deg, #d4a24a, var(--or, #f2994a), #f6d58e);
+}
+
+.lokasi-detail.is-switching {
+    opacity: 0.35;
+    transform: translateY(4px);
+}
+
+.lokasi-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #f6d58e;
+    background: rgba(212, 162, 74, 0.16);
+    border: 1px solid rgba(212, 162, 74, 0.32);
+    padding: 5px 13px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+}
+
+.lokasi-name {
+    font-size: clamp(1.35rem, 2.1vw, 1.7rem);
+    font-weight: 700;
+    line-height: 1.26;
+    color: #ffffff;
+    margin: 0 0 10px;
+}
+
+.lokasi-desc {
+    font-size: 0.92rem;
+    line-height: 1.62;
+    color: rgba(255, 255, 255, 0.82);
+    margin: 0 0 18px;
+}
+
+/* Chips Fasilitas */
+.lokasi-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.lokasi-chip {
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f8fafc;
+}
+
+/* Grid Info Alamat, Jam & Telepon */
+.lokasi-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    padding: 18px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    margin-bottom: 22px;
+}
+
+.lokasi-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+}
+
+.lokasi-info-item--full {
+    grid-column: 1 / -1;
+}
+
+.lokasi-ico {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f3c46b;
+    display: grid;
+    place-items: center;
+}
+
+.lokasi-lbl {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+    margin-bottom: 2px;
+}
+
+.lokasi-val {
+    display: block;
+    font-size: 0.87rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: #ffffff;
+}
+
+/* Tombol Aksi */
+.lokasi-actions {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.lokasi-btn-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f3c46b 0%, var(--or, #f2994a) 100%);
+    color: #0f2744;
+    font-size: 0.88rem;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 10px 22px -10px rgba(242, 153, 74, 0.6);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.lokasi-btn-gold:hover {
+    color: #0f2744;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px -10px rgba(242, 153, 74, 0.75);
+}
+
+.lokasi-btn-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 17px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.lokasi-btn-copy:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.36);
+}
+
+.lokasi-btn-copy.is-copied {
+    background: rgba(34, 197, 94, 0.24);
+    border-color: rgba(74, 222, 128, 0.55);
+    color: #bbf7d0;
+}
+
+/* ========== Strip Konektivitas & Lingkungan Kampus ========== */
+.lokasi-access-bar {
+    margin-top: 26px;
+    padding: 20px 28px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #dbe5f1;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 14px 34px -20px rgba(23, 59, 102, 0.16);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.lokasi-access-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.lokasi-access-ico {
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #eef5fc, #dfeaf9);
+    color: var(--blue-d, #173b66);
+    display: grid;
+    place-items: center;
+}
+
+.lokasi-access-item strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--blue-d, #173b66);
+    margin-bottom: 2px;
+}
+
+.lokasi-access-item span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--mut, #64748b);
+    line-height: 1.35;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 960px) {
+    .lokasi-sec {
+        padding: 72px 0 76px;
+    }
+
+    .lokasi-showcase {
+        grid-template-columns: 1fr;
+    }
+
+    .lokasi-visual,
+    .lokasi-photo-pane,
+    .lokasi-map-pane,
+    .lokasi-map-pane iframe {
+        min-height: 320px;
+    }
+
+    .lokasi-access-bar {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 640px) {
+    .lokasi-sec {
+        padding: 56px 0 60px;
+    }
+
+    .lokasi-switcher {
+        width: 100%;
+    }
+
+    .lokasi-switch-btn {
+        flex: 1;
+        padding: 9px 12px;
+    }
+
+    .lokasi-showcase {
+        border-radius: 20px;
+    }
+
+    .lokasi-visual,
+    .lokasi-photo-pane,
+    .lokasi-map-pane,
+    .lokasi-map-pane iframe {
+        min-height: 260px;
+    }
+
+    .lokasi-detail {
+        padding: 24px 20px;
+    }
+
+    .lokasi-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lokasi-coord-chip {
+        display: none;
+    }
+}

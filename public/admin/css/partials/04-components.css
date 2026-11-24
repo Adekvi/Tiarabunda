@@ -1,0 +1,471 @@
+/* ============ Komponen ============ */
+.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 22px;
+    box-shadow: var(--sh);
+}
+
+.card > h2,
+.card > h3 {
+    margin-bottom: 16px;
+    font-size: 1rem;
+}
+
+.g {
+    display: grid;
+    gap: 20px;
+}
+
+.g4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.g3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.g2 {
+    grid-template-columns: 2fr 1fr;
+}
+
+.ch2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.stat {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.stat .ico {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--pri-t);
+    color: var(--pri);
+}
+
+.stat:nth-child(even) .ico {
+    background: var(--acc-t);
+    color: var(--acc);
+}
+
+.stat small {
+    display: block;
+    font-size: 0.8rem;
+}
+
+.stat b {
+    display: block;
+    font-size: 1.55rem;
+    line-height: 1.25;
+    color: var(--ink);
+}
+
+.up {
+    display: inline-block;
+    margin-top: 2px;
+    padding: 1px 8px;
+    border-radius: 99px;
+    background: var(--ok-t);
+    color: var(--ok);
+    font-weight: 700;
+    font-size: 0.74rem;
+}
+
+.btn {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 18px;
+    border-radius: 10px;
+    background: var(--pri);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    background: var(--pri-d);
+    color: #fff;
+}
+
+.btn.or {
+    background: var(--acc);
+    color: #1b1206;
+}
+
+.btn.or:hover {
+    filter: brightness(0.95);
+    background: var(--acc);
+}
+
+.btn.gh {
+    background: transparent;
+    color: var(--pri);
+    box-shadow: inset 0 0 0 1.5px var(--pri);
+}
+
+.btn.gh:hover {
+    background: var(--pri-t);
+    color: var(--pri);
+}
+
+.btn.sm {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+}
+
+.f {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.f label {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.f input,
+.f select,
+.f textarea {
+    padding: 10px 13px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    width: 100%;
+    transition: 0.2s;
+}
+
+.f input:focus,
+.f select:focus,
+.f textarea:focus {
+    outline: 0;
+    border-color: var(--pri);
+    box-shadow: 0 0 0 3px var(--pri-t);
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: var(--pri-t);
+    color: var(--pri);
+}
+
+.badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.badge.ok {
+    background: var(--ok-t);
+    color: var(--ok);
+}
+
+.badge.warn {
+    background: var(--acc-t);
+    color: #c05f0a;
+}
+
+[data-theme="dark"] .badge.warn {
+    color: var(--acc);
+}
+
+.badge.err {
+    background: var(--err-t);
+    color: var(--err);
+}
+
+button.badge {
+    cursor: pointer;
+}
+
+.al {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--pri);
+    background: var(--pri-t);
+    margin-bottom: 10px;
+    font-size: 0.88rem;
+}
+
+.al.w {
+    border-left-color: var(--acc);
+    background: var(--acc-t);
+}
+
+.tw {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+th,
+td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+}
+
+th {
+    background: var(--bg);
+    color: var(--mut);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+th:first-child {
+    border-radius: 8px 0 0 8px;
+}
+
+th:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+tbody tr {
+    transition: background 0.15s var(--ease);
+}
+
+tbody tr:hover {
+    background: var(--hov);
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* ===== Row actions (ikon) ===== */
+.row-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.row-actions form {
+    display: inline;
+    margin: 0;
+}
+
+.ia {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--mut);
+    transition:
+        background 0.2s var(--ease),
+        color 0.2s var(--ease),
+        border-color 0.2s var(--ease),
+        transform 0.2s var(--ease),
+        box-shadow 0.2s var(--ease);
+}
+
+.ia:hover {
+    color: var(--pri);
+    border-color: color-mix(in srgb, var(--pri) 35%, var(--line));
+    background: var(--pri-t);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(31, 95, 191, 0.12);
+}
+
+.ia-ok:hover {
+    color: var(--ok);
+    border-color: color-mix(in srgb, var(--ok) 35%, var(--line));
+    background: var(--ok-t);
+    box-shadow: 0 4px 12px rgba(18, 128, 92, 0.12);
+}
+
+.ia-mute:hover {
+    color: var(--ink);
+    background: var(--hov);
+    box-shadow: none;
+}
+
+.ia-danger:hover {
+    color: var(--err);
+    border-color: color-mix(in srgb, var(--err) 40%, var(--line));
+    background: var(--err-t);
+    box-shadow: 0 4px 12px rgba(200, 55, 45, 0.12);
+}
+
+.ia:active {
+    transform: translateY(0);
+}
+
+.ia:focus-visible {
+    outline: 2px solid var(--pri);
+    outline-offset: 2px;
+}
+
+.tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.tabs button {
+    padding: 7px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--mut);
+    transition: 0.2s;
+}
+
+.tabs button:hover {
+    color: var(--ink);
+    background: var(--hov);
+}
+
+.tabs .on {
+    background: var(--pri);
+    border-color: var(--pri);
+    color: #fff;
+}
+
+/* grafik batang */
+.bars {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    height: 220px;
+    padding-top: 8px;
+    background: repeating-linear-gradient(
+        to top,
+        var(--line) 0 1px,
+        transparent 1px 25%
+    );
+}
+
+.bars > div {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+    font-size: 0.72rem;
+    color: var(--mut);
+}
+
+.bars i {
+    width: 100%;
+    max-width: 34px;
+    border-radius: 6px 6px 0 0;
+    background: var(--pri);
+    opacity: 0.85;
+    animation: grow 0.7s var(--ease);
+    transition: 0.2s;
+}
+
+.bars > div:hover i {
+    opacity: 1;
+}
+
+.bars .hi i {
+    background: var(--acc);
+    opacity: 1;
+}
+
+.bv {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    font-weight: 700;
+    color: var(--ink);
+    transition: 0.2s;
+}
+
+.bars > div:hover .bv {
+    opacity: 1;
+}
+
+@keyframes grow {
+    from {
+        height: 0 !important;
+    }
+}
+
+.prog {
+    height: 8px;
+    border-radius: 99px;
+    background: var(--pri-t);
+    overflow: hidden;
+}
+
+.prog i {
+    display: block;
+    height: 100%;
+    background: var(--pri);
+    border-radius: 99px;
+}
+
+.sk {
+    display: grid;
+    gap: 12px;
+}
+
+.sk i {
+    height: 16px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--line), var(--hov), var(--line));
+    background-size: 200% 100%;
+    animation: sh 1.2s infinite;
+}
+
+@keyframes sh {
+    to {
+        background-position: -200% 0;
+    }
+}
+
+.toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: var(--ink);
+    color: var(--card);
+    padding: 12px 18px;
+    border-radius: 10px;
+    z-index: 99;
+    font-weight: 600;
+    font-size: 0.88rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    animation: in 0.3s;
+}

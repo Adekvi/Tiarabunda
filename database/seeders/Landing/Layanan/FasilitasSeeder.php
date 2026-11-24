@@ -5,19 +5,18 @@ namespace Database\Seeders\Landing\Layanan;
 use App\Models\Layanan\Fasilitas;
 use App\Services\Media\ImageOptimizer;
 use Illuminate\Database\Seeder;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-// use Illuminate\Support\Str;
 
 class FasilitasSeeder extends Seeder
 {
-
     public function run(): void
     {
         $items = $this->data();
+        $disk = Storage::disk('public');
+        $optimizer = app(ImageOptimizer::class);
 
-        Storage::disk('public')->makeDirectory('fasilitas');
+        $disk->makeDirectory('fasilitas');
 
         foreach ($items as $i => $row) {
             $fasilitas = Fasilitas::withTrashed()
@@ -31,23 +30,22 @@ class FasilitasSeeder extends Seeder
                 'urip'      => $row['urip'] ?? true,
             ];
 
-            // Proses gambar (baik untuk create maupun update jika path_gambar masih null)
-            $needsImage = ! $fasilitas || blank($fasilitas->path_gambar);
+            $hasPhysicalFile = $fasilitas
+                && filled($fasilitas->path_gambar)
+                && $disk->exists($fasilitas->path_gambar);
 
-            if ($needsImage) {
+            if (! $hasPhysicalFile) {
                 $imagePath = $this->resolveSeedImage($row['gambar'] ?? null);
 
                 if ($imagePath) {
                     try {
-                        $stored = app(ImageOptimizer::class)->store(
-                            new UploadedFile(
-                                $imagePath,
-                                basename($imagePath),
-                                mime_content_type($imagePath) ?: 'image/webp',
-                                null,
-                                true
-                            ),
-                            'fasilitas'
+                        $fixedName = 'seed-' . pathinfo($imagePath, PATHINFO_FILENAME);
+
+                        $stored = $optimizer->storeFromPath(
+                            sourcePath: $imagePath,
+                            folder: 'fasilitas',
+                            fixedName: $fixedName,
+                            withThumb: false,
                         );
 
                         $data['path_gambar'] = $stored['path'];
@@ -60,20 +58,41 @@ class FasilitasSeeder extends Seeder
 
             if ($fasilitas) {
                 $fasilitas->update($data);
-                $this->command->info("↻ Update: {$row['jeneng']}" . (isset($data['path_gambar']) ? ' (gambar ditambahkan)' : ''));
+                $this->command->info("↻ Update: {$row['jeneng']}" . (isset($data['path_gambar']) ? ' (gambar diproses)' : ''));
             } else {
                 Fasilitas::create($data);
                 $this->command->info("✓ Create: {$row['jeneng']}");
             }
         }
 
+        $this->cleanupOrphanFiles();
+
         $this->command->newLine();
-        $this->command->info('Selesai. Total fasilitas: ' . Fasilitas::count());
+        $this->command->info('Selesai. Total fasilitas: ' . Fasilitas::withTrashed()->count());
+    }
+
+    private function cleanupOrphanFiles(): void
+    {
+        $disk = Storage::disk('public');
+
+        $usedPaths = Fasilitas::withTrashed()
+            ->get(['path_gambar', 'path_thumb'])
+            ->toBase()
+            ->flatMap(fn(Fasilitas $item): array => [$item->path_gambar, $item->path_thumb])
+            ->filter()
+            ->values()
+            ->all();
+
+        $orphans = array_values(array_diff($disk->files('fasilitas'), $usedPaths));
+
+        if ($orphans !== []) {
+            $disk->delete($orphans);
+            $this->command->warn('🧹 Membersihkan ' . count($orphans) . ' file gambar yatim di storage.');
+        }
     }
 
     /**
      * Cari file gambar di public/seed/fasilitas/.
-     * Return null jika tidak ada.
      */
     private function resolveSeedImage(?string $filename): ?string
     {

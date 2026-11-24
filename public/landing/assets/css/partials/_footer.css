@@ -92,19 +92,34 @@
 }
 
 /* ---------- Grid Utama ---------- */
-.ft__grid {
+.ft .ft__grid {
     display: grid;
-    grid-template-columns: 1.45fr repeat(3, minmax(0, 1fr));
-    gap: 40px 32px;
+    grid-template-columns: minmax(270px, 330px) minmax(0, 1fr);
+    gap: 40px;
     padding: 64px 0 48px;
     align-items: start;
 }
 
-/* Brand */
-.ft__brand {
-    grid-row: span 2;
+/* Brand (Sisi Kiri) */
+.ft .ft__brand {
     padding-right: 28px;
     border-right: 1px solid var(--ft-line);
+}
+
+/* Wadah Menu & Submenu (Sejajar & Memenuhi Sisi Kanan) */
+.ft .ft__menus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 28px;
+    align-items: flex-start;
+    align-content: flex-start;
+    width: 100%;
+}
+
+.ft .ft__menus > .ft__col {
+    flex: 1 1 175px;
+    min-width: 165px;
+    max-width: 240px;
 }
 
 /* Logo dengan efek glow di belakangnya */
@@ -346,17 +361,21 @@
 
 /* ---------- Responsif Footer Baru ---------- */
 @media (max-width: 1024px) {
-    .ft__grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 36px 24px;
+    .ft .ft__grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
     }
-    .ft__brand {
-        grid-column: 1 / -1;
-        grid-row: auto;
+
+    .ft .ft__brand {
         padding-right: 0;
         padding-bottom: 32px;
         border-right: 0;
         border-bottom: 1px solid var(--ft-line);
+    }
+
+    .ft .ft__menus > .ft__col {
+        flex: 1 1 200px;
+        max-width: none;
     }
 }
 
@@ -364,15 +383,26 @@
     .ft {
         margin-top: 48px;
     }
-    .ft__wrap {
-        padding: 0 20px;
+
+    .ft .ft__wrap {
+        width: min(1180px, 100% - 32px);
     }
-    .ft__grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 32px 20px;
+
+    .ft .ft__grid {
+        gap: 28px;
         padding: 44px 0 32px;
     }
-    .ft__bottom {
+
+    .ft .ft__menus {
+        gap: 24px 20px;
+    }
+
+    .ft .ft__menus > .ft__col {
+        flex: 1 1 calc(50% - 10px);
+        min-width: 140px;
+    }
+
+    .ft .ft__bottom {
         flex-direction: column;
         align-items: flex-start;
     }

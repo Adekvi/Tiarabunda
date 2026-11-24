@@ -1,0 +1,43 @@
+:root {
+    --pri: #1f5fbf;
+    --pri-d: #154a99;
+    --pri-t: #e8f0fc; /* biru kobalt jaket */
+    --acc: #f58220;
+    --acc-t: #fff1e3; /* orange brosur */
+    --bg: #f5f7fa;
+    --card: #fff;
+    --hov: #f2f5f9;
+    --ink: #1b2433;
+    --mut: #667085;
+    --line: #e6eaf0;
+    --ok: #12805c;
+    --ok-t: #e3f6ee;
+    --err: #c8372d;
+    --err-t: #fdeceb;
+    --r: 12px;
+    --sw: 264px;
+    --top: 64px;
+    --sh: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+    --ease: cubic-bezier(0.22, 0.8, 0.3, 1);
+    color-scheme: light;
+}
+
+[data-theme="dark"] {
+    --pri: #5b92e8;
+    --pri-d: #7aa7ee;
+    --pri-t: #1b2a45;
+    --acc: #ff9a42;
+    --acc-t: #3a2a1a;
+    --bg: #0e1420;
+    --card: #151c2b;
+    --hov: #1b2335;
+    --ink: #e7ecf4;
+    --mut: #93a0b5;
+    --line: #252e40;
+    --ok: #4fd1a1;
+    --ok-t: #12332a;
+    --err: #ff8f86;
+    --err-t: #3d1b19;
+    --sh: none;
+    color-scheme: dark;
+}

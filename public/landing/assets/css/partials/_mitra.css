@@ -1,32 +1,269 @@
 /* ============================================================
    PARTIAL: _mitra.css
-   Di-import dari style.css — jangan load file ini secara langsung di HTML
-   kecuali untuk debugging.
+   Section Mitra — Single Compact Card & Smooth Logo Marquee
    ============================================================ */
-/* mitra */
-.mitra {
+
+.mitra-sec {
+    position: relative;
+    padding: 60px 0 64px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f8fe 50%, #ffffff 100%);
+    border-top: 1px solid var(--line, #e2e8f0);
+    border-bottom: 1px solid var(--line, #e2e8f0);
     overflow: hidden;
-    border-block: 1px solid var(--line);
-    background: #fff;
-    padding: 18px 0;
+    isolation: isolate;
 }
-.track {
+
+/* Ornamen cahaya halus di latar section */
+.mitra-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.mitra-bg-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 680px;
+    height: 220px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+        ellipse,
+        rgba(47, 109, 181, 0.08) 0%,
+        rgba(242, 153, 74, 0.05) 45%,
+        transparent 75%
+    );
+    filter: blur(40px);
+}
+
+.mitra-sec > .wrap {
+    position: relative;
+    z-index: 2;
+}
+
+/* ========== Header Section ========== */
+.mitra-head {
     display: flex;
-    gap: 48px;
-    width: max-content;
-    animation: slide 30s linear infinite;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 24px;
 }
-.mitra:hover .track {
+
+.mitra-head-left .kick {
+    margin-bottom: 8px;
+}
+
+.mitra-head-left h2 {
+    font-size: clamp(1.3rem, 2.1vw, 1.7rem);
+    color: var(--blue-d, #173b66);
+    margin: 0;
+}
+
+.mitra-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 15px;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid #d7e2f0;
+    color: var(--blue-d, #173b66);
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 6px 18px -10px rgba(23, 59, 102, 0.14);
+}
+
+.mitra-badge strong {
+    color: var(--blue, #2f6db5);
+    font-weight: 800;
+}
+
+.mitra-badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--or, #f2994a);
+    box-shadow: 0 0 0 3px var(--or-s, rgba(242, 153, 74, 0.18));
+}
+
+/* ========== Satu Card Ringkas (Compact) ========== */
+.mitra-card-compact {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #dfe7f1;
+    border-radius: 18px;
+    padding: 20px 0;
+    box-shadow:
+        0 4px 10px -4px rgba(23, 59, 102, 0.05),
+        0 16px 36px -20px rgba(23, 59, 102, 0.14);
+    overflow: hidden;
+}
+
+/* Garis aksen tipis di bagian atas card */
+.mitra-card-compact::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        var(--blue-d, #173b66),
+        var(--blue, #2f6db5),
+        var(--or, #f2994a)
+    );
+    z-index: 3;
+}
+
+/* ========== Track Animasi Berjalan Horizontal ========== */
+.mitra-marquee {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    user-select: none;
+}
+
+/* Efek pudar halus di ujung kiri dan kanan card */
+.mitra-marquee::before,
+.mitra-marquee::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 56px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.mitra-marquee::before {
+    left: 0;
+    background: linear-gradient(
+        90deg,
+        #ffffff 15%,
+        rgba(255, 255, 255, 0) 100%
+    );
+}
+
+.mitra-marquee::after {
+    right: 0;
+    background: linear-gradient(
+        270deg,
+        #ffffff 15%,
+        rgba(255, 255, 255, 0) 100%
+    );
+}
+
+.mitra-track {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 38px;
+    padding-right: 38px;
+    will-change: transform;
+    animation: mitraScroll 55s linear infinite;
+}
+
+/* Animasi berhenti sejenak saat kursor diarahkan ke card */
+.mitra-marquee:hover .mitra-track {
     animation-play-state: paused;
 }
-.track span {
-    font-weight: 700;
-    color: #8a9bb0;
-    white-space: nowrap;
-}
-@keyframes slide {
-    to {
-        transform: translateX(-50%);
+
+@keyframes mitraScroll {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-100%, 0, 0);
     }
 }
 
+/* ========== Item Logo Berdampingan ========== */
+.mitra-logo {
+    flex: 0 0 auto;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mitra-logo img {
+    height: 44px;
+    width: auto;
+    max-width: 130px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    transition: transform 0.25s ease;
+}
+
+.mitra-logo:hover img {
+    transform: scale(1.1);
+}
+
+/* ========== Aksesibilitas & Responsive ========== */
+@media (prefers-reduced-motion: reduce) {
+    .mitra-marquee {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 20px;
+    }
+
+    .mitra-marquee::before,
+    .mitra-marquee::after {
+        display: none;
+    }
+
+    .mitra-track {
+        animation: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding-right: 0;
+    }
+
+    .mitra-track[aria-hidden="true"] {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .mitra-sec {
+        padding: 48px 0 52px;
+    }
+
+    .mitra-head {
+        margin-bottom: 18px;
+    }
+
+    .mitra-card-compact {
+        padding: 16px 0;
+        border-radius: 14px;
+    }
+
+    .mitra-marquee::before,
+    .mitra-marquee::after {
+        width: 32px;
+    }
+
+    .mitra-track {
+        gap: 26px;
+        padding-right: 26px;
+        animation-duration: 45s;
+    }
+
+    .mitra-logo {
+        height: 38px;
+    }
+
+    .mitra-logo img {
+        height: 36px;
+        max-width: 105px;
+    }
+}

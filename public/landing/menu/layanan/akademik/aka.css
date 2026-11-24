@@ -1,0 +1,432 @@
+/* ============================================================
+   PARTIAL: _akademik.css
+   Halaman Layanan Akademik & Unduh Formulir Word (.docx)
+   ============================================================ */
+
+.akd {
+    padding: 64px 0 96px;
+    background: var(--bg);
+}
+
+.akd__intro {
+    max-width: 720px;
+    margin-bottom: 32px;
+}
+
+.akd__eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: var(--sky);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin: 0 0 12px;
+}
+
+.akd__title {
+    font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+    color: var(--blue-d);
+    line-height: 1.2;
+    margin: 0 0 12px;
+}
+
+.akd__lead {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--mut);
+    margin: 0;
+}
+
+/* Info Bar */
+.akd__meta-bar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding: 20px 24px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 24px -10px rgba(23, 59, 102, 0.1);
+    margin-bottom: 36px;
+}
+
+.akd__meta-item small {
+    display: block;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--mut);
+    margin-bottom: 4px;
+}
+
+.akd__meta-item strong,
+.akd__meta-item a {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    text-decoration: none;
+}
+
+.akd__meta-item a:hover {
+    color: var(--blue);
+}
+
+/* Toolbar Filter & Search */
+.akd__toolbar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 26px;
+}
+
+.akd__tab {
+    padding: 8px 15px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #ffffff;
+    color: var(--blue-d);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.akd__tab {
+    padding: 8px 15px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #ffffff;
+    color: var(--blue-d);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.akd__tab:hover {
+    border-color: var(--blue);
+    background: var(--sky);
+}
+
+.akd__tab.is-active {
+    background: var(--blue-d);
+    border-color: var(--blue-d);
+    color: #ffffff;
+}
+
+.akd__search {
+    position: relative;
+    min-width: 260px;
+    flex: 0 1 320px;
+}
+
+.akd__search svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--mut);
+    pointer-events: none;
+}
+
+.akd__search input {
+    width: 100%;
+    height: 42px;
+    padding: 0 14px 0 40px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #ffffff;
+    font-size: 0.88rem;
+    color: var(--blue-d);
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.akd__search input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(47, 109, 181, 0.14);
+}
+
+/* Grid Kartu Formulir */
+.akd__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-bottom: 48px;
+}
+
+.akd__card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    box-shadow:
+        0 6px 14px -6px rgba(23, 59, 102, 0.06),
+        0 18px 36px -20px rgba(23, 59, 102, 0.12);
+    transition:
+        transform 0.3s var(--ease),
+        box-shadow 0.3s var(--ease),
+        border-color 0.25s ease;
+}
+
+.akd__card[hidden] {
+    display: none !important;
+}
+
+.akd__card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(43, 87, 154, 0.35);
+    box-shadow: 0 18px 38px -16px rgba(23, 59, 102, 0.2);
+}
+
+.akd__card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+/* Badge Ikon Microsoft Word (.docx) */
+.akd__doc-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: #eef4fc;
+    color: #1b5ebe;
+    border: 1px solid rgba(27, 94, 190, 0.2);
+}
+
+.akd__doc-ext {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.akd__cat-badge {
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--sky);
+    color: var(--blue-d);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.akd__card-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--blue-d);
+    line-height: 1.35;
+    margin: 0 0 10px;
+}
+
+.akd__card-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--mut);
+    margin: 0 0 22px;
+    flex: 1;
+}
+
+.akd__card-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    margin-top: auto;
+}
+
+.akd__file-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--mut);
+}
+
+.akd__btn-dl {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #1b5ebe;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+        background-color 0.22s ease,
+        transform 0.22s ease;
+}
+
+.akd__btn-dl:hover {
+    background: var(--blue-d);
+    transform: translateY(-1px);
+}
+
+.akd__btn-dl.is-disabled {
+    background: #e2e8f0;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+/* Empty State */
+.akd__empty {
+    text-align: center;
+    padding: 44px 24px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px dashed var(--line);
+    margin-bottom: 48px;
+}
+
+.akd__empty[hidden] {
+    display: none !important;
+}
+
+.akd__empty h3 {
+    color: var(--blue-d);
+    margin: 0 0 6px;
+}
+
+.akd__empty p {
+    color: var(--mut);
+    margin: 0;
+}
+
+/* Alur Pengajuan */
+.akd__steps {
+    padding: 32px;
+    border-radius: 22px;
+    background: var(--sky);
+    border: 1px solid rgba(47, 109, 181, 0.14);
+    margin-bottom: 40px;
+}
+
+.akd__steps-title {
+    font-size: 1.24rem;
+    color: var(--blue-d);
+    margin: 0 0 22px;
+}
+
+.akd__steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.akd__step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+}
+
+.akd__step-num {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--blue-d);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.85rem;
+}
+
+.akd__step strong {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--blue-d);
+    margin-bottom: 4px;
+}
+
+.akd__step p {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--mut);
+    margin: 0;
+}
+
+/* CTA Bottom */
+.akd__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 28px 32px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue) 100%);
+    color: #ffffff;
+}
+
+.akd__cta h3 {
+    color: #ffffff;
+    font-size: 1.24rem;
+    margin: 0 0 6px;
+}
+
+.akd__cta p {
+    color: rgba(255, 255, 255, 0.84);
+    margin: 0;
+    font-size: 0.93rem;
+}
+
+/* Responsive Tablet & HP */
+@media (max-width: 900px) {
+    .akd__meta-bar,
+    .akd__steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .akd__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .akd {
+        padding: 40px 0 64px;
+    }
+
+    .akd__search {
+        flex: 1 1 100%;
+    }
+
+    .akd__card {
+        padding: 20px;
+    }
+
+    .akd__btn-dl {
+        width: 100%;
+    }
+
+    .akd__steps,
+    .akd__cta {
+        padding: 22px 20px;
+    }
+}

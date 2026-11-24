@@ -10,35 +10,59 @@ use RuntimeException;
 class ImageOptimizer
 {
     /**
-     * Simpan gambar utama + thumb. Menggunakan GD (bawaan PHP).
+     * Simpan gambar dari upload form (default: 1 file WebP).
      *
-     * @return array{path: string, thumb: string}
+     * @return array{path: string, thumb: ?string}
      */
-    public function store(UploadedFile $file, string $folder = 'fasilitas'): array
-    {
+    public function store(
+        UploadedFile $file,
+        string $folder = 'fasilitas',
+        bool $withThumb = false,
+    ): array {
         $real = $file->getRealPath();
         if ($real === false) {
             throw new RuntimeException('File upload tidak dapat dibaca.');
         }
 
+        return $this->storeFromPath($real, $folder, null, $withThumb);
+    }
+
+    /**
+     * Simpan gambar dari path lokal (berguna untuk Seeder / import).
+     * Jika $fixedName diisi (tanpa ekstensi), file lama dengan nama sama akan ditimpa.
+     *
+     * @return array{path: string, thumb: ?string}
+     */
+    public function storeFromPath(
+        string $sourcePath,
+        string $folder = 'fasilitas',
+        ?string $fixedName = null,
+        bool $withThumb = false,
+    ): array {
         $disk = Storage::disk('public');
-        $base = $folder . '/' . Str::uuid()->toString();
-        $mainPath  = $base . '.jpg';
-        $thumbPath = $base . '_thumb.jpg';
+        $useWebp = function_exists('imagewebp');
+        $ext = $useWebp ? 'webp' : 'jpg';
+
+        $name = $fixedName ?: Str::uuid()->toString();
+        $base = trim($folder, '/') . '/' . $name;
+
+        $mainPath  = $base . '.' . $ext;
+        $thumbPath = $withThumb ? ($base . '_thumb.' . $ext) : null;
 
         try {
-            $binary = $this->readAndResize($real, 1200, 75);
+            $binary = $this->readAndResize($sourcePath, 1200, 78, $useWebp);
             if (! $disk->put($mainPath, $binary)) {
                 throw new RuntimeException('Gagal menyimpan gambar utama.');
             }
 
-            $thumbBinary = $this->readAndResize($real, 720, 72);
-            if (! $disk->put($thumbPath, $thumbBinary)) {
-                throw new RuntimeException('Gagal menyimpan thumbnail.');
+            if ($withThumb && $thumbPath !== null) {
+                $thumbBinary = $this->readAndResize($sourcePath, 360, 72, $useWebp);
+                if (! $disk->put($thumbPath, $thumbBinary)) {
+                    throw new RuntimeException('Gagal menyimpan thumbnail.');
+                }
             }
         } catch (\Throwable $e) {
-            // rollback: hapus file yang mungkin sudah terlanjur tersimpan
-            $disk->delete([$mainPath, $thumbPath]);
+            $this->delete($mainPath, $thumbPath);
             throw $e;
         }
 
@@ -51,18 +75,16 @@ class ImageOptimizer
     public function delete(?string ...$paths): void
     {
         $paths = array_values(array_filter(
-            array_unique($paths ?? []),
+            array_unique($paths),
             fn($p) => is_string($p) && $p !== ''
         ));
 
-        if ($paths === []) {
-            return;
+        if ($paths !== []) {
+            Storage::disk('public')->delete($paths);
         }
-
-        Storage::disk('public')->delete($paths);
     }
 
-    private function readAndResize(string $source, int $maxWidth, int $quality): string
+    private function readAndResize(string $source, int $maxWidth, int $quality, bool $useWebp): string
     {
         $info = @getimagesize($source);
         if ($info === false) {
@@ -71,14 +93,10 @@ class ImageOptimizer
 
         [$w, $h, $type] = $info;
 
-        if ($type === IMAGETYPE_WEBP && ! function_exists('imagecreatefromwebp')) {
-            throw new RuntimeException('Server tidak mendukung WebP. Gunakan JPG/PNG.');
-        }
-
         $src = match ($type) {
-            IMAGETYPE_JPEG => imagecreatefromjpeg($source),
-            IMAGETYPE_PNG  => imagecreatefrompng($source),
-            IMAGETYPE_WEBP => imagecreatefromwebp($source),
+            IMAGETYPE_JPEG => @imagecreatefromjpeg($source),
+            IMAGETYPE_PNG  => @imagecreatefrompng($source),
+            IMAGETYPE_WEBP => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($source) : false,
             default        => false,
         };
 
@@ -87,6 +105,10 @@ class ImageOptimizer
         }
 
         try {
+            if (function_exists('imagepalettetotruecolor')) {
+                imagepalettetotruecolor($src);
+            }
+
             if ($w > $maxWidth) {
                 $nw = $maxWidth;
                 $nh = (int) round($h * ($maxWidth / $w));
@@ -100,12 +122,22 @@ class ImageOptimizer
                 throw new RuntimeException('Gagal membuat kanvas gambar.');
             }
 
-            $white = imagecolorallocate($dst, 255, 255, 255);
-            imagefill($dst, 0, 0, $white);
+            if ($useWebp) {
+                imagealphablending($dst, false);
+                imagesavealpha($dst, true);
+                $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+                imagefilledrectangle($dst, 0, 0, $nw, $nh, $transparent);
+            } else {
+                $white = imagecolorallocate($dst, 255, 255, 255);
+                imagefill($dst, 0, 0, $white);
+            }
+
             imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
 
             ob_start();
-            $ok = imagejpeg($dst, null, $quality);
+            $ok = $useWebp
+                ? imagewebp($dst, null, $quality)
+                : imagejpeg($dst, null, $quality);
             $out = ob_get_clean();
 
             if (! $ok || ! is_string($out) || $out === '') {

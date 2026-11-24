@@ -2,6 +2,7 @@
 
 namespace App\Services\Landing;
 
+use App\Services\Landing\Content\AkademikPageContent;
 use App\Services\Landing\Content\AkreditasiPageContent;
 use App\Services\Landing\Content\BeasiswaPageContent;
 use App\Services\Landing\Content\BeritaPageContent;
@@ -39,6 +40,7 @@ class PageContentFactory
             'perpustakaan'                  => app(PerpusPageContent::class),
             'kemahasiswaan'                 => app(KemahaPageContent::class),
             'pusat-karier'                  => app(KarierPageContent::class),
+            'akademik'              => app(AkademikPageContent::class),
             'fasilitas'                     => app(FasilitasPageContent::class),
             'lppm'                          => app(LppmPageContent::class),
             'berita-terbaru'                => app(BeritaPageContent::class),

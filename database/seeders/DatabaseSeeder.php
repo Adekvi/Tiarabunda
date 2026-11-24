@@ -9,6 +9,7 @@ use Database\Seeders\Landing\HeroSeeder;
 use Database\Seeders\Landing\Informasi\BeritaSeeder;
 use Database\Seeders\Landing\Informasi\FaqSeeder;
 use Database\Seeders\Landing\InfoSeeder;
+use Database\Seeders\Landing\Layanan\AkademikSeeder;
 use Database\Seeders\Landing\Layanan\FasilitasSeeder;
 use Database\Seeders\Landing\Layanan\KemahaSeeder;
 use Database\Seeders\Landing\Layanan\PerpusSeeder;
@@ -18,6 +19,7 @@ use Database\Seeders\Landing\Pendidikan\BeasiswaSeeder;
 use Database\Seeders\Landing\Pendidikan\FakultasSeeder;
 use Database\Seeders\Landing\Pendidikan\PmbSeeder;
 use Database\Seeders\Landing\Pendidikan\ProdiSeeder;
+use Database\Seeders\Landing\PopupSeeder;
 use Database\Seeders\Landing\Profil\PimpinanSeeder;
 use Database\Seeders\Landing\Profil\SejarahSeeder;
 use Database\Seeders\Landing\Profil\VisiSeeder;
@@ -54,6 +56,7 @@ class DatabaseSeeder extends Seeder
             FasilitasSeeder::class,
             PerpusSeeder::class,
             KemahaSeeder::class,
+            AkademikSeeder::class,
 
             // Landing lembaga
             LppmSeeder::class,
@@ -61,7 +64,7 @@ class DatabaseSeeder extends Seeder
             // Landing Informasi
             BeritaSeeder::class,
             FaqSeeder::class,
-
+            PopupSeeder::class,
         ]);
 
         // User::factory(10)->create();

@@ -1,25 +1,9 @@
 /**
- * Main stylesheet — imports all partials
+ * Main stylesheet — imports all partials & page stylesheets
  * Order matters for cascade / specificity.
- *
- * Partial map (lihat komentar di masing-masing file):
- *  1. _base.css          → :root, reset, typography, buttons, tagline, utilities
- *  2. _nav.css           → topbar, navbar, dropdown nested, search, burger
- *  3. _sections.css      → .sec, .alt, .head, .rv
- *  4. _hero.css          → hero + CTA cards + media background
- *  5. _mitra.css         → partner marquee
- *  6. _info.css          → full-screen info slider
- *  7. _market.css        → profil kampus / market section
- *  8. _why.css           → alasan / why choose us
- *  9. _legacy-components.css → .stat, .tabs, .grid, .gal, old .pr helpers
- * 10. _prodi.css         → program studi tabs + cards (baru + lama)
- * 11. _fasilitas.css     → fasilitas gallery
- * 12. _berita.css        → berita / news section
- * 13. _faq.css           → FAQ accordion
- * 14. _cta.css           → CTA section
- * 15. _footer.css        → footer (lama + baru .ft)
  */
 
+/* 1. Base & Landing Partials */
 @import url("partials/_base.css");
 @import url("partials/_nav.css");
 @import url("partials/_sections.css");
@@ -32,8 +16,30 @@
 @import url("partials/_prodi.css");
 @import url("partials/_fasilitas.css");
 @import url("partials/_berita.css");
-@import url("partials/wrap.css");
+@import url("partials/_lokasi.css");
+@import url("partials/_testi.css");
 @import url("partials/_faq.css");
 @import url("partials/_cta.css");
 @import url("partials/_jalur.css");
 @import url("partials/_footer.css");
+@import url("partials/_popup.css");
+
+/* 2. Page / Menu Stylesheets (relatif dari landing/assets/css/ ke landing/menu/) */
+@import url("../../menu/profil/sejarah/sej.css");
+@import url("../../menu/profil/visi/visi.css");
+@import url("../../menu/pendidikan/program/prog.css");
+@import url("../../menu/pendidikan/pmb/pmb.css");
+@import url("../../menu/pendidikan/beasiswa/bea.css");
+@import url("../../menu/pendidikan/akreditasi/akre.css");
+@import url("../../menu/layanan/perpus/perpus.css");
+@import url("../../menu/layanan/kemaha/kemaha.css");
+@import url("../../menu/layanan/karier/karier.css");
+@import url("../../menu/layanan/akademik/aka.css");
+@import url("../../menu/layanan/fasilitas/fasi.css");
+@import url("../../menu/lembaga/lppm/lppm.css");
+@import url("../../menu/informasi/berita/berita.css");
+@import url("../../menu/informasi/kegiatan/kegiatan.css");
+@import url("../../menu/informasi/faq/faq.css");
+
+/* 3. Additions / Overrides */
+@import url("additions.css");

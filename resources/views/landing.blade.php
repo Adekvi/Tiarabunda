@@ -6,31 +6,17 @@
         {{-- Hero --}}
         <x-landing.section.hero :data="$home['hero'] ?? []" />
 
-        {{-- Info --}}
-        <x-landing.section.info :items="$home['info'] ?? []" />
-
-        <x-landing.section.mitra />
-
-        {{-- Market --}}
-        <x-landing.section.market :fakultas="$home['fakultas_prodi']['fakultas'] ?? []" :prodi="$home['fakultas_prodi']['prodi'] ?? []" gambar="seed/fasilitas/fas5.webp" />
-
-        {{-- <x-landing.section.sambutan :r="$home['pimpinan'] ?? null" /> --}}
-
-        <x-landing.section.alasan />
-
-        <x-landing.section.statistik />
-
-        {{-- Pendidikan --}}
-        <x-landing.section.prodi :fakultas="$home['fakultas_prodi']['fakultas'] ?? []" :prodi="$home['fakultas_prodi']['prodi'] ?? []" />
-
-        {{-- Fasilitas --}}
-        <x-landing.section.fasilitas :items="$home['fasilitas'] ?? []" />
-
         {{-- Berita --}}
         <x-landing.section.berita :items="$home['berita'] ?? []" />
 
-        {{-- Jalur PMB Dinamis --}}
-        <x-landing.section.jalur :items="$home['jalur'] ?? []" />
+        {{-- Lokasi Kampus --}}
+        <x-landing.section.lokasi :items="$home['lokasi'] ?? []" />
+
+        {{-- Testimoni --}}
+        <x-landing.section.testi :items="$home['testimoni'] ?? []" />
+
+        {{-- Kerja sama --}}
+        <x-landing.section.mitra />
 
         {{-- Faq --}}
         <x-landing.section.faq :items="$home['faq'] ?? []" />

@@ -7,6 +7,7 @@ use App\Models\Informasi\Berita;
 use App\Services\Media\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -62,17 +63,17 @@ class BeritaController extends Controller
             ->withQueryString();
 
         $stats = [
-            'total' => Berita::query()->count(),
-            'aktif' => Berita::query()->active()->count(),
+            'total'    => Berita::query()->count(),
+            'aktif'    => Berita::query()->active()->count(),
             'nonaktif' => Berita::query()->inactive()->count(),
-            'terbit' => Berita::query()->terbit()->count(),
-            'draf' => Berita::query()
+            'terbit'   => Berita::query()->terbit()->count(),
+            'draf'     => Berita::query()
                 ->where(function ($q) {
                     $q->whereNull('wektu_terbit')
                         ->orWhere('wektu_terbit', '>', now());
                 })
                 ->count(),
-            'trashed' => Berita::onlyTrashed()->count(),
+            'trashed'  => Berita::onlyTrashed()->count(),
         ];
 
         return view('superadmin.konten.informasi.berita.index', compact('items', 'stats', 'perPage', 'trashed'));
@@ -82,8 +83,8 @@ class BeritaController extends Controller
     {
         return view('superadmin.konten.informasi.berita.form', [
             'item' => new Berita([
-                'urutan' => 0,
-                'urip' => true,
+                'urutan'       => 0,
+                'urip'         => true,
                 'wektu_terbit' => now(),
             ]),
         ]);
@@ -92,16 +93,42 @@ class BeritaController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = $this->validated($request);
-        $data['tandha'] = $data['tandha'] ?: Str::slug($data['judhul']);
-        $data['digawe_dening'] = $request->user()->id; // tracking pembuat
+        $data['tandha'] = $data['tandha'] ?: $this->generateUniqueSlug($data['judhul']);
+        $data['digawe_dening'] = $request->user()->id;
 
         if ($request->hasFile('path_sampul')) {
-            $stored = $this->images->store($request->file('path_sampul'), 'berita');
+            $file = $request->file('path_sampul');
+
+            if (! $file->isValid()) {
+                return back()->withInput()
+                    ->withErrors(['path_sampul' => 'File gagal diunggah (kemungkinan melebihi upload_max_filesize).']);
+            }
+
+            try {
+                $stored = $this->images->store($file, 'berita');
+            } catch (\Throwable $e) {
+                Log::error('Gagal optimasi sampul berita', [
+                    'error' => $e->getMessage(),
+                    'file'  => $file->getClientOriginalName(),
+                ]);
+
+                return back()->withInput()
+                    ->withErrors(['path_sampul' => 'Gagal memproses gambar: ' . $e->getMessage()]);
+            }
+
             $data['path_sampul'] = $stored['path'];
-            $data['path_thumb'] = $stored['thumb'];
+            $data['path_thumb']  = $stored['thumb']; // null (single file WebP)
         }
 
-        Berita::query()->create($data);
+        try {
+            Berita::query()->create($data);
+        } catch (\Throwable $e) {
+            $this->images->delete($data['path_sampul'] ?? null, $data['path_thumb'] ?? null);
+            Log::error('Gagal menyimpan berita', ['error' => $e->getMessage()]);
+
+            return back()->withInput()
+                ->withErrors(['judhul' => 'Gagal menyimpan berita. Coba lagi.']);
+        }
 
         return redirect()
             ->route('superadmin.berita.index')
@@ -118,18 +145,53 @@ class BeritaController extends Controller
     public function update(Request $request, Berita $beritum): RedirectResponse
     {
         $data = $this->validated($request, $beritum->id);
-        $data['tandha'] = $data['tandha'] ?: Str::slug($data['judhul']);
-        // digawe_dening tidak diubah saat edit (tetap penulis asli)
-        // Jika ingin catat editor terakhir, buat kolom terpisah — jangan timpa pembuat.
+        $data['tandha'] = $data['tandha'] ?: $this->generateUniqueSlug($data['judhul'], $beritum->id);
+
+        $oldPaths = [];
+        $newPaths = [];
 
         if ($request->hasFile('path_sampul')) {
-            $this->images->delete($beritum->path_sampul, $beritum->path_thumb);
-            $stored = $this->images->store($request->file('path_sampul'), 'berita');
+            $file = $request->file('path_sampul');
+
+            if (! $file->isValid()) {
+                return back()->withInput()
+                    ->withErrors(['path_sampul' => 'File gagal diunggah (kemungkinan melebihi upload_max_filesize).']);
+            }
+
+            try {
+                $stored = $this->images->store($file, 'berita');
+            } catch (\Throwable $e) {
+                Log::error('Gagal optimasi sampul berita', [
+                    'error' => $e->getMessage(),
+                    'file'  => $file->getClientOriginalName(),
+                ]);
+
+                return back()->withInput()
+                    ->withErrors(['path_sampul' => 'Gagal memproses gambar: ' . $e->getMessage()]);
+            }
+
+            $oldPaths = [$beritum->path_sampul, $beritum->path_thumb];
+            $newPaths = [$stored['path'], $stored['thumb']];
+
             $data['path_sampul'] = $stored['path'];
-            $data['path_thumb'] = $stored['thumb'];
+            $data['path_thumb']  = $stored['thumb'];
+        } elseif ($request->boolean('hapus_gambar')) {
+            $oldPaths = [$beritum->path_sampul, $beritum->path_thumb];
+            $data['path_sampul'] = null;
+            $data['path_thumb']  = null;
         }
 
-        $beritum->update($data);
+        try {
+            $beritum->update($data);
+        } catch (\Throwable $e) {
+            $this->images->delete(...$newPaths);
+            Log::error('Gagal update berita', ['id' => $beritum->id, 'error' => $e->getMessage()]);
+
+            return back()->withInput()
+                ->withErrors(['judhul' => 'Gagal menyimpan perubahan. Coba lagi.']);
+        }
+
+        $this->images->delete(...$oldPaths);
 
         return redirect()
             ->route('superadmin.berita.index')
@@ -153,7 +215,6 @@ class BeritaController extends Controller
             ->with('success', 'Berita berhasil dipulihkan.');
     }
 
-    /** Opsional — hapus permanen + file gambar */
     public function forceDestroy(int $id): RedirectResponse
     {
         $item = Berita::onlyTrashed()->findOrFail($id);
@@ -179,31 +240,49 @@ class BeritaController extends Controller
         $golonganKeys = array_keys(Berita::GOLONGAN);
 
         $data = $request->validate([
-            'judhul' => ['required', 'string', 'max:255'],
-            'tandha' => [
+            'judhul'       => ['required', 'string', 'max:255'],
+            'tandha'       => [
                 'nullable',
                 'string',
                 'max:255',
                 'alpha_dash',
                 Rule::unique('beritas', 'tandha')->ignore($id),
             ],
-            'golongan' => ['nullable', 'string', 'max:50', Rule::in($golonganKeys)],
-            'ringkesan' => ['nullable', 'string', 'max:300'], // = DB
-            'isi' => ['nullable', 'string'],
+            'golongan'     => ['nullable', 'string', 'max:50', Rule::in($golonganKeys)],
+            'ringkesan'    => ['nullable', 'string', 'max:300'],
+            'isi'          => ['nullable', 'string'],
             'wektu_terbit' => ['nullable', 'date'],
-            'path_sampul' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:2048'],
-            'urutan' => ['nullable', 'integer', 'min:0', 'max:9999'],
+            'path_sampul'  => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:2048'],
+            'urutan'       => ['nullable', 'integer', 'min:0', 'max:9999'],
         ], [
             'judhul.required' => 'Judul berita wajib diisi.',
-            'ringkesan.max' => 'Ringkasan maksimal 300 karakter.',
-            'golongan.in' => 'Kategori tidak valid.',
+            'ringkesan.max'   => 'Ringkasan maksimal 300 karakter.',
+            'golongan.in'     => 'Kategori tidak valid.',
             'path_sampul.max' => 'Ukuran gambar maksimal 2 MB.',
         ]);
 
-        $data['urip'] = $request->boolean('urip', true);
+        $data['urip']   = $request->boolean('urip', true);
         $data['urutan'] = $data['urutan'] ?? 0;
         unset($data['path_sampul']);
 
         return $data;
+    }
+
+    private function generateUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
+        $base = Str::slug($title) ?: 'berita';
+        $slug = $base;
+        $counter = 2;
+
+        while (
+            Berita::withTrashed()
+            ->where('tandha', $slug)
+            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()
+        ) {
+            $slug = $base . '-' . $counter++;
+        }
+
+        return $slug;
     }
 }

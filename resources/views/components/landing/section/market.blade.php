@@ -38,17 +38,18 @@
     $deskripsi =
         $deskripsi ??
         sprintf(
-            '%1$s hadir sebagai kampus vokasi di %2$s yang berkomitmen mencetak lulusan terampil, siap kerja, dan berdaya saing. Lewat pembelajaran berbasis praktik, dosen profesional, serta kemitraan industri, kami membentuk generasi yang matang secara akademik maupun kompetensi.',
+            '%1$s hadir sebagai kampus vokasi di \%2$s yang berkomitmen mencetak lulusan terampil, siap kerja, dan berdaya saing. Lewat pembelajaran berbasis praktik, dosen profesional, serta kemitraan industri, kami membentuk generasi yang matang secara akademik maupun kompetensi.',
             $site['nama'] ?? 'Kampus kami',
             $site['kota'] ?? 'Indonesia',
         );
 @endphp
 
-<section class="mkt" data-market-section>
+<section class="sec mkt" id="tentang" data-market-section>
     <div class="mkt__bg-ornament" aria-hidden="true">
         <span class="mkt__blob mkt__blob--1"></span>
         <span class="mkt__blob mkt__blob--2"></span>
         <span class="mkt__grid-lines"></span>
+        <span class="mkt__arch-line"></span>
     </div>
 
     <div class="wrap mkt__wrap">
@@ -94,7 +95,10 @@
                                 </svg>
                             </span>
                             <span class="mkt__list-text">
-                                <strong>{{ $k['judul'] }}</strong>
+                                <span class="mkt__list-top">
+                                    <span class="mkt__list-num">0{{ $i + 1 }}</span>
+                                    <strong>{{ $k['judul'] }}</strong>
+                                </span>
                                 <small>{{ $k['desc'] }}</small>
                             </span>
                             <span class="mkt__item-chevron" aria-hidden="true">
@@ -122,7 +126,6 @@
                         <div class="mkt__visual-shine"></div>
                     </div>
 
-                    {{-- Float Card 1: Saya sembunyikan di layar kecil lewat CSS, tapi tetap ada di HTML --}}
                     <div class="mkt__float-card mkt__float-card--1">
                         <span class="mkt__float-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -163,7 +166,10 @@
 
     <div class="wrap">
         <div class="mkt__trust rv">
-            <span class="mkt__trust-label">Terakreditasi &amp; Dipercaya oleh</span>
+            <div class="mkt__trust-head">
+                <span class="mkt__trust-label">Terakreditasi &amp; Dipercaya oleh</span>
+                <span class="mkt__trust-line" aria-hidden="true"></span>
+            </div>
             <div class="mkt__trust-card">
                 <div class="mkt__trust-list">
                     <div class="mkt__trust-item">
@@ -199,7 +205,7 @@
                             </svg>
                         </span>
                         <span class="mkt__trust-text">
-                            <b>120+ Mitra</b>
+                            <b>40+ Mitra</b>
                             <small>Industri Global</small>
                         </span>
                     </div>
@@ -238,7 +244,6 @@
                     const body = item.querySelector('.mkt__item-body');
                     const isOpen = item.classList.contains('is-open');
 
-                    // tutup semua
                     list.querySelectorAll('.mkt__item').forEach((it) => {
                         it.classList.remove('is-open');
                         it.querySelector('.mkt__item-head').setAttribute('aria-expanded',
@@ -247,7 +252,6 @@
                         if (b) b.hidden = true;
                     });
 
-                    // buka yang diklik (toggle)
                     if (!isOpen) {
                         item.classList.add('is-open');
                         btn.setAttribute('aria-expanded', 'true');
@@ -288,18 +292,15 @@
                 counters.forEach(animateCounter);
             }
 
-            /* ---------- 3. Hover effect pada visual (frame + shine) ---------- */
             const visual = section.querySelector('[data-visual]');
             if (visual) {
                 const frame = visual.querySelector('.mkt__visual-frame');
                 const onEnter = () => frame && frame.classList.add('is-hovered');
                 const onLeave = () => frame && frame.classList.remove('is-hovered');
 
-                // Desktop: hover
                 visual.addEventListener('mouseenter', onEnter);
                 visual.addEventListener('mouseleave', onLeave);
 
-                // Touch: tap toggle
                 visual.addEventListener('touchstart', () => {
                     if (!frame) return;
                     frame.classList.toggle('is-hovered');

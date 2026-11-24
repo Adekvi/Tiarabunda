@@ -20,20 +20,51 @@
     ];
     $netral = ['#7a8aa0', '#f1f4f8', '#2c3a4d'];
 
-    // Hitung jumlah prodi per fakultas
+    // Hitung jumlah prodi per fakultas & kumpulkan daftar jenjang unik
     $countPerFak = [];
+    $daftarJenjang = [];
     foreach ($prodi as $p) {
         $fi = $p['fakultas'] ?? null;
         if ($fi !== null) {
             $countPerFak[$fi] = ($countPerFak[$fi] ?? 0) + 1;
         }
+        if (!empty($p['jenjang']) && !in_array($p['jenjang'], $daftarJenjang, true)) {
+            $daftarJenjang[] = $p['jenjang'];
+        }
     }
 @endphp
 
 @if (count($prodi) > 0)
-    <section class="sec prodi-sec bg-grid-fade" id="prodi">
-        <div class="wrap">
-            <x-landing.ui.head kick="Program studi" title="Temukan jurusan yang cocok untukmu" :lead="count($prodi) . ' program studi di ' . count($fakultas) . ' fakultas.'" />
+    <section class="sec prodi-sec bg-arch-light" id="prodi" aria-labelledby="prodi-title">
+        {{-- Ornamen grid halus --}}
+        <div class="prodi-bg" aria-hidden="true">
+            <div class="prodi-bg-grid"></div>
+        </div>
+
+        <div class="wrap position-relative">
+            {{-- Header & Ringkasan Akademik --}}
+            <div class="prodi-head-wrap">
+                <x-landing.ui.head kick="Program studi" title="Temukan jurusan yang cocok untukmu" :lead="count($prodi) . ' program studi pilihan di ' . count($fakultas) . ' fakultas unggulan.'"
+                    id="prodi-title" />
+
+                <div class="prodi-summary" aria-label="Ringkasan jenjang pendidikan">
+                    <div class="prodi-summary-stat">
+                        <strong>{{ count($prodi) }}</strong>
+                        <span>Program Studi</span>
+                    </div>
+                    <span class="prodi-summary-div" aria-hidden="true"></span>
+                    <div class="prodi-summary-levels">
+                        <small>Jenjang Tersedia</small>
+                        <div class="prodi-level-pills">
+                            @forelse ($daftarJenjang as $j)
+                                <span>{{ $j }}</span>
+                            @empty
+                                <span>Diploma &amp; Profesi</span>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             {{-- Tabs --}}
             <div class="prodi-tabs rv" id="tabs" role="tablist" aria-label="Filter Fakultas">

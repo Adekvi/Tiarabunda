@@ -55,7 +55,6 @@
         @endif --}}
 
         <div class="ft__grid">
-            {{-- Brand + kontak + sosial --}}
             <div class="ft__brand">
                 <a href="/" class="ft__logo">
                     <img src="{{ asset('landing/assets/img/logo.webp') }}" alt="" width="52" height="52"
@@ -69,7 +68,6 @@
                 <ul class="ft__contact">
                     @php
                         $alamatList = $kontak['alamat'] ?? [];
-                        // Dukung format lama (string) agar tidak error jika config belum diubah
                         if (is_string($alamatList) && $alamatList !== '') {
                             $alamatList = [['label' => null, 'isi' => $alamatList, 'maps' => null]];
                         }
@@ -139,45 +137,52 @@
                 @endif
             </div>
 
-            {{-- Kolom menu --}}
-            @foreach ($menus ?? [] as $menuKey => $menu)
-                <nav class="ft__col" aria-label="{{ $menu['t'] }}">
-                    <h4>{{ $menu['t'] }}</h4>
-                    <ul>
-                        @if ($menuKey === 'pendidikan')
-                            @foreach ($fakultas as $namaFakultas)
+            <div class="ft__menus">
+                @foreach ($menus ?? [] as $menuKey => $menu)
+                    @php
+                        $hasSubs = !empty($menu['subs']) && is_array($menu['subs']);
+                        $hasLink = !empty($menu['link']);
+                        $isFakultasMenu = $menuKey === 'pendidikan' && !empty($fakultas);
+                    @endphp
+                    @continue(!$hasSubs && !$hasLink && !$isFakultasMenu)
+
+                    <nav class="ft__col" aria-label="{{ $menu['t'] }}">
+                        <h4>{{ $menu['t'] }}</h4>
+                        <ul>
+                            @if ($isFakultasMenu)
+                                @foreach ($fakultas as $namaFakultas)
+                                    <li>
+                                        <a
+                                            href="{{ route('landing.prodi', [
+                                                'menu' => 'pendidikan',
+                                                'sub' => 'program-pendidikan',
+                                                'prodi' => \Illuminate\Support\Str::slug($namaFakultas),
+                                            ]) }}">
+                                            Fakultas {{ $namaFakultas }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @elseif ($hasSubs)
+                                @foreach ($menu['subs'] as $subKey => $sub)
+                                    <li>
+                                        <a href="{{ route('landing.page', ['menu' => $menuKey, 'sub' => $subKey]) }}">
+                                            {{ $sub['t'] }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @elseif ($hasLink)
                                 <li>
-                                    <a
-                                        href="{{ route('landing.prodi', [
-                                            'menu' => 'pendidikan',
-                                            'sub' => 'program-pendidikan',
-                                            'prodi' => \Illuminate\Support\Str::slug($namaFakultas),
-                                        ]) }}">
-                                        Fakultas {{ $namaFakultas }}
+                                    <a href="{{ $menu['link'] }}" target="_blank" rel="noopener noreferrer">
+                                        Pendaftaran Mahasiswa Baru
                                     </a>
                                 </li>
-                            @endforeach
-                        @elseif (!empty($menu['subs']))
-                            @foreach ($menu['subs'] as $subKey => $sub)
-                                <li>
-                                    <a href="{{ route('landing.page', ['menu' => $menuKey, 'sub' => $subKey]) }}">
-                                        {{ $sub['t'] }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        @elseif (!empty($menu['link']))
-                            <li>
-                                <a href="{{ $menu['link'] }}" target="_blank" rel="noopener noreferrer">
-                                    Pendaftaran Mahasiswa Baru
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
-                </nav>
-            @endforeach
+                            @endif
+                        </ul>
+                    </nav>
+                @endforeach
+            </div>
         </div>
 
-        {{-- Bar bawah --}}
         <div class="ft__bottom">
             <p>© {{ date('Y') }} {{ $site['nama'] }}. Hak cipta dilindungi.</p>
 

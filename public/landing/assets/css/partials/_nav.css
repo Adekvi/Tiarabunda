@@ -1,747 +1,826 @@
 /* ============================================================
    PARTIAL: _nav.css
-   Di-import dari style.css — jangan load file ini secara langsung di HTML
-   kecuali untuk debugging.
+   Topbar + Sticky Navbar + Inline Search + Responsive Drawer
    ============================================================ */
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition:
-        background 0.25s,
-        color 0.25s;
-}
-.menu > a:hover,
-.dd:hover > button,
-.dd.open > button {
-    background: var(--sky);
-    color: var(--blue);
-}
-.dd {
-    position: relative;
-}
-.dd i {
-    width: 7px;
-    height: 7px;
-    border: solid currentColor;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg) translateY(-2px);
-    transition: transform 0.3s;
-}
-.dd:hover i,
-.dd.open i {
-    transform: rotate(225deg);
-}
-.dd-p {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    min-width: 230px;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 8px;
-    box-shadow: 0 20px 40px -20px rgba(23, 59, 102, 0.4);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(8px);
-    transition: 0.3s var(--ease);
-}
-.dd:hover .dd-p,
-.dd:focus-within .dd-p,
-.dd.open .dd-p {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-}
-.dd-p a {
-    display: block;
-    padding: 9px 12px;
-    border-radius: 9px;
-    font-size: 0.92rem;
-}
-.dd-p a:hover {
-    background: var(--or-s);
-}
-.burger {
-    display: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    position: relative;
-}
-.burger span,
-.burger span::before {
-    content: "";
-    position: absolute;
-    left: 12px;
-    width: 20px;
-    height: 2px;
-    background: var(--ink);
-    border-radius: 2px;
-    transition: 0.3s var(--ease);
-}
-.burger span {
-    top: 21px;
-}
-.burger span::before {
-    top: -6px;
-    left: 0;
-    box-shadow: 0 12px 0 var(--ink);
-}
-.menu-open .burger span {
-    background: transparent;
-}
-.menu-open .burger span::before {
-    top: 0;
-    transform: rotate(45deg);
-    box-shadow: 0 0 0 var(--ink);
-}
-.menu-open .burger span::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    width: 20px;
-    height: 2px;
-    background: var(--ink);
-    transform: rotate(-45deg);
+
+/* ========== TOPBAR ========== */
+.top {
+    background: var(--blue-d, #0f2744);
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ============================================================
-   1. NESTED DROPDOWN (Program Pendidikan)
-   ============================================================ */
-.dd-nested {
-    position: relative;
-}
-
-.dd-nested-toggle {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 16px;
-    background: transparent;
-    border: 0;
-    font: inherit;
-    color: inherit;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.2s;
-}
-
-.dd-nested-toggle:hover {
-    background: rgba(0, 0, 0, 0.04);
-}
-
-.dd-nested-toggle .dd-arrow {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(45deg);
-    transition: transform 0.25s var(--ease, ease);
-    margin-left: 8px;
-    flex-shrink: 0;
-}
-
-.dd-nested.open > .dd-nested-toggle .dd-arrow {
-    transform: rotate(-135deg);
-}
-
-.dd-nested-panel {
-    display: none;
-    margin-top: 4px;
-}
-
-.dd-nested.open > .dd-nested-panel {
-    display: block;
-    animation: ddFadeIn 0.2s ease;
-}
-
-@keyframes ddFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ============================================================
-   2. FAKULTAS ACCORDION (satu-satunya definisi)
-   ============================================================ */
-.dd-fakultas-group {
-    padding: 0;
-    margin-bottom: 2px;
-}
-
-.dd-fakultas-group:not(:last-child) {
-    border-bottom: 1px dashed color-mix(in srgb, var(--line) 55%, transparent);
-    padding-bottom: 2px;
-    margin-bottom: 2px;
-}
-
-.dd-fak-toggle {
-    width: 100%;
+.top .top-in {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
+    min-height: 38px;
+    padding-block: 6px;
+}
+
+.top .top-info {
+    display: flex;
+    align-items: center;
     gap: 10px;
-    padding: 10px 12px;
-    background: transparent;
-    border: 0;
-    border-radius: 8px;
-    font: inherit;
-    color: inherit;
-    text-align: left;
-    cursor: pointer;
-    transition: background 0.15s;
-}
-
-.dd-fak-toggle:hover {
-    background: rgba(0, 0, 0, 0.04);
-}
-
-.dd-fak-toggle[aria-expanded="true"] {
-    background: color-mix(in srgb, var(--blue) 5%, transparent);
-}
-
-.dd-fak-toggle-label {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    flex: 1;
-    min-width: 0;
-}
-
-.dd-fak-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--mut);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    flex: none;
-}
-
-.dd-fak-name {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--blue-d);
-    line-height: 1.3;
-    flex: 1;
     min-width: 0;
     white-space: nowrap;
+}
+
+.top .hotline strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.top .top-sep {
+    opacity: 0.35;
+}
+
+.top .top-addr {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.dd-fak-arrow {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(45deg);
-    transition: transform 0.25s var(--ease, ease);
+.top .top-portal {
+    display: flex;
+    align-items: center;
+    gap: 18px;
     flex-shrink: 0;
-    opacity: 0.6;
-    margin-right: 2px;
+    white-space: nowrap;
 }
 
-.dd-fak-toggle[aria-expanded="true"] .dd-fak-arrow {
-    transform: rotate(-135deg);
+.top .top-portal a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
-.dd-fak-panel {
-    overflow: hidden;
+.top .top-portal a:hover {
+    color: var(--or, #f2994a);
 }
 
-.dd-fak-panel[hidden] {
+/* ========== STICKY NAVBAR ========== */
+header.nav#nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border-bottom: 1px solid var(--line, #e2e8f0);
+    overflow: visible !important;
+    transform: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    transition: box-shadow 0.3s ease;
+}
+
+header.nav#nav.stuck {
+    box-shadow: 0 10px 30px -14px rgba(15, 39, 68, 0.18);
+}
+
+#nav .nav-in {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 74px;
+}
+
+/* Brand Logo & Teks */
+#nav .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    min-width: 0;
+    text-decoration: none;
+    color: var(--blue-d, #0f2744);
+    transition: opacity 0.2s ease;
+}
+
+#nav .brand img {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    object-fit: contain;
+    display: block;
+}
+
+#nav .brand span {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.24;
+}
+
+#nav .brand b {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--blue-d, #0f2744);
+    white-space: nowrap;
+}
+
+#nav .brand small {
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--mut, #64748b);
+    white-space: nowrap;
+}
+
+/* Aksi Kanan: Search + Burger Sejajar */
+#nav .nav-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+/* ========== PENCARIAN ========== */
+#nav .srch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+#nav .srch input {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    height: 40px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: var(--sky, #f1f6fc);
+    color: var(--ink, #1e293b);
+    font-size: 0.88rem;
+    transition:
+        width 0.3s ease,
+        opacity 0.25s ease,
+        padding 0.3s ease,
+        border-color 0.25s ease;
+}
+
+#nav .srch.open input {
+    width: 230px;
+    opacity: 1;
+    pointer-events: auto;
+    padding: 0 42px 0 16px;
+    border-color: color-mix(in srgb, var(--blue, #2f6db5) 35%, transparent);
+}
+
+#nav .srch input:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: var(--blue, #2f6db5);
+    box-shadow: 0 0 0 3px rgba(47, 109, 181, 0.12);
+}
+
+#nav .srch-b {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid #d7e2f0;
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--blue-d, #0f2744);
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+#nav .srch.open .srch-b {
+    position: absolute;
+    right: 3px;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+}
+
+#nav .srch-b:hover {
+    background: var(--sky, #f1f6fc);
+    border-color: var(--blue, #2f6db5);
+    color: var(--blue, #2f6db5);
+}
+
+#nav .srch .i-x {
     display: none;
 }
 
-.dd-fak-panel .dd-prodi-list {
-    padding: 2px 0 8px 12px;
-    border-left: 2px solid var(--line);
-    margin-left: 18px;
-    margin-top: 2px;
+#nav .srch.open .i-s {
+    display: none;
 }
 
-.dd-nested-panel .dd-fak-panel .dd-prodi-list {
-    border-left-color: color-mix(in srgb, var(--blue) 20%, transparent);
+#nav .srch.open .i-x {
+    display: block;
 }
 
-.dd-fak-panel:not([hidden]) {
-    animation: fakSlide 0.2s ease;
-}
-
-@keyframes fakSlide {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ============================================================
-   3. DAFTAR PRODI (dipakai di flatten & nested)
-   ============================================================ */
-.dd-prodi-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 0 6px;
-}
-
-.dd-prodi {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 12px;
-    font-size: 0.9rem;
-    color: var(--ink);
-    text-decoration: none;
-    border-radius: 7px;
-    background: transparent;
-    transition:
-        background 0.15s,
-        color 0.15s;
-}
-
-.dd-prodi:hover {
-    background: color-mix(in srgb, var(--blue) 7%, transparent);
-    color: var(--blue);
-}
-
-/* Teks prodi */
-.dd-prodi-name {
-    flex: 1;
-    min-width: 0;
-    line-height: 1.4;
-    white-space: normal;
-}
-
-.dd-prodi-jenjang {
-    display: inline-block;
-    font-size: 0.65rem;
-    font-weight: 700;
-    background: color-mix(in srgb, var(--blue) 10%, transparent);
-    color: var(--blue);
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-right: 6px;
-    vertical-align: middle;
+/* ========== TOMBOL HAMBURGER ========== */
+#nav .burger {
     position: relative;
-    top: -1px;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #d7e2f0;
+    border-radius: 12px;
+    background: var(--sky, #f1f6fc);
+    color: var(--blue-d, #0f2744);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+#nav .burger::before,
+#nav .burger::after {
+    content: none !important;
+    display: none !important;
+}
+
+#nav .burger:hover {
+    background: var(--blue-d, #0f2744);
+    border-color: var(--blue-d, #0f2744);
+    color: #ffffff;
+}
+
+#nav .burger .burger-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+        transform 0.26s ease,
+        opacity 0.2s ease;
+    pointer-events: none;
+}
+
+body.menu-open #nav .burger {
+    background: var(--blue-d, #0f2744);
+    border-color: var(--blue-d, #0f2744);
+    color: #ffffff;
+}
+
+body.menu-open #nav .burger .burger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+body.menu-open #nav .burger .burger-bar:nth-child(2) {
+    opacity: 0;
+}
+
+body.menu-open #nav .burger .burger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+html.menu-open,
+body.menu-open {
+    overflow: hidden !important;
+}
+
+/* Elemen khusus mobile drawer */
+#nav .nav-backdrop,
+#nav .menu-head,
+#nav .menu-foot,
+#nav .nav-ext {
+    display: none;
 }
 
 /* ============================================================
-   4. FLATTEN PANEL (fakultas & prodi langsung di dropdown)
+   DESKTOP NAVIGATION (>= 1100px)
    ============================================================ */
-.dd-fakultas-list {
-    max-height: min(70vh, 520px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 4px 2px;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-}
-
-.dd-fakultas-list::-webkit-scrollbar {
-    width: 5px;
-}
-
-.dd-fakultas-list::-webkit-scrollbar-track {
-    background: transparent;
-    margin: 8px 0;
-}
-
-.dd-fakultas-list::-webkit-scrollbar-thumb {
-    background: #c5d0de;
-    border-radius: 10px;
-}
-
-.dd-fakultas-list::-webkit-scrollbar-thumb:hover {
-    background: #a8b8cc;
-}
-
-.dd-fakultas-list .dd-fakultas-group {
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-/* ============================================================
-   5. DESKTOP (≥ 961px) - Flyout + Scroll untuk nested panel
-   ============================================================ */
-@media (min-width: 961px) {
-    .dd-p {
-        overflow: visible;
+@media (min-width: 1100px) {
+    #nav .burger,
+    #nav .menu-head,
+    #nav .menu-foot,
+    #nav .nav-backdrop {
+        display: none !important;
     }
 
-    .dd-nested-panel {
-        position: absolute;
-        top: -8px;
-        width: max-content;
-        min-width: 280px;
-        max-width: min(380px, calc(100vw - 48px));
-        max-height: min(70vh, 520px);
-        overflow-y: auto;
-        overflow-x: hidden;
-        background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        box-shadow: 0 14px 36px -12px rgba(23, 59, 102, 0.22);
-        padding: 10px 8px;
-        z-index: 40;
-        margin-top: 0;
-        display: none;
-        left: calc(100% + 6px);
-        right: auto;
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
+    #nav .nav-actions {
+        margin-left: 8px;
     }
 
-    .dd-nested-panel.flyout-left {
-        left: auto;
-        right: calc(100% + 6px);
+    #nav .srch-b {
+        border-color: transparent;
+        border-radius: 999px;
     }
 
-    .dd-nested.open > .dd-nested-panel {
-        display: block;
+    #nav .menu {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
     }
 
-    .dd-nested-panel::-webkit-scrollbar {
-        width: 5px;
+    #nav .menu-body {
+        display: flex;
+        align-items: center;
+        gap: 2px;
     }
 
-    .dd-nested-panel::-webkit-scrollbar-track {
-        background: transparent;
-        margin: 8px 0;
-    }
-
-    .dd-nested-panel::-webkit-scrollbar-thumb {
-        background: #c5d0de;
+    #nav .nav-link,
+    #nav .dd > button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 10px;
+        border: 0;
         border-radius: 10px;
+        background: transparent;
+        font-family: inherit;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--ink, #1e293b);
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
     }
 
-    .dd-nested-panel::-webkit-scrollbar-thumb:hover {
-        background: #a8b8cc;
+    #nav .nav-link:hover,
+    #nav .nav-link.active,
+    #nav .dd > button:hover,
+    #nav .dd.active > button,
+    #nav .dd.open > button {
+        background: var(--sky, #f1f6fc);
+        color: var(--blue, #2f6db5);
+    }
+
+    /* Chevron indikator dropdown */
+    #nav .dd > button i {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-right: 1.8px solid currentColor;
+        border-bottom: 1.8px solid currentColor;
+        transform: rotate(45deg) translateY(-1px);
+        transition: transform 0.25s ease;
+        flex-shrink: 0;
+    }
+
+    #nav .dd.open > button i {
+        transform: rotate(-135deg) translateY(-1px);
+    }
+
+    /* Dropdown Induk */
+    #nav .dd {
+        position: relative;
+    }
+
+    #nav .dd-p {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        min-width: 240px;
+        padding: 8px;
+        border-radius: 16px;
+        background: #ffffff;
+        border: 1px solid var(--line, #e2e8f0);
+        box-shadow: 0 20px 44px -16px rgba(15, 39, 68, 0.24);
+        display: none;
+        z-index: 1000;
+    }
+
+    #nav .dd.open > .dd-p {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        animation: ddFadeIn 0.2s ease;
+    }
+
+    @keyframes ddFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    #nav .dd-p > a {
+        display: flex;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--ink, #1e293b);
+        text-decoration: none;
+        white-space: nowrap;
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
+
+    #nav .dd-p > a:hover,
+    #nav .dd-p > a.active {
+        background: var(--sky, #f1f6fc);
+        color: var(--blue, #2f6db5);
+        font-weight: 600;
+    }
+
+    header.nav#nav.searching .nav-link,
+    header.nav#nav.searching .dd > button {
+        padding-inline: 9px;
     }
 }
 
 /* ============================================================
-   6. TABLET & MOBILE (≤ 960px) - Accordion
+   TABLET & MOBILE DRAWER (<= 1099px)
    ============================================================ */
-@media (max-width: 960px) {
-    .dd-fakultas-list {
-        max-height: 320px;
-        padding: 2px 0;
+@media (max-width: 1099.98px) {
+    .top .top-sep,
+    .top .top-addr {
+        display: none;
     }
 
-    .dd-fak-toggle {
-        padding: 10px 8px;
+    .top .top-portal {
+        gap: 14px;
+        font-size: 0.75rem;
     }
 
-    .dd-fak-panel .dd-prodi-list {
-        padding-left: 10px;
-        margin-left: 12px;
+    #nav .burger {
+        display: inline-flex !important;
     }
 
-    .dd-nested-panel {
+    header.nav#nav.searching .brand {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    header.nav#nav.searching .srch {
+        position: absolute;
+        left: 0;
+        right: 48px;
+        z-index: 20;
+    }
+
+    header.nav#nav.searching .srch.open input {
+        width: 100%;
+        background: #ffffff;
+        border-color: var(--blue, #2f6db5);
+        box-shadow: 0 6px 18px -8px rgba(15, 39, 68, 0.25);
+    }
+
+    /* Backdrop */
+    #nav .nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(9, 24, 46, 0.55);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+            opacity 0.25s ease,
+            visibility 0.25s ease;
+        z-index: 1090;
+    }
+
+    body.menu-open #nav .nav-backdrop {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    /* Drawer Panel */
+    #nav .menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(390px, 88vw);
+        height: 100dvh;
+        max-height: 100dvh;
+        background: #ffffff;
+        box-shadow: -12px 0 36px rgba(9, 24, 46, 0.22);
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        z-index: 1100;
+        overflow: hidden;
+    }
+
+    body.menu-open #nav .menu {
+        transform: translateX(0);
+    }
+
+    /* Header Drawer */
+    #nav .menu-head {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        background: linear-gradient(135deg, #0f2744 0%, #173b66 100%);
+        color: #ffffff;
+    }
+
+    #nav .menu-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #ffffff;
+        text-decoration: none;
+        min-width: 0;
+    }
+
+    #nav .menu-brand img {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+        object-fit: contain;
+        background: #ffffff;
+        border-radius: 50%;
+        padding: 2px;
+    }
+
+    #nav .menu-brand span {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.25;
+    }
+
+    #nav .menu-brand b {
+        font-size: 0.92rem;
+        font-weight: 700;
+    }
+
+    #nav .menu-brand small {
+        font-size: 0.76rem;
+        opacity: 0.85;
+    }
+
+    #nav .menu-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    /* Body Drawer */
+    #nav .menu-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 8px;
+        padding: 16px;
+    }
+
+    #nav .menu-body > .nav-link,
+    #nav .menu-body > .dd > button {
+        width: 100%;
+        min-height: 46px;
+        padding: 11px 14px;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        color: #0f294a;
+        font-family: inherit;
+        font-size: 0.95rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease;
+    }
+
+    #nav .nav-ext {
+        display: inline-block;
+        color: var(--mut, #64748b);
+        flex-shrink: 0;
+    }
+
+    #nav .menu-body > .dd.open > button,
+    #nav .menu-body > .nav-link.active,
+    #nav .menu-body > .dd.active > button {
+        background: #eaf2fd;
+        border-color: #bfd5f5;
+        color: #0f3564;
+    }
+
+    #nav .dd > button i {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+        transition: transform 0.25s ease;
+        flex-shrink: 0;
+    }
+
+    #nav .dd.open > button i {
+        transform: rotate(-135deg);
+    }
+
+    #nav .dd {
+        position: static;
+        width: 100%;
+    }
+
+    #nav .dd-p {
         position: static !important;
-        left: auto !important;
-        right: auto !important;
-        width: auto !important;
+        inset: auto !important;
+        transform: none !important;
+        width: 100% !important;
         min-width: 0 !important;
         max-width: 100% !important;
-        max-height: 280px;
-        overflow-y: auto;
-        overflow-x: hidden;
+        max-height: none !important;
         box-shadow: none !important;
-        border: 0 !important;
-        border-radius: 0;
-        padding: 6px 0 6px 12px !important;
-        margin: 6px 0 0 10px !important;
-        border-left: 2px solid var(--line) !important;
-        background: transparent;
-        -webkit-overflow-scrolling: touch;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        display: none;
     }
 
-    .dd-nested.open > .dd-nested-panel {
-        display: block;
-    }
-
-    .dd-prodi {
-        padding: 10px 10px 10px 8px;
-    }
-
-    .dd-nested-panel::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    .dd-nested-panel::-webkit-scrollbar-thumb {
-        background: #c5d0de;
+    #nav .dd.open > .dd-p {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 6px;
+        padding: 8px 10px 8px 12px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-left: 3px solid #0f3564;
         border-radius: 10px;
     }
-}
 
-/* ============================================================
-   7. LAYAR SANGAT KECIL
-   ============================================================ */
-@media (max-width: 480px) {
-    .dd-fakultas-list {
-        max-height: 260px;
+    #nav .dd-p > a {
+        width: 100%;
+        padding: 9px 12px;
+        border-radius: 8px;
+        border: none;
+        background: transparent;
+        color: #1e293b;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
     }
 
-    .dd-nested-panel {
-        max-height: 240px;
-        margin-left: 6px !important;
-        padding-left: 10px !important;
+    #nav .dd-p > a:hover,
+    #nav .dd-p > a.active {
+        background: #e2ecf9;
+        color: #0f3564;
+        font-weight: 600;
     }
 
-    .dd-prodi-name {
-        font-size: 0.88rem;
-    }
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-    .hero-pmb {
-        padding: 20px;
-        gap: 14px;
-        margin-top: 16px;
-    }
-
-    .hero-pmb__row {
+    /* Footer Drawer */
+    #nav .menu-foot {
+        flex: 0 0 auto;
+        padding: 14px 16px 18px;
+        background: #f8fafd;
+        border-top: 1px solid var(--line, #e2e8f0);
+        display: flex;
         flex-direction: column;
         gap: 10px;
     }
 
-    .hero-pmb__row .btn {
-        width: 100%;
-        min-height: 48px;
+    #nav .menu-portal-lbl {
+        display: block;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--mut, #64748b);
+        margin-bottom: 6px;
+    }
+
+    #nav .menu-portal-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+
+    #nav .menu-portal-grid a {
+        display: flex;
+        align-items: center;
         justify-content: center;
+        padding: 8px 10px;
+        border-radius: 9px;
+        background: #ffffff;
+        border: 1px solid #d7e2f0;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--blue-d, #0f2744);
+        text-decoration: none;
     }
-}
 
-@media (max-width: 480px) {
-    .hero-pmb {
-        padding: 18px 16px;
-        border-radius: 14px;
+    #nav .menu-portal-grid a:hover {
+        background: var(--sky, #f1f6fc);
+        border-color: var(--blue, #2f6db5);
+        color: var(--blue, #2f6db5);
     }
 
-    .hero-pmb__row input {
-        padding: 13px 16px;
+    #nav .menu-hotline {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: var(--blue-d, #0f2744);
+        color: #ffffff;
+        font-size: 0.82rem;
+        text-decoration: none;
     }
 }
 
 /* ============================================================
-   MARKET / PROFIL KAMPUS — Responsif & Tata Letak Rapi
+   SMALL MOBILE (<= 640px)
    ============================================================ */
+@media (max-width: 640px) {
+    .top {
+        display: none;
+    }
 
-.mkt {
-    --mkt-gold: #d4a24a;
-    --mkt-gold-soft: #f0d9a8;
-    --mkt-gold-glow: rgba(212, 162, 74, 0.35);
-    position: relative;
-    padding: 80px 0 64px;
-    overflow: hidden;
-    background: linear-gradient(180deg, #fbfdff 0%, #ffffff 55%, #faf7f2 100%);
-    isolation: isolate;
-}
-
-.srch {
-    display: flex;
-    align-items: center;
-    flex: none;
-    width: 44px;
-    height: 44px;
-    margin-left: 4px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    background: transparent;
-    overflow: hidden;
-    transition:
-        width 0.5s var(--ease),
-        background 0.3s,
-        border-color 0.3s,
-        box-shadow 0.3s;
-}
-.srch.open {
-    width: clamp(190px, 22vw, 290px);
-    background: #fff;
-    border-color: var(--line);
-    box-shadow: 0 0 0 4px var(--sky);
-}
-.srch input {
-    flex: 1;
-    width: 0;
-    min-width: 0;
-    height: 100%;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    opacity: 0;
-    visibility: hidden;
-    transition:
-        opacity 0.25s,
-        visibility 0s 0.5s;
-}
-.srch.open input {
-    padding-left: 18px;
-    opacity: 1;
-    visibility: visible;
-    transition:
-        opacity 0.35s 0.15s,
-        visibility 0s;
-}
-.srch input:focus {
-    outline: 0;
-}
-.srch input::-webkit-search-cancel-button {
-    display: none;
-}
-.srch-b {
-    position: relative;
-    flex: none;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    transition:
-        background 0.25s,
-        color 0.25s;
-}
-.srch-b:hover,
-.srch.open .srch-b {
-    background: var(--sky);
-    color: var(--blue);
-}
-.srch-b svg {
-    grid-area: 1/1;
-    transition:
-        transform 0.45s var(--ease),
-        opacity 0.3s;
-}
-.srch-b .i-x {
-    opacity: 0;
-    transform: rotate(-90deg) scale(0.6);
-}
-.srch.open .i-x {
-    opacity: 1;
-    transform: none;
-}
-.srch.open .i-s {
-    opacity: 0;
-    transform: rotate(90deg) scale(0.6);
-}
-
-/* kartu hasil pencarian */
-.res {
-    display: block;
-    padding: 20px 22px;
-    margin-bottom: 14px;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    transition: 0.3s var(--ease);
-}
-.res:hover {
-    border-color: var(--or);
-    transform: translateY(-3px);
-}
-.res small {
-    color: var(--blue);
-    font-weight: 800;
-    font-size: 0.78rem;
-}
-.res h3 {
-    margin: 4px 0;
-}
-.res p {
-    color: var(--mut);
-    font-size: 0.92rem;
-}
-
-/* layar sempit: beri ruang untuk form dengan menyembunyikan nama kampus */
-.brand > span:last-child {
-    max-width: 280px;
-    overflow: hidden;
-    white-space: nowrap;
-    transition:
-        max-width 0.5s var(--ease),
-        opacity 0.3s;
-}
-@media (max-width: 560px) {
-    .nav.searching .brand > span:last-child {
-        max-width: 0;
-        opacity: 0;
-    }
-}
-@media (max-width: 560px) {
-    .srch.open {
-        width: min(62vw, 250px);
-    }
-}
-
-/* laptop kecil: form lebih ramping agar logo & menu tetap muat */
-@media (min-width: 961px) and (max-width: 1100px) {
-    .srch.open {
-        width: 170px;
-    }
-}
-
-/* pengaman: kalau tetap sesak, nama kampus dipotong "…" bukan menimpa menu */
-.brand {
-    min-width: 0;
-}
-.brand > span:last-child {
-    min-width: 0;
-}
-.brand b {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-@media (max-width: 960px) {
-    .nav-in {
-        gap: 10px;
-    }
-    .brand {
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-    .brand img {
-        flex: none;
-    }
-    .brand > span:last-child {
-        min-width: 0;
-    }
-    .brand b {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .burger {
-        flex: none;
-    }
-}
-@media (max-width: 560px) {
-    .nav-in {
+    #nav .nav-in {
+        min-height: 64px;
         gap: 8px;
     }
-    .srch.open {
-        width: min(50vw, 240px);
+
+    #nav .brand {
+        gap: 9px;
+        max-width: calc(100% - 96px);
+    }
+
+    #nav .brand img {
+        width: 38px;
+        height: 38px;
+    }
+
+    #nav .brand b {
+        font-size: 0.85rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #nav .brand small {
+        font-size: 0.68rem;
+    }
+
+    #nav .nav-actions {
+        gap: 6px;
+    }
+
+    #nav .srch-b,
+    #nav .burger {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+
+    header.nav#nav.searching .srch {
+        right: 44px;
     }
 }

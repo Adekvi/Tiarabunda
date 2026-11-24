@@ -192,17 +192,19 @@
                                 </div>
                             @endif
 
-                            <div class="bsw__card-footer">
-                                <a href="/layanan/kemahasiswaan/beasiswa/{{ data_get($b, 'tandha') }}"
-                                    class="bsw__card-link">
-                                    Lihat Selengkapnya
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                            </div>
+                            @if (data_get($b, 'tandha'))
+                                <div class="bsw__card-footer">
+                                    <a href="/layanan/kemahasiswaan/beasiswa/{{ data_get($b, 'tandha') }}"
+                                        class="bsw__card-link">
+                                        Lihat Selengkapnya
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            @endif
                         </article>
                     @endforeach
                 </div>
@@ -218,7 +220,7 @@
                     <h3>Butuh bantuan konsultasi beasiswa?</h3>
                     <p>Hubungi Biro Kemahasiswaan untuk informasi jadwal seleksi dan kelengkapan berkas.</p>
                 </div>
-                <a class="btn" href="https://wa.me/6285773825001">Hubungi Kami &rarr;</a>
+                <a class="btn" href="https://wa.me/6281117014000">Hubungi Kami &rarr;</a>
             </div>
 
             {{-- ========================================================= --}}
@@ -328,7 +330,7 @@
                     <p>Daftarkan diri Anda pada masa pengenalan kehidupan kampus (PKKMB) atau hubungi bagian
                         kemahasiswaan.</p>
                 </div>
-                <a class="btn" href="https://wa.me/6285773825001">Hubungi Kami &rarr;</a>
+                <a class="btn" href="https://wa.me/6281117014000">Hubungi Kami &rarr;</a>
             </div>
 
             {{-- ========================================================= --}}
@@ -402,7 +404,7 @@
                     <p>Daftarkan diri Anda pada masa pengenalan kehidupan kampus (PKKMB) atau hubungi bagian
                         kemahasiswaan.</p>
                 </div>
-                <a class="btn" href="https://wa.me/6285773825001">Hubungi Kami &rarr;</a>
+                <a class="btn" href="https://wa.me/6281117014000">Hubungi Kami &rarr;</a>
             </div>
         @endif
 

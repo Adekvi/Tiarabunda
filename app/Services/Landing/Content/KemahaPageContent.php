@@ -22,9 +22,6 @@ class KemahaPageContent implements PageContentInterface
         }
 
         $beasiswa = $this->beasiswaService->forPage();
-        if ($beasiswa->isEmpty()) {
-            $beasiswa = $this->demoBeasiswa();
-        }
 
         $selectedKemahasiswaan = null;
         $showBeasiswaList = false;
@@ -73,26 +70,6 @@ class KemahaPageContent implements PageContentInterface
                 'is_beasiswa'   => true,
                 'isi'           => '<p>Fasilitasi dan pendampingan pengajuan berbagai program beasiswa internal maupun eksternal bagi mahasiswa.</p>',
                 'data_tambahan' => ['tipe' => 'beasiswa', 'ikon' => 'graduation-cap', 'warna' => 'orange'],
-            ],
-        ]);
-    }
-
-    private function demoBeasiswa()
-    {
-        return collect([
-            (object) [
-                'jeneng'    => 'Beasiswa Prestasi Akademik',
-                'tandha'    => 'beasiswa-prestasi',
-                'katrangan' => '<p>Beasiswa yang diberikan kepada calon mahasiswa baru dengan nilai rapor semester 1-5 yang sangat memuaskan.</p>',
-                'syarat'    => '<ul><li>Nilai rapor rata-rata minimal 85</li><li>Memiliki sertifikat kejuaraan minimal tingkat kabupaten</li><li>Mengisi formulir pendaftaran beasiswa</li></ul>',
-                'jangkepan' => 'Potongan UKT 100% selama 1 semester (dapat diperpanjang dengan syarat IPK).',
-            ],
-            (object) [
-                'jeneng'    => 'Beasiswa KIP Kuliah',
-                'tandha'    => 'kip-kuliah',
-                'katrangan' => '<p>Bantuan biaya pendidikan dari pemerintah bagi mahasiswa dari keluarga ekonomi kurang mampu.</p>',
-                'syarat'    => '<ul><li>Memiliki Kartu Indonesia Pintar (KIP) yang aktif</li><li>Lolos seleksi verifikasi ekonomi</li><li>Tidak sedang menerima beasiswa lain</li></ul>',
-                'jangkepan' => 'Bebas biaya kuliah (UKT) dan bantuan biaya hidup bulanan dari pemerintah.',
             ],
         ]);
     }

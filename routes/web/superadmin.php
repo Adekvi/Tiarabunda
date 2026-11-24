@@ -19,6 +19,7 @@ use App\Http\Controllers\Superadmin\Konten\Profil\PimpinanController;
 use App\Http\Controllers\Superadmin\Konten\Profil\SejarahController;
 use App\Http\Controllers\Superadmin\Konten\Profil\StrukturController;
 use App\Http\Controllers\Superadmin\Konten\Profil\VisimisiController;
+use App\Http\Controllers\Superadmin\Popup\PopupController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'can:access-superadmin'])
@@ -26,6 +27,19 @@ Route::middleware(['auth', 'can:access-superadmin'])
     ->name('superadmin.')
     ->group(function () {
         Route::view('/', 'superadmin.index')->name('dashboard');
+
+        // Popup
+        Route::prefix('popup')->name('popup.')->group(function () {
+            Route::get('/', [PopupController::class, 'index'])->name('index');
+            Route::get('/create', [PopupController::class, 'create'])->name('create');
+            Route::post('/', [PopupController::class, 'store'])->name('store');
+            Route::get('/{popup}/edit', [PopupController::class, 'edit'])->name('edit');
+            Route::put('/{popup}', [PopupController::class, 'update'])->name('update');
+            Route::patch('/{popup}/toggle', [PopupController::class, 'toggleStatus'])->name('toggle');
+            Route::delete('/{popup}', [PopupController::class, 'destroy'])->name('destroy');
+            Route::post('/{id}/restore', [PopupController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force', [PopupController::class, 'forceDestroy'])->name('force-destroy');
+        });
 
         // Hero Section
         Route::prefix('hero')->name('hero.')->group(function () {

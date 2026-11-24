@@ -562,6 +562,304 @@ a:hover > .ar,
     z-index: 1;
 }
 
+/* VARIAN E: Horizontal Horizon Band (.bg-band-h) — Cocok untuk Fasilitas / Galeri */
+.bg-band-h {
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+    isolation: isolate;
+}
+.bg-band-h::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 46%;
+    background: linear-gradient(165deg, #0f2744 0%, #173b66 100%);
+    border-top: 2px solid rgba(242, 153, 74, 0.45);
+    z-index: 0;
+    pointer-events: none;
+}
+.bg-band-h::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 46%;
+    background-image:
+        radial-gradient(
+            circle at 18% 75%,
+            rgba(47, 109, 181, 0.35),
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 82% 25%,
+            rgba(242, 153, 74, 0.2),
+            transparent 45%
+        );
+    z-index: 0;
+    pointer-events: none;
+}
+.bg-band-h > .wrap,
+.bg-band-h > .position-relative {
+    position: relative;
+    z-index: 2;
+}
+
+/* VARIAN F: Vertical Architectural Pillar (.bg-pillar-v) — Cocok untuk Jalur / Program */
+.bg-pillar-v {
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+    isolation: isolate;
+}
+.bg-pillar-v::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42%;
+    height: 100%;
+    background: linear-gradient(175deg, #0f2744 0%, #173b66 100%);
+    border-left: 2px solid rgba(242, 153, 74, 0.45);
+    box-shadow: -24px 0 60px -30px rgba(15, 39, 68, 0.35);
+    z-index: 0;
+    pointer-events: none;
+}
+/* Garis vertikal & horizontal arsitektural di dalam pilar */
+.bg-pillar-v::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42%;
+    height: 100%;
+    background-image:
+        linear-gradient(
+            to right,
+            transparent 48%,
+            rgba(255, 255, 255, 0.06) 48%,
+            rgba(255, 255, 255, 0.06) calc(48% + 1px),
+            transparent calc(48% + 1px)
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 28%,
+            rgba(255, 255, 255, 0.06) 28%,
+            rgba(255, 255, 255, 0.06) calc(28% + 1px),
+            transparent calc(28% + 1px)
+        ),
+        radial-gradient(
+            circle at 75% 25%,
+            rgba(242, 153, 74, 0.22),
+            transparent 55%
+        );
+    z-index: 0;
+    pointer-events: none;
+}
+.bg-pillar-v > .wrap,
+.bg-pillar-v > .position-relative {
+    position: relative;
+    z-index: 2;
+}
+
+/* VARIAN G: Architectural Cross Lines (.bg-frame-hv) — Opsional untuk section lain */
+.bg-frame-hv {
+    position: relative;
+    background: linear-gradient(180deg, #fbfdff 0%, #f3f7fc 100%);
+    overflow: hidden;
+    isolation: isolate;
+}
+.bg-frame-hv::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(
+            to right,
+            transparent calc(50% - 0.5px),
+            rgba(47, 109, 181, 0.08) calc(50% - 0.5px),
+            rgba(47, 109, 181, 0.08) calc(50% + 0.5px),
+            transparent calc(50% + 0.5px)
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 140px,
+            rgba(47, 109, 181, 0.08) 140px,
+            rgba(47, 109, 181, 0.08) 141px,
+            transparent 141px
+        );
+    z-index: 0;
+    pointer-events: none;
+}
+.bg-frame-hv > .wrap,
+.bg-frame-hv > .position-relative {
+    position: relative;
+    z-index: 2;
+}
+
+/* Responsive untuk Variasi Background Baru */
+@media (max-width: 960px) {
+    .bg-band-h::before,
+    .bg-band-h::after {
+        height: 36%;
+    }
+    .bg-pillar-v::before,
+    .bg-pillar-v::after {
+        width: 100%;
+        height: 36%;
+        top: auto;
+        bottom: 0;
+        border-left: 0;
+        border-top: 2px solid rgba(242, 153, 74, 0.45);
+    }
+}
+
+/* VARIAN E: Left Dark Split dengan 3 Garis Arsitektural (.bg-left-lines) */
+.bg-left-lines {
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Bidang gelap di sisi kiri */
+.bg-left-lines::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 38%;
+    height: 100%;
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(47, 109, 181, 0.35),
+            transparent 55%
+        ),
+        radial-gradient(
+            circle at 80% 85%,
+            rgba(242, 153, 74, 0.18),
+            transparent 50%
+        ),
+        linear-gradient(165deg, #0b1f38 0%, #173b66 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* 3 Garis Vertikal Sejajar (Putih Halus, Aksen Oranye, Biru Arsitektural) */
+.bg-left-lines::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+        to right,
+        transparent calc(38% - 22px),
+        rgba(255, 255, 255, 0.14) calc(38% - 22px),
+        rgba(255, 255, 255, 0.14) calc(38% - 21px),
+        transparent calc(38% - 21px),
+        transparent 38%,
+        rgba(242, 153, 74, 0.8) 38%,
+        rgba(242, 153, 74, 0.8) calc(38% + 2px),
+        transparent calc(38% + 2px),
+        transparent calc(38% + 22px),
+        rgba(47, 109, 181, 0.18) calc(38% + 22px),
+        rgba(47, 109, 181, 0.18) calc(38% + 23px),
+        transparent calc(38% + 23px)
+    );
+}
+
+.bg-left-lines > .wrap,
+.bg-left-lines > .position-relative {
+    position: relative;
+    z-index: 2;
+}
+
+/* Responsive: Bidang gelap di atas + 3 Garis Horizontal */
+@media (max-width: 960px) {
+    .bg-left-lines::before {
+        width: 100%;
+        height: 360px;
+    }
+    .bg-left-lines::after {
+        background-image: linear-gradient(
+            to bottom,
+            transparent 338px,
+            rgba(255, 255, 255, 0.16) 338px,
+            rgba(255, 255, 255, 0.16) 339px,
+            transparent 339px,
+            transparent 360px,
+            rgba(242, 153, 74, 0.85) 360px,
+            rgba(242, 153, 74, 0.85) 362px,
+            transparent 362px,
+            transparent 382px,
+            rgba(47, 109, 181, 0.18) 382px,
+            rgba(47, 109, 181, 0.18) 383px,
+            transparent 383px
+        );
+    }
+}
+
+/* VARIAN F: Architectural Light Framing (.bg-arch-light) — Kontras setelah section gelap */
+.bg-arch-light {
+    position: relative;
+    background: linear-gradient(180deg, #f2f7fd 0%, #fbfdff 42%, #ffffff 100%);
+    border-top: 3px solid var(--or);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Garis arsitektural horizontal & vertikal tipis sebagai framing header */
+.bg-arch-light::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(
+            to right,
+            transparent calc(50% - 0.5px),
+            rgba(47, 109, 181, 0.06) calc(50% - 0.5px),
+            rgba(47, 109, 181, 0.06) calc(50% + 0.5px),
+            transparent calc(50% + 0.5px)
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 268px,
+            rgba(47, 109, 181, 0.09) 268px,
+            rgba(47, 109, 181, 0.09) 269px,
+            transparent 269px
+        );
+    z-index: 0;
+    pointer-events: none;
+}
+
+.bg-arch-light::after {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 440px;
+    height: 440px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(47, 109, 181, 0.08),
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.bg-arch-light > .wrap,
+.bg-arch-light > .position-relative {
+    position: relative;
+    z-index: 2;
+}
+
 /* Responsive: Split di Mobile */
 @media (max-width: 960px) {
     .bg-split::before,

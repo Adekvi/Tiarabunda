@@ -23,14 +23,11 @@ class HeaderSecurity
         $response->headers->add([
             'Content-Security-Policy' => implode('; ', [
                 "default-src 'self'",
-                // "script-src 'self'",
                 "script-src 'self' 'nonce-{$nonce}'",
                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
                 "font-src 'self' https://fonts.gstatic.com",
-
-                // PERBAIKAN DI SINI:
-                "img-src 'self' data: http://localhost:8000 http://127.0.0.1:8000",
-
+                "img-src 'self' data: https: http://localhost:8000 http://127.0.0.1:8000",
+                "frame-src 'self' https://maps.google.com https://www.google.com",
                 "connect-src 'self'",
                 "object-src 'none'",
                 "base-uri 'self'",

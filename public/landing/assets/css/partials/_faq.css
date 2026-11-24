@@ -2,6 +2,14 @@
    PARTIAL: _faq.css
    ============================================================ */
 
+.faq-sec,
+#faq {
+    padding: 92px 0;
+    background: linear-gradient(180deg, #f4f8fe 0%, #eaf2fc 100%);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
 .faq-in {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr;
@@ -22,14 +30,14 @@
     margin-bottom: 12px;
     overflow: hidden;
     transition: all 0.3s var(--ease);
-    box-shadow: 0 4px 12px -6px rgba(23, 59, 102, 0.05);
+    box-shadow: 0 6px 18px -8px rgba(23, 59, 102, 0.08);
 }
 .qa:last-child {
     margin-bottom: 0;
 }
 .qa:hover {
     border-color: var(--or);
-    box-shadow: 0 8px 24px -12px rgba(242, 153, 74, 0.2);
+    box-shadow: 0 10px 26px -12px rgba(242, 153, 74, 0.24);
 }
 
 .qa button {
@@ -156,11 +164,22 @@
 
 /* Responsive */
 @media (max-width: 960px) {
+    .faq-sec,
+    #faq {
+        padding: 72px 0;
+    }
     .faq-in {
         grid-template-columns: 1fr;
         gap: 32px;
     }
     .faq-in .head {
         position: static;
+    }
+}
+
+@media (max-width: 640px) {
+    .faq-sec,
+    #faq {
+        padding: 56px 0;
     }
 }

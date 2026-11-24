@@ -1,14 +1,15 @@
 @props(['site' => config('landing.site')])
+
 <div class="top">
-    <div class="wrap">
-        <div class="justify-content-start">
-            <span class="hotline">Hotline:
-                {{ $site['hotline'] }}
-            </span>
-            <span>|</span>
-            <span>{{ $site['alamat'] }}</span>
+    <div class="wrap top-in">
+        <div class="top-info">
+            <span class="hotline">Hotline: <strong>{{ $site['hotline'] }}</strong></span>
+            @if (!empty($site['alamat']))
+                <span class="top-sep" aria-hidden="true">|</span>
+                <span class="top-addr">{{ $site['alamat'] }}</span>
+            @endif
         </div>
-        <nav aria-label="Portal">
+        <nav class="top-portal" aria-label="Portal">
             @foreach ($site['portal'] as $p)
                 <a href="{{ $p[1] }}">{{ $p[0] }}</a>
             @endforeach

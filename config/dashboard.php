@@ -16,7 +16,7 @@ return [
 
         [
             'type' => 'group',
-            'label' => 'Beranda',
+            'label' => 'Layout',
             'icon' => 'layout',
             'children' => [
                 [
@@ -28,6 +28,11 @@ return [
                     'label' => 'Info Terkini',
                     'route' => 'superadmin.info.index',
                     'active' => 'superadmin.info.*',
+                ],
+                [
+                    'label' => 'Welcome Pop-up',
+                    'route' => 'superadmin.popup.index',
+                    'active' => 'superadmin.popup.*',
                 ],
             ],
         ],
