@@ -51,17 +51,28 @@ class Akademik extends Model
 
         $relative = ltrim($this->path_file, '/');
 
-        $inPublic = public_path($relative);
-        if (is_file($inPublic)) {
-            return $inPublic;
-        }
-
-        $inStorage = storage_path('app/public/' . $relative);
-        if (is_file($inStorage)) {
-            return $inStorage;
+        foreach ([public_path($relative), storage_path('app/public/' . $relative)] as $candidate) {
+            if (is_file($candidate) && $this->isInsideAllowedDir($candidate)) {
+                return $candidate;
+            }
         }
 
         return null;
+    }
+
+    /** Cegah path traversal ('../') walau path_file berasal dari database. */
+    private function isInsideAllowedDir(string $path): bool
+    {
+        $real = realpath($path);
+
+        foreach ([public_path(), storage_path('app/public')] as $base) {
+            $baseReal = realpath($base);
+            if ($real !== false && $baseReal !== false && str_starts_with($real, $baseReal . DIRECTORY_SEPARATOR)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getFileExistsAttribute(): bool

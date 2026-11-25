@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Superadmin;
 
+use App\Rules\SafeUrl;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,24 +15,7 @@ class PopupRequest extends FormRequest
 
     public function rules(): array
     {
-        $urlRule = [
-            'nullable',
-            'string',
-            'max:255',
-            function (string $attribute, mixed $value, \Closure $fail): void {
-                if (!is_string($value) || trim($value) === '') {
-                    return;
-                }
-                $trimmed = trim($value);
-                $isRelative = str_starts_with($trimmed, '/') && !str_starts_with($trimmed, '//');
-                $isHttpUrl = filter_var($trimmed, FILTER_VALIDATE_URL) !== false
-                    && in_array(strtolower((string) parse_url($trimmed, PHP_URL_SCHEME)), ['http', 'https'], true);
-
-                if (!$isRelative && !$isHttpUrl) {
-                    $fail('Kolom :attribute harus berupa URL http/https yang valid atau path diawali "/".');
-                }
-            },
-        ];
+        $urlRule = ['nullable', 'string', 'max:255', new SafeUrl];
 
         return [
             'kategori'      => ['required', 'string', 'max:40', Rule::in(['pmb', 'jurusan', 'beasiswa', 'info', 'custom'])],

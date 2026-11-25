@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Landing\Submenu;
+use App\Services\Landing\Layanan\AkademikService;
 use App\Services\Landing\LandingHomeService;
 use App\Services\Landing\MenuService;
 use App\Services\Landing\PageContentFactory;
@@ -17,6 +18,18 @@ class LandingController extends Controller
         return view('landing', [
             'home' => $home->forHome(),
         ]);
+    }
+
+    public function downloadAkademik(string $tandha, AkademikService $service)
+    {
+        $dokumen = $service->findBySlug($tandha);
+
+        abort_if(! $dokumen || ! $dokumen->resolved_file_path, 404, 'File formulir belum tersedia.');
+
+        $ext = strtolower($dokumen->file_extension ?: 'docx');
+        $downloadName = $dokumen->nama_file_asli ?: ($dokumen->tandha . '.' . $ext);
+
+        return response()->download($dokumen->resolved_file_path, $downloadName);
     }
 
     public function menu(string $menu)

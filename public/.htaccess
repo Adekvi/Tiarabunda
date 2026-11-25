@@ -15,12 +15,28 @@
     Require all denied
 </FilesMatch>
 
+# Blokir file sensitif/cadangan yang tidak sengaja ikut terunggah
+<FilesMatch "\.(log|sql|bak|old|swp|ini|sh|env)$">
+    Require all denied
+</FilesMatch>
+
+# Berkas SVG (mis. dari unggahan lama) tidak boleh menjalankan script
+<IfModule mod_headers.c>
+    <FilesMatch "\.svg$">
+        Header set Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+    </FilesMatch>
+    Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
+
+    # Larang eksekusi PHP di folder unggahan (webshell yang menyamar sebagai gambar/dokumen)
+    RewriteRule ^storage/.*\.(php[0-9]?|phtml|phar|pht)$ - [F,L,NC]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

@@ -14,6 +14,7 @@ use App\Observers\Landing\Informasi\Kegiatan\KegiatanObserver;
 use App\Observers\Landing\Pendidikan\Program\FakultasObserver;
 use App\Observers\Landing\Pendidikan\Program\ProdiObserver;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
@@ -37,6 +38,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // IP asli pengunjung di belakang Cloudflare/proxy (lihat config/security.php)
+        if ($proxies = config('security.trusted_proxies')) {
+            TrustProxies::at($proxies === '*' ? '*' : array_map('trim', explode(',', $proxies)));
+        }
+
         // Hanya dijalankan pada layout utama saat membuka landing utama (/)
         View::composer('components.landing.layout.app', function ($view) {
             if (!request()->routeIs('landing') && !request()->is('/')) {

@@ -20,12 +20,15 @@ class HeaderSecurity
 
         $response = $next($request);
 
+        $production = app()->isProduction();
+
         $csp = [
             "default-src 'self'",
             "script-src 'self' 'nonce-{$nonce}'",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' data: https://fonts.gstatic.com",
-            "img-src 'self' data: blob: https: http://localhost:8000 http://127.0.0.1:8000",
+            // Alamat localhost hanya untuk pengembangan, tidak dikirim di production.
+            "img-src 'self' data: blob: https:" . ($production ? '' : ' http://localhost:8000 http://127.0.0.1:8000'),
             "frame-src 'self' https://maps.google.com https://www.google.com",
             "connect-src 'self'",
             "object-src 'none'",
@@ -34,18 +37,26 @@ class HeaderSecurity
             "frame-ancestors 'none'",
         ];
 
-        // Aktifkan upgrade-insecure-requests hanya di server production (HTTPS)
-        if (app()->isProduction()) {
+        if ($production) {
             $csp[] = 'upgrade-insecure-requests';
         }
 
-        $response->headers->add([
+        $headers = [
             'Content-Security-Policy' => implode('; ', $csp),
-            'X-Content-Type-Options' => 'nosniff',
-            'Referrer-Policy' => 'strict-origin-when-cross-origin',
-            'Permissions-Policy' => 'camera=(), microphone=(), geolocation=()',
-            'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
-        ]);
+            'X-Content-Type-Options'  => 'nosniff',
+            'Referrer-Policy'         => 'strict-origin-when-cross-origin',
+            'Permissions-Policy'      => 'camera=(), microphone=(), geolocation=()',
+        ];
+
+        // HSTS hanya lewat HTTPS & production. Tanpa includeSubDomains agar subdomain
+        // lain (mail., cpanel.) tidak ikut terkunci; tambahkan nanti bila semua sudah HTTPS.
+        if ($production && $request->isSecure()) {
+            $headers['Strict-Transport-Security'] = 'max-age=31536000';
+        }
+
+        foreach ($headers as $name => $value) {
+            $response->headers->set($name, $value);
+        }
 
         return $response;
     }

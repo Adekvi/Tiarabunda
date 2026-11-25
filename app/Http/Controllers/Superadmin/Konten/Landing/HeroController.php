@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Superadmin\Konten\Landing;
 
+use App\Rules\SafeUrl;
 use App\Http\Controllers\Controller;
 use App\Models\Landing\Hero;
 use App\Models\Landing\Heromedia;
@@ -37,9 +38,9 @@ class HeroController extends Controller
             'judul'                   => ['required', 'string', 'max:255'],
             'sub_judul'               => ['nullable', 'string', 'max:500'],
             'teks_tombol_1'           => ['required', 'string', 'max:50'],
-            'link_tombol_1'           => ['required', 'string', 'max:255'],
+            'link_tombol_1'           => ['required', 'string', 'max:255', new SafeUrl],
             'teks_tombol_2'           => ['required', 'string', 'max:50'],
-            'link_tombol_2'           => ['required', 'string', 'max:255'],
+            'link_tombol_2'           => ['required', 'string', 'max:255', new SafeUrl],
             'durasi_slider'           => ['required', 'integer', 'min:5', 'max:7'],
             'urip'                    => ['boolean'],
 

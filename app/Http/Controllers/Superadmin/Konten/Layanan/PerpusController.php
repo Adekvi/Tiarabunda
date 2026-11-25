@@ -155,7 +155,7 @@ class PerpusController extends Controller
         $data = $request->validate([
             'judhul' => ['required', 'string', 'max:150'],
             'isi' => ['nullable', 'string'],
-            'url_portal' => ['nullable', 'url', 'max:255'],
+            'url_portal' => ['nullable', 'url:http,https', 'max:255'],
             'jam_layanan' => ['nullable', 'string', 'max:150'],
             'kontak' => ['nullable', 'string', 'max:100'],
             'email' => ['nullable', 'email', 'max:150'],

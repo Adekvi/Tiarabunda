@@ -20,7 +20,9 @@ class JudolDetector
             $score += (int) ($weights['obfuscation'] ?? 20);
         }
 
-        foreach ($this->extractUrls($normalized) as $url) {
+        $urls = $this->extractUrls($normalized);
+
+        foreach ($urls as $url) {
             $host = $this->hostOf($url);
             $path = $this->pathOf($url);
 
@@ -28,11 +30,12 @@ class JudolDetector
                 return (int) ($weights['domain_exact'] ?? 100);
             }
 
-            if ($host && $this->keywordHit($host)) {
+            // Mode compact: "slot-gacor88.xyz" dan "slotgacor.com" sama-sama terdeteksi.
+            if ($host && $this->keywordHits($host, true) > 0) {
                 $score += (int) ($weights['keyword_host'] ?? 40);
             }
 
-            if ($path !== '' && $this->keywordHit($path)) {
+            if ($path !== '' && $this->keywordHits($path, true) > 0) {
                 $score += (int) ($weights['keyword_path'] ?? 25);
             }
 
@@ -41,9 +44,14 @@ class JudolDetector
             }
         }
 
-        // Teks tanpa URL (judul, isi artikel)
-        if ($this->keywordHit($normalized)) {
-            $score += (int) ($weights['keyword_body'] ?? 15);
+        // Teks (judul, isi): tiap kata kunci berbeda menambah skor.
+        $hits = $this->keywordHits($normalized);
+        if ($hits > 0) {
+            $score += $hits * (int) ($weights['keyword_body'] ?? 15);
+
+            if ($hits >= 2 && $urls !== []) {
+                $score += (int) ($weights['spam_with_link'] ?? 20);
+            }
         }
 
         return min(100, $score);
@@ -108,17 +116,37 @@ class JudolDetector
         return trim($t);
     }
 
-    private function keywordHit(string $haystack): bool
+    /** Jumlah kata kunci BERBEDA yang ditemukan. $compact=true: abaikan tanda baca (untuk host/path). */
+    private function keywordHits(string $haystack, bool $compact = false): int
     {
-        $keywords = config('judol.keywords', []);
-        foreach ($keywords as $kw) {
+        if ($compact) {
+            $haystack = $this->compact($haystack);
+        } else {
+            // "s.l.o.t" / "g-a-c-o-r" -> "slot" / "gacor", lalu tanda baca lain jadi spasi.
+            $haystack = preg_replace_callback(
+                '/\b(?:[a-z][.\-_]){2,}[a-z]\b/',
+                fn(array $m) => preg_replace('/[.\-_]/', '', $m[0]),
+                $haystack
+            ) ?? $haystack;
+            $haystack = preg_replace('/[\-_.]+/', ' ', $haystack) ?? $haystack;
+        }
+
+        $hits = 0;
+        foreach (config('judol.keywords', []) as $kw) {
             $kw = Str::lower(trim((string) $kw));
-            if ($kw !== '' && str_contains($haystack, $kw)) {
-                return true;
+            $needle = $compact ? $this->compact($kw) : $kw;
+
+            if ($needle !== '' && str_contains($haystack, $needle)) {
+                $hits++;
             }
         }
 
-        return false;
+        return $hits;
+    }
+
+    private function compact(string $text): string
+    {
+        return preg_replace('/[^a-z0-9]+/', '', Str::lower($text)) ?? '';
     }
 
     private function isShortener(string $host): bool

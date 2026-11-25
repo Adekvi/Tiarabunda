@@ -1,24 +1,19 @@
 <?php
 
 use App\Http\Controllers\LandingController;
-use App\Services\Landing\Layanan\AkademikService;
 use Illuminate\Support\Facades\Route;
 
 $menus = 'profil|pendidikan|layanan|lembaga|informasi';
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
-Route::get('/cari', [LandingController::class, 'search'])->name('landing.search');
+Route::get('/cari', [LandingController::class, 'search'])
+    ->middleware('throttle:30,1')
+    ->name('landing.search');
 
-Route::get('/layanan/akademik/unduh/{tandha}', function (string $tandha, AkademikService $service) {
-    $dokumen = $service->findBySlug($tandha);
-
-    abort_if(! $dokumen || ! $dokumen->resolved_file_path, 404, 'File formulir belum tersedia.');
-
-    $ext = strtolower($dokumen->file_extension ?: 'docx');
-    $downloadName = $dokumen->nama_file_asli ?: ($dokumen->tandha . '.' . $ext);
-
-    return response()->download($dokumen->resolved_file_path, $downloadName);
-})->name('landing.akademik.download');
+Route::get('/layanan/akademik/unduh/{tandha}', [LandingController::class, 'downloadAkademik'])
+    ->where('tandha', '[A-Za-z0-9_-]+')
+    ->middleware('throttle:30,1')
+    ->name('landing.akademik.download');
 
 Route::get('/{menu}/{sub}/{prodi}', [LandingController::class, 'page'])
     ->where(['menu' => $menus, 'sub' => '[^/]+', 'prodi' => '.*'])

@@ -61,7 +61,7 @@ class LppmRequest extends FormRequest
             'data_tambahan.tahun'           => ['nullable', 'string', 'max:30'],
             'data_tambahan.sumber_dana'     => ['nullable', 'string', 'max:150'],
             'data_tambahan.nomor_identitas' => ['nullable', 'string', 'max:120'],
-            'data_tambahan.tautan'          => ['nullable', 'url', 'max:255'],
+            'data_tambahan.tautan'          => ['nullable', 'url:http,https', 'max:255'],
             'data_tambahan.label_tautan'    => ['nullable', 'string', 'max:80'],
             'urutan'                        => ['required', 'integer', 'min:0', 'max:99999'],
             'urip'                          => ['required', 'boolean'],

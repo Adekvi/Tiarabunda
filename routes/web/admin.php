@@ -6,6 +6,5 @@ Route::middleware(['auth', 'can:access-admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/', fn() => view('admin.index'))
-            ->name('dashboard');
+        Route::view('/', 'admin.index')->name('dashboard');
     });

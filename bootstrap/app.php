@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('landing', [
             SubstituteBindings::class,
             HeaderSecurity::class,
+            'throttle:120,1',
         ]);
 
         $middleware->appendToGroup('web', HeaderSecurity::class);

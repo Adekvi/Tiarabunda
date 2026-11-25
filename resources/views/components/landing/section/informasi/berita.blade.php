@@ -47,7 +47,7 @@
                 @endif
 
                 <div class="brt__content prose">
-                    {!! nl2br(data_get($selectedBerita, 'isi')) !!}
+                    {!! nl2br(e(data_get($selectedBerita, 'isi'))) !!}
                 </div>
             </article>
 

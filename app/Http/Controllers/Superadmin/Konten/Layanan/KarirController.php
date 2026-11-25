@@ -108,7 +108,7 @@ class KarirController extends Controller
             'kontak' => ['nullable', 'string', 'max:100'],
             'email' => ['nullable', 'email', 'max:150'],
             'lokasi' => ['nullable', 'string', 'max:150'],
-            'url_portal' => ['nullable', 'url', 'max:255'],
+            'url_portal' => ['nullable', 'url:http,https', 'max:255'],
             'urutan' => ['nullable', 'integer', 'min:0', 'max:9999'],
         ], [
             'judhul.required' => 'Judul wajib diisi.',

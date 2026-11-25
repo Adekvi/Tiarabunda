@@ -22,9 +22,10 @@ use App\Http\Controllers\Superadmin\Konten\Profil\SejarahController;
 use App\Http\Controllers\Superadmin\Konten\Profil\StrukturController;
 use App\Http\Controllers\Superadmin\Konten\Profil\VisimisiController;
 use App\Http\Controllers\Superadmin\Popup\PopupController;
+use App\Http\Middleware\Security\SanitizeAdminInput;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'can:access-superadmin'])
+Route::middleware(['auth', 'can:access-superadmin', SanitizeAdminInput::class])
     ->prefix('superadmin')
     ->name('superadmin.')
     ->group(function () {
