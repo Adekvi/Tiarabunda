@@ -1,0 +1,394 @@
+.kjs-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 310px;
+    gap: 20px;
+    align-items: start;
+}
+.kjs-main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+.kjs-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 84px;
+}
+
+.kjs-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+.kjs-head-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ink);
+}
+.kjs-head-sub {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--mut);
+}
+.kjs-head-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.kjs-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+.kjs-btn-ghost:hover {
+    border-color: #1f5fbf;
+    color: #1f5fbf;
+}
+.kjs-btn-danger {
+    background: var(--err);
+    color: #fff;
+    border-color: var(--err);
+}
+
+.kjs-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px;
+}
+.kjs-input {
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink);
+    background: transparent;
+    min-width: 155px;
+}
+
+.kjs-table-wrap {
+    overflow-x: auto;
+}
+.kjs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+}
+.kjs-table th,
+.kjs-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: middle;
+}
+.kjs-table th {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mut);
+    font-weight: 700;
+}
+.kjs-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.kjs-entity {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+.kjs-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    object-fit: contain;
+    background: #fff;
+    padding: 4px;
+    flex-shrink: 0;
+}
+.kjs-logo-fallback {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: #1f5fbf;
+    background: rgba(31, 95, 191, 0.08);
+    flex-shrink: 0;
+}
+
+.kjs-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+}
+.kjs-badge.mitra {
+    background: rgba(31, 95, 191, 0.1);
+    color: #1f5fbf;
+    border-color: rgba(31, 95, 191, 0.28);
+}
+.kjs-badge.penawaran {
+    background: rgba(217, 119, 6, 0.1);
+    color: #b45309;
+    border-color: rgba(217, 119, 6, 0.28);
+}
+.kjs-badge.ok {
+    background: rgba(22, 163, 74, 0.1);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.28);
+}
+.kjs-badge.off {
+    background: rgba(100, 116, 139, 0.1);
+    color: var(--mut);
+}
+
+.kjs-acts {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    align-items: center;
+}
+.kjs-act {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: transparent;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        color 0.15s ease,
+        background-color 0.15s ease;
+}
+.kjs-act.icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.kjs-act:hover {
+    border-color: #1f5fbf;
+    color: #1f5fbf;
+    background: rgba(31, 95, 191, 0.06);
+}
+.kjs-act.danger:hover {
+    border-color: var(--err);
+    color: var(--err);
+    background: rgba(220, 38, 38, 0.06);
+}
+
+/* Sidebar */
+.kjs-side-card {
+    padding: 16px;
+}
+.kjs-side-title {
+    margin: 0 0 12px;
+    font-size: 12.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mut);
+}
+.kjs-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+.kjs-stat-box {
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+.kjs-stat-box small {
+    display: block;
+    font-size: 11.5px;
+    color: var(--mut);
+    margin-bottom: 2px;
+}
+.kjs-stat-box b {
+    font-size: 1.2rem;
+    color: var(--ink);
+}
+
+.kjs-cat-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.kjs-cat-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--line);
+}
+.kjs-cat-list li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+.kjs-guide {
+    margin: 0;
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--mut);
+    line-height: 1.5;
+}
+
+/* Form Layout */
+.kjs-form-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 20px;
+    align-items: start;
+}
+.kjs-form-card {
+    padding: 22px;
+}
+.kjs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+.kjs-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.kjs-field.full {
+    grid-column: 1 / -1;
+}
+.kjs-field label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+}
+.kjs-field input[type="text"],
+.kjs-field input[type="url"],
+.kjs-field input[type="number"],
+.kjs-field select,
+.kjs-field textarea {
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    font-size: 13.5px;
+    color: var(--ink);
+    background: transparent;
+    width: 100%;
+}
+.kjs-field input:focus,
+.kjs-field select:focus,
+.kjs-field textarea:focus {
+    outline: none;
+    border-color: #1f5fbf;
+}
+.kjs-help {
+    font-size: 12px;
+    color: var(--mut);
+}
+.kjs-err {
+    font-size: 12px;
+    color: var(--err);
+    font-weight: 600;
+}
+.kjs-jenis-switch {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+.kjs-jenis-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    cursor: pointer;
+}
+.kjs-jenis-opt:has(input:checked) {
+    border-color: #1f5fbf;
+    background: rgba(31, 95, 191, 0.05);
+}
+.kjs-drop {
+    border: 1.5px dashed var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(31, 95, 191, 0.02);
+}
+.kjs-form-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+.kjs-preview-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media (max-width: 1024px) {
+    .kjs-shell,
+    .kjs-form-shell {
+        grid-template-columns: 1fr;
+    }
+    .kjs-side {
+        position: static;
+    }
+}
+@media (max-width: 640px) {
+    .kjs-grid,
+    .kjs-jenis-switch {
+        grid-template-columns: 1fr;
+    }
+}

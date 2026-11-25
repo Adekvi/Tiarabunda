@@ -5,7 +5,6 @@ namespace App\Services\Landing;
 use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
 use App\Models\Landing\Hero;
-use App\Models\Landing\Info;
 use App\Models\Layanan\Fasilitas;
 use App\Models\Layanan\Perpus;
 use App\Models\Pendidikan\Beasiswa;
@@ -25,7 +24,6 @@ class LandingHomeService
     {
         return [
             'hero'               => $this->hero(),
-            'info'               => $this->info(),
             'pimpinan'           => $this->pimpinan(),
             'fakultas_prodi'     => $this->fakultasProdi(),
             'jalur'              => $this->jalurPmb(),
@@ -70,7 +68,6 @@ class LandingHomeService
                 }
             }
 
-            // Fallback ke kolom tabel heroes jika relasi heromedia masih kosong
             if ($videoItem === null && empty($fotoItems) && in_array($row->tipe_media, ['video', 'gambar'], true) && ! empty($row->path_media)) {
                 $fallback = [
                     'tipe'        => $row->tipe_media,
@@ -150,34 +147,6 @@ class LandingHomeService
             'slides'     => $slides,
             'interval'   => $durasi * 1000,
         ];
-    }
-
-    public function info()
-    {
-        $rows = Cache::remember('landing.home.info', self::TTL, function () {
-            return Info::query()
-                ->where('urip', true)
-                ->orderBy('urutan', 'asc')
-                ->get()
-                ->map(function ($item) {
-                    return [
-                        'k'   => $item->k,
-                        't'   => $item->t,
-                        'd'   => $item->d,
-                        'tgl' => $item->tgl,
-                        'img' => $item->img,
-                    ];
-                })
-                ->values()
-                ->all();
-        });
-
-        if (!is_array($rows)) {
-            Cache::forget('landing.home.info');
-            $rows = [];
-        }
-
-        return $rows;
     }
 
     public function pimpinan(): ?array
@@ -487,11 +456,6 @@ class LandingHomeService
         Cache::forget('landing.home.hero');
     }
 
-    public function forgetInfo(): void
-    {
-        Cache::forget('landing.home.info');
-    }
-
     public function forgetPimpinan(): void
     {
         Cache::forget('landing.home.pimpinan');
@@ -535,7 +499,6 @@ class LandingHomeService
     public function forgetHome(): void
     {
         $this->forgetHero();
-        $this->forgetInfo();
         $this->forgetPimpinan();
         $this->forgetFakultasProdi();
         $this->forgetJalurPmb();

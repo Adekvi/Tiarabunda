@@ -8,7 +8,6 @@ use Database\Seeders\Auth\UserSeeder;
 use Database\Seeders\Landing\HeroSeeder;
 use Database\Seeders\Landing\Informasi\BeritaSeeder;
 use Database\Seeders\Landing\Informasi\FaqSeeder;
-use Database\Seeders\Landing\InfoSeeder;
 use Database\Seeders\Landing\Layanan\AkademikSeeder;
 use Database\Seeders\Landing\Layanan\FasilitasSeeder;
 use Database\Seeders\Landing\Layanan\KemahaSeeder;
@@ -38,7 +37,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             HeroSeeder::class,
-            InfoSeeder::class,
 
             // Landing Profil
             SejarahSeeder::class,

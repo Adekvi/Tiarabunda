@@ -6,11 +6,14 @@ use App\Models\Concerns\HasUripState;
 use App\Models\Concerns\HasUrutan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class Lppm extends Model
 {
     use HasUripState, HasUrutan, SoftDeletes;
+
+    public const CACHE_KEY = 'landing.lembaga.lppm.forPage.v1';
 
     protected $table = 'lppms';
 
@@ -48,5 +51,21 @@ class Lppm extends Model
                 $model->tandha = Str::slug($model->judhul);
             }
         });
+
+        $flush = fn() => Cache::forget(self::CACHE_KEY);
+
+        static::saved($flush);
+        static::deleted($flush);
+        static::restored($flush);
+    }
+
+    public function getKategoriLabelAttribute(): string
+    {
+        return self::KATEGORI[$this->kategori] ?? ucfirst((string) $this->kategori);
+    }
+
+    public function meta(string $key, mixed $default = null): mixed
+    {
+        return data_get($this->data_tambahan, $key, $default);
     }
 }

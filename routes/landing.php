@@ -42,7 +42,7 @@ Route::redirect('/pendidikan/penerimaan-mahasiswa-baru', 'https://poltektiarabun
 Route::redirect('/pendidikan/akreditasi', '/profil/akreditasi', 301);
 Route::redirect('/akreditasi', '/profil/akreditasi', 301);
 
-Route::redirect('/pendidikan/beasiswa', '/layanan/kemahasiswaan', 301);
+Route::redirect('/pendidikan/beasiswa', '/layanan/beasiswa', 301);
 
 Route::redirect('/fakultas', '/pendidikan/program-pendidikan', 301);
 Route::redirect('/dokumen', '/layanan/dokumen', 301);

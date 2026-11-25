@@ -25,11 +25,6 @@ return [
                     'active' => 'superadmin.hero.*',
                 ],
                 [
-                    'label' => 'Info Terkini',
-                    'route' => 'superadmin.info.index',
-                    'active' => 'superadmin.info.*',
-                ],
-                [
                     'label' => 'Welcome Pop-up',
                     'route' => 'superadmin.popup.index',
                     'active' => 'superadmin.popup.*',
@@ -86,11 +81,6 @@ return [
                     'route' => 'superadmin.prodi.index',
                     'active' => 'superadmin.prodi.*',
                 ],
-                [
-                    'label' => 'Beasiswa',
-                    'route' => 'superadmin.beasiswa.index',
-                    'active' => 'superadmin.beasiswa.*',
-                ],
             ],
         ],
 
@@ -110,6 +100,16 @@ return [
                     'active' => 'superadmin.kemaha.*',
                 ],
                 [
+                    'label' => 'Beasiswa',
+                    'route' => 'superadmin.beasiswa.index',
+                    'active' => 'superadmin.beasiswa.*',
+                ],
+                [
+                    'label' => 'Akademik',
+                    'route' => 'superadmin.akademik.index',
+                    'active' => 'superadmin.akademik.*',
+                ],
+                [
                     'label' => 'Pusat Karier',
                     'route' => 'superadmin.karir.index',
                     'active' => 'superadmin.karir.*',
@@ -119,17 +119,27 @@ return [
                     'route' => 'superadmin.fasilitas.index',
                     'active' => 'superadmin.fasilitas.*',
                 ],
+                [
+                    'label' => 'Kerjasama',
+                    'route' => 'superadmin.kerjasama.index',
+                    'active' => 'superadmin.kerjasama.*',
+                ],
             ],
         ],
         [
             'type' => 'group',
-            'label' => 'LPPM',
+            'label' => 'Lembaga',
             'icon' => 'book',
             'children' => [
                 [
-                    'label' => 'Program & Layanan LPPM',
+                    'label' => 'LPPM',
                     'route' => 'superadmin.lppm.index',
                     'active' => 'superadmin.lppm.*',
+                ],
+                [
+                    'label'  => 'LPM',
+                    'route'  => 'superadmin.lpm.index',
+                    'active' => 'superadmin.lpm.*',
                 ],
             ],
         ],

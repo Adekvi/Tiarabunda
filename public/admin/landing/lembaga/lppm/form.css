@@ -1,0 +1,107 @@
+/* Layout Utama Form & Sidebar */
+.lppm-form-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 20px;
+    align-items: start;
+}
+.lppm-form-card {
+    padding: 22px;
+}
+
+/* Grid Input Form */
+.lppm-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+.lppm-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.lppm-field.full {
+    grid-column: 1 / -1;
+}
+.lppm-field label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+}
+.lppm-field input[type="text"],
+.lppm-field input[type="url"],
+.lppm-field input[type="number"],
+.lppm-field select,
+.lppm-field textarea {
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    font-size: 13.5px;
+    color: var(--ink);
+    background: transparent;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+}
+.lppm-field input:focus,
+.lppm-field select:focus,
+.lppm-field textarea:focus {
+    outline: none;
+    border-color: #1f5fbf;
+}
+.lppm-help {
+    font-size: 12px;
+    color: var(--mut);
+}
+.lppm-err {
+    font-size: 12px;
+    color: var(--err);
+    font-weight: 600;
+}
+
+/* Kotak Metadata JSON (data_tambahan) */
+.lppm-meta-box {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    background: rgba(31, 95, 191, 0.02);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+.lppm-meta-box-head {
+    grid-column: 1 / -1;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 8px;
+}
+
+/* Footer Tombol Form & Kartu Pratinjau Sidebar */
+.lppm-form-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+.lppm-preview-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media (max-width: 1024px) {
+    .lppm-form-shell {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 640px) {
+    .lppm-grid,
+    .lppm-meta-box {
+        grid-template-columns: 1fr;
+    }
+}

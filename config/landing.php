@@ -41,7 +41,7 @@ return [
             [
                 'Pendidikan',
                 [
-                    ['Fakultas dan Sekolah', '/pendidikan/program-pendidikan'],
+                    ['Fakultas', '/pendidikan/program-pendidikan'],
                 ],
             ],
             [
@@ -49,9 +49,11 @@ return [
                 [
                     ['Perpustakaan', '/layanan/perpustakaan'],
                     ['Kemahasiswaan', '/layanan/kemahasiswaan'],
+                    ['Beasiswa', '/layanan/beasiswa'],
                     ['Pusat Karier', '/layanan/pusat-karier'],
                     ['Akademik', '/layanan/akademik'],
                     ['Fasilitas', '/layanan/fasilitas'],
+                    ['Kerjasama', '/layanan/kerjasama'],
                 ],
             ],
             [
@@ -194,7 +196,7 @@ return [
         ]],
         'pendidikan' => ['t' => 'Pendidikan', 'subs' => [
             'program-pendidikan' => [
-                't'      => 'Fakultas dan Sekolah',
+                't'      => 'Fakultas',
                 'sub'    => 'Fakultas dan program studi.',
                 'blocks' => [
                     [
@@ -204,29 +206,47 @@ return [
             ],
         ]],
         'layanan' => ['t' => 'Layanan', 'subs' => [
-            'perpustakaan' => ['t' => 'Perpustakaan', 'sub' => 'Koleksi dan jam layanan.', 'blocks' => [
-                [
-                    'type' => 'text',
-                    'isi' => ['Jam layanan dan koleksi perpustakaan.']
-                ],
-            ]],
-            'kemahasiswaan' => ['t' => 'Kemahasiswaan', 'sub' => 'Organisasi, kegiatan, dan dukungan biaya.', 'blocks' => [
-                [
-                    'type' => 'text',
-                    'isi' => ['Organisasi, kegiatan, dan beasiswa.']
-                ],
-                [
-                    'type' => 'text',
-                    't' => 'Beasiswa',
-                    'isi' => ['KIP Kuliah, beasiswa prestasi, dan keringanan untuk keluarga alumni.']
-                ],
-            ]],
-            'pusat-karier' => ['t' => 'Pusat Karier', 'sub' => 'Pendampingan sampai bekerja.', 'blocks' => [
-                [
-                    'type' => 'text',
-                    'isi' => ['Bursa kerja, pelatihan CV, dan penyaluran lulusan.']
-                ],
-            ]],
+            'perpustakaan' => [
+                't' => 'Perpustakaan',
+                'sub' => 'Koleksi dan jam layanan.',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        'isi' => ['Jam layanan dan koleksi perpustakaan.']
+                    ],
+                ]
+            ],
+            'kemahasiswaan' => [
+                't' => 'Kemahasiswaan',
+                'sub' => 'Organisasi dan kegiatan mahasiswa.',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        'isi' => ['Organisasi dan kegiatan mahasiswa.']
+                    ],
+                ]
+            ],
+            'beasiswa' => [
+                't'      => 'Beasiswa',
+                'sub'    => 'Program bantuan biaya pendidikan dan beasiswa mahasiswa.',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        't'    => 'Beasiswa',
+                        'isi'  => ['KIP Kuliah, beasiswa prestasi, dan keringanan untuk keluarga alumni.']
+                    ],
+                ]
+            ],
+            'pusat-karier' => [
+                't' => 'Pusat Karier',
+                'sub' => 'Pendampingan sampai bekerja.',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        'isi' => ['Bursa kerja, pelatihan CV, dan penyaluran lulusan.']
+                    ],
+                ]
+            ],
             'akademik' => [
                 't'      => 'Akademik',
                 'sub'    => 'Pengelola administrasi nilai, KRS, surat keterangan, dan kelulusan.',
@@ -241,6 +261,17 @@ return [
                     'type' => 'fasilitas'
                 ],
             ]],
+            'kerjasama' => [
+                't'      => 'Kerjasama',
+                'sub'    => 'Kemitraan strategis dengan industri, pemerintah, dan institusi.',
+                'blocks' => [
+                    [
+                        'type' => 'text',
+                        't'    => 'Kerjasama',
+                        'isi'  => ['Informasi kemitraan industri, magang, penelitian bersama, dan jejaring institusi Universitas Tiara Bunda.']
+                    ],
+                ]
+            ],
         ]],
         'informasi' => ['t' => 'Informasi', 'subs' => [
             'berita-terbaru' => ['t' => 'Berita Terbaru', 'sub' => 'Kabar terbaru dari kampus.', 'blocks' => [
@@ -454,8 +485,8 @@ return [
         'badge' => 'Informasi Penerimaan Mahasiswa Baru',
         'title' => 'Selamat Datang di Politeknik Tiara Bunda',
         'subtitle' => 'Temukan jalur pendaftaran, pilihan program studi yang sesuai minat, hingga peluang beasiswa kuliah.',
-        'banner_img' => 'landing/assets/img/popup-pmb.webp', // Opsional: hapus/null jika tidak pakai banner
-        'brochure_url' => '/layanan/akademik', // Arahkan ke halaman unduh brosur / file PDF
+        'banner_img' => 'landing/assets/img/popup-pmb.webp',
+        'brochure_url' => '/layanan/akademik',
         'register_url' => 'https://poltektiarabunda.pmbonline.siakad.tech/register',
         'items' => [
             [
@@ -484,7 +515,7 @@ return [
                 'title' => 'Program Beasiswa Kuliah',
                 'desc' => 'Informasi KIP-Kuliah, beasiswa prestasi akademik, serta keringanan biaya pendidikan.',
                 'cta' => 'Cek Beasiswa',
-                'url' => '/layanan/kemahasiswaan',
+                'url' => '/layanan/beasiswa',
                 'external' => false,
                 'accent' => 'orange',
             ],

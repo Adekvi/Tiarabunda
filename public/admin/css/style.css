@@ -6,28 +6,70 @@
 @import url("./partials/05-modules.css");
 @import url("./partials/06-responsive.css");
 
-/* 2. Page / Menu Stylesheets (relatif dari landing/assets/css/ ke landing/menu/) */
-@import url("./menu/profil/pimpinan/pim.css");
-@import url("./menu/profil/pimpinan/form.css");
+/* 2. Beranda & Komponen Global (relatif dari public/admin/css/ ke public/admin/landing/) */
+@import url("../landing/hero/hero.css");
+@import url("../landing/hero/form.css");
 
-@import url("./menu/profil/sejarah/sej.css");
-@import url("./menu/profil/sejarah/form.css");
+@import url("../landing/info/info.css");
+@import url("../landing/info/form.css");
 
-@import url("./menu/profil/visi/visi.css");
-@import url("./menu/profil/visi/form.css");
+@import url("../landing/popup/popup.css");
 
-@import url("./menu/pendidikan/program/prog.css");
-@import url("./menu/pendidikan/program/form.css");
+/* 3. Profil */
+@import url("../landing/profil/pimpinan/pim.css");
+@import url("../landing/profil/pimpinan/form.css");
 
-@import url("./menu/pendidikan/pmb/pmb.css");
-@import url("./menu/pendidikan/beasiswa/bea.css");
-@import url("./menu/pendidikan/akreditasi/akre.css");
-@import url("./menu/layanan/perpus/perpus.css");
-@import url("./menu/layanan/kemaha/kemaha.css");
-@import url("./menu/layanan/karier/karier.css");
-@import url("./menu/layanan/akademik/aka.css");
-@import url("./menu/layanan/fasilitas/fasi.css");
-@import url("./menu/lembaga/lppm/lppm.css");
-@import url("./menu/informasi/berita/berita.css");
-@import url("./menu/informasi/kegiatan/kegiatan.css");
-@import url("./menu/informasi/faq/faq.css");
+@import url("../landing/profil/sejarah/sej.css");
+@import url("../landing/profil/sejarah/form.css");
+
+@import url("../landing/profil/visi/vis.css");
+@import url("../landing/profil/visi/form.css");
+
+/* 4. Pendidikan */
+@import url("../landing/pendidikan/fakultas/fak.css");
+@import url("../landing/pendidikan/fakultas/form.css");
+
+@import url("../landing/pendidikan/prodi/prodi.css");
+@import url("../landing/pendidikan/prodi/form.css");
+
+@import url("../landing/pendidikan/pmb/pmb.css");
+@import url("../landing/pendidikan/pmb/form.css");
+
+@import url("../landing/pendidikan/beasiswa/beasiswa.css");
+@import url("../landing/pendidikan/beasiswa/form.css");
+
+@import url("../landing/pendidikan/akreditasi/akr.css");
+@import url("../landing/pendidikan/akreditasi/form.css");
+
+/* 5. Layanan */
+@import url("../landing/layanan/perpus/prp.css");
+@import url("../landing/layanan/perpus/form.css");
+
+@import url("../landing/layanan/kemaha/kmh.css");
+@import url("../landing/layanan/kemaha/form.css");
+
+@import url("../landing/layanan/akademik/aka.css");
+@import url("../landing/layanan/akademik/form.css");
+
+@import url("../landing/layanan/kerjasama/krj.css");
+@import url("../landing/layanan/kerjasama/form.css");
+
+@import url("../landing/layanan/karir/krr.css");
+@import url("../landing/layanan/karir/form.css");
+
+@import url("../landing/layanan/fasilitas/fas.css");
+@import url("../landing/layanan/fasilitas/form.css");
+
+/* 6. Lembaga */
+@import url("../landing/lembaga/lppm/lppm.css");
+@import url("../landing/lembaga/lppm/form.css");
+
+@import url("../landing/lembaga/lpm/lpm.css");
+@import url("../landing/lembaga/lpm/form.css");
+
+/* 7. Informasi */
+@import url("../landing/informasi/berita/berita.css");
+@import url("../landing/informasi/berita/index.css");
+
+@import url("../landing/informasi/kegiatan/keg.css");
+@import url("../landing/informasi/kegiatan/index.css");

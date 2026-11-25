@@ -22,6 +22,8 @@ return new class extends Migration
             $table->boolean('urip')->default(true);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index(['urip', 'deleted_at', 'kategori', 'urutan'], 'idx_lppms_listing');
         });
     }
 

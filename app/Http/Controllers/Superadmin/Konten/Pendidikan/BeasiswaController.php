@@ -43,7 +43,7 @@ class BeasiswaController extends Controller
             'total'          => Beasiswa::query()->count(),
             'aktif'          => Beasiswa::query()->active()->count(),
             'nonaktif'       => Beasiswa::query()->inactive()->count(),
-            'terhapus'       => Beasiswa::onlyTrashed()->count(), // <-- Tambahan untuk Banner
+            'terhapus'       => Beasiswa::onlyTrashed()->count(),
             'dengan_syarat'  => Beasiswa::query()
                 ->whereNotNull('syarat')
                 ->where('syarat', '!=', '')
@@ -57,11 +57,10 @@ class BeasiswaController extends Controller
         return view('superadmin.konten.pendidikan.beasiswa.index', [
             'items'   => $items,
             'stats'   => $stats,
-            'trashed' => false, // <-- Tambahan
+            'trashed' => false,
         ]);
     }
 
-    // METHOD BARU UNTUK HALAMAN SAMPAH
     public function trashed(Request $request): View
     {
         $items = Beasiswa::onlyTrashed()

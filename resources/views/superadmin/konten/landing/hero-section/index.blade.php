@@ -5,7 +5,6 @@
 <x-dashboard.layout.app title="Hero Section" page-title="Hero Section">
     <div class="g">
 
-        {{-- Flash --}}
         @if (session('success'))
             <div class="al al-success" role="status">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -17,7 +16,6 @@
             </div>
         @endif
 
-        {{-- Breadcrumb / aksi atas --}}
         <div class="card" style="padding: 14px 22px;">
             <div class="ch2" style="margin-bottom: 0;">
                 <div>
@@ -47,7 +45,6 @@
         </div>
 
         @if (!$item)
-            {{-- Empty State --}}
             <div class="card" style="padding: 56px 24px; text-align: center;">
                 <div class="hero-empty-icon">
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -76,10 +73,8 @@
         @else
             <div class="hero-layout">
 
-                {{-- ===================== KOLOM KIRI ===================== --}}
                 <div class="hero-main">
 
-                    {{-- PREVIEW BOX --}}
                     <div class="card" style="padding: 0; overflow: hidden; border-radius: 12px;">
                         <div class="hero-preview" style="border: none; border-radius: 0; min-height: 380px;">
                             @if ($item->tipe_media === 'video' && $item->path_media)
@@ -208,10 +203,8 @@
                     </div>
                 </div>
 
-                {{-- ===================== SIDEBAR KANAN ===================== --}}
                 <div class="hero-aside">
 
-                    {{-- Card Status --}}
                     <div class="card hero-stat">
                         <div class="hero-stat__head">
                             <h3>Status Publikasi</h3>
@@ -260,7 +253,6 @@
                         </div>
                     </div>
 
-                    {{-- Card Panduan --}}
                     <div class="card hero-stat">
                         <div class="hero-stat__head">
                             <h3>Panduan Singkat</h3>
@@ -273,7 +265,6 @@
                         </ul>
                     </div>
 
-                    {{-- Card Saran Media --}}
                     <div class="card hero-stat">
                         <div class="hero-stat__head">
                             <h3>Saran Media</h3>

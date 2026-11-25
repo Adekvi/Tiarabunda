@@ -1,0 +1,283 @@
+.lppm-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 310px;
+    gap: 20px;
+    align-items: start;
+}
+.lppm-main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+.lppm-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 84px;
+}
+
+.lppm-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+.lppm-head-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--ink);
+}
+.lppm-head-sub {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--mut);
+}
+.lppm-head-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.lppm-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+.lppm-btn-ghost:hover {
+    border-color: #1f5fbf;
+    color: #1f5fbf;
+}
+.lppm-btn-danger {
+    background: var(--err);
+    color: #fff;
+    border-color: var(--err);
+}
+
+.lppm-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px;
+}
+.lppm-input {
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--ink);
+    background: transparent;
+    min-width: 165px;
+}
+
+.lppm-table-wrap {
+    overflow-x: auto;
+}
+.lppm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+}
+.lppm-table th,
+.lppm-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: middle;
+}
+.lppm-table th {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mut);
+    font-weight: 700;
+}
+.lppm-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.lppm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+}
+.lppm-badge.profil {
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--ink);
+}
+.lppm-badge.penelitian {
+    background: rgba(31, 95, 191, 0.1);
+    color: #1f5fbf;
+    border-color: rgba(31, 95, 191, 0.28);
+}
+.lppm-badge.pengabdian {
+    background: rgba(22, 163, 74, 0.1);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.28);
+}
+.lppm-badge.publikasi {
+    background: rgba(124, 58, 237, 0.1);
+    color: #6d28d9;
+    border-color: rgba(124, 58, 237, 0.28);
+}
+.lppm-badge.hki {
+    background: rgba(217, 119, 6, 0.1);
+    color: #b45309;
+    border-color: rgba(217, 119, 6, 0.28);
+}
+.lppm-badge.ok {
+    background: rgba(22, 163, 74, 0.1);
+    color: #15803d;
+    border-color: rgba(22, 163, 74, 0.28);
+}
+.lppm-badge.off {
+    background: rgba(100, 116, 139, 0.1);
+    color: var(--mut);
+}
+
+.lppm-meta-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 5px;
+}
+.lppm-meta-chip {
+    font-size: 11.5px;
+    color: var(--mut);
+    background: rgba(100, 116, 139, 0.08);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.lppm-acts {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    align-items: center;
+}
+.lppm-act {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: transparent;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        color 0.15s ease,
+        background-color 0.15s ease;
+}
+.lppm-act.icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.lppm-act:hover {
+    border-color: #1f5fbf;
+    color: #1f5fbf;
+    background: rgba(31, 95, 191, 0.06);
+}
+.lppm-act.danger:hover {
+    border-color: var(--err);
+    color: var(--err);
+    background: rgba(220, 38, 38, 0.06);
+}
+
+/* Sidebar */
+.lppm-side-card {
+    padding: 16px;
+}
+.lppm-side-title {
+    margin: 0 0 12px;
+    font-size: 12.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mut);
+}
+.lppm-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+.lppm-stat-box {
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+.lppm-stat-box small {
+    display: block;
+    font-size: 11.5px;
+    color: var(--mut);
+    margin-bottom: 2px;
+}
+.lppm-stat-box b {
+    font-size: 1.2rem;
+    color: var(--ink);
+}
+.lppm-cat-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.lppm-cat-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--line);
+}
+.lppm-cat-list li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+.lppm-guide {
+    margin: 0;
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--mut);
+    line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+    .lppm-shell {
+        grid-template-columns: 1fr;
+    }
+    .lppm-side {
+        position: static;
+    }
+}

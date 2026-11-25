@@ -2,7 +2,6 @@
     <div class="beasiswa-page">
         @include('superadmin.konten.pendidikan.beasiswa.partials.flash')
 
-        {{-- Banner Sampah: hanya muncul jika tidak sedang di halaman sampah & ada data terhapus --}}
         @if (!$trashed && ($stats['terhapus'] ?? 0) > 0)
             @include('superadmin.konten.pendidikan.beasiswa.partials.trash-banner', [
                 'count' => $stats['terhapus'],
@@ -10,7 +9,6 @@
         @endif
 
         <div class="beasiswa-layout">
-            {{-- Kolom Konten Utama --}}
             <div class="beasiswa-main">
                 @include('superadmin.konten.pendidikan.beasiswa.partials.header')
                 @include('superadmin.konten.pendidikan.beasiswa.partials.filter')

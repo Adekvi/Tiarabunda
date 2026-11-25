@@ -1,7 +1,7 @@
 <div class="card beasiswa-hero">
     <div class="beasiswa-hero__main">
         <p class="beasiswa-hero__crumb">
-            <span>Pendidikan</span>
+            <span>Layanan</span>
             <span aria-hidden="true">/</span>
             <span class="is-current">Beasiswa</span>
         </p>

@@ -4,11 +4,13 @@ use App\Http\Controllers\Superadmin\Konten\Informasi\BeritaController;
 use App\Http\Controllers\Superadmin\Konten\Informasi\FaqController;
 use App\Http\Controllers\Superadmin\Konten\Informasi\KegiatanController;
 use App\Http\Controllers\Superadmin\Konten\Landing\HeroController;
-use App\Http\Controllers\Superadmin\Konten\Landing\InfoController;
+use App\Http\Controllers\Superadmin\Konten\Layanan\AkademikController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\FasilitasController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KarirController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KemahaController;
+use App\Http\Controllers\Superadmin\Konten\Layanan\KerjasamaController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\PerpusController;
+use App\Http\Controllers\Superadmin\Konten\Lembaga\LPM\LpmController;
 use App\Http\Controllers\Superadmin\Konten\Lembaga\LPPM\LppmController;
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\AkreditasiController;
 use App\Http\Controllers\Superadmin\Konten\Pendidikan\BeasiswaController;
@@ -48,26 +50,8 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::put('/', [HeroController::class, 'update'])->name('update');
         });
 
-        // Info
-        Route::prefix('info')->name('info.')->group(function () {
-            Route::get('/',               [InfoController::class, 'index'])->name('index');
-            Route::get('/sampah',         [InfoController::class, 'trashed'])->name('trashed');
-            Route::get('/create',         [InfoController::class, 'create'])->name('create');
-            Route::post('/',              [InfoController::class, 'store'])->name('store');
-
-            // Statis dulu
-            Route::delete('/sampah/kosongkan', [InfoController::class, 'emptyTrash'])->name('empty-trash');
-            Route::patch('/sampah/{id}/restore', [InfoController::class, 'restore'])->name('restore');
-            Route::delete('/sampah/{id}/force', [InfoController::class, 'forceDelete'])->name('force-delete');
-
-            Route::get('/{info}/edit', [InfoController::class, 'edit'])->name('edit');
-            Route::put('/{info}',     [InfoController::class, 'update'])->name('update');
-            Route::delete('/{info}',  [InfoController::class, 'destroy'])->name('destroy');
-            Route::patch('/{info}/toggle', [InfoController::class, 'toggle'])->name('toggle');
-        });
-
         /*
-        | Profil
+        | Profil    
         */
         Route::prefix('sejarah')->name('sejarah.')->group(function () {
             Route::get('/', [SejarahController::class, 'index'])->name('index');
@@ -276,8 +260,23 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::patch('/{karir}/toggle', [KarirController::class, 'toggle'])->name('toggle');
         });
 
+        Route::prefix('akademik')->name('akademik.')->group(function () {
+            Route::get('/', [AkademikController::class, 'index'])->name('index');
+            Route::get('/create', [AkademikController::class, 'create'])->name('create');
+            Route::post('/', [AkademikController::class, 'store'])->name('store');
+
+            Route::get('/trash', [AkademikController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [AkademikController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [AkademikController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [AkademikController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{akademik}/edit', [AkademikController::class, 'edit'])->name('edit');
+            Route::put('/{akademik}', [AkademikController::class, 'update'])->name('update');
+            Route::delete('/{akademik}', [AkademikController::class, 'destroy'])->name('destroy');
+            Route::patch('/{akademik}/toggle', [AkademikController::class, 'toggle'])->name('toggle');
+        });
+
         Route::prefix('fasilitas')->name('fasilitas.')->group(function () {
-            // Trash dulu supaya tidak ketabrak {fasilita}
             Route::get('trashed',            [FasilitasController::class, 'trashed'])->name('trashed');
             Route::post('trashed/empty',     [FasilitasController::class, 'emptyTrash'])->name('empty-trash');
             Route::patch('trashed/{id}/restore', [FasilitasController::class, 'restore'])->name('restore');
@@ -292,20 +291,53 @@ Route::middleware(['auth', 'can:access-superadmin'])
             Route::patch('{fasilita}/toggle', [FasilitasController::class, 'toggle'])->name('toggle');
         });
 
+        Route::prefix('kerjasama')->name('kerjasama.')->group(function () {
+            Route::get('/', [KerjasamaController::class, 'index'])->name('index');
+            Route::get('/create', [KerjasamaController::class, 'create'])->name('create');
+            Route::post('/', [KerjasamaController::class, 'store'])->name('store');
+
+            Route::get('/trash', [KerjasamaController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [KerjasamaController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [KerjasamaController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [KerjasamaController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{kerjasama}/edit', [KerjasamaController::class, 'edit'])->name('edit');
+            Route::put('/{kerjasama}', [KerjasamaController::class, 'update'])->name('update');
+            Route::delete('/{kerjasama}', [KerjasamaController::class, 'destroy'])->name('destroy');
+            Route::patch('/{kerjasama}/toggle', [KerjasamaController::class, 'toggle'])->name('toggle');
+        });
+
         // Lembaga 
         Route::prefix('lppm')->name('lppm.')->group(function () {
-            Route::get('trashed',            [LppmController::class, 'trashed'])->name('trashed');
-            Route::post('trashed/empty',     [LppmController::class, 'emptyTrash'])->name('empty-trash');
-            Route::patch('trashed/{id}/restore', [LppmController::class, 'restore'])->name('restore');
-            Route::delete('trashed/{id}/force',  [LppmController::class, 'forceDelete'])->name('force-delete');
+            Route::get('/', [LppmController::class, 'index'])->name('index');
+            Route::get('/create', [LppmController::class, 'create'])->name('create');
+            Route::post('/', [LppmController::class, 'store'])->name('store');
 
-            Route::get('/',           [LppmController::class, 'index'])->name('index');
-            Route::get('create',      [LppmController::class, 'create'])->name('create');
-            Route::post('/',          [LppmController::class, 'store'])->name('store');
-            Route::get('{lppm}/edit', [LppmController::class, 'edit'])->name('edit');
-            Route::put('{lppm}',  [LppmController::class, 'update'])->name('update');
-            Route::delete('{lppm}', [LppmController::class, 'destroy'])->name('destroy');
-            Route::patch('{lppm}/toggle', [LppmController::class, 'toggle'])->name('toggle');
+            Route::get('/trash', [LppmController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [LppmController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [LppmController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [LppmController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{lppm}/edit', [LppmController::class, 'edit'])->name('edit');
+            Route::put('/{lppm}', [LppmController::class, 'update'])->name('update');
+            Route::delete('/{lppm}', [LppmController::class, 'destroy'])->name('destroy');
+            Route::patch('/{lppm}/toggle', [LppmController::class, 'toggle'])->name('toggle');
+        });
+
+        Route::prefix('lpm')->name('lpm.')->group(function () {
+            Route::get('/', [LpmController::class, 'index'])->name('index');
+            Route::get('/create', [LpmController::class, 'create'])->name('create');
+            Route::post('/', [LpmController::class, 'store'])->name('store');
+
+            Route::get('/trash', [LpmController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [LpmController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [LpmController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [LpmController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{lpm}/edit', [LpmController::class, 'edit'])->name('edit');
+            Route::put('/{lpm}', [LpmController::class, 'update'])->name('update');
+            Route::delete('/{lpm}', [LpmController::class, 'destroy'])->name('destroy');
+            Route::patch('/{lpm}/toggle', [LpmController::class, 'toggle'])->name('toggle');
         });
 
         /*
