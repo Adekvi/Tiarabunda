@@ -52,8 +52,8 @@ return [
                     ['Beasiswa', '/layanan/beasiswa'],
                     ['Pusat Karier', '/layanan/pusat-karier'],
                     ['Akademik', '/layanan/akademik'],
-                    ['Fasilitas', '/layanan/fasilitas'],
                     ['Kerjasama', '/layanan/kerjasama'],
+                    ['Fasilitas', '/layanan/fasilitas'],
                 ],
             ],
             [
@@ -78,19 +78,24 @@ return [
         'kontak' => [
             'alamat' => [
                 [
-                    'label' => 'Kampus A',
-                    'isi'   => 'Jl. Cinere Raya Blok M No. 17, Cinere, Depok, Jawa Barat 16514',
-                    'maps'  => 'https://maps.google.com/?q=Jl.+Cinere+Raya+Blok+M+No.+17+Cinere+Depok',
+                    'label'     => 'Kampus A',
+                    'isi'       => 'JQXR+58G, Jl. Raya Krukut, RW.2, Krukut, Kec. Limo, Kota Depok, Jawa Barat 16512',
+                    'maps'      => 'https://maps.app.goo.gl/bDxSS33WioFayEC9A',
+                    'map_embed' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.324218032131!2d106.7882639737625!3d-6.3520552621413655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ef004057dea3%3A0x1843c6eab3b2edc8!2sPoliteknik%20Tiara%20bunda!5e0!3m2!1sid!2sid!4v1795664734379!5m2!1sid!2sid',
+                    'jam'       => 'Senin - Jumat, 08.00 - 16.00 WIB (Sabtu - Minggu libur)',
                 ],
                 [
-                    'label' => 'Kampus B',
-                    'isi'   => 'Jl. Galur No. 8 Krukut, Limo, Kota Depok, Jawa Barat 16512',
-                    'maps'  => 'https://maps.google.com/?q=Jl.+Galur+No.+8+Krukut+Limo+Depok',
+                    'label'     => 'Kampus B',
+                    'isi'       => 'Jl. Cinere Raya No.17, Cinere, Kec. Cinere, Kota Depok, Jawa Barat 16514',
+                    'maps'      => 'https://maps.app.goo.gl/w6dGFHX2gKxfVCXF7',
+                    'map_embed' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.4449110949886!2d106.77901207376169!3d-6.336370261994494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ee574d3c1023%3A0x152db9f142806c99!2sPoliteknik%20Tiara%20Bunda!5e0!3m2!1sid!2sid!4v1795664784418!5m2!1sid!2sid',
+                    'jam'       => 'Senin - Jumat, 08.00 - 16.00 WIB (Sabtu - Minggu libur)',
+                    'telp'      => '0217541172',
                 ],
             ],
-            'telp' => '0811-1701-4000',
+            'telp'  => '0811-1701-4000',
             'email' => 'universitastiarabunda.ac.id',
-            'wa'   => 'https://wa.me/6281117014000',
+            'wa'    => 'https://wa.me/6281117014000',
         ],
     ],
     'menus' => [
@@ -186,7 +191,7 @@ return [
             ],
             'lpm' => [
                 't' => 'LPM',
-                'sub' => 'Lembaga Pemberdayaan Masyarakat.',
+                'sub' => 'Lembaga Penjaminan Mutu — SPMI, Audit Mutu Internal, dan Akreditasi.',
                 'blocks' => [
                     [
                         'type' => 'lpm',
@@ -256,11 +261,6 @@ return [
                     ],
                 ],
             ],
-            'fasilitas' => ['t' => 'Fasilitas', 'sub' => 'Ruang belajar yang mendukung praktik.', 'blocks' => [
-                [
-                    'type' => 'fasilitas'
-                ],
-            ]],
             'kerjasama' => [
                 't'      => 'Kerjasama',
                 'sub'    => 'Kemitraan strategis dengan industri, pemerintah, dan institusi.',
@@ -272,6 +272,11 @@ return [
                     ],
                 ]
             ],
+            'fasilitas' => ['t' => 'Fasilitas', 'sub' => 'Ruang belajar yang mendukung praktik.', 'blocks' => [
+                [
+                    'type' => 'fasilitas'
+                ],
+            ]],
         ]],
         'informasi' => ['t' => 'Informasi', 'subs' => [
             'berita-terbaru' => ['t' => 'Berita Terbaru', 'sub' => 'Kabar terbaru dari kampus.', 'blocks' => [

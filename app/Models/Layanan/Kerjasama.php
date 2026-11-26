@@ -21,7 +21,6 @@ class Kerjasama extends Model
 
     protected $fillable = [
         'jenis',
-        'jeneng',
         'tandha',
         'kategori',
         'nomor_dokumen',

@@ -58,9 +58,6 @@
     </div>
 </section>
 
-{{-- ======================================================== --}}
-{{-- MODAL LIGHTBOX (Tersembunyi di awal, muncul via JS)      --}}
-{{-- ======================================================== --}}
 <div id="fsl-lightbox" class="fsl-modal" aria-hidden="true">
     <button class="fsl-modal__close" aria-label="Tutup">&times;</button>
     <div class="fsl-modal__content">
@@ -69,8 +66,7 @@
     </div>
 </div>
 
-{{-- JAVASCRIPT SEDERHANA UNTUK LIGHTBOX --}}
-@push('scripts')
+@push('js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const lightboxLinks = document.querySelectorAll('.fsl-lightbox');

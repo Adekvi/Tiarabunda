@@ -22,7 +22,6 @@
 <section class="akd" id="akd-section">
     <div class="wrap akd__wrap">
 
-        {{-- Header Intro --}}
         <div class="akd__intro rv">
             <p class="akd__eyebrow">Biro Administrasi Akademik</p>
             <h2 class="akd__title">Layanan &amp; Formulir Akademik</h2>
@@ -33,7 +32,6 @@
             </p>
         </div>
 
-        {{-- Info Jam Layanan & Kontak BAAK --}}
         <div class="akd__meta-bar rv">
             <div class="akd__meta-item">
                 <small>Loket Layanan BAAK</small>
@@ -51,7 +49,6 @@
             </div>
         </div>
 
-        {{-- Filter Kategori & Pencarian Instan --}}
         @if ($items->isNotEmpty())
             <div class="akd__toolbar">
                 <div class="akd__tabs" role="tablist" aria-label="Filter kategori formulir">
@@ -82,7 +79,6 @@
                 </div>
             </div>
 
-            {{-- Grid Kartu Formulir Word --}}
             <div class="akd__grid" id="akd-grid">
                 @foreach ($items as $doc)
                     @php
@@ -159,7 +155,6 @@
             </div>
         @endif
 
-        {{-- Alur Pengajuan Administrasi Akademik --}}
         <div class="akd__steps rv">
             <h3 class="akd__steps-title">Alur Pengajuan Surat &amp; Formulir</h3>
             <div class="akd__steps-grid">
@@ -190,7 +185,6 @@
             </div>
         </div>
 
-        {{-- CTA Bantuan --}}
         <div class="akd__cta rv">
             <div>
                 <h3>Membutuhkan surat keterangan khusus lainnya?</h3>

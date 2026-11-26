@@ -89,36 +89,37 @@
     $defaultLokasi = [
         [
             'kode' => 'A',
-            'badge' => 'Kampus Utama • Pusat Akademik',
-            'nama' => 'Kampus A — Sawangan Depok',
+            'badge' => 'Kampus A • Krukut, Limo',
+            'nama' => 'Kampus A — Krukut Depok',
             'deskripsi' =>
-                'Gedung rektorat, pusat layanan administrasi akademik, perpustakaan digital, auditorium, dan ruang kuliah utama.',
-            'alamat' => 'Jl. Raya Muchtar No. 10, Sawangan, Kota Depok, Jawa Barat 16511',
-            'jam' => 'Senin – Sabtu, 08.00 – 17.00 WIB',
-            'telepon' => '(021) 7788-9901',
-            'koordinat' => '6°24\'14.2"S 106°46\'28.5"E',
-            'akses' => '10 Menit dari Gerbang Tol Sawangan (Desari)',
-            'unggulan' => ['Gedung Rektorat', 'Perpustakaan Pusat', 'Auditorium Utama', 'Layanan Terpadu'],
+                'Gedung perkuliahan dan layanan kampus Universitas Tiara Bunda di kawasan Krukut, Limo, Kota Depok.',
+            'alamat' => 'JQXR+58G, Jl. Raya Krukut, RW.2, Krukut, Kec. Limo, Kota Depok, Jawa Barat 16512',
+            'jam' => 'Senin - Jumat, 08.00 - 16.00 WIB (Sabtu - Minggu libur)',
+            'telepon' => '0811-1701-4000',
+            'koordinat' => '6°21\'07.4"S 106°47\'26.9"E',
+            'akses' => 'Jl. Raya Krukut, RW.2, Limo, Kota Depok',
+            'unggulan' => ['Gedung Kampus A', 'Layanan Akademik', 'Ruang Perkuliahan', 'Area Parkir'],
             'img' => $fotoDefaultA,
             'map_embed' =>
-                'https://maps.google.com/maps?q=Universitas%20Tiara%20Bunda%20Depok&t=&z=15&ie=UTF8&iwloc=&output=embed',
-            'map_url' => 'https://maps.google.com/?q=Universitas+Tiara+Bunda+Depok',
+                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.324218032131!2d106.7882639737625!3d-6.3520552621413655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ef004057dea3%3A0x1843c6eab3b2edc8!2sPoliteknik%20Tiara%20bunda!5e0!3m2!1sid!2sid!4v1795664734379!5m2!1sid!2sid',
+            'map_url' => 'https://maps.app.goo.gl/bDxSS33WioFayEC9A',
         ],
         [
             'kode' => 'B',
-            'badge' => 'Kampus Praktik & Riset Terpadu',
-            'nama' => 'Kampus B — Margonda Depok',
+            'badge' => 'Kampus B • Cinere, Depok',
+            'nama' => 'Kampus B — Cinere Depok',
             'deskripsi' =>
-                'Pusat laboratorium kesehatan terpadu, ruang simulasi klinik modern, studio praktik, dan pusat kegiatan mahasiswa.',
-            'alamat' => 'Jl. Margonda Raya No. 88, Beji, Kota Depok, Jawa Barat 16424',
-            'jam' => 'Senin – Sabtu, 08.00 – 17.00 WIB',
-            'telepon' => '(021) 7788-9902',
-            'koordinat' => '6°22\'21.8"S 106°49\'54.1"E',
-            'akses' => '5 Menit dari Stasiun KRL Pondok Cina & UI',
-            'unggulan' => ['Lab Simulasi Klinik', 'Studio Praktik', 'Pusat Riset', 'Student Lounge'],
+                'Gedung kampus Universitas Tiara Bunda di Jalan Cinere Raya No.17, Kecamatan Cinere, Kota Depok.',
+            'alamat' => 'Jl. Cinere Raya No.17, Cinere, Kec. Cinere, Kota Depok, Jawa Barat 16514',
+            'jam' => 'Senin - Jumat, 08.00 - 16.00 WIB (Sabtu - Minggu libur)',
+            'telepon' => '0217541172',
+            'koordinat' => '6°20\'10.9"S 106°46\'53.7"E',
+            'akses' => 'Jl. Cinere Raya No.17, Cinere, Kota Depok',
+            'unggulan' => ['Gedung Kampus B', 'Layanan Informasi', 'Ruang Perkuliahan', 'Akses Strategis'],
             'img' => $fotoDefaultB,
-            'map_embed' => 'https://maps.google.com/maps?q=Margonda%20Depok&t=&z=15&ie=UTF8&iwloc=&output=embed',
-            'map_url' => 'https://maps.google.com/?q=Margonda+Depok',
+            'map_embed' =>
+                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.4449110949886!2d106.77901207376169!3d-6.336370261994494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ee574d3c1023%3A0x152db9f142806c99!2sPoliteknik%20Tiara%20Bunda!5e0!3m2!1sid!2sid!4v1795664784418!5m2!1sid!2sid',
+            'map_url' => 'https://maps.app.goo.gl/w6dGFHX2gKxfVCXF7',
         ],
     ];
 
@@ -167,7 +168,7 @@
             'img' => $resolveImg($row['img'] ?? ($row['foto'] ?? ''), $fallbackSvg),
             'fallback' => $fallbackSvg,
             'map_embed' => (string) ($row['map_embed'] ?? $defaultRef['map_embed']),
-            'map_url' => (string) ($row['map_url'] ?? $defaultRef['map_url']),
+            'map_url' => (string) ($row['map_url'] ?? ($row['maps'] ?? $defaultRef['map_url'])),
         ];
     }
 
@@ -176,7 +177,6 @@
 
 @if ($active !== null)
     <section class="sec lokasi-sec" id="lokasi" data-lokasi-root aria-labelledby="lokasi-title">
-        {{-- Ornamen Latar Kartografi & Cahaya Mewah --}}
         <div class="lokasi-bg" aria-hidden="true">
             <div class="lokasi-bg-grid"></div>
             <div class="lokasi-bg-glow lokasi-bg-glow--blue"></div>
@@ -197,9 +197,8 @@
         </div>
 
         <div class="wrap position-relative">
-            {{-- Header & Tab Switcher Kampus --}}
             <div class="lokasi-head-wrap">
-                <x-landing.ui.head kick="Lokasi &amp; Lingkungan Kampus" title="Lingkungan belajar di titik strategis"
+                <x-landing.ui.head kick="Lokasi &    Lingkungan Kampus" title="Lingkungan belajar di titik strategis"
                     lead="Pilih lokasi kampus untuk melihat gedung perkuliahan, fasilitas unggulan, dan akses transportasi."
                     id="lokasi-title" />
 
@@ -218,12 +217,9 @@
                 </div>
             </div>
 
-            {{-- Data JSON untuk Perpindahan Tab --}}
             <script type="application/json" data-lokasi-json>@json($kampusList)</script>
 
-            {{-- Showcase Utama --}}
             <div class="lokasi-showcase rv" data-lokasi-stage>
-                {{-- Sisi Kiri: Bingkai Foto Kampus & Toggle Peta --}}
                 <div class="lokasi-visual">
                     <div class="lokasi-visual-bar">
                         <div class="lokasi-view-toggle" role="group" aria-label="Mode tampilan visual">
@@ -252,7 +248,6 @@
                         <span class="lokasi-coord-chip" data-stage-coord>{{ $active['koordinat'] }}</span>
                     </div>
 
-                    {{-- Panel Foto Gedung --}}
                     <div class="lokasi-photo-pane" data-pane-photo>
                         <img src="{{ $active['img'] }}" alt="Foto {{ $active['nama'] }}" width="800" height="560"
                             data-stage-img data-fallback="{{ $active['fallback'] }}">
@@ -268,7 +263,6 @@
                         </div>
                     </div>
 
-                    {{-- Panel Peta --}}
                     <div class="lokasi-map-pane" data-pane-map hidden>
                         <div class="lokasi-map-fallback">
                             <p>Menampilkan peta interaktif untuk <strong data-map-name>{{ $active['nama'] }}</strong>
@@ -284,7 +278,6 @@
                     </div>
                 </div>
 
-                {{-- Sisi Kanan: Panel Informasi Royal Navy & Champagne Gold --}}
                 <div class="lokasi-detail" aria-live="polite">
                     <div class="lokasi-detail-top">
                         <span class="lokasi-badge" data-stage-badge>{{ $active['badge'] }}</span>
@@ -371,17 +364,16 @@
                 </div>
             </div>
 
-            {{-- Strip Konektivitas & Lingkungan Kampus --}}
             <div class="lokasi-access-bar rv" aria-label="Keunggulan akses lokasi kampus">
                 <div class="lokasi-access-item">
                     <span class="lokasi-access-ico" aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <rect x="4" y="3" width="16" height="16" rx="2" />
                             <path d="M4 11h16M12 3v8M8 19l-2 3M16 19l2 3" />
                         </svg>
                     </span>
-                    <div>
+                    <div class="lokasi-access-text">
                         <strong>Terhubung Stasiun KRL</strong>
                         <span>Akses mudah Commuter Line Jabodetabek</span>
                     </div>
@@ -389,15 +381,15 @@
 
                 <div class="lokasi-access-item">
                     <span class="lokasi-access-ico" aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <path
                                 d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
                             <circle cx="7" cy="17" r="2" />
                             <circle cx="17" cy="17" r="2" />
                         </svg>
                     </span>
-                    <div>
+                    <div class="lokasi-access-text">
                         <strong>Dekat Akses Tol Utama</strong>
                         <span>Terjangkau via Tol Desari &amp; Tol Cijago</span>
                     </div>
@@ -405,12 +397,12 @@
 
                 <div class="lokasi-access-item">
                     <span class="lokasi-access-ico" aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         </svg>
                     </span>
-                    <div>
+                    <div class="lokasi-access-text">
                         <strong>Kawasan Aman &amp; Nyaman</strong>
                         <span>Area parkir luas &amp; keamanan kampus 24 jam</span>
                     </div>

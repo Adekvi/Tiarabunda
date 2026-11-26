@@ -4,53 +4,45 @@ namespace App\Services\Landing\Content;
 
 use App\Services\Landing\Contracts\PageContentInterface;
 use App\Services\Landing\Layanan\KemahaService;
-use App\Services\Landing\Pendidikan\BeasiswaService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Str;
 
 class KemahaPageContent implements PageContentInterface
 {
     public function __construct(
-        private KemahaService $kemahasiswaanService,
-        private BeasiswaService $beasiswaService
+        private readonly KemahaService $kemahasiswaanService
     ) {}
 
     public function getData(?string $slug = null): array
     {
-        $kemahasiswaan = $this->kemahasiswaanService->forPage();
+        if ($slug === 'beasiswa') {
+            throw new HttpResponseException(redirect('/layanan/beasiswa', 301));
+        }
+
+        if ($slug && Str::startsWith($slug, 'beasiswa/')) {
+            $beasiswaSlug = Str::after($slug, 'beasiswa/');
+            throw new HttpResponseException(redirect('/layanan/beasiswa/' . $beasiswaSlug, 301));
+        }
+
+        $kemahasiswaan = $this->kemahasiswaanService->forPage()
+            ->reject(fn($item) => (bool) ($item->is_beasiswa ?? false))
+            ->values();
+
         if ($kemahasiswaan->isEmpty()) {
             $kemahasiswaan = $this->demoKemahasiswaan();
         }
 
-        $beasiswa = $this->beasiswaService->forPage();
-
         $selectedKemahasiswaan = null;
-        $showBeasiswaList = false;
-        $selectedBeasiswa = null;
+        if (filled($slug)) {
+            $selectedKemahasiswaan = $kemahasiswaan->firstWhere('tandha', $slug);
 
-        if ($slug) {
-            if ($slug === 'beasiswa') {
-                $showBeasiswaList = true;
-            } elseif (Str::startsWith($slug, 'beasiswa/')) {
-                $beasiswaSlug = Str::after($slug, 'beasiswa/');
-                $selectedBeasiswa = $beasiswa->firstWhere('tandha', $beasiswaSlug)
-                    ?? $this->beasiswaService->findBySlug($beasiswaSlug);
-
-                abort_if($selectedBeasiswa === null, 404, 'Program beasiswa tidak ditemukan.');
-            } else {
-                $selectedKemahasiswaan = $kemahasiswaan->firstWhere('tandha', $slug);
-
-                abort_if($selectedKemahasiswaan === null, 404, 'Informasi kemahasiswaan tidak ditemukan.');
-            }
+            abort_if($selectedKemahasiswaan === null, 404, 'Informasi kemahasiswaan tidak ditemukan.');
         }
 
         return [
-            'kemahasiswaanHighlight'       => $kemahasiswaan->first(),
-            'kemahasiswaanItems'           => $kemahasiswaan->slice(1)->values(),
-            'kemahasiswaanBeasiswaInfo'    => $kemahasiswaan->firstWhere('is_beasiswa', true),
-            'selectedKemahasiswaan'        => $selectedKemahasiswaan,
-            'showKemahasiswaanBeasiswa'    => $showBeasiswaList,
-            'kemahasiswaanBeasiswaList'    => $beasiswa,
-            'selectedKemahasiswaanBeasiswa' => $selectedBeasiswa,
+            'kemahasiswaanHighlight' => $kemahasiswaan->first(),
+            'kemahasiswaanItems'     => $kemahasiswaan->slice(1)->values(),
+            'selectedKemahasiswaan'  => $selectedKemahasiswaan,
         ];
     }
 
@@ -61,15 +53,8 @@ class KemahaPageContent implements PageContentInterface
                 'judhul'        => 'Biro Kemahasiswaan & Alumni',
                 'tandha'        => 'biro-kemahasiswaan-alumni',
                 'is_beasiswa'   => false,
-                'isi'           => '<p>Biro yang mengelola layanan kemahasiswaan, beasiswa internal/eksternal, organisasi mahasiswa, dan hubungan alumni.</p>',
+                'isi'           => '<p>Biro yang mengelola layanan kemahasiswaan, organisasi mahasiswa, pengembangan minat bakat, dan hubungan alumni.</p>',
                 'data_tambahan' => ['ikon' => 'users', 'warna' => 'blue'],
-            ],
-            (object) [
-                'judhul'        => 'Informasi & Layanan Beasiswa',
-                'tandha'        => 'beasiswa',
-                'is_beasiswa'   => true,
-                'isi'           => '<p>Fasilitasi dan pendampingan pengajuan berbagai program beasiswa internal maupun eksternal bagi mahasiswa.</p>',
-                'data_tambahan' => ['tipe' => 'beasiswa', 'ikon' => 'graduation-cap', 'warna' => 'orange'],
             ],
         ]);
     }

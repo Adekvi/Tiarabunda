@@ -29,4 +29,10 @@ return [
     */
     'trusted_proxies' => env('TRUSTED_PROXIES'),
 
+    /*
+    | Rahasia bersama dengan Cloudflare (header X-Origin-Auth, lihat RequireOriginSecret).
+    | Kosong = pengecekan nonaktif. Buat: openssl rand -hex 32
+    */
+    'origin_secret' => env('ORIGIN_SECRET'),
+
 ];

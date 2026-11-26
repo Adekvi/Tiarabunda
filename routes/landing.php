@@ -7,12 +7,12 @@ $menus = 'profil|pendidikan|layanan|lembaga|informasi';
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/cari', [LandingController::class, 'search'])
-    ->middleware('throttle:30,1')
+    ->middleware('throttle:30,1,cari')
     ->name('landing.search');
 
 Route::get('/layanan/akademik/unduh/{tandha}', [LandingController::class, 'downloadAkademik'])
     ->where('tandha', '[A-Za-z0-9_-]+')
-    ->middleware('throttle:30,1')
+    ->middleware('throttle:30,1,unduh')
     ->name('landing.akademik.download');
 
 Route::get('/{menu}/{sub}/{prodi}', [LandingController::class, 'page'])

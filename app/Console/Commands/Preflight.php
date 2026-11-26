@@ -66,11 +66,24 @@ class Preflight extends Command
             'Set LOG_LEVEL=warning',
             'warn'
         );
+        $secret = (string) config('security.origin_secret');
+        $proxies = config('security.trusted_proxies');
+
         $this->check(
-            filled(config('security.trusted_proxies')),
-            'TRUSTED_PROXIES (rate limit di belakang Cloudflare)',
-            'Kosong. Wajar jika belum pakai Cloudflare; isi "*" setelah origin dikunci (Fase 4)',
+            $secret !== '',
+            'ORIGIN_SECRET (origin dikunci ke Cloudflare)',
+            'Kosong: server masih bisa ditembak langsung lewat IP (lihat Fase 4)',
             'warn'
+        );
+        $this->check(
+            $secret === '' || strlen($secret) >= 32,
+            'ORIGIN_SECRET cukup panjang',
+            'Pakai minimal 32 karakter: openssl rand -hex 32'
+        );
+        $this->check(
+            blank($proxies) || $secret !== '',
+            'TRUSTED_PROXIES hanya dengan ORIGIN_SECRET',
+            'TRUSTED_PROXIES terisi tapi origin belum dikunci: X-Forwarded-For bisa dipalsukan untuk menghindari rate limit'
         );
     }
 

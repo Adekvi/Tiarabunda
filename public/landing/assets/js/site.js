@@ -3,6 +3,55 @@
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
     const body = document.body;
 
+    /* ===================== CORE HELPER & MODULE REGISTRY ===================== */
+    const count = (el) => {
+        const to = +el.dataset.to,
+            st = performance.now();
+        const f = (n) => {
+            const p = Math.min((n - st) / 1400, 1);
+            el.textContent = Math.round(
+                to * (1 - Math.pow(1 - p, 3)),
+            ).toLocaleString("id-ID");
+            if (p < 1) requestAnimationFrame(f);
+        };
+        requestAnimationFrame(f);
+    };
+
+    const reveal = (el) => {
+        if (!el) return;
+        el.classList.add("in");
+        $$("[data-to]", el).forEach(count);
+    };
+
+    const registry = new Map();
+    let booted = false;
+
+    const runModule = (name, initFn) => {
+        try {
+            initFn({ $, $$, reveal });
+        } catch (err) {
+            console.error(`[SiteApp:${name}]`, err);
+        }
+    };
+
+    window.SiteApp = {
+        $,
+        $$,
+        reveal,
+        register(name, initFn) {
+            if (typeof initFn !== "function") return;
+            registry.set(name, initFn);
+            if (booted) {
+                runModule(name, initFn);
+            }
+        },
+        boot() {
+            if (booted) return;
+            booted = true;
+            registry.forEach((initFn, name) => runModule(name, initFn));
+        },
+    };
+
     /* ===================== NAVBAR & DRAWER ===================== */
     const nav = $("#nav"),
         burger = $("#burger"),
@@ -529,22 +578,6 @@
     })();
 
     /* ===================== REVEAL + COUNTER ===================== */
-    const count = (el) => {
-        const to = +el.dataset.to,
-            st = performance.now();
-        const f = (n) => {
-            const p = Math.min((n - st) / 1400, 1);
-            el.textContent = Math.round(
-                to * (1 - Math.pow(1 - p, 3)),
-            ).toLocaleString("id-ID");
-            if (p < 1) requestAnimationFrame(f);
-        };
-        requestAnimationFrame(f);
-    };
-    const reveal = (el) => {
-        el.classList.add("in");
-        $$("[data-to]", el).forEach(count);
-    };
     if ("IntersectionObserver" in window) {
         const io = new IntersectionObserver(
             (es) =>
@@ -1004,4 +1037,7 @@
             else if (e.key === "ArrowRight") goToSlide(currentIndex + 1);
         });
     }
+
+    /* ===================== JALANKAN SEMUA PARTIAL TERDAFTAR ===================== */
+    window.SiteApp.boot();
 })();

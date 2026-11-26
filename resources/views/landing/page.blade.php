@@ -8,12 +8,16 @@
     $program = $program ?? null;
     $selectedProdi = $selectedProdi ?? null;
     $pmbJalur = $pmbJalur ?? null;
-    $beasiswaList = $beasiswaList ?? null;
     $akreditasiInstitusi = $akreditasiInstitusi ?? null;
     $perpusHighlight = $perpusHighlight ?? null;
     $perpusItems = $perpusItems ?? null;
     $kemahasiswaanHighlight = $kemahasiswaanHighlight ?? null;
     $kemahasiswaanItems = $kemahasiswaanItems ?? null;
+    $selectedKemahasiswaan = $selectedKemahasiswaan ?? null;
+    $beasiswaLoaded = $beasiswaLoaded ?? false;
+    $beasiswaList = $beasiswaList ?? null;
+    $beasiswaInfo = $beasiswaInfo ?? null;
+    $selectedBeasiswa = $selectedBeasiswa ?? null;
     $karierHighlight = $karierHighlight ?? null;
     $karierItems = $karierItems ?? null;
     $akademikItems = $akademikItems ?? null;
@@ -22,7 +26,19 @@
     $lppmItems = $lppmItems ?? null;
     $selectedLppm = $selectedLppm ?? null;
     $isLppmPortalProgress = $isLppmPortalProgress ?? false;
+    $lpmLoaded = $lpmLoaded ?? false;
+    $lpmHighlight = $lpmHighlight ?? null;
+    $lpmItems = $lpmItems ?? null;
+    $lpmAllItems = $lpmAllItems ?? null;
+    $lpmKategori = $lpmKategori ?? [];
+    $selectedLpm = $selectedLpm ?? null;
     $fasilitasItems = $fasilitasItems ?? null;
+    $kerjasamaLoaded = $kerjasamaLoaded ?? false;
+    $kerjasamaMitra = $kerjasamaMitra ?? collect();
+    $kerjasamaPenawaran = $kerjasamaPenawaran ?? collect();
+    $kerjasamaKategori = $kerjasamaKategori ?? [];
+    $selectedKerjasama = $selectedKerjasama ?? null;
+    $kerjasamaStats = $kerjasamaStats ?? [];
     $beritaList = $beritaList ?? null;
     $kegiatanList = $kegiatanList ?? null;
     $faqList = $faqList ?? null;
@@ -68,13 +84,12 @@
             <x-landing.section.layanan.perpus :highlight="$perpusHighlight" :items="$perpusItems ?? []" :selected-perpus="$selectedPerpus ?? null" />
 
             {{-- Kemahasiswaan --}}
-        @elseif (
-            $kemahasiswaanHighlight ||
-                ($selectedKemahasiswaan ?? null) ||
-                ($showKemahasiswaanBeasiswa ?? false) ||
-                ($selectedKemahasiswaanBeasiswa ?? null))
-            <x-landing.section.layanan.kemaha :highlight="$kemahasiswaanHighlight" :items="$kemahasiswaanItems ?? []" :beasiswa-info="$kemahasiswaanBeasiswaInfo ?? null"
-                :selected-kemahasiswaan="$selectedKemahasiswaan ?? null" :show-beasiswa-list="$showKemahasiswaanBeasiswa ?? false" :beasiswa-list="$kemahasiswaanBeasiswaList ?? []" :selected-beasiswa="$selectedKemahasiswaanBeasiswa ?? null" />
+        @elseif ($kemahasiswaanHighlight || $selectedKemahasiswaan)
+            <x-landing.section.layanan.kemaha :highlight="$kemahasiswaanHighlight" :items="$kemahasiswaanItems ?? []" :selected-kemahasiswaan="$selectedKemahasiswaan" />
+
+            {{-- Beasiswa --}}
+        @elseif ($beasiswaLoaded || $beasiswaList !== null || $selectedBeasiswa)
+            <x-landing.section.layanan.beasiswa :beasiswa-list="$beasiswaList ?? []" :beasiswa-info="$beasiswaInfo" :selected-beasiswa="$selectedBeasiswa" />
 
             {{-- Pusat Karir --}}
         @elseif ($karierHighlight)
@@ -88,10 +103,20 @@
         @elseif ($fasilitasItems)
             <x-landing.section.layanan.fasilitas :items="$fasilitasItems" />
 
+            {{-- Kerjasama --}}
+        @elseif ($kerjasamaLoaded || $selectedKerjasama)
+            <x-landing.section.layanan.kerjasama :mitra="$kerjasamaMitra" :penawaran="$kerjasamaPenawaran" :kategori-list="$kerjasamaKategori"
+                :selected="$selectedKerjasama" :stats="$kerjasamaStats" />
+
             {{-- Lppm --}}
         @elseif ($lppmHighlight || $selectedLppm || $isLppmPortalProgress)
             <x-landing.section.lembaga.lppm :highlight="$lppmHighlight" :items="$lppmItems ?? []" :selected-lppm="$selectedLppm"
                 :is-portal-progress="$isLppmPortalProgress" />
+
+            {{-- Lpm --}}
+        @elseif ($lpmLoaded || $lpmHighlight || $selectedLpm)
+            <x-landing.section.lembaga.lpm :highlight="$lpmHighlight" :items="$lpmItems ?? []" :all-items="$lpmAllItems ?? []" :kategori-list="$lpmKategori"
+                :selected-lpm="$selectedLpm" />
 
             {{-- Berita --}}
         @elseif ($beritaList)

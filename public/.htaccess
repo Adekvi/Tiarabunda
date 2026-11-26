@@ -35,6 +35,14 @@
 
     RewriteEngine On
 
+    # Paksa HTTPS (kecuali lokal: localhost, *.test seperti Laragon, *.localhost, *.local).
+    # Aman di belakang Cloudflare/proxy.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:[0-9]+)?$ [NC]
+    RewriteCond %{HTTP_HOST} !\.(test|localhost|local)(:[0-9]+)?$ [NC]
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     # Larang eksekusi PHP di folder unggahan (webshell yang menyamar sebagai gambar/dokumen)
     RewriteRule ^storage/.*\.(php[0-9]?|phtml|phar|pht)$ - [F,L,NC]
 

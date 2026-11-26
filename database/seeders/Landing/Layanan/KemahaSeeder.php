@@ -29,7 +29,7 @@ class KemahaSeeder extends Seeder
                 'urip' => true,
             ],
             [
-                'judhul' => 'Unit Kegiatan Mahasiswa (UKM) Olahraga',
+                'judhul' => 'Unit Kegiatan Mahasiswa (UKM)',
                 'isi' => 'Wadah kegiatan olahraga mahasiswa: futsal, basket, voli, badminton, dan atletik. Latihan rutin setiap Selasa dan Kamis.',
                 'data_tambahan' => [
                     'ikon' => 'star',
@@ -43,33 +43,6 @@ class KemahaSeeder extends Seeder
                 'urip' => true,
             ],
             [
-                'judhul' => 'Unit Kegiatan Mahasiswa (UKM) Seni & Budaya',
-                'isi' => 'Mewadahi minat seni mahasiswa: paduan suara, tari tradisional, teater, dan band kampus. Terbuka untuk semua fakultas.',
-                'data_tambahan' => [
-                    'ikon' => 'star',
-                    'warna' => 'purple',
-                    'kontak' => '0813-2233-4455',
-                    'email' => 'ukm.seni@tiarabunda.ac.id',
-                    'lokasi' => 'Gedung Student Center Lt. 2',
-                ],
-                'urutan' => 3,
-                'urip' => true,
-            ],
-            [
-                'judhul' => 'Informasi & Layanan Beasiswa',
-                'isi' => 'Fasilitasi dan pendampingan pengajuan berbagai program beasiswa internal maupun eksternal (beasiswa prestasi akademik, non-akademik, hingga KIP-Kuliah) bagi calon mahasiswa baru dan mahasiswa aktif.',
-                'data_tambahan' => [
-                    'tipe' => 'beasiswa',
-                    'ikon' => 'graduation-cap',
-                    'warna' => 'orange',
-                    'kontak' => '(021) 555-0202',
-                    'email' => 'beasiswa@tiarabunda.ac.id',
-                    'lokasi' => 'Biro Kemahasiswaan, Gedung Rektorat Lt. 1',
-                ],
-                'urutan' => 4,
-                'urip' => true,
-            ],
-            [
                 'judhul' => 'Layanan Konseling Mahasiswa',
                 'isi' => 'Konsultasi psikologi gratis untuk mahasiswa yang mengalami stres akademik, masalah pribadi, atau kebutuhan pengembangan diri. Dijaga kerahasiaannya.',
                 'data_tambahan' => [
@@ -80,7 +53,7 @@ class KemahaSeeder extends Seeder
                     'lokasi' => 'Gedung Student Center Lt. 1, Ruang BK',
                     'url_portal' => 'https://tiarabunda.ac.id/konseling',
                 ],
-                'urutan' => 5,
+                'urutan' => 3,
                 'urip' => true,
             ],
             [
@@ -94,7 +67,7 @@ class KemahaSeeder extends Seeder
                     'lokasi' => 'Gedung Student Center Lt. 3',
                     'url_portal' => 'https://tiarabunda.ac.id/bem',
                 ],
-                'urutan' => 6,
+                'urutan' => 4,
                 'urip' => true,
             ],
             [
@@ -107,21 +80,7 @@ class KemahaSeeder extends Seeder
                     'email' => 'kesejahteraan@tiarabunda.ac.id',
                     'lokasi' => 'Biro Kemahasiswaan, Gedung Rektorat Lt. 1',
                 ],
-                'urutan' => 7,
-                'urip' => true,
-            ],
-            [
-                'judhul' => 'Pusat Karier & Alumni',
-                'isi' => 'Layanan bimbingan karier, pelatihan CV & interview, job fair tahunan, dan tracer study alumni. Terbuka untuk mahasiswa semester akhir dan alumni.',
-                'data_tambahan' => [
-                    'ikon' => 'lightbulb',
-                    'warna' => 'green',
-                    'kontak' => '(021) 555-0205',
-                    'email' => 'karier@tiarabunda.ac.id',
-                    'lokasi' => 'Gedung Student Center Lt. 2',
-                    'url_portal' => 'https://karier.tiarabunda.ac.id',
-                ],
-                'urutan' => 8,
+                'urutan' => 5,
                 'urip' => true,
             ],
             [
@@ -133,7 +92,7 @@ class KemahaSeeder extends Seeder
                     'email' => 'prestasi@tiarabunda.ac.id',
                     'lokasi' => 'Gedung Student Center Lt. 3',
                 ],
-                'urutan' => 9,
+                'urutan' => 6,
                 'urip' => true,
             ],
         ];

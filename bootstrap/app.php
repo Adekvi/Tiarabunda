@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\Security\HeaderSecurity;
+use App\Http\Middleware\Security\RequireOriginSecret;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,7 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Satu definisi saja — yang kedua menimpa yang pertama
+        // Paling awal: tolak trafik yang tidak lewat Cloudflare (aktif bila ORIGIN_SECRET diisi)
+        $middleware->prepend(RequireOriginSecret::class);
+
         $middleware->group('landing', [
             SubstituteBindings::class,
             HeaderSecurity::class,

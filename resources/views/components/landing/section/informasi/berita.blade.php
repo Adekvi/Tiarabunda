@@ -8,9 +8,6 @@
 <section class="brt">
     <div class="wrap brt__wrap">
 
-        {{-- ========================================== --}}
-        {{-- HALAMAN DETAIL BERITA --}}
-        {{-- ========================================== --}}
         @if ($selectedBerita)
             <article class="brt__detail rv">
                 <div class="brt__back-wrap">
@@ -50,10 +47,6 @@
                     {!! nl2br(e(data_get($selectedBerita, 'isi'))) !!}
                 </div>
             </article>
-
-            {{-- ========================================== --}}
-            {{-- HALAMAN DAFTAR BERITA --}}
-            {{-- ========================================== --}}
         @else
             <div class="brt__intro rv">
                 <p class="brt__eyebrow">Kabar Kampus</p>

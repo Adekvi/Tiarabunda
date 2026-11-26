@@ -11,7 +11,9 @@ use App\Services\Landing\Content\FasilitasPageContent;
 use App\Services\Landing\Content\KarierPageContent;
 use App\Services\Landing\Content\KegiatanPageContent;
 use App\Services\Landing\Content\KemahaPageContent;
+use App\Services\Landing\Content\KerjasamaPageContent;
 use App\Services\Landing\Content\LppmPageContent;
+use App\Services\Landing\Content\LpmPageContent;
 use App\Services\Landing\Content\PerpusPageContent;
 use App\Services\Landing\Content\PmbPageContent;
 use App\Services\Landing\Contracts\PageContentInterface;
@@ -35,14 +37,16 @@ class PageContentFactory
             'struktur'                      => app(StrukturPageContent::class),
             'program-pendidikan'            => app(ProgramPageContent::class),
             'penerimaan-mahasiswa-baru'     => app(PmbPageContent::class),
-            'beasiswa'                      => app(BeasiswaPageContent::class),
             'akreditasi'                    => app(AkreditasiPageContent::class),
             'perpustakaan'                  => app(PerpusPageContent::class),
             'kemahasiswaan'                 => app(KemahaPageContent::class),
+            'beasiswa'                      => app(BeasiswaPageContent::class),
             'pusat-karier'                  => app(KarierPageContent::class),
-            'akademik'              => app(AkademikPageContent::class),
+            'akademik'                      => app(AkademikPageContent::class),
+            'kerjasama'                     => app(KerjasamaPageContent::class),
             'fasilitas'                     => app(FasilitasPageContent::class),
             'lppm'                          => app(LppmPageContent::class),
+            'lpm'                           => app(LpmPageContent::class),
             'berita-terbaru'                => app(BeritaPageContent::class),
             'kegiatan-kampus'               => app(KegiatanPageContent::class),
             'faq'                           => app(FaqPageContent::class),

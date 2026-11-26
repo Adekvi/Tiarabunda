@@ -504,8 +504,16 @@
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
     color: #f3c46b;
-    display: grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+}
+
+.lokasi-ico svg {
+    display: block;
+    margin: 0;
+    flex-shrink: 0;
 }
 
 .lokasi-lbl {
@@ -602,17 +610,37 @@
     display: flex;
     align-items: center;
     gap: 14px;
+    min-width: 0;
 }
 
 .lokasi-access-ico {
-    flex: none;
+    flex: 0 0 42px;
     width: 42px;
     height: 42px;
     border-radius: 12px;
     background: linear-gradient(135deg, #eef5fc, #dfeaf9);
     color: var(--blue-d, #173b66);
-    display: grid;
-    place-items: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+}
+
+.lokasi-access-ico > svg {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px;
+    min-height: 18px;
+    margin: 0 !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+}
+
+.lokasi-access-text {
+    min-width: 0;
 }
 
 .lokasi-access-item strong {
@@ -628,6 +656,31 @@
     font-size: 0.8rem;
     color: var(--mut, #64748b);
     line-height: 1.35;
+}
+
+/* Konsistensi ikon di panel detail */
+.lokasi-ico {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f3c46b;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+}
+
+.lokasi-ico > svg {
+    display: block !important;
+    width: 17px !important;
+    height: 17px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
 }
 
 /* ========== Responsive ========== */

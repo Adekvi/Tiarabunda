@@ -43,17 +43,12 @@
 
 <section class="lppm">
     <div class="wrap lppm__wrap">
-
-        {{-- ========================================================= --}}
-        {{-- 1. TAMPILAN PORTAL LPPM ON PROGRESS (TAB BARU)            --}}
-        {{-- ========================================================= --}}
         @if ($isPortalProgress)
             @php
                 $hlMeta = data_get($highlight, 'data_tambahan', []);
             @endphp
 
             <div class="lppm__prog-card rv">
-                {{-- Header Browser Bar --}}
                 <div class="lppm__prog-topbar">
                     <div class="lppm__prog-dots" aria-hidden="true">
                         <span></span><span></span><span></span>
@@ -102,7 +97,6 @@
                         </div>
                     </div>
 
-                    {{-- Tahapan Pengerjaan --}}
                     <div class="lppm__prog-steps">
                         <div class="lppm__prog-step is-done">
                             <span class="lppm__prog-step-icon">&#10003;</span>
@@ -127,7 +121,6 @@
                         </div>
                     </div>
 
-                    {{-- Informasi Sekretariat Sementara --}}
                     <div class="lppm__prog-info">
                         <div>
                             <small>Sekretariat Layanan Langsung</small>
@@ -153,10 +146,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- ========================================================= --}}
-            {{-- 2. HALAMAN DETAIL PROGRAM / LAYANAN LPPM                  --}}
-            {{-- ========================================================= --}}
         @elseif ($selectedLppm)
             @php
                 $meta = data_get($selectedLppm, 'data_tambahan', []);
@@ -269,10 +258,6 @@
                     </div>
                 </div>
             @endif
-
-            {{-- ========================================================= --}}
-            {{-- 3. HALAMAN UTAMA LPPM                                     --}}
-            {{-- ========================================================= --}}
         @else
             <div class="lppm__intro rv">
                 <p class="lppm__eyebrow">Riset &amp; Pengabdian</p>
@@ -296,7 +281,6 @@
                 </div>
             </div>
 
-            {{-- Highlight Profil LPPM --}}
             @if ($highlight)
                 @php
                     $hlMeta = data_get($highlight, 'data_tambahan', []);
@@ -328,7 +312,6 @@
                 </div>
             @endif
 
-            {{-- Pilar Utama LPPM (Statis) --}}
             <div class="lppm__pillars rv">
                 <div class="lppm__pillar">
                     <span class="lppm__pillar-num">01</span>
@@ -350,7 +333,6 @@
                 </div>
             </div>
 
-            {{-- Grid Program & Layanan LPPM --}}
             @if ($items->isNotEmpty())
                 <div class="lppm__grid">
                     @foreach ($items as $item)
@@ -384,7 +366,6 @@
             @endif
         @endif
 
-        {{-- CTA --}}
         @if (!$isPortalProgress)
             <div class="lppm__cta rv">
                 <div>
