@@ -20,14 +20,24 @@ return [
             'icon' => 'layout',
             'children' => [
                 [
+                    'label' => 'Welcome Pop-up',
+                    'route' => 'superadmin.popup.index',
+                    'active' => 'superadmin.popup.*',
+                ],
+                [
                     'label' => 'Hero Section',
                     'route' => 'superadmin.hero.index',
                     'active' => 'superadmin.hero.*',
                 ],
                 [
-                    'label' => 'Welcome Pop-up',
-                    'route' => 'superadmin.popup.index',
-                    'active' => 'superadmin.popup.*',
+                    'label' => 'Lokasi',
+                    'route' => 'superadmin.lokasi.index',
+                    'active' => 'superadmin.lokasi.*',
+                ],
+                [
+                    'label' => 'Testimoni',
+                    'route' => 'superadmin.testimoni.index',
+                    'active' => 'superadmin.testimoni.*',
                 ],
             ],
         ],

@@ -13,6 +13,7 @@ use Database\Seeders\Landing\Layanan\FasilitasSeeder;
 use Database\Seeders\Landing\Layanan\KemahaSeeder;
 use Database\Seeders\Landing\Layanan\PerpusSeeder;
 use Database\Seeders\Landing\Lembaga\LppmSeeder;
+use Database\Seeders\Landing\LokasiSeeder;
 use Database\Seeders\Landing\Pendidikan\AkreditasiSeeder;
 use Database\Seeders\Landing\Pendidikan\BeasiswaSeeder;
 use Database\Seeders\Landing\Pendidikan\FakultasSeeder;
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             HeroSeeder::class,
+            LokasiSeeder::class,
 
             // Landing Profil
             SejarahSeeder::class,

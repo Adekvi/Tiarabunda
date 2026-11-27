@@ -181,7 +181,7 @@
    ============================================================ */
 .lokasi-showcase {
     display: grid;
-    grid-template-columns: 1.08fr 1fr;
+    grid-template-columns: 1.38fr 1fr;
     border-radius: 26px;
     overflow: hidden;
     background: #0f2744;
@@ -191,11 +191,11 @@
         0 0 0 1px rgba(255, 255, 255, 0.08) inset;
 }
 
-/* Sisi Kiri: Bingkai Foto & Peta */
+/* Sisi Kiri: Bingkai Foto & Peta Full-Bleed */
 .lokasi-visual {
     position: relative;
-    min-height: 450px;
-    background: #dbe8f8;
+    min-height: 430px;
+    background: #0f2744;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -220,9 +220,10 @@
     display: inline-flex;
     padding: 4px;
     border-radius: 999px;
-    background: rgba(15, 39, 68, 0.84);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(15, 39, 68, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.4);
 }
 
@@ -234,7 +235,7 @@
     border-radius: 999px;
     border: 0;
     background: transparent;
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 0.76rem;
     font-weight: 700;
     cursor: pointer;
@@ -253,21 +254,21 @@
 .lokasi-coord-chip {
     padding: 6px 12px;
     border-radius: 999px;
-    background: rgba(15, 39, 68, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(15, 39, 68, 0.76);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #f8fafc;
     font-size: 0.72rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
-/* Pane Foto */
+/* Pane Foto Full-Bleed */
 .lokasi-photo-pane {
     position: relative;
     flex: 1;
     width: 100%;
     height: 100%;
-    min-height: 450px;
     overflow: hidden;
 }
 
@@ -276,17 +277,20 @@
 }
 
 .lokasi-photo-pane img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 32%;
     display: block;
     transition:
-        transform 0.8s ease,
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
         opacity 0.3s ease;
 }
 
 .lokasi-showcase:hover .lokasi-photo-pane img {
-    transform: scale(1.04);
+    transform: scale(1.035);
 }
 
 .lokasi-photo-shade {
@@ -294,9 +298,10 @@
     inset: 0;
     background: linear-gradient(
         180deg,
-        rgba(15, 39, 68, 0.24) 0%,
-        transparent 38%,
-        rgba(15, 39, 68, 0.82) 100%
+        rgba(15, 39, 68, 0.22) 0%,
+        transparent 32%,
+        transparent 62%,
+        rgba(13, 34, 60, 0.86) 100%
     );
     pointer-events: none;
 }
@@ -321,10 +326,11 @@
     gap: 8px;
     padding: 5px 13px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.16);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(15, 39, 68, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(8px);
-    font-size: 0.76rem;
+    -webkit-backdrop-filter: blur(8px);
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -343,7 +349,8 @@
     margin: 0;
     font-size: 0.82rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.92);
+    color: rgba(255, 255, 255, 0.94);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
 }
 
 /* Pane Peta */
@@ -351,7 +358,8 @@
     position: relative;
     flex: 1;
     width: 100%;
-    min-height: 450px;
+    height: 100%;
+    min-height: 430px;
     background: #e2ecf8;
 }
 
@@ -390,7 +398,7 @@
     z-index: 2;
     width: 100%;
     height: 100%;
-    min-height: 450px;
+    min-height: 430px;
     border: 0;
     display: block;
 }
@@ -398,7 +406,7 @@
 /* Sisi Kanan: Panel Detail Royal Navy & Gold */
 .lokasi-detail {
     position: relative;
-    padding: 36px 38px;
+    padding: 30px 32px;
     background:
         radial-gradient(
             circle at 92% 10%,
@@ -431,45 +439,45 @@
 
 .lokasi-badge {
     display: inline-block;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #f6d58e;
     background: rgba(212, 162, 74, 0.16);
     border: 1px solid rgba(212, 162, 74, 0.32);
-    padding: 5px 13px;
+    padding: 4px 12px;
     border-radius: 999px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .lokasi-name {
-    font-size: clamp(1.35rem, 2.1vw, 1.7rem);
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
     font-weight: 700;
-    line-height: 1.26;
+    line-height: 1.24;
     color: #ffffff;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
 }
 
 .lokasi-desc {
-    font-size: 0.92rem;
-    line-height: 1.62;
+    font-size: 0.89rem;
+    line-height: 1.58;
     color: rgba(255, 255, 255, 0.82);
-    margin: 0 0 18px;
+    margin: 0 0 15px;
 }
 
 /* Chips Fasilitas */
 .lokasi-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: 7px;
+    margin-bottom: 16px;
 }
 
 .lokasi-chip {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    padding: 5px 11px;
+    padding: 4px 10px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.09);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -480,17 +488,17 @@
 .lokasi-info-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    padding: 18px 0;
+    gap: 12px;
+    padding: 15px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.14);
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 }
 
 .lokasi-info-item {
     display: flex;
     align-items: flex-start;
-    gap: 11px;
+    gap: 10px;
 }
 
 .lokasi-info-item--full {
@@ -498,27 +506,32 @@
 }
 
 .lokasi-ico {
-    flex: none;
+    flex: 0 0 34px;
     width: 34px;
     height: 34px;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
     color: #f3c46b;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 0;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
 }
 
-.lokasi-ico svg {
-    display: block;
-    margin: 0;
-    flex-shrink: 0;
+.lokasi-ico > svg {
+    display: block !important;
+    width: 17px !important;
+    height: 17px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
 }
 
 .lokasi-lbl {
     display: block;
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -528,9 +541,9 @@
 
 .lokasi-val {
     display: block;
-    font-size: 0.87rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    line-height: 1.45;
+    line-height: 1.42;
     color: #ffffff;
 }
 
@@ -547,11 +560,11 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 22px;
+    padding: 11px 20px;
     border-radius: 12px;
     background: linear-gradient(135deg, #f3c46b 0%, var(--or, #f2994a) 100%);
     color: #0f2744;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 800;
     text-decoration: none;
     box-shadow: 0 10px 22px -10px rgba(242, 153, 74, 0.6);
@@ -570,12 +583,12 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    padding: 12px 17px;
+    padding: 11px 16px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.22);
     color: #ffffff;
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
@@ -658,31 +671,6 @@
     line-height: 1.35;
 }
 
-/* Konsistensi ikon di panel detail */
-.lokasi-ico {
-    flex: 0 0 34px;
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #f3c46b;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    line-height: 1 !important;
-}
-
-.lokasi-ico > svg {
-    display: block !important;
-    width: 17px !important;
-    height: 17px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    vertical-align: middle !important;
-}
-
 /* ========== Responsive ========== */
 @media (max-width: 960px) {
     .lokasi-sec {
@@ -693,11 +681,14 @@
         grid-template-columns: 1fr;
     }
 
-    .lokasi-visual,
-    .lokasi-photo-pane,
+    .lokasi-visual {
+        min-height: 0;
+        aspect-ratio: 16 / 10;
+    }
+
     .lokasi-map-pane,
     .lokasi-map-pane iframe {
-        min-height: 320px;
+        min-height: 100%;
     }
 
     .lokasi-access-bar {
@@ -724,11 +715,8 @@
         border-radius: 20px;
     }
 
-    .lokasi-visual,
-    .lokasi-photo-pane,
-    .lokasi-map-pane,
-    .lokasi-map-pane iframe {
-        min-height: 260px;
+    .lokasi-visual {
+        aspect-ratio: 4 / 3;
     }
 
     .lokasi-detail {

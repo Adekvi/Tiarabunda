@@ -4,6 +4,8 @@ use App\Http\Controllers\Superadmin\Konten\Informasi\BeritaController;
 use App\Http\Controllers\Superadmin\Konten\Informasi\FaqController;
 use App\Http\Controllers\Superadmin\Konten\Informasi\KegiatanController;
 use App\Http\Controllers\Superadmin\Konten\Landing\HeroController;
+use App\Http\Controllers\Superadmin\Konten\Landing\LokasiController;
+use App\Http\Controllers\Superadmin\Konten\Landing\TestiController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\AkademikController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\FasilitasController;
 use App\Http\Controllers\Superadmin\Konten\Layanan\KarirController;
@@ -50,6 +52,30 @@ Route::middleware(['auth', 'can:access-superadmin', SanitizeAdminInput::class])
             Route::get('/edit', [HeroController::class, 'edit'])->name('edit');
             Route::put('/', [HeroController::class, 'update'])->name('update');
         });
+
+        Route::prefix('lokasi')->name('lokasi.')->group(function () {
+            Route::get('/', [LokasiController::class, 'index'])->name('index');
+            Route::get('/create', [LokasiController::class, 'create'])->name('create');
+            Route::post('/', [LokasiController::class, 'store'])->name('store');
+
+            Route::get('/trash', [LokasiController::class, 'trashed'])->name('trashed');
+            Route::delete('/trash/empty', [LokasiController::class, 'emptyTrash'])->name('empty-trash');
+            Route::patch('/trash/{id}/restore', [LokasiController::class, 'restore'])->name('restore');
+            Route::delete('/trash/{id}/force', [LokasiController::class, 'forceDelete'])->name('force-delete');
+
+            Route::get('/{lokasi}/edit', [LokasiController::class, 'edit'])->name('edit');
+            Route::put('/{lokasi}', [LokasiController::class, 'update'])->name('update');
+            Route::delete('/{lokasi}', [LokasiController::class, 'destroy'])->name('destroy');
+            Route::patch('/{lokasi}/toggle', [LokasiController::class, 'toggle'])->name('toggle');
+        });
+
+        Route::resource('testimoni', TestiController::class)->except(['show']);
+        Route::patch('testimoni/{testimoni}/toggle', [TestiController::class, 'toggle'])
+            ->name('testimoni.toggle');
+        Route::patch('testimoni/{id}/restore', [TestiController::class, 'restore'])
+            ->name('testimoni.restore');
+        Route::delete('testimoni/{id}/force-delete', [TestiController::class, 'forceDelete'])
+            ->name('testimoni.force-delete');
 
         /*
         | Profil    

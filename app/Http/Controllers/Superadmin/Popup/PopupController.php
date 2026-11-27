@@ -78,6 +78,8 @@ class PopupController extends Controller
         $data = $request->validated();
         unset($data['hapus_gambar']);
 
+        $data['deskripsi'] = $this->sanitizeRichText($data['deskripsi'] ?? null);
+
         if ($request->hasFile('gambar')) {
             $stored = $this->imageOptimizer->store($request->file('gambar'), 'popups', false);
             $data['gambar'] = $stored['path'];
@@ -104,6 +106,8 @@ class PopupController extends Controller
         $data = $request->validated();
         $hapusGambar = (bool) ($data['hapus_gambar'] ?? false);
         unset($data['hapus_gambar']);
+
+        $data['deskripsi'] = $this->sanitizeRichText($data['deskripsi'] ?? null);
 
         if ($request->hasFile('gambar')) {
             $oldGambar = $popup->gambar;
@@ -157,5 +161,36 @@ class PopupController extends Controller
         return redirect()
             ->route('superadmin.popup.index', ['view' => 'trashed'])
             ->with('success', 'Slide pop-up dihapus permanen.');
+    }
+
+    private function sanitizeRichText(?string $html): ?string
+    {
+        $raw = trim((string) $html);
+        if ($raw === '' || trim(strip_tags($raw)) === '') {
+            return null;
+        }
+
+        $allowedTags = '<p><br><strong><b><em><i><u><ul><ol><li><a>';
+        $clean = strip_tags($raw, $allowedTags);
+
+        $clean = preg_replace('/\s+on[a-z]+\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $clean) ?? $clean;
+
+        $clean = preg_replace_callback(
+            '/<a\b([^>]*?)href\s*=\s*(["\'])(.*?)\2([^>]*)>/i',
+            function (array $m): string {
+                $href = trim($m[3]);
+                $isSafe = preg_match('#^(https?://|mailto:|tel:|/)#i', $href) === 1;
+                if (! $isSafe) {
+                    return '<span>';
+                }
+                $isExternal = str_starts_with($href, 'http://') || str_starts_with($href, 'https://');
+                $extra = $isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+
+                return '<a href="' . e($href) . '"' . $extra . '>';
+            },
+            $clean
+        ) ?? $clean;
+
+        return trim($clean);
     }
 }

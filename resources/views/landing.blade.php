@@ -10,10 +10,10 @@
         <x-landing.section.berita :items="$home['berita'] ?? []" />
 
         {{-- Lokasi Kampus --}}
-        <x-landing.section.lokasi :items="$home['lokasi'] ?? []" />
+        <x-landing.section.lokasi :items="$home['lokasi'] ?? null" />
 
         {{-- Testimoni --}}
-        <x-landing.section.testi :items="$home['testimoni'] ?? []" />
+        <x-landing.section.testi :items="$home['testimoni'] ?? null" />
 
         {{-- Kerja sama --}}
         <x-landing.section.mitra />

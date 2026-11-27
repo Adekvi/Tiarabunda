@@ -5,6 +5,8 @@ namespace App\Services\Landing;
 use App\Models\Informasi\Berita;
 use App\Models\Informasi\Faq;
 use App\Models\Landing\Hero;
+use App\Models\Landing\Lokasi;
+use App\Models\Landing\Testimoni;
 use App\Models\Layanan\Fasilitas;
 use App\Models\Layanan\Perpus;
 use App\Models\Pendidikan\Beasiswa;
@@ -25,12 +27,14 @@ class LandingHomeService
         return [
             'hero'               => $this->hero(),
             'pimpinan'           => $this->pimpinan(),
+            'lokasi'             => $this->lokasi(),
             'fakultas_prodi'     => $this->fakultasProdi(),
             'jalur'              => $this->jalurPmb(),
             'beasiswa'           => $this->beasiswa(),
             'fasilitas'          => $this->fasilitas(),
             'perpus'             => $this->perpus(),
             'berita'             => $this->beritas(),
+            'testimoni'          => $this->testimoni(),
             'faq'                => $this->faqs(),
         ];
     }
@@ -51,7 +55,6 @@ class LandingHomeService
 
             foreach ($row->activeMedias as $media) {
                 if ($media->tipe === 'video') {
-                    // Ambil maksimal 1 video utama untuk posisi paling depan
                     if ($videoItem === null) {
                         $videoItem = [
                             'tipe'        => 'video',
@@ -169,13 +172,74 @@ class LandingHomeService
             ];
         });
 
-        // Guard cache
         if ($row !== null && !is_array($row)) {
             Cache::forget('landing.home.pimpinan');
             return null;
         }
 
         return $row;
+    }
+
+    public function lokasi(): ?array
+    {
+        $cached = Cache::remember('landing.home.lokasi', self::TTL, function (): array {
+            if (! Lokasi::query()->exists()) {
+                return ['has_master' => false, 'items' => []];
+            }
+
+            $rows = Lokasi::query()
+                ->where('urip', true)
+                ->orderBy('urutan', 'asc')
+                ->orderBy('id', 'asc')
+                ->get();
+
+            $items = [];
+            foreach ($rows as $lokasi) {
+                /** @var Lokasi $lokasi */
+                $items[] = $lokasi->toLandingArray();
+            }
+
+            return [
+                'has_master' => true,
+                'items'      => $items,
+            ];
+        });
+
+        if (! is_array($cached) || ! array_key_exists('has_master', $cached)) {
+            Cache::forget('landing.home.lokasi');
+            return null;
+        }
+
+        return $cached['has_master'] ? $cached['items'] : null;
+    }
+
+    public function kontakAlamat(): array
+    {
+        $cached = Cache::remember('landing.site.kontak_alamat', self::TTL, function (): ?array {
+            if (! Lokasi::query()->exists()) {
+                return null;
+            }
+
+            $rows = Lokasi::query()
+                ->where('urip', true)
+                ->orderBy('urutan', 'asc')
+                ->orderBy('id', 'asc')
+                ->get();
+
+            $items = [];
+            foreach ($rows as $lokasi) {
+                /** @var Lokasi $lokasi */
+                $items[] = $lokasi->toKontakAlamatArray();
+            }
+
+            return $items;
+        });
+
+        if (is_array($cached)) {
+            return $cached;
+        }
+
+        return config('landing.site.kontak.alamat', []);
     }
 
     public function fakultasProdi(): array
@@ -325,12 +389,12 @@ class LandingHomeService
                         'nama'      => $f->jeneng ?? '',
                         'tandha'    => $f->tandha,
                         'katrangan' => $f->katrangan ?? '',
-                        'img'       => $f->thumb_url ?? $f->gambar_url,  // accessor dari model
+                        'img'       => $f->thumb_url ?? $f->gambar_url,
                         'urutan'    => $f->urutan,
                     ];
                 })
                 ->values()
-                ->all(); // ← array murni, konsisten dengan pola faq/berita
+                ->all();
         });
 
         if (! is_array($rows)) {
@@ -379,6 +443,39 @@ class LandingHomeService
         }
 
         return $rows;
+    }
+
+    public function testimoni(): ?array
+    {
+        $cached = Cache::remember('landing.home.testimoni', self::TTL, function (): array {
+            if (! Testimoni::query()->exists()) {
+                return ['has_master' => false, 'items' => []];
+            }
+
+            $rows = Testimoni::query()
+                ->where('urip', true)
+                ->orderBy('urutan', 'asc')
+                ->orderByDesc('id')
+                ->get();
+
+            $items = [];
+            foreach ($rows as $row) {
+                /** @var Testimoni $row */
+                $items[] = $row->toLandingArray();
+            }
+
+            return [
+                'has_master' => true,
+                'items'      => $items,
+            ];
+        });
+
+        if (! is_array($cached) || ! array_key_exists('has_master', $cached)) {
+            Cache::forget('landing.home.testimoni');
+            return null;
+        }
+
+        return $cached['has_master'] ? $cached['items'] : null;
     }
 
     public function beritas(int $limit = 8): Collection
@@ -456,6 +553,12 @@ class LandingHomeService
         Cache::forget('landing.home.hero');
     }
 
+    public function forgetLokasi(): void
+    {
+        Cache::forget('landing.home.lokasi');
+        Cache::forget('landing.site.kontak_alamat');
+    }
+
     public function forgetPimpinan(): void
     {
         Cache::forget('landing.home.pimpinan');
@@ -481,6 +584,11 @@ class LandingHomeService
         Cache::forget('landing.home.fasilitas');
     }
 
+    public function forgetTestimoni(): void
+    {
+        Cache::forget('landing.home.testimoni');
+    }
+
     public function forgetPerpus(): void
     {
         Cache::forget('landing.home.perpus');
@@ -500,6 +608,7 @@ class LandingHomeService
     {
         $this->forgetHero();
         $this->forgetPimpinan();
+        $this->forgetLokasi();
         $this->forgetFakultasProdi();
         $this->forgetJalurPmb();
         $this->forgetBeasiswa();

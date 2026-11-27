@@ -1,0 +1,664 @@
+.lok-form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 20px;
+    align-items: start;
+}
+
+.lok-form-main,
+.lok-form-side {
+    min-width: 0;
+}
+
+.lok-form-side {
+    position: sticky;
+    top: 20px;
+}
+
+@media (max-width: 1200px) {
+    .lok-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lok-form-side {
+        position: static;
+    }
+}
+
+.lok-fcard {
+    padding: 22px;
+    border-radius: 15px;
+    margin-bottom: 18px;
+}
+
+.lok-fcard-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+}
+
+.lok-step-badge {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: rgba(31, 95, 191, 0.12);
+    color: #1f5fbf;
+    font-size: 12.5px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-top: 1px;
+}
+
+.lok-fcard-title {
+    margin: 0 0 2px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.lok-fcard-sub {
+    margin: 0;
+    font-size: 12px;
+    color: var(--mut);
+}
+
+.lok-frow {
+    display: grid;
+    gap: 14px;
+}
+
+.lok-frow--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lok-frow--3 {
+    grid-template-columns: 110px minmax(0, 1fr) 130px;
+}
+
+@media (max-width: 720px) {
+    .lok-frow--2,
+    .lok-frow--3 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.lok-fgroup {
+    margin-bottom: 15px;
+}
+
+.lok-flabel {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+
+.lok-req {
+    color: var(--err);
+}
+
+.lok-fhelp {
+    display: block;
+    margin-top: 5px;
+    font-size: 11.5px;
+    color: var(--mut);
+    line-height: 1.45;
+}
+
+.lok-finput,
+.lok-ftextarea {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.lok-finput {
+    height: 40px;
+}
+
+.lok-finput:focus,
+.lok-ftextarea:focus {
+    border-color: #1f5fbf;
+    box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.12);
+}
+
+/* ============================================================
+   RICH TEXT EDITOR
+   ============================================================ */
+.lok-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.lok-char-counter {
+    font-size: 11.5px;
+    color: var(--mut);
+    font-variant-numeric: tabular-nums;
+}
+
+.lok-rte {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.lok-rte:focus-within {
+    border-color: #1f5fbf;
+    box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.12);
+}
+
+.lok-rte.is-invalid {
+    border-color: var(--err);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.lok-rte__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 10px;
+    background: rgba(148, 163, 184, 0.08);
+    border-bottom: 1px solid var(--line);
+}
+
+.lok-rte__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 13px;
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.lok-rte__btn:hover {
+    background: rgba(31, 95, 191, 0.11);
+    color: #1f5fbf;
+}
+
+.lok-rte__sep {
+    width: 1px;
+    height: 18px;
+    background: var(--line);
+    margin: 0 4px;
+}
+
+.lok-rte__area {
+    min-height: 115px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    outline: none;
+}
+
+.lok-rte__area:empty::before {
+    content: attr(data-placeholder);
+    color: var(--mut);
+    opacity: 0.72;
+    pointer-events: none;
+}
+
+.lok-rte__area p {
+    margin: 0 0 8px;
+}
+
+.lok-rte__area p:last-child {
+    margin-bottom: 0;
+}
+
+.lok-rte__area ul,
+.lok-rte__area ol {
+    margin: 4px 0 8px;
+    padding-left: 20px;
+}
+
+.lok-rte__area a {
+    color: #1f5fbf;
+    text-decoration: underline;
+}
+
+.lok-rte-err {
+    color: var(--err);
+    font-weight: 600;
+}
+
+/* Live Chips Preview */
+.lok-chips-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.lok-chips-preview:empty {
+    display: none;
+}
+
+.lok-chip-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    background: rgba(31, 95, 191, 0.09);
+    border: 1px solid rgba(31, 95, 191, 0.22);
+    color: #1f5fbf;
+}
+
+/* ============================================================
+   MEDIA GEDUNG & STUDIO ILUSTRASI KUSTOM
+   ============================================================ */
+.lok-preview-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: rgba(148, 163, 184, 0.07);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lok-preview-stage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.lok-preview-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    max-width: calc(100% - 20px);
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.78);
+    backdrop-filter: blur(6px);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lok-preview-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 20px 12px 9px;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.82), transparent);
+    color: #f8fafc;
+    font-size: 11.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 0.18s ease;
+}
+
+/* Sembunyikan caption bawah saat placeholder kosong tampil */
+#placeholderFotoLokasi:not([hidden]) ~ .lok-preview-caption {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.lok-preview-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 36px 20px 20px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--mut);
+}
+
+.lok-preview-empty[hidden] {
+    display: none;
+}
+
+/* Tabs Media */
+.lok-media-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding: 4px;
+    border-radius: 10px;
+    background: rgba(148, 163, 184, 0.1);
+    border: 1px solid var(--line);
+    margin-bottom: 12px;
+}
+
+.lok-media-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 0;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 7px;
+    border: 0;
+    background: transparent;
+    color: var(--mut);
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.lok-media-tab svg {
+    flex: 0 0 auto;
+}
+
+.lok-media-tab span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lok-media-tab:hover {
+    color: var(--ink);
+}
+
+.lok-media-tab.is-active {
+    background: #1f5fbf;
+    color: #ffffff;
+    box-shadow: 0 3px 10px -3px rgba(31, 95, 191, 0.55);
+}
+
+/* Dropzone */
+.lok-dropzone {
+    border: 1.5px dashed rgba(31, 95, 191, 0.42);
+    border-radius: 12px;
+    padding: 20px 14px;
+    text-align: center;
+    background: rgba(31, 95, 191, 0.025);
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.lok-dropzone:hover,
+.lok-dropzone.is-dragover {
+    border-color: #1f5fbf;
+    background: rgba(31, 95, 191, 0.07);
+}
+
+.lok-dropzone__ico {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(31, 95, 191, 0.12);
+    color: #1f5fbf;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.lok-dropzone__title {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 3px;
+}
+
+.lok-dropzone__sub {
+    font-size: 11px;
+    color: var(--mut);
+}
+
+/* Studio Ilustrasi Gedung */
+.lok-palette-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--mut);
+    margin-bottom: 10px;
+}
+
+.lok-swatches {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.lok-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background: var(--sw);
+    box-shadow: 0 0 0 1px var(--line);
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.lok-swatch:hover {
+    transform: scale(1.12);
+}
+
+.lok-swatch.is-active {
+    box-shadow: 0 0 0 2px var(--sw);
+    transform: scale(1.1);
+}
+
+.lok-studio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.lok-art-item {
+    min-width: 0;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    background: transparent;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        transform 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+.lok-art-item:hover {
+    transform: translateY(-1px);
+    border-color: rgba(31, 95, 191, 0.55);
+}
+
+.lok-art-item.is-selected {
+    border-color: #1f5fbf;
+    box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.16);
+}
+
+.lok-art-item__svg {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    display: block;
+    overflow: hidden;
+}
+
+.lok-art-item__svg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.lok-art-item__label {
+    padding: 6px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+    border-top: 1px solid var(--line);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* File Metadata Bar */
+.lok-file-meta {
+    margin-top: 12px;
+    padding: 9px 11px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: rgba(22, 163, 74, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.lok-file-meta[hidden] {
+    display: none;
+}
+
+.lok-file-meta__info {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.lok-file-meta__badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(22, 163, 74, 0.14);
+    color: #15803d;
+    margin-bottom: 2px;
+}
+
+.lok-file-meta__name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lok-file-meta__size {
+    font-size: 11px;
+    color: var(--mut);
+}
+
+.lok-file-meta__clear {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--mut);
+    font-size: 15px;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+.lok-file-meta__clear:hover {
+    color: var(--err);
+    border-color: rgba(220, 38, 38, 0.35);
+}
+
+.lok-check-danger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--err);
+    cursor: pointer;
+}
+
+/* Switch & Submit */
+.lok-switch-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 11px;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    margin-bottom: 14px;
+}
+
+.lok-switch-row input {
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    accent-color: #1f5fbf;
+    flex: 0 0 auto;
+}
+
+.lok-switch-row strong {
+    display: block;
+    font-size: 13px;
+    color: var(--ink);
+}
+
+.lok-switch-row small {
+    display: block;
+    font-size: 11.5px;
+    color: var(--mut);
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+.lok-fsubmit {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

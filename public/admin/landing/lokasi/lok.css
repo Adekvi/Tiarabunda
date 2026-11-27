@@ -1,0 +1,699 @@
+/* ============================================================
+   PARTIAL: lok.css
+   Styling Halaman Admin Lokasi & Lingkungan Kampus
+   ============================================================ */
+
+.lok-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.lok-crumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--mut);
+    margin-bottom: 6px;
+}
+
+.lok-crumb a {
+    color: #1f5fbf;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s ease;
+}
+
+.lok-crumb a:hover {
+    text-decoration: underline;
+}
+
+.lok-title {
+    margin: 0 0 4px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+}
+
+.lok-sub {
+    margin: 0;
+    font-size: 13px;
+    color: var(--mut);
+    line-height: 1.5;
+}
+
+.lok-head-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Alert & Banner */
+.lok-alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+}
+
+.lok-alert--ok {
+    background: rgba(22, 163, 74, 0.08);
+    border-color: rgba(22, 163, 74, 0.28);
+    color: #15803d;
+}
+
+.lok-alert--err {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.28);
+    color: var(--err);
+}
+
+.lok-alert--warn {
+    background: rgba(217, 119, 6, 0.09);
+    border-color: rgba(217, 119, 6, 0.3);
+    color: #b45309;
+}
+
+.lok-alert-close {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 2px 6px;
+    line-height: 1;
+    border-radius: 6px;
+}
+
+.lok-alert-close:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+/* Layout Grid Utama */
+.lok-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 295px;
+    gap: 20px;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .lok-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Filter Bar */
+.lok-filter {
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px -4px rgba(15, 23, 42, 0.05);
+}
+
+.lok-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.lok-input,
+.lok-select {
+    height: 38px;
+    padding: 0 13px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font-size: 13px;
+    outline: none;
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.lok-input:focus,
+.lok-select:focus {
+    border-color: #1f5fbf;
+    box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.12);
+}
+
+.lok-filter-search {
+    flex: 1 1 240px;
+}
+
+.lok-filter-status {
+    flex: 0 0 180px;
+}
+
+/* Tombol Standar */
+.lok-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+    white-space: nowrap;
+}
+
+.lok-btn:active {
+    transform: translateY(1px);
+}
+
+.lok-btn--sm {
+    height: 31px;
+    padding: 0 11px;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+.lok-btn--primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1f5fbf 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px -4px rgba(31, 95, 191, 0.5);
+}
+
+.lok-btn--primary:hover {
+    box-shadow: 0 6px 16px -4px rgba(31, 95, 191, 0.65);
+}
+
+.lok-btn--ghost {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+.lok-btn--ghost:hover {
+    background: rgba(148, 163, 184, 0.08);
+}
+
+.lok-btn--danger {
+    background: var(--err);
+    color: #ffffff;
+}
+
+.lok-btn--danger-outline {
+    background: transparent;
+    border-color: rgba(220, 38, 38, 0.35);
+    color: var(--err);
+}
+
+.lok-btn--danger-outline:hover {
+    background: rgba(220, 38, 38, 0.08);
+}
+
+.lok-btn--success {
+    background: #16a34a;
+    color: #ffffff;
+}
+
+/* ============================================================
+   TABEL UTAMA
+   ============================================================ */
+.lok-table-card {
+    overflow: hidden;
+    padding: 0;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px -6px rgba(15, 23, 42, 0.06);
+}
+
+.lok-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.lok-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+}
+
+.lok-table th {
+    padding: 13px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--mut);
+    border-bottom: 1px solid var(--line);
+    background: rgba(148, 163, 184, 0.07);
+    white-space: nowrap;
+}
+
+.lok-table td {
+    padding: 15px 16px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    color: var(--ink);
+    transition: background 0.16s ease;
+}
+
+.lok-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.lok-table tbody tr:hover td {
+    background: rgba(31, 95, 191, 0.025);
+}
+
+/* Pill Urutan */
+.lok-order-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 26px;
+    padding: 0 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    background: rgba(148, 163, 184, 0.12);
+    border: 1px solid var(--line);
+    color: var(--ink);
+}
+
+/* Thumbnail Gedung */
+.lok-thumb-box {
+    width: 116px;
+    height: 72px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: rgba(148, 163, 184, 0.06);
+}
+
+.lok-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.lok-table tbody tr:hover .lok-thumb {
+    transform: scale(1.05);
+}
+
+.lok-thumb-empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--mut);
+    text-align: center;
+    padding: 4px;
+}
+
+/* Info Kampus & Alamat */
+.lok-meta-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.lok-item-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.35;
+}
+
+.lok-item-addr {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--mut);
+    line-height: 1.45;
+}
+
+.lok-item-addr svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    opacity: 0.75;
+}
+
+/* Stack Kontak & Jam */
+.lok-contact-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.lok-contact-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.4;
+}
+
+.lok-contact-row svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: #1f5fbf;
+}
+
+.lok-contact-row--muted {
+    font-size: 12px;
+    color: var(--mut);
+}
+
+.lok-contact-row--muted svg {
+    color: var(--mut);
+}
+
+/* Badges */
+.lok-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.lok-badge--blue {
+    background: rgba(31, 95, 191, 0.12);
+    color: #1f5fbf;
+}
+
+.lok-badge--gold {
+    background: rgba(217, 119, 6, 0.12);
+    color: #b45309;
+}
+
+.lok-badge--muted {
+    background: rgba(148, 163, 184, 0.16);
+    color: var(--mut);
+}
+
+.lok-badge--ok {
+    background: rgba(22, 163, 74, 0.12);
+    color: #15803d;
+}
+
+.lok-badge--err {
+    background: rgba(220, 38, 38, 0.12);
+    color: var(--err);
+}
+
+/* Status Pill Interaktif */
+.lok-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.lok-status-pill:hover {
+    transform: translateY(-1px);
+}
+
+.lok-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.lok-status-pill.is-active {
+    background: rgba(22, 163, 74, 0.11);
+    border-color: rgba(22, 163, 74, 0.28);
+    color: #15803d;
+}
+
+.lok-status-pill.is-active .lok-status-dot {
+    background: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+}
+
+.lok-status-pill.is-inactive {
+    background: rgba(148, 163, 184, 0.12);
+    border-color: var(--line);
+    color: var(--mut);
+}
+
+.lok-status-pill.is-inactive .lok-status-dot {
+    background: #94a3b8;
+}
+
+/* ============================================================
+   TOMBOL AKSI ICON-ONLY + TOOLTIP
+   ============================================================ */
+.lok-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+}
+
+.lok-icon-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--mut);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.lok-icon-btn:hover {
+    transform: translateY(-1px);
+}
+
+.lok-icon-btn:active {
+    transform: translateY(0);
+}
+
+.lok-icon-btn--edit:hover {
+    background: rgba(31, 95, 191, 0.1);
+    border-color: rgba(31, 95, 191, 0.35);
+    color: #1f5fbf;
+    box-shadow: 0 4px 10px -4px rgba(31, 95, 191, 0.35);
+}
+
+.lok-icon-btn--delete:hover {
+    background: rgba(220, 38, 38, 0.1);
+    border-color: rgba(220, 38, 38, 0.35);
+    color: var(--err);
+    box-shadow: 0 4px 10px -4px rgba(220, 38, 38, 0.35);
+}
+
+/* Tooltip Melayang */
+.lok-icon-btn[data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 7px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.22);
+    transition:
+        opacity 0.16s ease,
+        transform 0.16s ease,
+        visibility 0.16s ease;
+    z-index: 20;
+}
+
+.lok-icon-btn[data-tip]:hover::after,
+.lok-icon-btn[data-tip]:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================================
+   SIDEBAR, EMPTY STATE & PAGINATION
+   ============================================================ */
+.lok-side-card {
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px -4px rgba(15, 23, 42, 0.05);
+}
+
+.lok-side-title {
+    margin: 0 0 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.lok-stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 13px;
+    color: var(--mut);
+}
+
+.lok-stat-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.lok-tips {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--mut);
+}
+
+.lok-tips li {
+    margin-bottom: 8px;
+}
+
+.lok-tips li:last-child {
+    margin-bottom: 0;
+}
+
+.lok-empty {
+    padding: 52px 24px;
+    text-align: center;
+}
+
+.lok-empty h3 {
+    margin: 0 0 6px;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.lok-empty p {
+    margin: 0 0 18px;
+    font-size: 13px;
+    color: var(--mut);
+    max-width: 420px;
+    margin-inline: auto;
+    line-height: 1.5;
+}
+
+.lok-pagi-wrap {
+    padding: 13px 16px;
+    border-top: 1px solid var(--line);
+    background: rgba(148, 163, 184, 0.03);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12.5px;
+    color: var(--mut);
+}
+
+.lok-pagi-list {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lok-pagi-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 9px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease;
+}
+
+.lok-pagi-link:hover {
+    background: rgba(31, 95, 191, 0.06);
+    border-color: rgba(31, 95, 191, 0.3);
+}
+
+.lok-pagi-link.is-active {
+    background: #1f5fbf;
+    border-color: #1f5fbf;
+    color: #ffffff;
+}
+
+.lok-pagi-link.is-disabled {
+    opacity: 0.45;
+    pointer-events: none;
+}

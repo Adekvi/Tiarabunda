@@ -1,4 +1,4 @@
-@props(['items' => []])
+@props(['items' => null])
 
 @php
     if ($items instanceof \Illuminate\Support\Collection) {
@@ -63,7 +63,7 @@
         ],
     ];
 
-    $rawList = !empty($items) ? array_values($items) : $defaultTestimoni;
+    $rawList = is_array($items) ? array_values($items) : $defaultTestimoni;
 
     $resolvePhoto = function (?string $img) use ($avatars): string {
         $src = trim((string) $img);
@@ -95,7 +95,7 @@
             $kat = 'alumni';
         }
 
-        $fotoRaw = $row['img'] ?? ($row['foto'] ?? ($avatars[$i % count($avatars)] ?? ''));
+        $fotoRaw = $row['img'] ?? ($row['foto'] ?? '');
 
         $testimoniList[] = [
             'nama' => $nama,
@@ -149,11 +149,19 @@
                             <div class="testi-spot-avatar-wrap">
                                 <div class="testi-spot-ring" aria-hidden="true"></div>
                                 <div class="testi-spot-avatar">
-                                    <img src="{{ $featured['foto'] }}" alt="Foto {{ $featured['nama'] }}" width="96"
-                                        height="96" data-spot-img>
-                                    <span class="testi-spot-initials" data-spot-initials style="display: none;">
-                                        {{ $featured['initials'] }}
-                                    </span>
+                                    @if ($featured['foto'] !== '')
+                                        <img src="{{ $featured['foto'] }}" alt="Foto {{ $featured['nama'] }}"
+                                            width="96" height="96" data-spot-img>
+                                        <span class="testi-spot-initials" data-spot-initials style="display: none;">
+                                            {{ $featured['initials'] }}
+                                        </span>
+                                    @else
+                                        <img src="" alt="" width="96" height="96" data-spot-img
+                                            style="display: none;">
+                                        <span class="testi-spot-initials" data-spot-initials>
+                                            {{ $featured['initials'] }}
+                                        </span>
+                                    @endif
                                 </div>
                                 <span class="testi-verified-badge" title="Kisah Terverifikasi" aria-hidden="true">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none"

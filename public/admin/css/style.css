@@ -7,13 +7,17 @@
 @import url("./partials/06-responsive.css");
 
 /* 2. Beranda & Komponen Global (relatif dari public/admin/css/ ke public/admin/landing/) */
+@import url("../landing/popup/popup.css");
+@import url("../landing/popup/form.css");
+
 @import url("../landing/hero/hero.css");
 @import url("../landing/hero/form.css");
 
-@import url("../landing/info/info.css");
-@import url("../landing/info/form.css");
+@import url("../landing/lokasi/lok.css");
+@import url("../landing/lokasi/form.css");
 
-@import url("../landing/popup/popup.css");
+@import url("../landing/testi/testi.css");
+@import url("../landing/testi/form.css");
 
 /* 3. Profil */
 @import url("../landing/profil/pimpinan/pim.css");

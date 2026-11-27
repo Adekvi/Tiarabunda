@@ -1,4 +1,4 @@
-@props(['items' => []])
+@props(['items' => null])
 
 @php
     if ($items instanceof \Illuminate\Support\Collection) {
@@ -83,8 +83,12 @@
         '<rect x="116" y="425" width="8" height="30" fill="#78350f"/><rect x="691" y="425" width="8" height="30" fill="#78350f"/>' .
         '</svg>';
 
-    $fotoDefaultA = 'data:image/svg+xml,' . rawurlencode($svgKampusA);
-    $fotoDefaultB = 'data:image/svg+xml,' . rawurlencode($svgKampusB);
+    $fallbackSvgA = 'data:image/svg+xml,' . rawurlencode($svgKampusA);
+    $fallbackSvgB = 'data:image/svg+xml,' . rawurlencode($svgKampusB);
+
+    // Foto Gedung Kampus A & Kampus B
+    $fotoDefaultA = asset('landing/assets/img/lokasi/gedungA.webp');
+    $fotoDefaultB = asset('landing/assets/img/lokasi/gedungB.webp');
 
     $defaultLokasi = [
         [
@@ -123,12 +127,12 @@
         ],
     ];
 
-    $rawList = !empty($items) && is_array($items) ? array_values($items) : $defaultLokasi;
+    $rawList = is_array($items) ? array_values($items) : $defaultLokasi;
 
-    $resolveImg = function (?string $img, string $fallback): string {
+    $resolveImg = function (?string $img, string $defaultImg): string {
         $src = trim((string) $img);
         if ($src === '') {
-            return $fallback;
+            return $defaultImg;
         }
         if (str_starts_with($src, 'data:') || str_starts_with($src, 'http') || str_starts_with($src, '/')) {
             return $src;
@@ -143,7 +147,7 @@
         }
         $kode = $row['kode'] ?? chr(65 + $idx);
         $defaultRef = $defaultLokasi[$idx] ?? $defaultLokasi[0];
-        $fallbackSvg = $idx % 2 === 0 ? $fotoDefaultA : $fotoDefaultB;
+        $fallbackSvg = $idx % 2 === 0 ? $fallbackSvgA : $fallbackSvgB;
 
         $rawChips = $row['unggulan'] ?? $defaultRef['unggulan'];
         if (is_string($rawChips)) {
@@ -165,7 +169,7 @@
             'koordinat' => (string) ($row['koordinat'] ?? $defaultRef['koordinat']),
             'akses' => (string) ($row['akses'] ?? $defaultRef['akses']),
             'unggulan' => $chips,
-            'img' => $resolveImg($row['img'] ?? ($row['foto'] ?? ''), $fallbackSvg),
+            'img' => $resolveImg($row['img'] ?? ($row['foto'] ?? ''), $defaultRef['img']),
             'fallback' => $fallbackSvg,
             'map_embed' => (string) ($row['map_embed'] ?? $defaultRef['map_embed']),
             'map_url' => (string) ($row['map_url'] ?? ($row['maps'] ?? $defaultRef['map_url'])),
@@ -198,7 +202,7 @@
 
         <div class="wrap position-relative">
             <div class="lokasi-head-wrap">
-                <x-landing.ui.head kick="Lokasi &    Lingkungan Kampus" title="Lingkungan belajar di titik strategis"
+                <x-landing.ui.head kick="Lokasi & Lingkungan Kampus" title="Lingkungan belajar di titik strategis"
                     lead="Pilih lokasi kampus untuk melihat gedung perkuliahan, fasilitas unggulan, dan akses transportasi."
                     id="lokasi-title" />
 
@@ -282,7 +286,7 @@
                     <div class="lokasi-detail-top">
                         <span class="lokasi-badge" data-stage-badge>{{ $active['badge'] }}</span>
                         <h3 class="lokasi-name" data-stage-nama>{{ $active['nama'] }}</h3>
-                        <p class="lokasi-desc" data-stage-desc>{{ $active['deskripsi'] }}</p>
+                        <div class="lokasi-desc" data-stage-desc>{!! $active['deskripsi'] !!}</div>
                     </div>
 
                     @if (count($active['unggulan']))
