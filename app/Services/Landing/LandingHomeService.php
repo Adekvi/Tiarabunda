@@ -596,7 +596,7 @@ class LandingHomeService
 
     public function forgetBerita(): void
     {
-        Cache::forget('landing.home.berita');
+        Cache::forget('landing.home.berita.v2');
     }
 
     public function forgetFaq(): void

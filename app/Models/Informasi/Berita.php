@@ -5,6 +5,8 @@ namespace App\Models\Informasi;
 use App\Models\Concerns\HasUripState;
 use App\Models\Concerns\HasUrutan;
 use App\Models\User;
+use App\Services\Landing\Informasi\BeritaService;
+use App\Services\Landing\LandingHomeService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,6 +45,18 @@ class Berita extends Model
             'urutan' => 'integer',
             'wektu_terbit' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        $flush = function () {
+            app(LandingHomeService::class)->forgetBerita();
+            app(BeritaService::class)->clearCache();
+        };
+
+        static::saved($flush);
+        static::deleted($flush);
+        static::restored($flush);
     }
 
     public function penulis(): BelongsTo
